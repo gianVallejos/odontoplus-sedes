@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	$data2 = 'test';
+    return view('home', compact('data2'));
 });
 
 Auth::routes();

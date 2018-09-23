@@ -1,0 +1,107 @@
+.logoHeaderComponent {
+  max-height: 42px;
+}
+.head-right {
+  float: right;
+}
+.head-right li a i.fa.lnr {
+  position: absolute;
+  top: 34%;
+  right: 8%;
+  color: #000;
+  font-size: 1.2em;
+}
+.head-right .dropdown a.dropdown-toggle {
+  display: block;
+  padding: 0em 3em 0 1em;
+}
+.perfil-img,
+.user-name {
+  float: left;
+}
+.user-name {
+  margin-top: 7px;
+  margin-left: 11px;
+  height: 35px;
+}
+.user-name p {
+  font-family: 'Rubik', sans-serif;
+  font-size: 1em;
+  color: #fff;
+  line-height: 1em;
+}
+.user-name span {
+  font-size: 0.85em;
+  color: #0aab8a;
+  font-weight: normal;
+  margin-top: 0.3em;
+}
+.dropdown-toggle::after {
+  display: none;
+}
+.dropdown-menu {
+  padding: 1em;
+}
+.dropdown-menu.show li a {
+  font-size: 0.8em;
+  color: #858ea7;
+}
+.dropdown-menu.show li a i {
+  font-size: 0.85em;
+  margin-right: 10px;
+}
+.barra {
+  background: #fff;
+}
+.barra .barra-list > li {
+  display: inline-block;
+  text-transform: uppercase;
+  margin-right: -4px;
+}
+.barra .barra-list > li.item i {
+  margin-right: 8px;
+}
+.barra .barra-list > li.item a {
+  color: #858ea7;
+  font-weight: 700;
+  line-height: 60px;
+  height: 60px;
+  display: block;
+  padding: 0px 20px 0px 20px;
+}
+.barra .barra-list > li.item a:hover {
+  text-decoration: none;
+  color: #f3f3f3;
+  background: #0aab8a;
+}
+.barra .barra-list > li.item .dropdown-toggle i {
+  margin-left: 5px;
+}
+.barra .barra-list > li.item.dropdown.show {
+  background: #0aab8a;
+}
+.barra .barra-list > li.item.dropdown.show a {
+  color: #fff;
+}
+.barra .barra-list li.dropdown ul.dropdown-menu .li-dropdown a {
+  display: block;
+  padding: 5px 0px 5px 0px;
+  height: 30px;
+  line-height: 20px;
+  color: #858ea7;
+}
+.barra .barra-list li.dropdown ul.dropdown-menu .li-dropdown a:hover {
+  background: transparent;
+  color: #0aab8a;
+}
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  background: #305f94;
+  font-size: 14px;
+  font-family: 'Rubik', sans-serif;
+  color: #d1d1d1;
+}
