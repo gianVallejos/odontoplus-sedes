@@ -1,5 +1,5 @@
 <template>
-	<div class="dashbox" :class="color" v:on-click="say('hi')" >
+	<div class="dashbox" :class="color" v-on:click="say" >
 		<div>
 			<div class="icono">
 				<i :class="iconUrl"></i>
@@ -23,8 +23,8 @@
 			'url'
 		],
 		methods: {
-			say: function (message) {
-		      alert(message)
+			say: function () {
+		      window.location = this.url
 		    }
 		}
 	}

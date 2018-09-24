@@ -9,13 +9,24 @@ $btnModificarBc = #858ea7
 $btnCancelarBc = #ab4240
 $btnInfoC = #f3f3f3
 
+html
+	margin: 0
+	padding: 0
+	height: 100%
 
 body
 	background: #d1d1d1
 	color: #464D5C
 	font-family: 'Open Sans', sans-serif
 	font-size: 14px
+	margin: 0
+	padding: 0
+	height: 100%
 	
+#app
+	min-height: 100%
+	position: relative
+
 h1, h2, h3, h4, h5
 	font-family: 'Rubik', sans-serif
 	
@@ -33,8 +44,8 @@ ul
 p 
 	margin: 0
 
-footer
-	position: fixed
+.footer
+	position: relative
 	bottom: 0
 	width: 100%
 	height: 60px
@@ -59,13 +70,41 @@ footer
 		background: #fff
 		text-align: right
 	
+.icon-input
+	position: absolute
+	top: 10px
+	left: 15px
+	i 
+		color: #7f7f7f
+
+.form-control
+	height: 40px
+	padding: 12px
+	border: 1px solid #d1d1d1
+	color: #7f7f7f
+	font-size: 1em
+	border-radius: 0px
+	&:focus
+		outline: none
+		box-shadow: none   
+		border: 1px solid #d1d1d1 	
+		
+.col-form-label
+	font-family: 'Rubik', sans-serif
+
 .odInput
 	width: 100%
 	height: 40px
 	padding: 12px 20px
+	padding-left: 34px
 	border: 1px solid #d1d1d1
+	color: #7f7f7f
+	font-size: .9em
+	&:focus
+		outline: none   	
 
-.odBtn
+.odBtn,
+.btn	
 	display: inline-block
 	color: $btnInfoC!important
 	border: none
@@ -78,72 +117,83 @@ footer
 	font-family: 'Rubik', sans-serif
 	transition: all .5s ease-out	
 	&:focus
-		outline: 0
-	&.info
+		outline: none!important
+		background: #f3f3f3!important
+	&:active
+		outline: none!important
+		box-shadow: none!important
+	&.info,
+	&.btn-primary
 		background: $btnInfoBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnInfoBc!important
-			border-bottom: 4px solid $btnInfoBc
+			box-shadow: inset 0 -4px 0 $btnInfoBc
 			background: $btnInfoC
-			text-decoration: none			
+			text-decoration: none						
 		&:focus
 			color: $btnInfoBc!important
 			outline: 0
 			background: $btnInfoC
-			border-bottom: 4px solid $btnInfoBc
-	&.guardar
+			box-shadow: inset 0 -4px 0 $btnInfoBc
+	&.guardar,
+	&.btn-success
 		background: $btnGuardarBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnGuardarBc!important
-			border-bottom: 4px solid $btnGuardarBc
+			box-shadow: inset 0 -4px 0 $btnGuardarBc
 			background: $btnInfoC
 			text-decoration: none
 		&:focus
 			color: $btnGuardarBc!important
 			outline: 0
 			background: $btnInfoC
-			border-bottom: 4px solid $btnGuardarBc
-	&.nuevo
+			box-shadow: inset 0 -4px 0 $btnGuardarBc
+	&.nuevo,
+	&.btn-secondary
 		background: $btnNuevoBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnNuevoBc!important
-			border-bottom: 4px solid $btnNuevoBc
+			box-shadow: inset 0 -4px 0 $btnNuevoBc
 			background: $btnInfoC
 			text-decoration: none
-		&:focus
+		&:focus,
+		&:active
 			color: $btnNuevoBc!important
 			outline: 0
 			background: $btnInfoC
-			border-bottom: 4px solid $btnNuevoBc
-	&.modificar
+			box-shadow: inset 0 -4px 0 $btnNuevoBc
+	&.modificar,
+	&.btn-warning
 		background: $btnModificarBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnModificarBc!important
-			border-bottom: 4px solid $btnModificarBc
+			box-shadow: inset 0 -4px 0 $btnModificarBc
 			background: $btnInfoC
 			text-decoration: none
 		&:focus
 			color: $btnModificarBc!important
 			outline: 0
 			background: $btnInfoC
-			border-bottom: 4px solid $btnModificarBc
-	&.cancelar
+			box-shadow: inset 0 -4px 0 $btnModificarBc
+	&.cancelar,
+	&.btn-danger
 		background: $btnCancelarBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnCancelarBc!important
-			border-bottom: 4px solid $btnCancelarBc
+			box-shadow: inset 0 -4px 0 $btnCancelarBc
 			background: $btnInfoC
 			text-decoration: none
-		&:focus
+		&:focus,
+		&:active
 			color: $btnCancelarBc!important
 			outline: 0
 			background: $btnInfoC
-			border-bottom: 4px solid $btnCancelarBc
+			box-shadow: inset 0 -4px 0 $btnCancelarBc
 
 .rubikFont
 	font-family: 'Rubik', sans-serif
@@ -151,3 +201,29 @@ footer
 .contenido
 	padding-top: 30px
 	padding-bottom: 35px
+	
+.table 
+	thead 
+		th
+			border-top: none
+	tbody
+		tr 
+			border-bottom: 1px solid #dee2e6
+	
+//Modal		
+.modal-content
+	border-radius: 0px
+	border: none
+	border-top: 4px solid $btnInfoBc
+	
+.modal-header
+	padding: 1.1em 1.4em .7em 1.4em
+	.close
+		padding: .6em
+
+.modal-title
+	line-height: auto
+	font-size: 1.4em
+	color: #868da7
+	font-family: 'Rubik', sans-serif
+	
