@@ -13,16 +13,20 @@
 	
 	<link rel="stylesheet" href="{{ asset('css/odontoplus.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/header.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 <body>
 	<div id="app">
+		
 		<header-component></header-component>
 		<nav-component></nav-component>
-
-		@yield('content')
+		
+		<div class="contenido">
+			@yield('content')
+		</div>
 
 		<footer-component></footer-component>
-
+		
 	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>

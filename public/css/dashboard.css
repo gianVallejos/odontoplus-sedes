@@ -1,0 +1,39 @@
+.dashboxLayout {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-line-pack: justify;
+      align-content: space-between;
+}
+.dashbox {
+  display: inline-block;
+  padding: 1.82em 3.71em 1.82em 3.71em;
+  margin: 0.3em;
+  text-align: center;
+  color: #f3f3f3;
+  font-family: 'Rubik', sans-serif;
+  cursor: pointer;
+}
+.dashbox.info {
+  background: #305f94;
+}
+.dashbox.guardar {
+  background: #0aab8a;
+}
+.dashbox.nuevo {
+  background: #464d5c;
+}
+.dashbox.modificar {
+  background: #858ea7;
+}
+.dashbox:hover {
+  opacity: 0.9;
+}
+.dashbox .icono i {
+  font-size: 1.58em;
+}

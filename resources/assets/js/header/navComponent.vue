@@ -9,7 +9,7 @@
 		      </li>
 		      <li class="item">
 		      	<a href="#">
-		      		<i class="fas fa-money-check-alt"></i>Presupuestos
+		      		<i class="fas fa-calculator"></i>Presupuestos
 		      	</a>
 		      </li>
 		      <li class="item dropdown">
@@ -29,22 +29,7 @@
 		          	</a>
 		          </li>
 		        </ul>
-		      </li>
-		      <li class="item">
-		      	<a href="#">
-		      		<i class="fas fa-tooth"></i>Tratamientos
-		      	</a>
-		      </li>
-		      <li class="item">
-		      	<a href="#">
-		      		<i class="fas fa-dollar-sign"></i>Precios
-		      	</a>
-		      </li>
-		      <li class="item">
-		      	<a href="#">
-		      		<i class="fas fa-building"></i>Empresas
-		      	</a>
-		      </li>
+		      </li>		      		      
 		      <li class="item dropdown">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 		        	<i class="fas fa-file-invoice-dollar"></i>Finanzas
@@ -64,6 +49,29 @@
 		          <li class="li-dropdown">
 		          	<a href="#">
 		          		<i class="fas fa-chart-line"></i>Reportes
+		          	</a>
+		          </li>
+		        </ul>
+		      </li>
+		      <li class="item dropdown">
+		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+		        	<i class="fas fa-plus"></i>Otros
+		        	<i class="fa fa-angle-down lnr"></i>
+		    	</a>
+		        <ul class="dropdown-menu">
+		          <li class="li-dropdown">
+		          	<a href="#">
+		          		<i class="fas fa-tooth"></i>Tratamientos
+		          	</a>
+		          </li>
+		          <li class="li-dropdown">
+		          	<a href="#">
+		          		<i class="fas fa-dollar-sign"></i>Precios
+		          	</a>
+		          </li>
+		          <li class="li-dropdown">
+		          	<a href="#">
+		          		<i class="fas fa-building"></i>Empresas
 		          	</a>
 		          </li>
 		        </ul>

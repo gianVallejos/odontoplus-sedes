@@ -1,5 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/odontoplus.css": "/css/odontoplus.css",
-    "/css/header.css": "/css/header.css"
+    "/css/header.css": "/css/header.css",
+    "/css/dashboard.css": "/css/dashboard.css"
 }
