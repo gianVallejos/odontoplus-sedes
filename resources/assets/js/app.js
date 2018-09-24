@@ -1,6 +1,11 @@
 //require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue'
+import BootstrapVue from "bootstrap-vue"
+import Toasted from 'vue-toasted'
+
+Vue.use(BootstrapVue)
+Vue.use(Toasted, {position: 'bottom-right', theme: 'primary', duration: 1000})
 
 Vue.component('header-component', require('./header/headerComponent.vue'));
 Vue.component('nav-component', require('./header/navComponent.vue'));

@@ -9,13 +9,24 @@ $btnModificarBc = #858ea7
 $btnCancelarBc = #ab4240
 $btnInfoC = #f3f3f3
 
+html
+	margin: 0
+	padding: 0
+	height: 100%
 
 body
 	background: #d1d1d1
 	color: #464D5C
 	font-family: 'Open Sans', sans-serif
 	font-size: 14px
+	margin: 0
+	padding: 0
+	height: 100%
 	
+#app
+	min-height: 100%
+	position: relative
+
 h1, h2, h3, h4, h5
 	font-family: 'Rubik', sans-serif
 	
@@ -33,8 +44,8 @@ ul
 p 
 	margin: 0
 
-footer
-	position: fixed
+.footer
+	position: relative
 	bottom: 0
 	width: 100%
 	height: 60px
@@ -163,3 +174,11 @@ footer
 .contenido
 	padding-top: 30px
 	padding-bottom: 35px
+	
+.table 
+	thead 
+		th
+			border-top: none
+	tbody
+		tr 
+			border-bottom: 1px solid #dee2e6

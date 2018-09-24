@@ -20,7 +20,7 @@
 		},
 		methods:{
 			greet: function(e){
-				alert('hello world')				
+				this.$toasted.info(this.message)				
 			}
 		}
 
