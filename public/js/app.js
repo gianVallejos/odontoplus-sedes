@@ -12295,6 +12295,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dashbox_dashbox_component_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__dashbox_dashbox_component_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__panel_panel_component_vue__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__panel_panel_component_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__panel_panel_component_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__form_form_buscar_component_vue__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__form_form_buscar_component_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__form_form_buscar_component_vue__);
 //
 //
 //
@@ -12366,6 +12368,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+
 
 
 
@@ -12375,7 +12379,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	components: {
 		ButtonComponent: __WEBPACK_IMPORTED_MODULE_0__button_button_component_vue___default.a,
 		Dashbox: __WEBPACK_IMPORTED_MODULE_1__dashbox_dashbox_component_vue___default.a,
-		PanelCard: __WEBPACK_IMPORTED_MODULE_2__panel_panel_component_vue___default.a
+		PanelCard: __WEBPACK_IMPORTED_MODULE_2__panel_panel_component_vue___default.a,
+		FormBuscar: __WEBPACK_IMPORTED_MODULE_3__form_form_buscar_component_vue___default.a
 	}
 });
 
@@ -12738,10 +12743,12 @@ var render = function() {
                   _vm._v("Últimos Pacientes")
                 ]),
                 _vm._v(" "),
+                _c("FormBuscar", { attrs: { slot: "body" }, slot: "body" }),
+                _vm._v(" "),
                 _c(
                   "table",
                   {
-                    staticClass: "table",
+                    staticClass: "table mt-3",
                     attrs: { slot: "body" },
                     slot: "body"
                   },
@@ -12917,6 +12924,127 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(39)
+/* template */
+var __vue_template__ = __webpack_require__(40)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/form/form-buscar-component.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0443c154", Component.options)
+  } else {
+    hotAPI.reload("data-v-0443c154", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	mounted: function mounted() {
+		console.log('Form Buscar Mounted');
+		console.log(this.message);
+	},
+
+	data: {
+		message: ''
+	},
+	methods: {
+		greet: function greet() {
+			return 'Hi';
+		}
+	}
+
+});
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("input", {
+    directives: [
+      {
+        name: "model",
+        rawName: "v-model",
+        value: _vm.message,
+        expression: "message"
+      }
+    ],
+    staticClass: "odInput",
+    attrs: { placeholder: "greet()", type: "text" },
+    domProps: { value: _vm.message },
+    on: {
+      input: function($event) {
+        if ($event.target.composing) {
+          return
+        }
+        _vm.message = $event.target.value
+      }
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0443c154", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

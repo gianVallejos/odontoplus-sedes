@@ -15,7 +15,8 @@
 					<h3>Panel: </h3>
 					<PanelCard>
 						<span slot="heading">Últimos Pacientes</span>
-						<table class="table" slot="body">
+						<FormBuscar slot="body" />
+						<table class="table mt-3" slot="body">
 						    <thead>
 						      <tr>
 						        <th>Firstname</th>
@@ -73,12 +74,14 @@
 	import ButtonComponent from '../button/button-component.vue'
 	import Dashbox from '../dashbox/dashbox-component.vue'
 	import PanelCard from '../panel/panel-component.vue'
+	import FormBuscar from '../form/form-buscar-component.vue'
 	export default{
 		name: 'Container-General',
 		components:{
 			ButtonComponent,
 			Dashbox,
-			PanelCard
+			PanelCard,
+			FormBuscar
 		}
 	}
 </script>

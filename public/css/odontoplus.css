@@ -59,6 +59,12 @@ footer {
   background: #fff;
   text-align: right;
 }
+.odInput {
+  width: 100%;
+  height: 40px;
+  padding: 12px 20px;
+  border: 1px solid #d1d1d1;
+}
 .odBtn {
   display: inline-block;
   color: #f3f3f3 !important;
