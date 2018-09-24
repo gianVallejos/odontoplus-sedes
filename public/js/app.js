@@ -204,9 +204,9 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(3);
-__webpack_require__(26);
-__webpack_require__(27);
-module.exports = __webpack_require__(28);
+__webpack_require__(29);
+__webpack_require__(30);
+module.exports = __webpack_require__(31);
 
 
 /***/ }),
@@ -12245,7 +12245,7 @@ var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(18)
 /* template */
-var __vue_template__ = __webpack_require__(25)
+var __vue_template__ = __webpack_require__(28)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -12293,6 +12293,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__button_button_component_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__button_button_component_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dashbox_dashbox_component_vue__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dashbox_dashbox_component_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__dashbox_dashbox_component_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__panel_panel_component_vue__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__panel_panel_component_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__panel_panel_component_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__form_form_buscar_component_vue__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__form_form_buscar_component_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__form_form_buscar_component_vue__);
 //
 //
 //
@@ -12323,6 +12327,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
@@ -12330,7 +12378,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	name: 'Container-General',
 	components: {
 		ButtonComponent: __WEBPACK_IMPORTED_MODULE_0__button_button_component_vue___default.a,
-		Dashbox: __WEBPACK_IMPORTED_MODULE_1__dashbox_dashbox_component_vue___default.a
+		Dashbox: __WEBPACK_IMPORTED_MODULE_1__dashbox_dashbox_component_vue___default.a,
+		PanelCard: __WEBPACK_IMPORTED_MODULE_2__panel_panel_component_vue___default.a,
+		FormBuscar: __WEBPACK_IMPORTED_MODULE_3__form_form_buscar_component_vue___default.a
 	}
 });
 
@@ -12544,6 +12594,106 @@ if (false) {
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(26)
+/* template */
+var __vue_template__ = __webpack_require__(27)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/panel/panel-component.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f5eff1b2", Component.options)
+  } else {
+    hotAPI.reload("data-v-f5eff1b2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	mounted: function mounted() {
+		console.log('Card Mounted');
+	}
+});
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "card-heading" }, [_vm._t("heading")], 2),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [_vm._t("body")], 2),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-footer" }, [_vm._t("footer")], 2)
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-f5eff1b2", module.exports)
+  }
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -12578,10 +12728,89 @@ var render = function() {
             })
           ],
           1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "panelLayout pt-4" },
+          [
+            _c("h3", [_vm._v("Panel: ")]),
+            _vm._v(" "),
+            _c(
+              "PanelCard",
+              [
+                _c("span", { attrs: { slot: "heading" }, slot: "heading" }, [
+                  _vm._v("Últimos Pacientes")
+                ]),
+                _vm._v(" "),
+                _c("FormBuscar", { attrs: { slot: "body" }, slot: "body" }),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass: "table mt-3",
+                    attrs: { slot: "body" },
+                    slot: "body"
+                  },
+                  [
+                    _c("thead", [
+                      _c("tr", [
+                        _c("th", [_vm._v("Firstname")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Lastname")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Email")])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", [_vm._v("John")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("Doe")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("john@example.com")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("Mary")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("Moe")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("mary@example.com")])
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c("td", [_vm._v("July")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("Dooley")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v("july@example.com")])
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("ButtonComponent", {
+                  attrs: {
+                    slot: "footer",
+                    url: "#",
+                    name: "Ver Pacientes",
+                    tipo: "info"
+                  },
+                  slot: "footer"
+                })
+              ],
+              1
+            )
+          ],
+          1
         )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-6" }, [
+        _c("h3", [_vm._v("Dashbox: ")]),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "dashboxLayout" },
@@ -12615,7 +12844,7 @@ var render = function() {
             _vm._v(" "),
             _c("Dashbox", {
               attrs: {
-                iconUrl: "fas fa-calculator",
+                iconUrl: "fas fa-tooth",
                 name: "Tratamientos",
                 color: "guardar",
                 url: "/home"
@@ -12624,7 +12853,7 @@ var render = function() {
             _vm._v(" "),
             _c("Dashbox", {
               attrs: {
-                iconUrl: "fas fa-calculator",
+                iconUrl: "fas fa-dollar-sign",
                 name: "Precios",
                 color: "info",
                 url: "/home"
@@ -12633,7 +12862,7 @@ var render = function() {
             _vm._v(" "),
             _c("Dashbox", {
               attrs: {
-                iconUrl: "fas fa-calculator",
+                iconUrl: "fas fa-building",
                 name: "Empresas",
                 color: "nuevo",
                 url: "/home"
@@ -12642,25 +12871,29 @@ var render = function() {
             _vm._v(" "),
             _c("Dashbox", {
               attrs: {
-                iconUrl: "fas fa-calculator",
+                iconUrl: "fas fa-money-check-alt",
                 name: "Ingresos",
-                color: "nuevo",
+                color: "modificar",
                 url: "/home"
               }
             }),
             _vm._v(" "),
             _c("Dashbox", {
               attrs: {
-                iconUrl: "fas fa-calculator",
+                iconUrl: "fas fa-money-bill",
                 name: "Egresos",
-                color: "nuevo",
+                color: "guardar",
                 url: "/home"
               }
             })
           ],
           1
         )
-      ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" })
     ])
   ])
 }
@@ -12675,22 +12908,143 @@ if (false) {
 }
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(39)
+/* template */
+var __vue_template__ = __webpack_require__(40)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/form/form-buscar-component.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0443c154", Component.options)
+  } else {
+    hotAPI.reload("data-v-0443c154", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	mounted: function mounted() {
+		console.log('Form Buscar Mounted');
+		console.log(this.message);
+	},
+
+	data: {
+		message: ''
+	},
+	methods: {
+		greet: function greet() {
+			return 'Hi';
+		}
+	}
+
+});
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("input", {
+    directives: [
+      {
+        name: "model",
+        rawName: "v-model",
+        value: _vm.message,
+        expression: "message"
+      }
+    ],
+    staticClass: "odInput",
+    attrs: { placeholder: "greet()", type: "text" },
+    domProps: { value: _vm.message },
+    on: {
+      input: function($event) {
+        if ($event.target.composing) {
+          return
+        }
+        _vm.message = $event.target.value
+      }
+    }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0443c154", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
