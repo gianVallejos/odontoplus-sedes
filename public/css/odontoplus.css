@@ -59,11 +59,25 @@ footer {
   background: #fff;
   text-align: right;
 }
+.icon-input {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+}
+.icon-input i {
+  color: #7f7f7f;
+}
 .odInput {
   width: 100%;
   height: 40px;
   padding: 12px 20px;
+  padding-left: 34px;
   border: 1px solid #d1d1d1;
+  color: #7f7f7f;
+  font-size: 0.9em;
+}
+.odInput:focus {
+  outline: none;
 }
 .odBtn {
   display: inline-block;

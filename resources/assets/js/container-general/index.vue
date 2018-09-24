@@ -49,7 +49,7 @@
 			<div class="col-md-6">
 				<h3>Dashbox: </h3>
 				<div class="dashboxLayout">
-					<Dashbox iconUrl="fas fa-calculator" name="Presupuestos" color="info" url="/home" />
+					<Dashbox iconUrl="fas fa-calculator" name="Presupuestos" color="info" url="/home2" />
 					<Dashbox iconUrl="fas fa-user-md" name="Pacientes" color="nuevo" url="/home" />
 					<Dashbox iconUrl="fab fa-accessible-icon" name="Doctores" color="modificar" url="/home" />
 					<Dashbox iconUrl="fas fa-tooth" name="Tratamientos" color="guardar" url="/home" />

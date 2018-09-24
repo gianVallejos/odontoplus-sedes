@@ -12548,8 +12548,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 	props: ['iconUrl', 'name', 'color', 'url'],
 	methods: {
-		say: function say(message) {
-			alert(message);
+		say: function say() {
+			window.location = this.url;
 		}
 	}
 });
@@ -12564,11 +12564,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {
-      staticClass: "dashbox",
-      class: _vm.color,
-      attrs: { "v:on-click": "say('hi')" }
-    },
+    { staticClass: "dashbox", class: _vm.color, on: { click: _vm.say } },
     [
       _c("div", [
         _c("div", { staticClass: "icono" }, [_c("i", { class: _vm.iconUrl })]),
@@ -12747,6 +12743,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	mounted: function mounted() {
@@ -12775,38 +12776,54 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("input", {
-    directives: [
-      {
-        name: "model",
-        rawName: "v-model",
-        value: _vm.message,
-        expression: "message"
-      }
-    ],
-    staticClass: "odInput",
-    attrs: { placeholder: "Buscar...", type: "text" },
-    domProps: { value: _vm.message },
-    on: {
-      keyup: function($event) {
-        if (
-          !("button" in $event) &&
-          _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-        ) {
-          return null
+  return _c("div", { staticClass: "input-group" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.message,
+          expression: "message"
         }
-        _vm.greet()
-      },
-      input: function($event) {
-        if ($event.target.composing) {
-          return
+      ],
+      staticClass: "odInput",
+      attrs: { placeholder: "Buscar...", type: "text" },
+      domProps: { value: _vm.message },
+      on: {
+        keyup: function($event) {
+          if (
+            !("button" in $event) &&
+            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+          ) {
+            return null
+          }
+          _vm.greet()
+        },
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.message = $event.target.value
         }
-        _vm.message = $event.target.value
       }
-    }
-  })
+    })
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "icon-input" }, [
+      _c("i", {
+        staticClass: "fas fa-search",
+        attrs: { "aria-hidden": "true" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -12946,7 +12963,7 @@ var render = function() {
                 iconUrl: "fas fa-calculator",
                 name: "Presupuestos",
                 color: "info",
-                url: "/home"
+                url: "/home2"
               }
             }),
             _vm._v(" "),
