@@ -2,6 +2,13 @@
   font-family: 'Rubik', sans-serif;
   font-family: 'Open Sans', sans-serif;
 */
+$btnInfoBc = #305f94
+$btnGuardarBc = #0aab8a
+$btnNuevoBc = #464d5c
+$btnModificarBc = #858ea7
+$btnCancelarBc = #ab4240
+$btnInfoC = #f3f3f3
+
 
 body
 	background: #d1d1d1
@@ -26,12 +33,33 @@ ul
 p 
 	margin: 0
 
-$btnInfoBc = #305f94
-$btnGuardarBc = #0aab8a
-$btnNuevoBc = #464d5c
-$btnModificarBc = #858ea7
-$btnCancelarBc = #ab4240
-$btnInfoC = #f3f3f3
+footer
+	position: fixed
+	bottom: 0
+	width: 100%
+	height: 60px
+	line-height: 60px
+	background: #305F94
+	font-size: 14px
+	font-family: 'Rubik', sans-serif
+	color: #d1d1d1
+
+.card
+	border: none
+	border-top: 4px solid $btnInfoBc
+	border-radius: 0px
+	width: 100%	
+	.card-heading
+		font-family: 'Rubik', sans-serif
+		padding: 18px 26px 14px 26px
+		font-size: 1.15em
+		color: #858ea7
+		border-bottom: 1px solid #d1d1d1
+	.card-footer
+		background: #fff
+		text-align: right
+	
+
 .odBtn
 	display: inline-block
 	color: $btnInfoC!important
@@ -53,7 +81,7 @@ $btnInfoC = #f3f3f3
 			color: $btnInfoBc!important
 			border-bottom: 4px solid $btnInfoBc
 			background: $btnInfoC
-			text-decoration: none
+			text-decoration: none			
 		&:focus
 			color: $btnInfoBc!important
 			outline: 0
