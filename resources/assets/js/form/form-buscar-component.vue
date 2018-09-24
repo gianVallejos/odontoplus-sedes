@@ -1,5 +1,5 @@
 <template>
-	<input v-model="message" placeholder="greet()" type="text" class="odInput">
+	<input v-model="message"  @keyup.enter="greet()" placeholder="Buscar..." type="text" class="odInput">
 </template>
 
 <script>
@@ -8,12 +8,14 @@
 			console.log('Form Buscar Mounted')
 			console.log(this.message)
 		},
-		data:{			
-			message: ''			
+		data(){
+			return{
+				message: ''
+			}
 		},
 		methods:{
-			greet: function() {
-				return 'Hi'
+			greet: function(e){
+				alert('test')				
 			}
 		}
 
