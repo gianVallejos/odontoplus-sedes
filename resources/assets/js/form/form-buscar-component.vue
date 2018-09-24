@@ -15,7 +15,7 @@
 		},
 		methods:{
 			greet: function(e){
-				alert('test')				
+				alert('hello world')				
 			}
 		}
 
