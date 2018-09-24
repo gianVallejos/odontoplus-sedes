@@ -31,11 +31,107 @@ ul {
 p {
   margin: 0;
 }
+.odBtn {
+  display: inline-block;
+  color: #f3f3f3 !important;
+  border: none;
+  vertical-align: middle;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.5;
+  border-radius: 0px;
+  font-family: 'Rubik', sans-serif;
+  -webkit-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+}
+.odBtn:focus {
+  outline: 0;
+}
+.odBtn.info {
+  background: #305f94;
+  color: #f3f3f3 !important;
+}
+.odBtn.info:hover {
+  color: #305f94 !important;
+  border-bottom: 4px solid #305f94;
+  background: #f3f3f3;
+  text-decoration: none;
+}
+.odBtn.info:focus {
+  color: #305f94 !important;
+  outline: 0;
+  background: #f3f3f3;
+  border-bottom: 4px solid #305f94;
+}
+.odBtn.guardar {
+  background: #0aab8a;
+  color: #f3f3f3 !important;
+}
+.odBtn.guardar:hover {
+  color: #0aab8a !important;
+  border-bottom: 4px solid #0aab8a;
+  background: #f3f3f3;
+  text-decoration: none;
+}
+.odBtn.guardar:focus {
+  color: #0aab8a !important;
+  outline: 0;
+  background: #f3f3f3;
+  border-bottom: 4px solid #0aab8a;
+}
+.odBtn.nuevo {
+  background: #464d5c;
+  color: #f3f3f3 !important;
+}
+.odBtn.nuevo:hover {
+  color: #464d5c !important;
+  border-bottom: 4px solid #464d5c;
+  background: #f3f3f3;
+  text-decoration: none;
+}
+.odBtn.nuevo:focus {
+  color: #464d5c !important;
+  outline: 0;
+  background: #f3f3f3;
+  border-bottom: 4px solid #464d5c;
+}
+.odBtn.modificar {
+  background: #858ea7;
+  color: #f3f3f3 !important;
+}
+.odBtn.modificar:hover {
+  color: #858ea7 !important;
+  border-bottom: 4px solid #858ea7;
+  background: #f3f3f3;
+  text-decoration: none;
+}
+.odBtn.modificar:focus {
+  color: #858ea7 !important;
+  outline: 0;
+  background: #f3f3f3;
+  border-bottom: 4px solid #858ea7;
+}
+.odBtn.cancelar {
+  background: #ab4240;
+  color: #f3f3f3 !important;
+}
+.odBtn.cancelar:hover {
+  color: #ab4240 !important;
+  border-bottom: 4px solid #ab4240;
+  background: #f3f3f3;
+  text-decoration: none;
+}
+.odBtn.cancelar:focus {
+  color: #ab4240 !important;
+  outline: 0;
+  background: #f3f3f3;
+  border-bottom: 4px solid #ab4240;
+}
 .rubikFont {
   font-family: 'Rubik', sans-serif;
 }
-.header {
-  background: #305f94;
-  color: #fff;
-  padding: 27px 0px 22px 0px;
+.contenido {
+  padding-top: 30px;
+  padding-bottom: 35px;
 }

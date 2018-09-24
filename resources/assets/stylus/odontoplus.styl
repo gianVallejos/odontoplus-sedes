@@ -26,10 +26,95 @@ ul
 p 
 	margin: 0
 
+$btnInfoBc = #305f94
+$btnGuardarBc = #0aab8a
+$btnNuevoBc = #464d5c
+$btnModificarBc = #858ea7
+$btnCancelarBc = #ab4240
+$btnInfoC = #f3f3f3
+.odBtn
+	display: inline-block
+	color: $btnInfoC!important
+	border: none
+	vertical-align: middle
+	padding: 0.6rem 1.4rem
+	cursor: pointer
+	font-size: 1em
+	line-height: 1.5
+	border-radius: 0px
+	font-family: 'Rubik', sans-serif
+	transition: all .5s ease-out	
+	&:focus
+		outline: 0
+	&.info
+		background: $btnInfoBc
+		color: $btnInfoC!important
+		&:hover
+			color: $btnInfoBc!important
+			border-bottom: 4px solid $btnInfoBc
+			background: $btnInfoC
+			text-decoration: none
+		&:focus
+			color: $btnInfoBc!important
+			outline: 0
+			background: $btnInfoC
+			border-bottom: 4px solid $btnInfoBc
+	&.guardar
+		background: $btnGuardarBc
+		color: $btnInfoC!important
+		&:hover
+			color: $btnGuardarBc!important
+			border-bottom: 4px solid $btnGuardarBc
+			background: $btnInfoC
+			text-decoration: none
+		&:focus
+			color: $btnGuardarBc!important
+			outline: 0
+			background: $btnInfoC
+			border-bottom: 4px solid $btnGuardarBc
+	&.nuevo
+		background: $btnNuevoBc
+		color: $btnInfoC!important
+		&:hover
+			color: $btnNuevoBc!important
+			border-bottom: 4px solid $btnNuevoBc
+			background: $btnInfoC
+			text-decoration: none
+		&:focus
+			color: $btnNuevoBc!important
+			outline: 0
+			background: $btnInfoC
+			border-bottom: 4px solid $btnNuevoBc
+	&.modificar
+		background: $btnModificarBc
+		color: $btnInfoC!important
+		&:hover
+			color: $btnModificarBc!important
+			border-bottom: 4px solid $btnModificarBc
+			background: $btnInfoC
+			text-decoration: none
+		&:focus
+			color: $btnModificarBc!important
+			outline: 0
+			background: $btnInfoC
+			border-bottom: 4px solid $btnModificarBc
+	&.cancelar
+		background: $btnCancelarBc
+		color: $btnInfoC!important
+		&:hover
+			color: $btnCancelarBc!important
+			border-bottom: 4px solid $btnCancelarBc
+			background: $btnInfoC
+			text-decoration: none
+		&:focus
+			color: $btnCancelarBc!important
+			outline: 0
+			background: $btnInfoC
+			border-bottom: 4px solid $btnCancelarBc
+
 .rubikFont
 	font-family: 'Rubik', sans-serif
-	
-.header
-	background: #305f94
-	color: #ffffff
-	padding: 27px 0px 22px 0px
+
+.contenido
+	padding-top: 30px
+	padding-bottom: 35px
