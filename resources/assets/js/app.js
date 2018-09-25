@@ -1,13 +1,37 @@
 //require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue'
+import BootstrapVue from "bootstrap-vue"
+import Toasted from 'vue-toasted'
 
-Vue.component('header-component', require('./header/headerComponent.vue'));
-Vue.component('nav-component', require('./header/navComponent.vue'));
-Vue.component('footer-component', require('./footer/footerComponent.vue'));
+Vue.use(BootstrapVue)
+Vue.use(Toasted, {position: 'bottom-right', theme: 'primary', duration: 1000})
 
-Vue.component('container-general', require('./container-general/index.vue'));
+import HeaderComponent from './header/headerComponent.vue'
+import NavComponent from './header/navComponent.vue'
+import ContainerGeneral from './container-general/index.vue'
+import Dashboard from './dashboard/index.vue'
+import FooterComponent from './footer/footerComponent.vue'
 
-const app = new Vue({
-    el: '#app'
-});
+const containerGeneral = new Vue({
+    el: '#app',
+    components: {
+    	ContainerGeneral,
+    	Dashboard
+    }
+})
+
+const header = new Vue({
+	el: '#header',
+	components: {
+		HeaderComponent,
+		NavComponent
+	}
+})
+
+const footer = new Vue({
+	el: '#footer',
+	components: {
+		FooterComponent
+	}
+})
