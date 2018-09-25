@@ -16,17 +16,18 @@
 	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 </head>
 <body>
-	<div id="app">
-		
+	
+	<div id="header">
 		<header-component></header-component>
 		<nav-component></nav-component>
-		
-		<div class="contenido">
-			@yield('content')
-		</div>
+	</div>
 
-		<footer-component></footer-component>
-		
+	<div id="app" class="contenido">
+		@yield('content')
+	</div>
+	
+	<div id="footer">
+		<footer-component></footer-component>		
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
