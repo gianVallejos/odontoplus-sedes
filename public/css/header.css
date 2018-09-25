@@ -34,6 +34,7 @@
   font-size: 1em;
   color: #fff;
   line-height: 1em;
+  text-transform: uppercase;
 }
 .user-name span {
   font-size: 0.85em;

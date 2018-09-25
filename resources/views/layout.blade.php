@@ -22,8 +22,13 @@
 <body>
 	
 	<div id="header">
-		<header-component></header-component>
-		<nav-component></nav-component>
+	@if( Auth::check() )	
+		<header-component user-name='{{ Auth::user()->name }}' 
+						  logout-route='{{ route("logout") }}'>
+			{{ csrf_field() }}
+		</header-component>
+		<nav-component></nav-component>	
+	@endif
 	</div>
 
 	<div id="app" class="contenido">
@@ -31,7 +36,9 @@
 	</div>
 	
 	<div id="footer">
-		<footer-component></footer-component>		
+	@if( Auth::check() )	
+		<footer-component></footer-component>			
+	@endif
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

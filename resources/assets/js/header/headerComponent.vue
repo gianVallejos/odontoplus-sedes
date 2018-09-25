@@ -13,7 +13,7 @@
 						  			<img :src=perfilUrl alt="Perfil">	
 						  		</span>
 						  		<div class="user-name">
-						  			<p>Username </p>
+						  			<p>{{ userName }} </p>
 						  			<span>Administrador</span>
 						  		</div>
 						  		<i class="fa fa-angle-down lnr"></i>
@@ -27,9 +27,12 @@
 					    		</a>
 					    	</li>
 					    	<li>
-					    		<a href="#">
+					    		<a :href="logoutRoute" v-on:click="logout" >
 					    			<i class="fas fa-power-off"></i>Cerrar Sesión
 					    		</a>
+					    		<form id="logout-form" :action="logoutRoute" method="POST" style="display: none;">
+		                            <input type="hidden" name="_token" :value="csrf">
+		                        </form>
 					    	</li>
 					  	</ul>
 					</li>
@@ -47,8 +50,19 @@
 		data() {
 			return {
 				logoUrl: 'images/empresa/logotipo.png',
-				perfilUrl: 'images/sistema/perfil-default.png'
+				perfilUrl: 'images/sistema/perfil-default.png',
+				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 			}
+		},
+		props: [
+			'userName',
+			'logoutRoute'
+		],
+		methods: {
+			logout (evt) {
+		      evt.preventDefault()
+		      document.getElementById('logout-form').submit()
+		    }			
 		}
 	}
 </script>

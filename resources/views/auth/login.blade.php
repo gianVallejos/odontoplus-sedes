@@ -7,58 +7,72 @@
 
 
 @section('content')
+
 <div class="container">
+    <div class="overlay-green"></div>
     <div class="auth-box">
-        <form method="POST" action="{{ route('login') }}">
-        @csrf
-            <div class='row logotype'>
-                <div class='col-md-12 pt-4 pb-4'>
-                    <img src="{{ asset('images/empresa/logo.jpeg') }}" alt="">
-                </div>
-            </div>
-            <div class='row body'>
-                <div class="form-group col-md-12">
-                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
-                    @if ($errors->has('email'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class='form-group col-md-12'>
-                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-                    @if ($errors->has('password'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                    @endif
-                </div>
-                <div class='form-group col-md-12'>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block btn-login">
-                        Iniciar Sesión
-                    </button>
-                </div>
-                
-            </div>
-            <div class='row footer'>
-                <div class="col-md-6 text-left ">
-                    <div class="form-check ">
-                        <input class="form-check-input " type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                        <label class="form-check-label " for="remember">
-                            Recordarme
-                        </label>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="logotipo text-center">
+                            <img src="{{ asset('images/empresa/logotipo-blue.png') }}" alt="Logotipo">
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6 text-right align-middle">
-                    <a class="btn btn-link remember-lnk" href="{{ route('password.request') }}">
-                        ¿Olvidaste tu contraseña?
-                    </a>
-                </div>
+                    <div class="col-md-12">
+                        <form method="POST" action="{{ route('login') }}">
+                            @csrf
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="icon-input">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>                                
+                                    <input type="email" placeholder="Dirección de E-mail" class="odInput{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+                                    @if ($errors->has('email'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class='form-group'>
+                                <div class="input-group">
+                                    <span class="icon-input">
+                                        <i class="fas fa-lock"></i>
+                                    </span> 
+                                    <input type="password" placeholder="Contraseña" class="odInput{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                    @if ($errors->has('password'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>                            
+                            <div class='form-group'>
+                                <button type="submit" class="btn btn-primary btn-login">
+                                    Iniciar Sesión
+                                </button>
+                            </div>
+                            <div class="login-bottom">
+                                <div class="d-inline-block">
+                                    <input style="margin-top: 2px" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <div class="d-inline-block">No cerrar sesión</div>
+                                </div>
+                                <div class="d-inline-block" style="float: right">
+                                    <a href="{{ route('password.request') }}">
+                                        ¿Olvidaste tu contraseña?
+                                    </a>
+                                </div>                    
+                            </div>       
+                        </form>  
+                    </div>
+                </div>                
             </div>
-        </form>
-        <div class='sign text-center'>
-            <p>Desarrollado por <span>Odontoplus</span> ® 2018 v. 1.0.1</p>
         </div>
+        
+    </div>
+    <div class='sign text-center'>
+            <p>Desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.0.0</p>
     </div>
 
 </div>
