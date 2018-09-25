@@ -1,43 +1,47 @@
-.contenido {
+.overlay-green {
+  position: absolute;
+  top: 0;
+  left: 0;
   background-color: #0aab8a !important;
+  width: 100%;
   height: 280px;
-}
-.container {
-  position: relative;
-  top: 100px;
-  margin: 0 auto;
+  z-index: 0;
 }
 .auth-box {
   margin: 0 auto;
-  width: 500px;
+  margin-top: 10%;
+  width: 578px;
+  z-index: 999;
 }
-form {
-  padding: 10px;
-  background-color: #fff;
+.auth-box .card {
+  padding: 15px;
 }
-form .row {
-  margin: 5px;
+.auth-box .logotipo {
+  padding-top: 15px;
+  padding-bottom: 25px;
 }
-form .logotype {
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-form .footer {
-  margin: 20px 20px;
-}
-.remember-lnk {
-  padding: 0px !important;
-  font-size: 13px;
-  color: #0aab8a;
+.auth-box form input {
+  font-size: 1em;
+  padding-left: 38px;
 }
 .btn-login {
-  background-color: #305f94;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 1.3em;
 }
 .sign {
-  padding-top: 20%;
+  font-family: 'Rubik', sans-serif;
+  padding-top: 10%;
+  font-size: 1em;
 }
-.sign span {
-  color: #0aab8a;
-  font-weight: bold;
+.sign a {
+  font-size: 1em;
+}
+.login-bottom {
+  padding-top: 30px;
+  padding-bottom: 15px;
+}
+.login-bottom a {
+  font-size: 1.1em;
 }
