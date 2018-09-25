@@ -14,18 +14,25 @@
 	<link rel="stylesheet" href="{{ asset('css/odontoplus.css?v=1.0.2') }}">
 	<link rel="stylesheet" href="{{ asset('css/header.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
+
+	<!--Dynamic StyleSheets added from a view would be pasted here-->
+	@yield('styles')
 </head>
 <body>
 	<div id="app">
-		
-		<header-component></header-component>
-		<nav-component></nav-component>
+		@if (Auth::check()) 
+			<header-component></header-component>
+			<nav-component></nav-component>
+		@endif
 		
 		<div class="contenido">
 			@yield('content')
 		</div>
 
+		@if (Auth::check()) 
 		<footer-component></footer-component>
+		@endif
 		
 	</div>
 	
