@@ -14,6 +14,10 @@
 	<link rel="stylesheet" href="{{ asset('css/odontoplus.css?v=1.0.8') }}">
 	<link rel="stylesheet" href="{{ asset('css/header.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
+
+	<!--Dynamic StyleSheets added from a view would be pasted here-->
+	@yield('styles')
 </head>
 <body>
 	

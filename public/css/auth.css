@@ -1,0 +1,43 @@
+.contenido {
+  background-color: #0aab8a !important;
+  height: 280px;
+}
+.container {
+  position: relative;
+  top: 100px;
+  margin: 0 auto;
+}
+.auth-box {
+  margin: 0 auto;
+  width: 500px;
+}
+form {
+  padding: 10px;
+  background-color: #fff;
+}
+form .row {
+  margin: 5px;
+}
+form .logotype {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+form .footer {
+  margin: 20px 20px;
+}
+.remember-lnk {
+  padding: 0px !important;
+  font-size: 13px;
+  color: #0aab8a;
+}
+.btn-login {
+  background-color: #305f94;
+}
+.sign {
+  padding-top: 20%;
+}
+.sign span {
+  color: #0aab8a;
+  font-weight: bold;
+}
