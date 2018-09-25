@@ -24,7 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data2 = 'test data';
-        return view('home', compact('data2'));
+        return view('home');
+    }
+
+    public function containerGeneral(){
+        return view('container-general');
     }
 }

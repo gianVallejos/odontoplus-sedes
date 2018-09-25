@@ -2,12 +2,15 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<h3>Alerts: </h3>
+				<TitleComponent titulo="Container General" :items="breadcrumb" />
+			</div>
+			<div class="col-md-12 pt-4">
+				<h5>Alerts: </h5>
 				<b-alert show variant="success">Success Alert</b-alert>
 				<b-alert show variant="danger">Error Alert</b-alert>
 			</div>
-			<div class="col-md-6">
-				<h3>Botones: </h3>		
+			<div class="col-md-6 pt-3">
+				<h5>Botones: </h5>		
 				<div class="botonesLayout pt-3">
 					<b-button href="#" variant="primary">General</b-button>
 					<b-button href="#" variant="success">Guardar</b-button>
@@ -17,7 +20,7 @@
 				</div>
 				
 				<div class="panelLayout pt-4">
-					<h3>Panel: </h3>
+					<h5>Panel: </h5>
 					<PanelCard>
 						<span slot="heading">Últimos Pacientes</span>
 						<FormBuscar slot="body" />
@@ -29,7 +32,7 @@
 				</div>
 
 				<div class="panelLayout pt-4">
-					<h3>Charts</h3>
+					<h5>Charts</h5>
 					<PanelCard>
 						<GChart type="LineChart" :data="chartData" :options="chartOptions" slot="body" />
 
@@ -37,8 +40,8 @@
 					</PanelCard>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<h3>Dashbox: </h3>
+			<div class="col-md-6 pt-3">
+				<h5>Dashbox: </h5>
 				<div class="dashboxLayout">
 					<Dashbox iconUrl="fas fa-calculator" name="Presupuestos" color="info" url="/home2" />
 					<Dashbox iconUrl="fas fa-user-md" name="Pacientes" color="nuevo" url="/home" />
@@ -51,14 +54,14 @@
 				</div>
 
 				<div class="panelLayout pt-4">
-					<h3>Tabla: </h3>
+					<h5>Tabla: </h5>
 					<PanelCard>						
 						<TableComponent :fields="items" slot="body" />
 					</PanelCard>
 				</div>
 
 				<div class="panelLayout pt-4">
-					<h3>Forms: </h3>					
+					<h5>Forms: </h5>					
 					<PanelCard>	
 						<b-form @submit="onSubmit" slot="body">
 							<b-form-group label="Nombre de Campo:">
@@ -86,7 +89,7 @@
 				</div>
 
 				<div class="panelLayout pt-3">
-					<h3>Modal: </h3>
+					<h5>Modal: </h5>
 					<div class="pt-1">
 						<b-btn v-b-modal.exampleModal variant="primary">Abrir Modal</b-btn>
 
@@ -103,10 +106,11 @@
 </template>
 
 <script>
-	import Dashbox from '../dashbox/dashbox-component.vue'
-	import PanelCard from '../panel/panel-component.vue'
-	import FormBuscar from '../form/form-buscar-component.vue'
-	import TableComponent from '../table/table-component.vue'
+	import Dashbox from '../widgets/dashbox/dashbox-component.vue'
+	import PanelCard from '../widgets/panel/panel-component.vue'
+	import FormBuscar from '../widgets/form/form-buscar-component.vue'
+	import TableComponent from '../widgets/table/table-component.vue'
+	import TitleComponent from '../widgets/titulo/index.vue'
 	import { GChart } from 'vue-google-charts'
 
 	export default{
@@ -116,6 +120,7 @@
 			PanelCard,
 			FormBuscar,
 			TableComponent,
+			TitleComponent,
 			GChart
 		},
 		data(){
@@ -163,6 +168,10 @@
 			        name: '',
 			        other: ''			        
 			    },
+			    breadcrumb: [
+			    	{ text: 'Home', href: '/' },
+			    	{ text: 'Container General', active: true }
+			    ]
 			}
 		},
 		methods:{
