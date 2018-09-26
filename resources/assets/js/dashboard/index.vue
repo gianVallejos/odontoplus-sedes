@@ -67,6 +67,9 @@
 		mounted(){
 			console.log('Dashboard Mounted')
 		},
+		props: [
+			'url'
+		],
 		components:{
 			TitleComponent,
 			Dashbox,
@@ -78,7 +81,7 @@
 		data(){
 			return{
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: '/' }
+			    	{ text: 'Dashboard', href: this.url }
 			    ],
 			    items: [			    	
 				    	{ 
@@ -88,13 +91,13 @@
 				    		url: '/'
 				    	},
 				    	{ 
-				    		iconUrl: 'fas fa-user-md',
+				    		iconUrl: 'fas fa-child',
 				    		name: 'Pacientes',
 				    		color: 'nuevo',
-				    		url: '/'
+				    		url: this.url + '/pacientes'
 				    	},
 				    	{ 
-				    		iconUrl: 'fab fa-accessible-icon',
+				    		iconUrl: 'fas fa-user-md',
 				    		name: 'Doctores',
 				    		color: 'modificar',
 				    		url: '/'

@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('dashboard');
 Route::get('/container-general', 'HomeController@containerGeneral');
+
+Route::resource('pacientes', 'PacienteController');

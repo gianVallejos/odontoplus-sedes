@@ -3,7 +3,7 @@
 		<div class="container">
 			<ul class="barra-list">
 		      <li class="item active">
-		      	<a href="#">
+		      	<a :href="url">
 		      		<i class="fas fa-home"></i>Dashboard
 		      	</a>
 		      </li>
@@ -19,8 +19,8 @@
 		    	</a>
 		        <ul class="dropdown-menu">
 		          <li class="li-dropdown">
-		          	<a href="#">
-		          		<i class="fab fa-accessible-icon"></i>Pacientes
+		          	<a :href="url + '/pacientes'">
+		          		<i class="fas fa-child"></i>Pacientes
 		          	</a>
 		          </li>
 		          <li class="li-dropdown">
@@ -84,6 +84,9 @@
 	export default{
 		mounted(){
 			console.log('Navbar Mounted')
-		}
+		},
+		props: [
+			'url'
+		]
 	}
 </script>
