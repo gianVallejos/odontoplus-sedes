@@ -49,14 +49,15 @@
 		},
 		data() {
 			return {
-				logoUrl: 'images/empresa/logotipo.png',
-				perfilUrl: 'images/sistema/perfil-default.png',
+				logoUrl: this.url + '/images/empresa/logotipo.png',
+				perfilUrl: this.url + '/images/sistema/perfil-default.png',
 				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 			}
 		},
 		props: [
 			'userName',
-			'logoutRoute'
+			'logoutRoute',
+			'url'
 		],
 		methods: {
 			logout (evt) {

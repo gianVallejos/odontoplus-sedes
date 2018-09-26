@@ -2,6 +2,6 @@
 
 @section('content')
 
-	<Dashboard />
+	<Dashboard url='{{ route("home") }}' />
 
 @endsection

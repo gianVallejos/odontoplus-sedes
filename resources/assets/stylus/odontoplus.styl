@@ -102,6 +102,8 @@ p
 	font-size: .9em
 	&:focus
 		outline: none   	
+	&.buscar
+		width: auto!important
 
 .odBtn,
 .btn	
@@ -240,4 +242,47 @@ p
 .badge-success
 	background-color: #0aab8a
 	
+.actions-table
+	font-size: .85em
+	a 
+		margin-right: 2px
 
+.table		
+	font-size: .9em
+
+.fz-1
+	font-size: .7em
+.fz-2
+	font-size: .85em
+.fz-3
+	font-size: .9em
+.fz-4
+	font-size: 1em
+	
+.page-item.active 
+	.page-link
+		background-color: $btnNuevoBc!important
+		border-color: $btnNuevoBc
+		&:hover
+			color: $btnNuevoBc
+		&:focus, &:active
+			box-shadow: none
+.page-link
+	color: $btnNuevoBc
+	font-size: .9em
+
+table.b-table 
+	> thead 
+		> tr 
+			> th.sorting, table.b-table 
+				&:focus
+					outline: none
+					
+.form-title
+	font-size: 1.3em
+	font-weight: 600
+	font-family: 'Rubik', sans-serif
+	
+.form-description
+	color: #868da7
+	font-family: 'Open Sans', sans-serif
