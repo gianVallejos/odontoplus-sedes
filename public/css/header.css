@@ -67,6 +67,7 @@
   margin-right: -4px;
 }
 .barra .barra-list > li.item i {
+  display: inline;
   margin-right: 8px;
   font-size: 1.1em;
 }

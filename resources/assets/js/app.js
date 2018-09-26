@@ -3,21 +3,25 @@
 import Vue from 'vue'
 import BootstrapVue from "bootstrap-vue"
 import Toasted from 'vue-toasted'
-
 Vue.use(BootstrapVue)
 Vue.use(Toasted, {position: 'bottom-right', theme: 'primary', duration: 1000})
 
 import HeaderComponent from './header/headerComponent.vue'
 import NavComponent from './header/navComponent.vue'
+
 import ContainerGeneral from './container-general/index.vue'
 import Dashboard from './dashboard/index.vue'
+import PacienteIndex from './paciente/index.vue'
+import PacienteCreate from './paciente/create.vue'
 import FooterComponent from './footer/footerComponent.vue'
 
-const containerGeneral = new Vue({
+const app = new Vue({
     el: '#app',
     components: {
     	ContainerGeneral,
-    	Dashboard
+    	Dashboard,
+    	PacienteIndex,
+    	PacienteCreate
     }
 })
 
