@@ -22,8 +22,7 @@ const app = new Vue({
     	ContainerGeneral,
     	Dashboard,
     	PacienteIndex,
-    	PacienteCreate
-			Dashboard,
+    	PacienteCreate,
 			Users			
     }
 })
