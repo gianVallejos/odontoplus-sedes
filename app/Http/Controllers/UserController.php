@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller{
 
@@ -12,12 +13,10 @@ class UserController extends Controller{
     }
 
     public function index(){
-          $users = User::all();
+        $users = User::all();
+        $users = DB::select('call OP_ObtenerUsuarios()'); 
+        $users = json_encode($users);
 
-          $users = DB::table('users')
-          ->join('roles', 'users.rolid', '=', 'roles.id')
-          ->get();
-
-          return view('users.index',compact('users'));
+        return view('users.index',compact('users'));
     }
 }

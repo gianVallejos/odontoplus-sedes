@@ -5,12 +5,12 @@ ALTER TABLE users
 ADD COLUMN is_active BOOLEAN DEFAULT FALSE;
 
 -- PROCEDURES
+DROP PROCEDURE IF EXISTS `OP_ObtenerUsuarios`;
+
 CREATE PROCEDURE `OP_ObtenerUsuarios`()
 BEGIN
-
-	SELECT precios.id, detalle, monto FROM PRECIOS
-		INNER JOIN tratamientos ON precios.idTratamiento = tratamientos.id
-	WHERE idEmpresa = XID_EMPRESA ORDER BY (tratamientos.id);
-
-END
+  SELECT u.id, u.name, u.email, u.is_active, u.created_at, r.nombre AS rol
+  FROM users u
+  LEFT JOIN roles r ON u.rolid = r.id;
+END;
 ------------------------------------------------------------------------------------
