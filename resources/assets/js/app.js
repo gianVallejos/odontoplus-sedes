@@ -12,12 +12,14 @@ import NavComponent from './header/navComponent.vue'
 import ContainerGeneral from './container-general/index.vue'
 import Dashboard from './dashboard/index.vue'
 import FooterComponent from './footer/footerComponent.vue'
+import Users from './users/index.vue'
 
-const containerGeneral = new Vue({
+const app = new Vue({
     el: '#app',
     components: {
     	ContainerGeneral,
-    	Dashboard
+			Dashboard,
+			Users			
     }
 })
 
