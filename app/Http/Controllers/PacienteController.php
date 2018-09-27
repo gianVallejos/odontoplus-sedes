@@ -22,14 +22,9 @@ class PacienteController extends Controller
 
     public function create()
     {
-    /*
-        $numPacientes = Paciente::get()->count();
-
-        $empresas = DB::table('empresas')
-                      ->select('id', 'nombre')
-                      ->get();
-    */
-        return view($this->path . '.create');    
+        $empresas = DB::select('call OP_obtenerEmpresasJson()');
+        $empresas = json_encode($empresas);
+        return view($this->path . '.create', compact('empresas'));    
     }
 
     public function store(Request $request)

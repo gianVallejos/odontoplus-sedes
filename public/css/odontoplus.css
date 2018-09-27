@@ -81,7 +81,6 @@ p {
 }
 .form-control {
   height: 40px;
-  padding: 12px;
   border: 1px solid #d1d1d1;
   color: #7f7f7f;
   font-size: 1em;
@@ -362,7 +361,16 @@ table.b-table > thead > tr table.b-table:focus {
   font-weight: 600;
   font-family: 'Rubik', sans-serif;
 }
+.form-title i {
+  font-size: 1.1em;
+}
 .form-description {
   color: #868da7;
   font-family: 'Open Sans', sans-serif;
+}
+.col-form-label {
+  font-family: 'Open Sans', sans-serif;
+}
+.required-red {
+  color: #ab4240;
 }
