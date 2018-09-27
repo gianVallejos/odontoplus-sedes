@@ -31937,6 +31937,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	mounted: function mounted() {
@@ -31983,7 +31988,24 @@ var render = function() {
         _vm._v(" "),
         _vm._m(3),
         _vm._v(" "),
-        _vm._m(4)
+        _c("li", { staticClass: "item dropdown" }, [
+          _vm._m(4),
+          _vm._v(" "),
+          _c("ul", { staticClass: "dropdown-menu" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _vm._m(6),
+            _vm._v(" "),
+            _vm._m(7),
+            _vm._v(" "),
+            _c("li", { staticClass: "li-dropdown" }, [
+              _c("a", { attrs: { href: _vm.url + "/users" } }, [
+                _c("i", { staticClass: "fas fa-user" }),
+                _vm._v("Usuarios\n\t          \t")
+              ])
+            ])
+          ])
+        ])
       ])
     ])
   ])
@@ -32074,41 +32096,49 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "item dropdown" }, [
-      _c(
-        "a",
-        {
-          staticClass: "dropdown-toggle",
-          attrs: { "data-toggle": "dropdown", href: "#" }
-        },
-        [
-          _c("i", { staticClass: "fas fa-plus" }),
-          _vm._v("Otros\n\t        \t"),
-          _c("i", { staticClass: "fa fa-angle-down lnr" })
-        ]
-      ),
-      _vm._v(" "),
-      _c("ul", { staticClass: "dropdown-menu" }, [
-        _c("li", { staticClass: "li-dropdown" }, [
-          _c("a", { attrs: { href: "#" } }, [
-            _c("i", { staticClass: "fas fa-tooth" }),
-            _vm._v("Tratamientos\n\t          \t")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "li-dropdown" }, [
-          _c("a", { attrs: { href: "#" } }, [
-            _c("i", { staticClass: "fas fa-dollar-sign" }),
-            _vm._v("Precios\n\t          \t")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "li-dropdown" }, [
-          _c("a", { attrs: { href: "#" } }, [
-            _c("i", { staticClass: "fas fa-building" }),
-            _vm._v("Empresas\n\t          \t")
-          ])
-        ])
+    return _c(
+      "a",
+      {
+        staticClass: "dropdown-toggle",
+        attrs: { "data-toggle": "dropdown", href: "#" }
+      },
+      [
+        _c("i", { staticClass: "fas fa-plus" }),
+        _vm._v("Otros\n\t        \t"),
+        _c("i", { staticClass: "fa fa-angle-down lnr" })
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "li-dropdown" }, [
+      _c("a", { attrs: { href: "#" } }, [
+        _c("i", { staticClass: "fas fa-tooth" }),
+        _vm._v("Tratamientos\n\t          \t")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "li-dropdown" }, [
+      _c("a", { attrs: { href: "#" } }, [
+        _c("i", { staticClass: "fas fa-dollar-sign" }),
+        _vm._v("Precios\n\t          \t")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "li-dropdown" }, [
+      _c("a", { attrs: { href: "#" } }, [
+        _c("i", { staticClass: "fas fa-building" }),
+        _vm._v("Empresas\n\t          \t")
       ])
     ])
   }
@@ -32634,6 +32664,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: ['titulo', 'items']
@@ -32647,18 +32679,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-8 pt-3" }, [
-      _c("h4", [_vm._v(_vm._s(_vm.titulo))])
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-md-4" },
-      [_c("b-breadcrumb", { attrs: { items: _vm.items } })],
-      1
-    )
-  ])
+  return _c(
+    "b-row",
+    { attrs: { "align-h": "between" } },
+    [
+      _c("b-col", { attrs: { "align-self": "start" } }, [
+        _c("h4", [_vm._v(_vm._s(_vm.titulo))])
+      ]),
+      _vm._v(" "),
+      _c(
+        "b-col",
+        { attrs: { cols: "auto" } },
+        [_c("b-breadcrumb", { attrs: { items: _vm.items } })],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -32679,13 +32716,224 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row" }, [
+    _vm._v('">\n\t\t\t'),
+    _c(
+      "div",
+      { staticClass: "col-md-12" },
+      [
+        _c("TitleComponent", {
+          attrs: { titulo: "Container General", items: _vm.breadcrumb }
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-md-12 pt-4" },
+      [
+        _c("h5", [_vm._v("Alerts: ")]),
+        _vm._v(" "),
+        _c("b-alert", { attrs: { show: "", variant: "success" } }, [
+          _vm._v("Success Alert")
+        ]),
+        _vm._v(" "),
+        _c("b-alert", { attrs: { show: "", variant: "danger" } }, [
+          _vm._v("Error Alert")
+        ])
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-6 pt-3" }, [
+      _c("h5", [_vm._v("Botones: ")]),
+      _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col-md-12" },
+        { staticClass: "botonesLayout pt-3" },
         [
-          _c("TitleComponent", {
-            attrs: { titulo: "Container General", items: _vm.breadcrumb }
+          _c("b-button", { attrs: { href: "#", variant: "primary" } }, [
+            _vm._v("General")
+          ]),
+          _vm._v(" "),
+          _c("b-button", { attrs: { href: "#", variant: "success" } }, [
+            _vm._v("Guardar")
+          ]),
+          _vm._v(" "),
+          _c("b-button", { attrs: { href: "#", variant: "secondary" } }, [
+            _vm._v("Nuevo")
+          ]),
+          _vm._v(" "),
+          _c("b-button", { attrs: { href: "#", variant: "warning" } }, [
+            _vm._v("Modificar")
+          ]),
+          _vm._v(" "),
+          _c("b-button", { attrs: { href: "#", variant: "danger" } }, [
+            _vm._v("Cancelar")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "panelLayout pt-4" },
+        [
+          _c("h5", [_vm._v("Panel: ")]),
+          _vm._v(" "),
+          _c(
+            "PanelCard",
+            [
+              _c("span", { attrs: { slot: "heading" }, slot: "heading" }, [
+                _vm._v("Últimos Pacientes")
+              ]),
+              _vm._v(" "),
+              _c("FormBuscar", { attrs: { slot: "body" }, slot: "body" }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "table mt-3 mb-4",
+                  attrs: { slot: "body" },
+                  slot: "body"
+                },
+                [
+                  _c("TableComponent", {
+                    attrs: { fields: _vm.ultimosPacientes }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: { slot: "footer", href: "#", variant: "primary" },
+                  slot: "footer"
+                },
+                [_vm._v("Ver Pacientes")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "panelLayout pt-4" },
+        [
+          _c("h5", [_vm._v("Charts")]),
+          _vm._v(" "),
+          _c(
+            "PanelCard",
+            [
+              _c("GChart", {
+                attrs: {
+                  slot: "body",
+                  type: "LineChart",
+                  data: _vm.chartData,
+                  options: _vm.chartOptions
+                },
+                slot: "body"
+              }),
+              _vm._v(" "),
+              _c("GChart", {
+                attrs: {
+                  slot: "body",
+                  type: "PieChart",
+                  data: _vm.donutData,
+                  options: _vm.donutOptions,
+                  width: 600
+                },
+                slot: "body"
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-6 pt-3" }, [
+      _c("h5", [_vm._v("Dashbox: ")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "dashboxLayout" },
+        [
+          _c("Dashbox", {
+            attrs: {
+              iconUrl: "fas fa-calculator",
+              name: "Presupuestos",
+              color: "info",
+              url: "/home2"
+            }
+          }),
+          _vm._v(" "),
+          _c("Dashbox", {
+            attrs: {
+              iconUrl: "fas fa-user-md",
+              name: "Pacientes",
+              color: "nuevo",
+              url: "/home"
+            }
+          }),
+          _vm._v(" "),
+          _c("Dashbox", {
+            attrs: {
+              iconUrl: "fab fa-accessible-icon",
+              name: "Doctores",
+              color: "modificar",
+              url: "/home"
+            }
+          }),
+          _vm._v(" "),
+          _c("Dashbox", {
+            attrs: {
+              iconUrl: "fas fa-tooth",
+              name: "Tratamientos",
+              color: "guardar",
+              url: "/home"
+            }
+          }),
+          _vm._v(" "),
+          _c("Dashbox", {
+            attrs: {
+              iconUrl: "fas fa-dollar-sign",
+              name: "Precios",
+              color: "info",
+              url: "/home"
+            }
+          }),
+          _vm._v(" "),
+          _c("Dashbox", {
+            attrs: {
+              iconUrl: "fas fa-building",
+              name: "Empresas",
+              color: "nuevo",
+              url: "/home"
+            }
+          }),
+          _vm._v(" "),
+          _c("Dashbox", {
+            attrs: {
+              iconUrl: "fas fa-money-check-alt",
+              name: "Ingresos",
+              color: "modificar",
+              url: "/home"
+            }
+          }),
+          _vm._v(" "),
+          _c("Dashbox", {
+            attrs: {
+              iconUrl: "fas fa-money-bill",
+              name: "Egresos",
+              color: "guardar",
+              url: "/home"
+            }
           })
         ],
         1
@@ -32693,381 +32941,114 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col-md-12 pt-4" },
+        { staticClass: "panelLayout pt-4" },
         [
-          _c("h5", [_vm._v("Alerts: ")]),
+          _c("h5", [_vm._v("Tabla: ")]),
           _vm._v(" "),
-          _c("b-alert", { attrs: { show: "", variant: "success" } }, [
-            _vm._v("Success Alert")
-          ]),
-          _vm._v(" "),
-          _c("b-alert", { attrs: { show: "", variant: "danger" } }, [
-            _vm._v("Error Alert")
-          ])
+          _c(
+            "PanelCard",
+            [
+              _c("TableComponent", {
+                attrs: { slot: "body", fields: _vm.items },
+                slot: "body"
+              })
+            ],
+            1
+          )
         ],
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-6 pt-3" }, [
-        _c("h5", [_vm._v("Botones: ")]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "botonesLayout pt-3" },
-          [
-            _c("b-button", { attrs: { href: "#", variant: "primary" } }, [
-              _vm._v("General")
-            ]),
-            _vm._v(" "),
-            _c("b-button", { attrs: { href: "#", variant: "success" } }, [
-              _vm._v("Guardar")
-            ]),
-            _vm._v(" "),
-            _c("b-button", { attrs: { href: "#", variant: "secondary" } }, [
-              _vm._v("Nuevo")
-            ]),
-            _vm._v(" "),
-            _c("b-button", { attrs: { href: "#", variant: "warning" } }, [
-              _vm._v("Modificar")
-            ]),
-            _vm._v(" "),
-            _c("b-button", { attrs: { href: "#", variant: "danger" } }, [
-              _vm._v("Cancelar")
-            ])
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "panelLayout pt-4" },
-          [
-            _c("h5", [_vm._v("Panel: ")]),
-            _vm._v(" "),
-            _c(
-              "PanelCard",
-              [
-                _c("span", { attrs: { slot: "heading" }, slot: "heading" }, [
-                  _vm._v("Últimos Pacientes")
-                ]),
-                _vm._v(" "),
-                _c("FormBuscar", { attrs: { slot: "body" }, slot: "body" }),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "table mt-3 mb-4",
-                    attrs: { slot: "body" },
-                    slot: "body"
-                  },
-                  [
-                    _c("TableComponent", {
-                      attrs: { fields: _vm.ultimosPacientes }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
-                  "b-button",
-                  {
-                    attrs: { slot: "footer", href: "#", variant: "primary" },
-                    slot: "footer"
-                  },
-                  [_vm._v("Ver Pacientes")]
-                )
-              ],
-              1
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "panelLayout pt-4" },
-          [
-            _c("h5", [_vm._v("Charts")]),
-            _vm._v(" "),
-            _c(
-              "PanelCard",
-              [
-                _c("GChart", {
-                  attrs: {
-                    slot: "body",
-                    type: "LineChart",
-                    data: _vm.chartData,
-                    options: _vm.chartOptions
-                  },
-                  slot: "body"
-                }),
-                _vm._v(" "),
-                _c("GChart", {
-                  attrs: {
-                    slot: "body",
-                    type: "PieChart",
-                    data: _vm.donutData,
-                    options: _vm.donutOptions,
-                    width: 600
-                  },
-                  slot: "body"
-                })
-              ],
-              1
-            )
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6 pt-3" }, [
-        _c("h5", [_vm._v("Dashbox: ")]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "dashboxLayout" },
-          [
-            _c("Dashbox", {
-              attrs: {
-                iconUrl: "fas fa-calculator",
-                name: "Presupuestos",
-                color: "info",
-                url: "/home2"
-              }
-            }),
-            _vm._v(" "),
-            _c("Dashbox", {
-              attrs: {
-                iconUrl: "fas fa-user-md",
-                name: "Pacientes",
-                color: "nuevo",
-                url: "/home"
-              }
-            }),
-            _vm._v(" "),
-            _c("Dashbox", {
-              attrs: {
-                iconUrl: "fab fa-accessible-icon",
-                name: "Doctores",
-                color: "modificar",
-                url: "/home"
-              }
-            }),
-            _vm._v(" "),
-            _c("Dashbox", {
-              attrs: {
-                iconUrl: "fas fa-tooth",
-                name: "Tratamientos",
-                color: "guardar",
-                url: "/home"
-              }
-            }),
-            _vm._v(" "),
-            _c("Dashbox", {
-              attrs: {
-                iconUrl: "fas fa-dollar-sign",
-                name: "Precios",
-                color: "info",
-                url: "/home"
-              }
-            }),
-            _vm._v(" "),
-            _c("Dashbox", {
-              attrs: {
-                iconUrl: "fas fa-building",
-                name: "Empresas",
-                color: "nuevo",
-                url: "/home"
-              }
-            }),
-            _vm._v(" "),
-            _c("Dashbox", {
-              attrs: {
-                iconUrl: "fas fa-money-check-alt",
-                name: "Ingresos",
-                color: "modificar",
-                url: "/home"
-              }
-            }),
-            _vm._v(" "),
-            _c("Dashbox", {
-              attrs: {
-                iconUrl: "fas fa-money-bill",
-                name: "Egresos",
-                color: "guardar",
-                url: "/home"
-              }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "panelLayout pt-4" },
-          [
-            _c("h5", [_vm._v("Tabla: ")]),
-            _vm._v(" "),
-            _c(
-              "PanelCard",
-              [
-                _c("TableComponent", {
-                  attrs: { slot: "body", fields: _vm.items },
-                  slot: "body"
-                })
-              ],
-              1
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "panelLayout pt-4" },
-          [
-            _c("h5", [_vm._v("Forms: ")]),
-            _vm._v(" "),
-            _c(
-              "PanelCard",
-              [
-                _c(
-                  "b-form",
-                  {
-                    attrs: { slot: "body" },
-                    on: { submit: _vm.onSubmit },
-                    slot: "body"
-                  },
-                  [
-                    _c(
-                      "b-form-group",
-                      { attrs: { label: "Nombre de Campo:" } },
-                      [
-                        _c("b-form-input", {
-                          attrs: {
-                            type: "text",
-                            required: "",
-                            placeholder: "Nombre de Campo"
-                          },
-                          model: {
-                            value: _vm.form.name,
-                            callback: function($$v) {
-                              _vm.$set(_vm.form, "name", $$v)
-                            },
-                            expression: "form.name"
-                          }
-                        })
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "b-input-group",
-                      [
-                        _c("b-form-input", {
-                          attrs: {
-                            type: "text",
-                            placeholder: "Ningun Elemento Seleccionado",
-                            disabled: ""
-                          },
-                          model: {
-                            value: _vm.form.other,
-                            callback: function($$v) {
-                              _vm.$set(_vm.form, "other", $$v)
-                            },
-                            expression: "form.other"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "b-input-group-append",
-                          [
-                            _c(
-                              "b-btn",
-                              {
-                                staticClass: "pl-3 pr-3",
-                                attrs: { variant: "success" }
-                              },
-                              [_c("i", { staticClass: "fas fa-search" })]
-                            )
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "mt-3" },
-                      [
-                        _c(
-                          "b-button",
-                          { attrs: { type: "submit", variant: "success" } },
-                          [_vm._v("Guardar")]
-                        ),
-                        _vm._v(" "),
-                        _c("b-button", { attrs: { variant: "danger" } }, [
-                          _vm._v("Cancel")
-                        ])
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "panelLayout pt-3" }, [
-          _c("h5", [_vm._v("Modal: ")]),
+      _c(
+        "div",
+        { staticClass: "panelLayout pt-4" },
+        [
+          _c("h5", [_vm._v("Forms: ")]),
           _vm._v(" "),
           _c(
-            "div",
-            { staticClass: "pt-1" },
+            "PanelCard",
             [
               _c(
-                "b-btn",
+                "b-form",
                 {
-                  directives: [
-                    {
-                      name: "b-modal",
-                      rawName: "v-b-modal.exampleModal",
-                      modifiers: { exampleModal: true }
-                    }
-                  ],
-                  attrs: { variant: "primary" }
-                },
-                [_vm._v("Abrir Modal")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-modal",
-                {
-                  attrs: {
-                    id: "exampleModal",
-                    size: "lg",
-                    title: "Lista de Pacientes"
-                  }
+                  attrs: { slot: "body" },
+                  on: { submit: _vm.onSubmit },
+                  slot: "body"
                 },
                 [
-                  _c("h5", [_vm._v("Test Modal")]),
+                  _c(
+                    "b-form-group",
+                    { attrs: { label: "Nombre de Campo:" } },
+                    [
+                      _c("b-form-input", {
+                        attrs: {
+                          type: "text",
+                          required: "",
+                          placeholder: "Nombre de Campo"
+                        },
+                        model: {
+                          value: _vm.form.name,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "name", $$v)
+                          },
+                          expression: "form.name"
+                        }
+                      })
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c(
-                    "b-button",
-                    {
-                      attrs: {
-                        slot: "modal-footer",
-                        variant: "primary",
-                        size: "sm"
-                      },
-                      slot: "modal-footer"
-                    },
-                    [_vm._v("Ir a Pacientes")]
+                    "b-input-group",
+                    [
+                      _c("b-form-input", {
+                        attrs: {
+                          type: "text",
+                          placeholder: "Ningun Elemento Seleccionado",
+                          disabled: ""
+                        },
+                        model: {
+                          value: _vm.form.other,
+                          callback: function($$v) {
+                            _vm.$set(_vm.form, "other", $$v)
+                          },
+                          expression: "form.other"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "b-input-group-append",
+                        [
+                          _c(
+                            "b-btn",
+                            {
+                              staticClass: "pl-3 pr-3",
+                              attrs: { variant: "success" }
+                            },
+                            [_c("i", { staticClass: "fas fa-search" })]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "mt-3" },
+                    [
+                      _c(
+                        "b-button",
+                        { attrs: { type: "submit", variant: "success" } },
+                        [_vm._v("Guardar")]
+                      ),
+                      _vm._v(" "),
+                      _c("b-button", { attrs: { variant: "danger" } }, [
+                        _vm._v("Cancel")
+                      ])
+                    ],
+                    1
                   )
                 ],
                 1
@@ -33075,7 +33056,62 @@ var render = function() {
             ],
             1
           )
-        ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "panelLayout pt-3" }, [
+        _c("h5", [_vm._v("Modal: ")]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "pt-1" },
+          [
+            _c(
+              "b-btn",
+              {
+                directives: [
+                  {
+                    name: "b-modal",
+                    rawName: "v-b-modal.exampleModal",
+                    modifiers: { exampleModal: true }
+                  }
+                ],
+                attrs: { variant: "primary" }
+              },
+              [_vm._v("Abrir Modal")]
+            ),
+            _vm._v(" "),
+            _c(
+              "b-modal",
+              {
+                attrs: {
+                  id: "exampleModal",
+                  size: "lg",
+                  title: "Lista de Pacientes"
+                }
+              },
+              [
+                _c("h5", [_vm._v("Test Modal")]),
+                _vm._v(" "),
+                _c(
+                  "b-button",
+                  {
+                    attrs: {
+                      slot: "modal-footer",
+                      variant: "primary",
+                      size: "sm"
+                    },
+                    slot: "modal-footer"
+                  },
+                  [_vm._v("Ir a Pacientes")]
+                )
+              ],
+              1
+            )
+          ],
+          1
+        )
       ])
     ])
   ])
@@ -34769,11 +34805,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+console.log(this.props);
 
 
-
-
-var dasd = [{ isActive: true, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'Dickerson', last: 'Macdonald' } }, { isActive: false, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'Larsen', last: 'Shaw' } }, { isActive: false, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'Mini', last: 'Navarro' } }, { isActive: false, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'Geneva', last: 'Wilson' } }, { isActive: true, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'Jami', last: 'Carney' } }, { isActive: false, email: 'test_qwe@email.com', rol: 'Admin', name: { first: 'Essie', last: 'Dunlap' } }, { isActive: true, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'Thor', last: 'Macdonald' } }, { isActive: true, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'Larsen', last: 'Shaw' } }, { isActive: false, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'Mitzi', last: 'Navarro' } }, { isActive: false, email: 'test_qwe@email.com', rol: 'Admin', name: { first: 'Genevieve', last: 'Wilson' } }, { isActive: true, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'John', last: 'Carney' } }, { isActive: false, email: 'test_qwe@email.com', rol: 'Invitado', name: { first: 'Dick', last: 'Dunlap' } }];
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -34785,7 +34839,7 @@ var dasd = [{ isActive: true, email: 'test_qwe@email.com', rol: 'Invitado', name
     PanelCard: __WEBPACK_IMPORTED_MODULE_0__widgets_panel_panel_component_vue___default.a,
     TitleComponent: __WEBPACK_IMPORTED_MODULE_1__widgets_titulo_index_vue___default.a
   },
-  props: ['items'],
+  props: ['items', 'url'],
   data: function data() {
     return {
       fields: [{ key: 'actions', label: 'Actions' }, { key: 'name', label: 'Nombre', sortable: true, sortDirection: 'desc' }, { key: 'email', label: 'Email', sortable: true, 'class': 'text-center' }, { key: 'rol', label: 'Rol', sortable: true }, { key: 'isActive', label: 'Estado', sortable: true }],
@@ -34842,89 +34896,136 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("b-container", [
-    _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        { staticClass: "col-md-12" },
-        [
-          _c("TitleComponent", {
-            attrs: { titulo: "Lista de Usuarios", items: _vm.breadcrumb }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-md-12" },
-        [
-          _vm._v("\n      " + _vm._s(_vm.items) + "\n        "),
-          _c(
-            "PanelCard",
-            [
+  return _c(
+    "b-container",
+    [
+      _c("b-row", [
+        _c(
+          "div",
+          { staticClass: "col-md-12" },
+          [
+            _c("TitleComponent", {
+              attrs: { titulo: "Lista de Usuarios", items: _vm.breadcrumb }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-md-12" },
+          [
+            _c("PanelCard", [
               _c("span", { attrs: { slot: "heading" }, slot: "heading" }, [
-                _vm._v("Últimos Pacientes")
+                _vm._v("Lista de Usuarios")
               ]),
-              _vm._v(" "),
-              _c("FormBuscar", { attrs: { slot: "body" }, slot: "body" }),
               _vm._v(" "),
               _c(
                 "div",
                 {
-                  staticClass: "table mt-3",
+                  staticClass: "pt-3 pb-3 pl-3 pr-3",
                   attrs: { slot: "body" },
                   slot: "body"
                 },
                 [
-                  _c(
-                    "b-row",
-                    [
+                  _c("b-row", { staticClass: "pb-3" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
                       _c(
-                        "b-col",
-                        { staticClass: "my-1", attrs: { md: "6" } },
+                        "div",
+                        { staticClass: "input-group d-inline-block" },
+                        [
+                          _c("b-input-group", [
+                            _c("div", { staticClass: "input-group-append" }, [
+                              _c("span", { staticClass: "icon-input" }, [
+                                _c("i", {
+                                  staticClass: "fas fa-search",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.filter,
+                                  expression: "filter"
+                                }
+                              ],
+                              staticClass: "odInput buscar",
+                              attrs: { placeholder: "Buscar...", type: "text" },
+                              domProps: { value: _vm.filter },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.filter = $event.target.value
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "input-group-append" },
+                              [
+                                _c(
+                                  "b-btn",
+                                  {
+                                    staticClass: "pl-3 pr-3",
+                                    attrs: {
+                                      variant: "secondary",
+                                      disabled: !_vm.filter
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        _vm.filter = ""
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "fas fa-sync-alt" })]
+                                )
+                              ],
+                              1
+                            )
+                          ])
+                        ],
+                        1
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "div",
+                        { staticClass: "float-right d-inline-block" },
                         [
                           _c(
-                            "b-form-group",
-                            {
-                              staticClass: "mb-0",
-                              attrs: { horizontal: "", label: "Filter" }
-                            },
+                            "b-button-group",
                             [
                               _c(
-                                "b-input-group",
+                                "b-button",
+                                {
+                                  attrs: {
+                                    href: _vm.url + "/users/create",
+                                    variant: "success"
+                                  }
+                                },
                                 [
-                                  _c("b-form-input", {
-                                    attrs: { placeholder: "Type to Search" },
-                                    model: {
-                                      value: _vm.filter,
-                                      callback: function($$v) {
-                                        _vm.filter = $$v
-                                      },
-                                      expression: "filter"
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "b-input-group-append",
-                                    [
-                                      _c(
-                                        "b-btn",
-                                        {
-                                          attrs: { disabled: !_vm.filter },
-                                          on: {
-                                            click: function($event) {
-                                              _vm.filter = ""
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Clear")]
-                                      )
-                                    ],
-                                    1
+                                  _c("i", { staticClass: "fas fa-plus" }),
+                                  _vm._v(
+                                    "  Nuevo Usuario\n\t\t\t\t\t\t\t\t\t\t"
                                   )
-                                ],
-                                1
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "b-button",
+                                { attrs: { variant: "warning" } },
+                                [
+                                  _c("i", { staticClass: "fas fa-print" }),
+                                  _vm._v("  Imprimir\n\t\t\t\t\t\t\t\t\t\t")
+                                ]
                               )
                             ],
                             1
@@ -34932,9 +35033,8 @@ var render = function() {
                         ],
                         1
                       )
-                    ],
-                    1
-                  ),
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("b-table", {
                     attrs: {
@@ -34968,7 +35068,32 @@ var render = function() {
                       {
                         key: "actions",
                         fn: function(row) {
-                          return [_c("p", [_vm._v("fkjd")])]
+                          return [
+                            _c(
+                              "div",
+                              {
+                                staticClass: "actions-table",
+                                staticStyle: { color: "#d1d1d1" }
+                              },
+                              [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: {
+                                      href: _vm.url + "/users/" + row.item.id
+                                    }
+                                  },
+                                  [_vm._v("Detalle")]
+                                ),
+                                _vm._v(
+                                  "\n                  |\n                  "
+                                ),
+                                _c("a", { attrs: { href: "#" } }, [
+                                  _vm._v("Modificar")
+                                ])
+                              ]
+                            )
+                          ]
                         }
                       },
                       {
@@ -34999,7 +35124,13 @@ var render = function() {
                     { attrs: { "align-h": "between" } },
                     [
                       _c("b-col", { attrs: { "align-self": "start" } }, [
-                        _vm._v("One of three columns")
+                        _vm._v(
+                          "\n              Mostrando " +
+                            _vm._s(_vm.currentPage) +
+                            " de " +
+                            _vm._s(_vm.totalRows) +
+                            " registros.\n            "
+                        )
                       ]),
                       _vm._v(" "),
                       _c(
@@ -35029,14 +35160,14 @@ var render = function() {
                 ],
                 1
               )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ])
-  ])
+            ])
+          ],
+          1
+        )
+      ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

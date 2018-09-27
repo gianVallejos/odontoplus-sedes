@@ -1,12 +1,14 @@
 <template>
-	<div class="row">
-		<div class="col-md-8 pt-3">
+
+	<b-row align-h="between">
+		<b-col align-self="start">
 			<h4>{{ titulo }}</h4>
-		</div>
-		<div class="col-md-4">
+	  </b-col>
+		<b-col cols="auto">
 			<b-breadcrumb :items="items"/>
-		</div>
-	</div>
+		</b-col>
+	</b-row>
+
 </template>
 
 <script>

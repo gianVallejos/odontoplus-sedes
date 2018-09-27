@@ -74,6 +74,11 @@
 		          		<i class="fas fa-building"></i>Empresas
 		          	</a>
 		          </li>
+							<li class="li-dropdown">
+		          	<a :href="url + '/users'">
+		          		<i class="fas fa-user"></i>Usuarios
+		          	</a>
+		          </li>
 		        </ul>
 		      </li>
 		    </ul>

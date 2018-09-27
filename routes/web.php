@@ -17,6 +17,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('dashboard');
 Route::get('/container-general', 'HomeController@containerGeneral');
-Route::get('/users', 'UserController@index')->name('users');
-
+Route::resource('users', 'UserController');
 Route::resource('pacientes', 'PacienteController');

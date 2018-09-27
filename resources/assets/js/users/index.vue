@@ -1,28 +1,44 @@
 <template>
   <b-container>
-		<div class="row">
+		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Lista de Usuarios" :items="breadcrumb" />
 			</div>
       <div class="col-md-12">
-      {{ items }}
         <PanelCard>
-          <span slot="heading">Últimos Pacientes</span>
-          <FormBuscar slot="body" />
-          <div class="table mt-3" slot="body">
-                <!-- User Interface controls -->
-            <b-row>
-              <b-col md="6" class="my-1">
-                <b-form-group horizontal label="Filter" class="mb-0">
-                  <b-input-group>
-                    <b-form-input v-model="filter" placeholder="Type to Search" />
-                    <b-input-group-append>
-                      <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
-                    </b-input-group-append>
-                  </b-input-group>
-                </b-form-group>
-              </b-col>
-
+          <span slot="heading">Lista de Usuarios</span>
+          <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
+            <!-- User Interface controls -->
+            <b-row class="pb-3">
+							<div class="col-md-6">
+								<div class="input-group d-inline-block">
+									<b-input-group>
+										<div class="input-group-append">
+											<span class="icon-input">
+				    							<i class="fas fa-search" aria-hidden="true"></i>
+				    						</span>
+				    					</div>
+			    						<input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
+								      	<div class="input-group-append">
+									    	<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
+									    		<i class="fas fa-sync-alt"></i>
+									    	</b-btn>
+									    </div>
+								    </b-input-group>
+								</div>
+							</div>
+							<div class="col-md-6">							
+								<div class="float-right d-inline-block">
+									<b-button-group>										
+										<b-button :href="url+'/users/create'" variant="success">
+											<i class="fas fa-plus"></i>&nbsp; Nuevo Usuario
+										</b-button>
+										<b-button variant="warning">
+											<i class="fas fa-print"></i>&nbsp; Imprimir
+										</b-button>
+									</b-button-group>
+								</div>
+							</div>
             </b-row>
 
             <!-- Main table element -->
@@ -37,9 +53,14 @@
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
                     @filtered="onFiltered" >
+
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
-                <p>fkjd</p>
+                  <div class="actions-table" style="color: #d1d1d1">						        	
+                  <a :href="url+'/users/'+ row.item.id" >Detalle</a>
+                  |
+                  <a href="#">Modificar</a>
+                </div>
               </template>
               <template slot="isActive" slot-scope="row">
                 <b-badge :variant="row.value ? 'success' : 'danger'">{{row.value?'Activo':'Inactivo'}}</b-badge>
@@ -47,40 +68,24 @@
             </b-table>
 
           <b-row align-h="between">
-          <b-col align-self="start">One of three columns</b-col>
-              <b-col cols="auto">
-                <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
-              </b-col>
+            <b-col align-self="start">
+              Mostrando {{ currentPage }} de {{ totalRows }} registros.
+            </b-col>
+            <b-col cols="auto">
+              <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+            </b-col>
           </b-row>
           </div>
         </PanelCard>
 			</div>
-		</div>
-
-
-
+		</b-row>
   </b-container>
-
 </template>
 
 <script>
+  console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
-
-  const dasd = [
-    { isActive: true, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'Dickerson', last: 'Macdonald' }},
-    { isActive: false, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'Larsen', last: 'Shaw' }},
-    { isActive: false, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'Mini', last: 'Navarro' }},
-    { isActive: false, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'Geneva', last: 'Wilson' }},
-    { isActive: true, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'Jami', last: 'Carney' }},
-    { isActive: false, email: 'test_qwe@email.com', rol:'Admin', name: { first: 'Essie', last: 'Dunlap' }},
-    { isActive: true, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'Thor', last: 'Macdonald' }},
-    { isActive: true, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'Larsen', last: 'Shaw' } },
-    { isActive: false, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'Mitzi', last: 'Navarro' }},
-    { isActive: false, email: 'test_qwe@email.com', rol:'Admin', name: { first: 'Genevieve', last: 'Wilson' }},
-    { isActive: true, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'John', last: 'Carney' }},
-    { isActive: false, email: 'test_qwe@email.com', rol:'Invitado', name: { first: 'Dick', last: 'Dunlap' }}
-  ]
 
   export default{
     mounted() { 
@@ -92,7 +97,8 @@
       TitleComponent
 		},
     props:[
-      'items'
+      'items',
+      'url'
     ],
     data(){
 			return{
