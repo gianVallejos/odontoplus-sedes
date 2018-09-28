@@ -17,7 +17,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('dashboard');
 Route::get('/container-general', 'HomeController@containerGeneral');
-
+Route::resource('users', 'UserController');
 Route::resource('pacientes', 'PacienteController');
 //APIS 
 Route::get('api-v1/op-obtener-pacientes', 'WsOdontoplusController@OP_obtenerPacientes');
