@@ -14,6 +14,8 @@ import Dashboard from './dashboard/index.vue'
 import PacienteIndex from './paciente/index.vue'
 import PacienteCreate from './paciente/create.vue'
 import FooterComponent from './footer/footerComponent.vue'
+import Users from './users/index.vue'
+import UserForm from './users/form.vue'
 
 const app = new Vue({
     el: '#app',
@@ -21,7 +23,9 @@ const app = new Vue({
     	ContainerGeneral,
     	Dashboard,
     	PacienteIndex,
-    	PacienteCreate
+    	PacienteCreate,
+			Users,
+			UserForm			
     }
 })
 
