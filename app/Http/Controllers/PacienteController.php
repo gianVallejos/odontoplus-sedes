@@ -46,11 +46,11 @@ class PacienteController extends Controller
         return response()->json(['error'=>$validator->errors()]);        
     }
 
-    public function show($id)
+    public function show($id, $flag)
     {        
         $empresas = DB::select('call OP_obtenerEmpresasJson()');
         $empresas = json_encode($empresas);
-        return view($this->path . '.show', compact('id', 'empresas'));
+        return view($this->path . '.show', compact('id', 'empresas', 'flag'));
     }
 
     public function edit(Paciente $paciente)
