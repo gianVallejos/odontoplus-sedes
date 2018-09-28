@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<s">
+		<div class="row">
 			<div class="col-md-12">
 				<TitleComponent titulo="Container General" :items="breadcrumb" />
 			</div>
