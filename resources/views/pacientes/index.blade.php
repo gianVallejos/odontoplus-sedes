@@ -2,6 +2,6 @@
 
 @section('content')
 	
-	<paciente-index :items="{{ $data }}" url='{{ route("home") }}' />
+	<paciente-index url='{{ route("home") }}' status='{{ session("status") }}' />
 
 @endsection

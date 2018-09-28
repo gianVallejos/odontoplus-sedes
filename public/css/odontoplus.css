@@ -81,7 +81,6 @@ p {
 }
 .form-control {
   height: 40px;
-  padding: 12px;
   border: 1px solid #d1d1d1;
   color: #7f7f7f;
   font-size: 1em;
@@ -92,6 +91,9 @@ p {
   -webkit-box-shadow: none;
           box-shadow: none;
   border: 1px solid #d1d1d1;
+}
+.form-control.required {
+  border-left: 4px solid #ab4240;
 }
 .col-form-label {
   font-family: 'Rubik', sans-serif;
@@ -293,6 +295,14 @@ p {
 .table tbody tr {
   border-bottom: 1px solid #dee2e6;
 }
+.table tbody tr td a {
+  text-decoration: underline;
+  color: #464d5c;
+}
+.table tbody tr td a.action {
+  color: #0aab8a !important;
+  text-decoration: none;
+}
 .breadcrumb {
   float: right;
   border-radius: 0px;
@@ -371,7 +381,26 @@ table.b-table > thead > tr table.b-table:focus {
   font-weight: 600;
   font-family: 'Rubik', sans-serif;
 }
+.form-title i {
+  font-size: 1.1em;
+}
 .form-description {
   color: #868da7;
   font-family: 'Open Sans', sans-serif;
+}
+.col-form-label {
+  font-family: 'Open Sans', sans-serif;
+}
+.required-red,
+.label-danger {
+  color: #ab4240;
+}
+.label-danger {
+  font-size: 0.9em;
+}
+.toast-danger {
+  background: #ab4240 !important;
+}
+.toast-success {
+  background: #0aab8a;
 }
