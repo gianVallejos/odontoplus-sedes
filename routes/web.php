@@ -20,6 +20,9 @@ Route::get('/container-general', 'HomeController@containerGeneral');
 Route::resource('users', 'UserController');
 Route::resource('pacientes', 'PacienteController');
 //APIS 
-Route::get('api-v1/op-obtener-pacientes', 'WsOdontoplusController@OP_obtenerPacientes');
-Route::post('api-v1/op-crear-paciente', 'WsOdontoplusController@OP_crearPaciente');
-Route::get('api-v1/op-obtener-paciente-id/{id}', 'WsOdontoplusController@OP_obtenerPacientes_Id');
+Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
+Route::get('api-v1/op-obtener-pacientes', 'WsOdontoplusController@OP_obtenerPacientes')->name('pacientes.obtener');
+Route::post('api-v1/op-crear-paciente', 'WsOdontoplusController@OP_crearPaciente')->name('paientes.crear');
+Route::get('api-v1/op-obtener-paciente-id/{id}', 'WsOdontoplusController@OP_obtenerPacientes_Id')->name('pacientes.obtener.id');
+Route::put('api-v1/op-actualizar-paciente-id/{id}', 'WsOdontoplusController@OP_actualizarPaciente_Id')->name('pacientes.actualizar');
+Route::get('/api-v1/op-eliminar-paciente-id/{id}', 'WsOdontoplusController@OP_eliminarPaciente_Id');

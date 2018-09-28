@@ -5,14 +5,14 @@
 				<TitleComponent titulo="Pacientes" :items="breadcrumb" />				
 			</b-col>
 			<b-col cols="12" class="pt-3">				
-				<PanelCard>
+				<PanelCard>										
 					<span v-if="!isModificar" slot="heading">												
 						Detalle de Paciente						
 					</span>					
 					<span v-if="isModificar"  slot="heading">
-						Modificar Paciente
+						Modificar Paciente						
 					</span>					
-					<div slot="body" class="pt-2 pb-2 pl-3 pr-3">
+					<div slot="body" class="pt-2 pb-2 pl-3 pr-3">						
 						<b-form>
 							<input type="hidden" name="_token" :value="csrf">
 
@@ -203,9 +203,9 @@
 	import axios from 'axios'
 	
 	export default{
-		mounted(){
-			this.isDisabled = true
-			this.isModificar = false
+		mounted(){						
+			this.isModificar = this.flag	
+			this.isDisabled = !this.flag
 
 			this.getInitData()
 
@@ -218,34 +218,34 @@
 		props: [
 			'url',
 			'empresas',
-			'actualId'
+			'actualId',
+			'flag'
 		],
 		methods:{
 			getInitData(){
 				axios.get(this.url + '/api-v1/op-obtener-paciente-id/' + this.actualId, 
 							this.form).then( (request) => {			
-					//console.log(request.data)
 					this.form = request.data
-					console.log(this.form)
 				}).catch((error) => {
-                    this.$toasted.show('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 
+                    this.$toasted.show('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe. Redireccionando...', 
 										{ 
-												position: 'top-center',
-												className: 'toast-danger',
-												duration: 3500,
-												containerClass: 'test'
+											position: 'top-center',
+											className: 'toast-danger',
+											duration: 3500,
+											containerClass: 'test'
 										})
+                   	setTimeout(function () {
+							  window.location.href = this.url + '/pacientes'
+					}.bind(this), 3500)
                 })
 			},
-			onSubmit (e) {
+			onSubmitSave (e) {
 				e.preventDefault()
-				axios.post(this.url + '/api-v1/op-crear-paciente', 
-							this.form).then( (request) => {			
-					if( request.data.success == 'success' ){
-						console.log(request.data)						
+				axios.put(this.url + '/api-v1/op-actualizar-paciente-id/' + this.actualId, 
+							this.form).then( (request) => {						
+					if( request.data.success == 'success' ){												
 						this.success = true						
-					}else{
-						console.log(request.data)						
+					}else{												
                         this.success = false						
 					}
 
@@ -260,7 +260,7 @@
 											})
 					}else{
 						this.allerros = []
-						this.$toasted.show('Campo agregado correctamente.', 
+						this.$toasted.show('Campo modificado correctamente.', 
 											{ 
 												position: 'top-center',
 												className: 'toast-success',
@@ -268,12 +268,10 @@
 												containerClass: 'test'
 											})
 						this.isDisabled = true
-						setTimeout(function () {
-						    window.location.href = this.url + '/pacientes'
-						}.bind(this), 2000)
+						this.isModificar = false
 					}
 				}).catch((error) => {
-                    this.$toasted.show('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 
+                    this.$toasted.show('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe. Redireccionando...', 
 										{ 
 												position: 'top-center',
 												className: 'toast-danger',
@@ -281,21 +279,62 @@
 												containerClass: 'test'
 										})
                    	this.success = false
+                   	this.isModificar = false
+                   	setTimeout(function () {
+							  window.location.href = this.url + '/pacientes'
+					}.bind(this), 3500)
                 })
-		    },
-		    onSubmitSave(){
-
 		    },
 		    onModificar(){
 		    	this.isModificar = true
 		    	this.isDisabled = false		    	
 		    },
-		    onEliminar(){
+		    onEliminar(e){
+		    	e.preventDefault()
+		    	if( confirm('¿Esta seguro de eliminar este campo?') ){
+					axios.get(this.url + '/api-v1/op-eliminar-paciente-id/' + this.actualId)
+						.then( (request) => {						
+							if( request.data.success == 'success' ){												
+								this.success = true						
+							}else{												
+		                        this.success = false						
+							}
 
+							if( this.success ){						
+								this.allerros = []
+								this.$toasted.show('Campo eliminado correctamente. Redireccionando...', 
+													{ 
+														position: 'top-center',
+														className: 'toast-success',
+														duration: 2500,
+														containerClass: 'test'
+													})
+								this.isDisabled = true
+								setTimeout(function () {
+								    window.location.href = this.url + '/pacientes'
+								}.bind(this), 2500)
+							}
+					}).catch((error) => {
+	                    this.$toasted.show('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe. Redireccionando...', 
+											{ 
+													position: 'top-center',
+													className: 'toast-danger',
+													duration: 2500,
+													containerClass: 'test'
+											})
+	                   	this.success = false
+	                   	this.isModificar = false
+	                   	setTimeout(function () {
+								  window.location.href = this.url + '/pacientes'
+						}.bind(this), 2500)
+	                })
+				}
 		    },
 		    cancelModificar(){
 		    	this.isDisabled = true
 				this.isModificar = false
+				this.allerros = []
+				this.getInitData()
 		    },
 		    setMyDateToToday() {
 		      this.myDate = new Date();		      
@@ -326,10 +365,10 @@
 					seguro_ind: null,
 					nombre_apoderado: '',
 					celular_apoderado: ''
-				},
-				isModificar: false,
-				isDisabled: false,
+				},				
+				isDisabled: '',
 				allerros: [],
+				isModificar: '',
 				success : false,
 				breadcrumb: [
 			    	{ text: 'Dashboard', href: this.url },

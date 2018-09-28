@@ -82,7 +82,7 @@ p {
 .form-control {
   height: 40px;
   border: 1px solid #d1d1d1;
-  color: #7f7f7f;
+  color: #464d5c;
   font-size: 1em;
   border-radius: 0px;
 }
@@ -92,8 +92,23 @@ p {
           box-shadow: none;
   border: 1px solid #d1d1d1;
 }
+.form-control:disabled {
+  color: #7f7f7f;
+}
 .form-control.required {
   border-left: 4px solid #ab4240;
+}
+.form-control::-webkit-input-placeholder {
+  color: #858ea7;
+}
+.form-control:-ms-input-placeholder {
+  color: #858ea7;
+}
+.form-control::-ms-input-placeholder {
+  color: #858ea7;
+}
+.form-control::placeholder {
+  color: #858ea7;
 }
 .col-form-label {
   font-family: 'Rubik', sans-serif;
@@ -153,18 +168,18 @@ p {
   color: #305f94 !important;
   -webkit-box-shadow: inset 0 -4px 0 #305f94;
           box-shadow: inset 0 -4px 0 #305f94;
-  background: #f3f3f3;
+  background: transparent;
   text-decoration: none;
 }
 .odBtn.info:focus,
 .btn.info:focus,
 .odBtn.btn-primary:focus,
 .btn.btn-primary:focus {
-  color: #305f94 !important;
   outline: 0;
-  background: #f3f3f3;
-  -webkit-box-shadow: inset 0 -4px 0 #305f94;
-          box-shadow: inset 0 -4px 0 #305f94;
+  background: #305f94 !important;
+  color: #f3f3f3 !important;
+  -webkit-box-shadow: inset 0 -4px 0 #024590;
+          box-shadow: inset 0 -4px 0 #024590;
 }
 .odBtn.guardar,
 .btn.guardar,
@@ -180,18 +195,18 @@ p {
   color: #0aab8a !important;
   -webkit-box-shadow: inset 0 -4px 0 #0aab8a;
           box-shadow: inset 0 -4px 0 #0aab8a;
-  background: #f3f3f3;
+  background: transparent;
   text-decoration: none;
 }
 .odBtn.guardar:focus,
 .btn.guardar:focus,
 .odBtn.btn-success:focus,
 .btn.btn-success:focus {
-  color: #0aab8a !important;
   outline: 0;
-  background: #f3f3f3;
-  -webkit-box-shadow: inset 0 -4px 0 #0aab8a;
-          box-shadow: inset 0 -4px 0 #0aab8a;
+  background: #0aab8a !important;
+  color: #f3f3f3 !important;
+  -webkit-box-shadow: inset 0 -4px 0 #096754;
+          box-shadow: inset 0 -4px 0 #096754;
 }
 .odBtn.nuevo,
 .btn.nuevo,
@@ -207,22 +222,18 @@ p {
   color: #464d5c !important;
   -webkit-box-shadow: inset 0 -4px 0 #464d5c;
           box-shadow: inset 0 -4px 0 #464d5c;
-  background: #f3f3f3;
+  background: transparent;
   text-decoration: none;
 }
 .odBtn.nuevo:focus,
 .btn.nuevo:focus,
 .odBtn.btn-secondary:focus,
-.btn.btn-secondary:focus,
-.odBtn.nuevo:active,
-.btn.nuevo:active,
-.odBtn.btn-secondary:active,
-.btn.btn-secondary:active {
-  color: #464d5c !important;
+.btn.btn-secondary:focus {
+  background: #464d5c !important;
+  color: #f3f3f3 !important;
   outline: 0;
-  background: #f3f3f3;
-  -webkit-box-shadow: inset 0 -4px 0 #464d5c;
-          box-shadow: inset 0 -4px 0 #464d5c;
+  -webkit-box-shadow: inset 0 -4px 0 #2a2e37;
+          box-shadow: inset 0 -4px 0 #2a2e37;
 }
 .odBtn.modificar,
 .btn.modificar,
@@ -238,18 +249,18 @@ p {
   color: #858ea7 !important;
   -webkit-box-shadow: inset 0 -4px 0 #858ea7;
           box-shadow: inset 0 -4px 0 #858ea7;
-  background: #f3f3f3;
+  background: transparent;
   text-decoration: none;
 }
 .odBtn.modificar:focus,
 .btn.modificar:focus,
 .odBtn.btn-warning:focus,
 .btn.btn-warning:focus {
-  color: #858ea7 !important;
+  background: #858ea7 !important;
+  color: #f3f3f3 !important;
   outline: 0;
-  background: #f3f3f3;
-  -webkit-box-shadow: inset 0 -4px 0 #858ea7;
-          box-shadow: inset 0 -4px 0 #858ea7;
+  -webkit-box-shadow: inset 0 -4px 0 #4c546b;
+          box-shadow: inset 0 -4px 0 #4c546b;
 }
 .odBtn.cancelar,
 .btn.cancelar,
@@ -265,22 +276,18 @@ p {
   color: #ab4240 !important;
   -webkit-box-shadow: inset 0 -4px 0 #ab4240;
           box-shadow: inset 0 -4px 0 #ab4240;
-  background: #f3f3f3;
+  background: transparent;
   text-decoration: none;
 }
 .odBtn.cancelar:focus,
 .btn.cancelar:focus,
 .odBtn.btn-danger:focus,
-.btn.btn-danger:focus,
-.odBtn.cancelar:active,
-.btn.cancelar:active,
-.odBtn.btn-danger:active,
-.btn.btn-danger:active {
-  color: #ab4240 !important;
+.btn.btn-danger:focus {
+  background: #ab4240 !important;
+  color: #f3f3f3 !important;
   outline: 0;
-  background: #f3f3f3;
-  -webkit-box-shadow: inset 0 -4px 0 #ab4240;
-          box-shadow: inset 0 -4px 0 #ab4240;
+  -webkit-box-shadow: inset 0 -4px 0 #5d2322;
+          box-shadow: inset 0 -4px 0 #5d2322;
 }
 .rubikFont {
   font-family: 'Rubik', sans-serif;

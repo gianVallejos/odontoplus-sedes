@@ -3,10 +3,15 @@
   font-family: 'Open Sans', sans-serif;
 */
 $btnInfoBc = #305f94
+$btnInfoBcVariant = #024590
 $btnGuardarBc = #0aab8a
+$btnGuardarBcVariant = #096754
 $btnNuevoBc = #464d5c
+$btnNuevoBcVariant = #2a2e37
 $btnModificarBc = #858ea7
+$btnModificarBcVariant = #4c546b
 $btnCancelarBc = #ab4240
+$btnCancelarBcVariant = #5d2322
 $btnInfoC = #f3f3f3
 
 html
@@ -80,15 +85,19 @@ p
 .form-control
 	height: 40px
 	border: 1px solid #d1d1d1
-	color: #7f7f7f
+	color: $btnNuevoBc
 	font-size: 1em
 	border-radius: 0px
 	&:focus
 		outline: none
 		box-shadow: none   
 		border: 1px solid #d1d1d1 	
+	&:disabled
+		color: #7f7f7f
 	&.required
 		border-left: 4px solid $btnCancelarBc
+	&::placeholder
+		color: $btnModificarBc
 		
 .col-form-label
 	font-family: 'Rubik', sans-serif
@@ -132,13 +141,13 @@ p
 		&:hover
 			color: $btnInfoBc!important
 			box-shadow: inset 0 -4px 0 $btnInfoBc
-			background: $btnInfoC
+			background: transparent
 			text-decoration: none						
 		&:focus
-			color: $btnInfoBc!important
 			outline: 0
-			background: $btnInfoC
-			box-shadow: inset 0 -4px 0 $btnInfoBc
+			background: $btnInfoBc!important
+			color: $btnInfoC!important
+			box-shadow: inset 0 -4px 0 $btnInfoBcVariant	
 	&.guardar,
 	&.btn-success
 		background: $btnGuardarBc
@@ -146,13 +155,13 @@ p
 		&:hover
 			color: $btnGuardarBc!important
 			box-shadow: inset 0 -4px 0 $btnGuardarBc
-			background: $btnInfoC
+			background: transparent
 			text-decoration: none
 		&:focus
-			color: $btnGuardarBc!important
 			outline: 0
-			background: $btnInfoC
-			box-shadow: inset 0 -4px 0 $btnGuardarBc
+			background: $btnGuardarBc!important
+			color: $btnInfoC!important
+			box-shadow: inset 0 -4px 0 $btnGuardarBcVariant
 	&.nuevo,
 	&.btn-secondary
 		background: $btnNuevoBc
@@ -160,14 +169,13 @@ p
 		&:hover
 			color: $btnNuevoBc!important
 			box-shadow: inset 0 -4px 0 $btnNuevoBc
-			background: $btnInfoC
+			background: transparent
 			text-decoration: none
-		&:focus,
-		&:active
-			color: $btnNuevoBc!important
+		&:focus
+			background: $btnNuevoBc!important
+			color: $btnInfoC!important
 			outline: 0
-			background: $btnInfoC
-			box-shadow: inset 0 -4px 0 $btnNuevoBc
+			box-shadow: inset 0 -4px 0 $btnNuevoBcVariant
 	&.modificar,
 	&.btn-warning
 		background: $btnModificarBc
@@ -175,13 +183,13 @@ p
 		&:hover
 			color: $btnModificarBc!important
 			box-shadow: inset 0 -4px 0 $btnModificarBc
-			background: $btnInfoC
+			background: transparent
 			text-decoration: none
 		&:focus
-			color: $btnModificarBc!important
+			background: $btnModificarBc!important
+			color: $btnInfoC!important
 			outline: 0
-			background: $btnInfoC
-			box-shadow: inset 0 -4px 0 $btnModificarBc
+			box-shadow: inset 0 -4px 0 $btnModificarBcVariant
 	&.cancelar,
 	&.btn-danger
 		background: $btnCancelarBc
@@ -189,14 +197,13 @@ p
 		&:hover
 			color: $btnCancelarBc!important
 			box-shadow: inset 0 -4px 0 $btnCancelarBc
-			background: $btnInfoC
+			background: transparent
 			text-decoration: none
-		&:focus,
-		&:active
-			color: $btnCancelarBc!important
+		&:focus
+			background: $btnCancelarBc!important
+			color: $btnInfoC!important
 			outline: 0
-			background: $btnInfoC
-			box-shadow: inset 0 -4px 0 $btnCancelarBc
+			box-shadow: inset 0 -4px 0 $btnCancelarBcVariant
 
 .rubikFont
 	font-family: 'Rubik', sans-serif
