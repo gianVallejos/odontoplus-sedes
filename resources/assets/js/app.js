@@ -25,10 +25,10 @@ const app = new Vue({
     	Dashboard,
     	PacienteIndex,
     	PacienteCreate,
-			Users,
-			UserForm			
-    	PacienteCreate,
-    	PacienteShow
+    	PacienteShow,
+		Users,
+		UserForm		
+    	
     }
 })
 
