@@ -92,6 +92,9 @@ p {
           box-shadow: none;
   border: 1px solid #d1d1d1;
 }
+.form-control.required {
+  border-left: 4px solid #ab4240;
+}
 .col-form-label {
   font-family: 'Rubik', sans-serif;
 }
@@ -292,6 +295,14 @@ p {
 .table tbody tr {
   border-bottom: 1px solid #dee2e6;
 }
+.table tbody tr td a {
+  text-decoration: underline;
+  color: #464d5c;
+}
+.table tbody tr td a.action {
+  color: #0aab8a !important;
+  text-decoration: none;
+}
 .breadcrumb {
   float: right;
   border-radius: 0px;
@@ -371,6 +382,16 @@ table.b-table > thead > tr table.b-table:focus {
 .col-form-label {
   font-family: 'Open Sans', sans-serif;
 }
-.required-red {
+.required-red,
+.label-danger {
   color: #ab4240;
+}
+.label-danger {
+  font-size: 0.9em;
+}
+.toast-danger {
+  background: #ab4240 !important;
+}
+.toast-success {
+  background: #0aab8a;
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Validator;
 
 class PacienteController extends Controller
 {
@@ -15,9 +16,12 @@ class PacienteController extends Controller
 
     public function index()
     {
-        $data = DB::select('call OP_obtenerPacientes()'); 
-        $data = json_encode($data);
-        return view($this->path.'.index', compact('data'));
+        //$data = DB::select('call OP_obtenerPacientes()'); 
+        //$data = json_encode($data);
+        
+        //print $data;
+        //return view($this->path.'.index', compact('data'));
+        return view($this->path .'.index');
     }
 
     public function create()
@@ -29,13 +33,24 @@ class PacienteController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nombres' => 'required|string',
+            'apellidos' => 'required|string',
+            'dni' => 'required|digits:8'
+        ]);
+
+        if ($validator->passes()) {
+            print 'Passed';
+        }
+        
+        return response()->json(['error'=>$validator->errors()]);        
     }
 
     public function show($id)
-    {
-        print $id;
-        //return view($this->path . '.show', compact('id'));
+    {        
+        $empresas = DB::select('call OP_obtenerEmpresasJson()');
+        $empresas = json_encode($empresas);
+        return view($this->path . '.show', compact('id', 'empresas'));
     }
 
     public function edit(Paciente $paciente)

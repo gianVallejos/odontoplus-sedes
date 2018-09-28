@@ -1,5 +1,6 @@
 <template>	
 	<b-container class="pb-4">				
+		{{ status }}
 		<b-row>
 			<b-col cols="12">
 				<TitleComponent titulo="Dashboard" :items="breadcrumb" />				
@@ -42,18 +43,20 @@
 						</div>
 
 
-						<b-table show-empty :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage"
+						<b-table show-empty :items="mydata" :fields="fields" :current-page="currentPage" :per-page="perPage"
 					             :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
 					             @filtered="onFiltered">
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">						        	
-						        	<a :href="url+'/pacientes/'+ row.item.id" >Detalle</a>
+						        	<a :href="url+'/pacientes/'+ row.item.id"  class="action">Detalle</a>
 						        	|
-						        	<a href="#">Modificar</a>
+						        	<a href="#" class="action">Modificar</a>
 						        </div>
 						    </template>
 						    <template slot="nombres" slot-scope="row">
+						    	<a :href="url + '/pacientes/' + row.item.id">
 						      		{{ row.value }} {{ row.item.apellidos }}
+						      	</a>
 						    </template>						    	
 						    <template slot="dni" slot-scope="row">
 						      		{{ row.value }}
@@ -87,22 +90,31 @@
 
 <script>
 	import TitleComponent from '../widgets/titulo/index.vue'
-	import PanelCard from '../widgets/panel/panel-component.vue'	
+	import PanelCard from '../widgets/panel/panel-component.vue'
+	import axios from 'axios'
 
 	export default{
 		mounted(){
-			console.log('Paciente Mounted')
+			console.log('Paciente Mounted')			
 		},
+		created() {
+	    	axios.get(this.url + '/api-v1/op-obtener-pacientes')
+	    		 	.then((response) => {	      		 
+			      		this.mydata = response.data;
+			      		this.totalRows = Math.ceil(this.mydata.length)
+	    			})
+	    },
 		components:{
 			TitleComponent,
 			PanelCard
 		},
-		props: [
-			'items',
-			'url'
+		props: [	
+			'url',
+			'status'
 		],
 		data(){
 			return{
+				mydata: [],
 				breadcrumb: [
 			    	{ text: 'Dashboard', href: this.url },
 			    	{ text: 'Pacientes', active: true}
@@ -118,7 +130,7 @@
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,
-			    totalRows: this.items.length,
+			    totalRows: 0,
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,
 			    sortDesc: false,

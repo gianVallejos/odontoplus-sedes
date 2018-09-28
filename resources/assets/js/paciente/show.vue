@@ -2,24 +2,41 @@
 	<b-container id="test" class="pb-4">				
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Dashboard" :items="breadcrumb" />				
+				<TitleComponent titulo="Pacientes" :items="breadcrumb" />				
 			</b-col>
 			<b-col cols="12" class="pt-3">				
 				<PanelCard>
-					<span slot="heading">Crear Paciente </span>
+					<span v-if="!isModificar" slot="heading">												
+						Detalle de Paciente						
+					</span>					
+					<span v-if="isModificar"  slot="heading">
+						Modificar Paciente
+					</span>					
 					<div slot="body" class="pt-2 pb-2 pl-3 pr-3">
 						<b-form>
 							<input type="hidden" name="_token" :value="csrf">
 
-							<div class="text-center">
-								<b-button type="submit" variant="success" v-on:click="onSubmit">
-									<i class="fas fa-save"></i>&nbsp; Guardar
-								</b-button>
-								<b-button :href="url + '/pacientes'" variant="danger">
-									<i class="fas fa-times"></i>&nbsp;Cancelar
-								</b-button>
-							</div>
-							<div class="pt-4 pb-2">							
+							<b-row>
+								<b-col cols="12 text-center">
+									<b-button v-if="isModificar" type="submit" variant="success" v-on:click="onSubmitSave">
+										<i class="fas fa-save"></i>&nbsp; Guardar
+									</b-button>
+									<b-button v-if="!isModificar" variant="primary" v-on:click="onModificar">
+										<i class="fas fa-edit"></i>&nbsp; Modificar
+									</b-button>
+									<b-button v-if="!isModificar"  variant="danger" v-on:click="onEliminar">
+										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
+									</b-button>
+									<b-button v-if="!isModificar" variant="warning" :href="url + '/pacientes'">
+										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
+									</b-button>
+									<b-button v-if="isModificar" variant="warning" v-on:click="cancelModificar">
+										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
+									</b-button>
+								</b-col>
+							</b-row>
+							
+							<div class="pt-3 pb-2">							
 									<b-row>
 										<b-col cols="6" class="pt-3 pb-4">
 											<div class="form-title">
@@ -48,6 +65,10 @@
 												<span v-if="allerros.email" :class="['label label-danger']">{{ allerros.email[0] }}</span>
 										    </b-form-group>									    
 										</b-col>
+										
+										<b-col cols="12">
+											<hr>
+										</b-col>	
 
 										<b-col cols="6" class="pt-3 pb-4">
 											<div class="form-title">
@@ -148,14 +169,27 @@
 										</b-col>
 									</b-row>							
 							</div>
-							<div class="text-center">
-								<b-button type="submit" variant="success" v-on:click="onSubmit">
-									<i class="fas fa-save"></i>&nbsp; Guardar
-								</b-button>
-								<b-button :href="url + '/pacientes'" variant="danger">
-									<i class="fas fa-times"></i>&nbsp;Cancelar
-								</b-button>
-							</div>
+							
+							<b-row>
+								<b-col cols="12 text-center">
+									<b-button v-if="isModificar" type="submit" variant="success" v-on:click="onSubmitSave">
+										<i class="fas fa-save"></i>&nbsp; Guardar
+									</b-button>
+									<b-button v-if="!isModificar" variant="primary" v-on:click="onModificar">
+										<i class="fas fa-edit"></i>&nbsp; Modificar
+									</b-button>
+									<b-button v-if="!isModificar"  variant="danger" v-on:click="onEliminar">
+										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
+									</b-button>
+									<b-button v-if="!isModificar" variant="warning" :href="url + '/pacientes'">
+										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
+									</b-button>
+									<b-button v-if="isModificar" variant="warning" v-on:click="cancelModificar">
+										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
+									</b-button>
+								</b-col>
+							</b-row>
+
 						</b-form>
 					</div>
 				</PanelCard>
@@ -170,7 +204,11 @@
 	
 	export default{
 		mounted(){
-			this.isDisabled = false
+			this.isDisabled = true
+			this.isModificar = false
+
+			this.getInitData()
+
 			console.log('Paciente Created Mounted')			
 		},
 		components:{
@@ -179,9 +217,26 @@
 		},
 		props: [
 			'url',
-			'empresas'
+			'empresas',
+			'actualId'
 		],
 		methods:{
+			getInitData(){
+				axios.get(this.url + '/api-v1/op-obtener-paciente-id/' + this.actualId, 
+							this.form).then( (request) => {			
+					//console.log(request.data)
+					this.form = request.data
+					console.log(this.form)
+				}).catch((error) => {
+                    this.$toasted.show('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 
+										{ 
+												position: 'top-center',
+												className: 'toast-danger',
+												duration: 3500,
+												containerClass: 'test'
+										})
+                })
+			},
 			onSubmit (e) {
 				e.preventDefault()
 				axios.post(this.url + '/api-v1/op-crear-paciente', 
@@ -228,6 +283,20 @@
                    	this.success = false
                 })
 		    },
+		    onSubmitSave(){
+
+		    },
+		    onModificar(){
+		    	this.isModificar = true
+		    	this.isDisabled = false		    	
+		    },
+		    onEliminar(){
+
+		    },
+		    cancelModificar(){
+		    	this.isDisabled = true
+				this.isModificar = false
+		    },
 		    setMyDateToToday() {
 		      this.myDate = new Date();		      
 		    },
@@ -258,13 +327,14 @@
 					nombre_apoderado: '',
 					celular_apoderado: ''
 				},
+				isModificar: false,
 				isDisabled: false,
 				allerros: [],
 				success : false,
 				breadcrumb: [
 			    	{ text: 'Dashboard', href: this.url },
 			    	{ text: 'Pacientes', href: this.url + '/pacientes' },
-			    	{ text: 'Crear Paciente', active: true }
+			    	{ text: 'Detalle de Paciente', active: true }
 			    ],
 				genero: {
 					options: [ 
