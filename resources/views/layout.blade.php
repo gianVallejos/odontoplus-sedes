@@ -33,14 +33,16 @@
 	@endif
 	</div>
 
-	<div id='alert'>
-		@if( Session::has('alert') )
-			<flash alert="{{ Session::get('alert') }}"/>
+	<div id="alert">
+		@if(Session::has('alert'))
+			<flash ref="flash_alert" alert="{{ Session::get('alert') }}"/>
 		@endif
-	</div> 
+	</div>
 
-	<div id="app" class="contenido">
-		@yield('content')
+	<div id="app">
+		<div class="contenido">
+			@yield('content')
+		</div>
 	</div>
 	
 	<div id="footer">

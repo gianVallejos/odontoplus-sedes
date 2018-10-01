@@ -139,7 +139,7 @@
     methods:{
 			onSubmit (evt) {
 		      evt.preventDefault();
-					
+					console.log(this.form.is_active)
 					axios.post( this.url+'/users', this.form).then((response) => {
 						if(response.data.success){
 

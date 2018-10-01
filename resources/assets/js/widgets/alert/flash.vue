@@ -1,23 +1,24 @@
 <template>
-	<div id="flash-message">
-    <div :class="'alert alert-flash toast-' + JSalert.type">
-      <div class="container">
-        {{JSalert.msg}}
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      </div>
+
+  <div :class="'alert-'+JSalert.type">
+    <div class="container">
+      <b-alert :show="dismissCountDown" dismissible :variant="JSalert.type" 
+            @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged">
+      <p> {{ JSalert.msg }} </p>
+      </b-alert>
     </div>
   </div>
+
 </template>
 
 <script>
 
   export default{
     mounted() {
-      console.log(this.alert)
-      setTimeout(function () {
-        $("#flash-message").remove();
-			}.bind(this), 6000)
-
+      if(this.alert != null){
+        var alert = JSON.parse(this.alert)
+        this.showAlert(alert.type, alert.msg)
+      }
     },
     name: 'flash-alert',
     props:[
@@ -25,7 +26,20 @@
     ],
     data(){
       return{
-        JSalert: JSON.parse(this.alert)
+        dismissSecs: 500,
+        dismissCountDown: 0,
+        showDismissibleAlert: false,
+        JSalert: {"type": '', "msg" : ''}
+      }
+    },
+    methods: {
+      countDownChanged (dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+      },
+      showAlert (type, msg) {
+        this.JSalert.type = type
+        this.JSalert.msg = msg
+        this.dismissCountDown = this.dismissSecs
       }
     }
   }
