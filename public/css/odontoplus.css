@@ -95,6 +95,9 @@ p {
 .form-control.required {
   border-left: 4px solid #ab4240;
 }
+.help-required {
+  border-left: 4px solid #ab4240;
+}
 .col-form-label {
   font-family: 'Rubik', sans-serif;
 }
@@ -397,6 +400,13 @@ table.b-table > thead > tr table.b-table:focus {
 }
 .label-danger {
   font-size: 0.9em;
+}
+.alert-flash {
+  padding: 12px;
+  color: #fff;
+}
+.alert-flash a {
+  color: #fff !important;
 }
 .toast-danger {
   background: #ab4240 !important;

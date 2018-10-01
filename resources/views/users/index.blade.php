@@ -1,5 +1,5 @@
 @extends('layout')
 
 @section('content')
-  <Users :items = "{{ $users }}" url='{{ route("home") }}'/>
+<Users :items = "{{ $users }}" url='{{ route("home") }}'/>
 @endsection

@@ -218,6 +218,7 @@
 						}.bind(this), 2000)
 					}
 				}).catch((error) => {
+										console.log(error)
                     this.$toasted.show('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 
 										{ 
 												position: 'top-center',

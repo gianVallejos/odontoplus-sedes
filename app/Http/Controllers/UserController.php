@@ -27,11 +27,16 @@ class UserController extends Controller{
     }
 
     function store(Request $request){
+        
     	$validator = Validator::make($request->all(), [
             'name' => 'required|max:120',
             'email' => 'required|unique:users|max:150',
-            'password' => 'required|min:8|max:150same:confirm_password'
+            'password' => 'required|min:8|max:150',
+            'confirm_password' => 'required|max:150|same:password',
+            'rolid' => 'required|regex:/(^[1-2]{1}$)/u',
+            'is_active' => 'required'
         ]);
+
 
     	if ($validator->passes()) {
 
@@ -40,14 +45,17 @@ class UserController extends Controller{
                 $user->name = $request->name;
                 $user->email = $request->email;
                 $user->password = Hash::make($request->password);
+                $user->rolid = $request->rolid;
+                $user->is_active = $request->is_active;
                 $user->save();
+
+                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'User was successful added!']));
                     
                 return response()->json(['success' => 'success']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
             }
-    		
         }
         return response()->json(['error'=>$validator->errors()]);
     }
