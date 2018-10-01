@@ -34,9 +34,9 @@
 										<b-button :href="url+'/pacientes/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Paciente
 										</b-button>
-										<b-button variant="warning">
+										<!--b-button variant="warning">
 											<i class="fas fa-print"></i>&nbsp; Imprimir
-										</b-button>
+										</b-button-->
 									</b-button-group>
 								</div>
 							</div>
@@ -48,13 +48,16 @@
 					             @filtered="onFiltered">
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">						        	
-						        	<a :href="url+'/pacientes/'+ row.item.id"  class="action">Detalle</a>
+						        	<a :href="url+'/pacientes/'+ row.item.id + '/false'"  class="action">Detalle</a>
 						        	|
-						        	<a href="#" class="action">Modificar</a>
+						        	<a :href="url+'/pacientes/'+ row.item.id + '/true'" class="action">Modificar</a>
 						        </div>
 						    </template>
+						    <template slot="id" slot-scope="row">
+						    	{{ row.value }}
+						    </template>
 						    <template slot="nombres" slot-scope="row">
-						    	<a :href="url + '/pacientes/' + row.item.id">
+						    	<a :href="url + '/pacientes/' + row.item.id + '/false'">
 						      		{{ row.value }} {{ row.item.apellidos }}
 						      	</a>
 						    </template>						    	
@@ -73,7 +76,7 @@
 					    </b-table>
 					    <b-row>
 					    	<b-col md="6" class="pt-3 fz-3">
-					    		Mostrando {{ currentPage }} de {{ totalRows / perPage }} páginas					    		
+					    		Mostrando {{ currentPage }} de {{ Math.round(totalRows / perPage) }} páginas					    		
 					    	</b-col>
 						    <b-col md="6" class="my-1 text-right">
 						    	<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
@@ -119,10 +122,10 @@
 			    	{ text: 'Dashboard', href: this.url },
 			    	{ text: 'Pacientes', active: true}
 			    ],			    
-			    fields: [
-				    { key: 'id', thClass: 'd-none', tdClass: 'd-none' },
-				    { key: 'actions', label: '', 'class': 'text-left' },
+			    fields: [				    
+				    { key: 'actions', label: '', 'class': 'text-left' },				    
 				    { key: 'nombres', label: 'Nombres', sortable: true, sortDirection: 'desc' },
+				    { key: 'id', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'dni', label: 'DNI', sortable: true, sortDirection: 'desc' },
 				    { key: 'celular', label: 'Celular', sortable: true, sortDirection: 'desc' },			        
 				    { key: 'telefono', label: 'Teléfono', sortable: true, sortDirection: 'desc' },

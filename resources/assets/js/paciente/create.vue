@@ -215,7 +215,7 @@
 						this.isDisabled = true
 						setTimeout(function () {
 						    window.location.href = this.url + '/pacientes'
-						}.bind(this), 2000)
+						}.bind(this), 3500)
 					}
 				}).catch((error) => {
 										console.log(error)
@@ -227,6 +227,9 @@
 												containerClass: 'test'
 										})
                    	this.success = false
+                   	setTimeout(function () {
+					    window.location.href = this.url + '/pacientes'
+					}.bind(this), 3500)
                 })
 		    },
 		    setMyDateToToday() {
