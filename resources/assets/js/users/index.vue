@@ -57,13 +57,13 @@
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/users/'+ row.item.id" >Detalle</a>
+                  <a :href="url+'/users/'+ row.item.id" class="action" >Detalle</a>
                   |
-                  <a href="#">Modificar</a>
+                  <a :href="url+'/users/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
               </template>
-              <template slot="isActive" slot-scope="row">
-                <b-badge :variant="row.value ? 'success' : 'danger'">{{row.value?'Activo':'Inactivo'}}</b-badge>
+              <template slot="is_active" slot-scope="row">
+                <b-badge :variant="row.value == '1' ? 'success' : 'danger'">{{ row.value == '1' ? 'Activo':'Inactivo'}}</b-badge>
               </template>
             </b-table>
 
@@ -107,7 +107,7 @@
           { key: 'name', label: 'Nombre', sortable: true, sortDirection: 'desc' },
           { key: 'email', label: 'Email', sortable: true, 'class': 'text-center' },
           { key: 'rol', label: 'Rol', sortable: true },
-          { key: 'isActive', label: 'Estado', sortable: true }
+          { key: 'is_active', label: 'Estado', sortable: true }
           ],
         currentPage: 1,
         perPage: 10,

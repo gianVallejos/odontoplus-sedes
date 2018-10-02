@@ -17,19 +17,26 @@ import PacienteShow from './paciente/show.vue'
 import FooterComponent from './footer/footerComponent.vue'
 import Users from './users/index.vue'
 import UserForm from './users/form.vue'
+import Flash from './widgets/alert/flash.vue'
 
 const app = new Vue({
     el: '#app',
     components: {
     	ContainerGeneral,
-    	Dashboard,
+			Dashboard,
     	PacienteIndex,
     	PacienteCreate,
     	PacienteShow,
-		Users,
-		UserForm		
-    	
+			Users,
+			UserForm		
     }
+})
+
+const alert = new Vue({
+	el: '#alert',
+	components: {
+		Flash
+	}
 })
 
 const header = new Vue({
