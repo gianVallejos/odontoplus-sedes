@@ -41,7 +41,7 @@
 										<b-col cols="6" class="pt-3 pb-4">
 											<div class="form-title">
 												<i class="fas fa-child"></i> 
-												<div class="d-inline"> Información General </div>
+												<div class="d-inline"> General </div>
 											</div>
 											<p class="form-description fz-3 pt-3 pr-4">
 												On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer sur la mise en page elle-même. 

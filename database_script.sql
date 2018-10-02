@@ -4,6 +4,8 @@
 -- COLUMNS
 ALTER TABLE users
 ADD COLUMN is_active BOOLEAN DEFAULT FALSE;
+ALTER TABLE users
+ADD COLUMN is_deleted BOOLEAN DEFAULT FALSE;
 
 -- PROCEDURES
 DROP PROCEDURE IF EXISTS `OP_ObtenerUsuarios`;
@@ -12,7 +14,17 @@ CREATE PROCEDURE `OP_ObtenerUsuarios`()
 BEGIN
   SELECT u.id, u.name, u.email, u.is_active, u.created_at, r.nombre AS rol
   FROM users u
-  LEFT JOIN roles r ON u.rolid = r.id;
+  LEFT JOIN roles r ON u.rolid = r.id
+  WHERE u.is_deleted = '0';
+END;
+
+DROP PROCEDURE IF EXISTS `OP_ObtenerUsuarios_Id`;
+
+CREATE PROCEDURE `OP_ObtenerUsuarios_Id`(IN XID INT)
+BEGIN
+  SELECT u.id, u.name, u.email, u.is_active, u.created_at, u.rolid, u.is_active
+  FROM users u
+  WHERE u.id = XID AND u.is_deleted = '0';
 END;
 
 -- ---------------------------------------------------------------------------------
