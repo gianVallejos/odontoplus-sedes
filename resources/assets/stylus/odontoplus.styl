@@ -226,6 +226,8 @@ p
 					&.action
 						color: $btnGuardarBc!important
 						text-decoration: none
+						&:hover
+							text-decoration: underline
 .breadcrumb
 	float: right
 	border-radius: 0px
@@ -318,3 +320,29 @@ table.b-table
 	
 .toast-success
 	background: $btnGuardarBc
+	
+.presupuesto-top
+	span
+		width: 100px
+		margin-right: 10px		
+		display: inline-block
+		font-weight: 600
+	.texto
+		border-bottom: 1px solid #f3f3f3
+		width: 72%
+			
+.opcion-btn
+	width: 100%
+	&.active
+		background: $btnInfoBc!important
+		&:hover
+			background: transparent!important		
+
+.subtotal-layout
+	line-height: 40px
+	vertical-align: bottom
+	font-size: 16px
+	.sub
+		font-family: 'Rubik', sans-serif		
+		font-weight: 600
+		padding-right: 20px

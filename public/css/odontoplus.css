@@ -310,6 +310,9 @@ p {
   color: #0aab8a !important;
   text-decoration: none;
 }
+.table tbody tr td a.action:hover {
+  text-decoration: underline;
+}
 .breadcrumb {
   float: right;
   border-radius: 0px;
@@ -410,4 +413,33 @@ table.b-table > thead > tr table.b-table:focus {
 }
 .toast-success {
   background: #0aab8a;
+}
+.presupuesto-top span {
+  width: 100px;
+  margin-right: 10px;
+  display: inline-block;
+  font-weight: 600;
+}
+.presupuesto-top .texto {
+  border-bottom: 1px solid #f3f3f3;
+  width: 72%;
+}
+.opcion-btn {
+  width: 100%;
+}
+.opcion-btn.active {
+  background: #305f94 !important;
+}
+.opcion-btn.active:hover {
+  background: transparent !important;
+}
+.subtotal-layout {
+  line-height: 40px;
+  vertical-align: bottom;
+  font-size: 16px;
+}
+.subtotal-layout .sub {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 600;
+  padding-right: 20px;
 }

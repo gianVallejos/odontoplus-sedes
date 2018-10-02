@@ -11,7 +11,7 @@ class WsOdontoplusController extends Controller
     function OP_obtenerPacientes(){
     	$data = DB::select('call OP_obtenerPacientes()'); 
         $data = json_encode($data);
-        print $data;
+        return $data;
     }
 
     function OP_crearPaciente(Request $request){
@@ -99,5 +99,11 @@ class WsOdontoplusController extends Controller
         $paciente->save();
 
         return response()->json(['success' => 'success']);
+    }
+
+    function OP_obtenerPresupuestos(){
+        $data = DB::select('call OP_obtenerPresupuestos()'); 
+        $data = json_encode($data);
+        print $data;
     }
 }

@@ -88,7 +88,7 @@
 				    		iconUrl: 'fas fa-calculator',
 				    		name: 'Presupuesto',
 				    		color: 'info',
-				    		url: '/'
+				    		url: this.url + '/presupuestos'
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-child',

@@ -80,3 +80,29 @@ CREATE TABLE `pacientes` (
   `isDeleted` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=latin1;
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerDoctores`()
+BEGIN
+  SELECT * FROM doctores;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerEmpresasJson`()
+BEGIN
+  SELECT id as value, nombre as text FROM empresas;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPresupuestos`()
+BEGIN
+  SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pre.idDoctor, pre.descuento, 
+         CONCAT(pc.nombres, ' ', pc.apellidos) AS nombrePaciente, 
+         CONCAT(pc.nombres, ' ', pc.apellidos) AS nombreDoctor
+  FROM presupuestos as pre    
+  INNER JOIN pacientes AS pc ON pc.id = pre.idPaciente
+  ORDER BY pre.id DESC; 
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimoPresupuesto`()
+BEGIN
+  DECLARE NRO_PRESUPUESTO INT;
+  SELECT LPAD(IFNULL(id, 0), 5, '00000') as presupuesto FROM presupuestos ORDER BY id DESC LIMIT 1;
+END
