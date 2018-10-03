@@ -24,7 +24,7 @@
 		          	</a>
 		          </li>
 		          <li class="li-dropdown">
-		          	<a href="#">
+		          	<a :href="url + '/doctores'">
 		          		<i class="fas fa-user-md"></i>Doctores
 		          	</a>
 		          </li>
