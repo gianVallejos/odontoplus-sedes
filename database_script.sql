@@ -33,8 +33,8 @@ END;
 -- ---------------------------------------------------------------------------------
 -- COLUMNS
 DROP TABLE IF EXISTS `medicos`;
-DROP TABLE IF EXISTS `doctores`;
-CREATE TABLE doctores(
+DROP TABLE IF EXISTS `doctors`;
+CREATE TABLE doctors(
 	id int auto_increment primary key,
 	nombres varchar(90) not null,
 	apellidos varchar(90) not null,
@@ -48,7 +48,7 @@ CREATE TABLE doctores(
 	celular varchar(50) null,
 	celular_aux varchar(50) null,
 	margen_ganancia decimal null,
-  is_deleted boolean not null,
+  is_deleted boolean not null default false,
 	updated_at date not null,
 	created_at date not null
 );
@@ -59,7 +59,7 @@ DROP PROCEDURE IF EXISTS `OP_ObtenerDoctores`;
 CREATE PROCEDURE `OP_ObtenerDoctores`()
 BEGIN
   SELECT d.id, d.nombres, d.apellidos, d.dni, d.email, d.direccion, d.telefono, d.celular, d.margen_ganancia
-  FROM doctores d
+  FROM doctors d
   WHERE d.is_deleted = '0';
 END;
 
@@ -68,8 +68,8 @@ DROP PROCEDURE IF EXISTS `OP_ObtenerDoctores_Id`;
 CREATE PROCEDURE `OP_ObtenerDoctores_Id`(IN XID INT)
 BEGIN
   SELECT d.id, d.nombres, d.apellidos, d.dni, d.email, d.direccion, d.telefono, d.celular, d.margen_ganancia,
-         d.genero, d.estado, d.celular_aux
-  FROM doctores d
+         d.genero, d.estado, d.celular_aux, d.fechanacimiento
+  FROM doctors d
   WHERE d.id = XID AND d.is_deleted = '0';
 END;
 
