@@ -40079,6 +40079,88 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__widgets_panel_panel_component_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__widgets_panel_panel_component_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__diente_diente_vue__ = __webpack_require__(258);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__diente_diente_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__diente_diente_vue__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -40232,100 +40314,333 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	created: function created() {
-		console.log('Nuevo presupuesto mounted');
-	},
+				created: function created() {
+								console.log('Nuevo presupuesto mounted');
+				},
 
-	components: {
-		TitleComponent: __WEBPACK_IMPORTED_MODULE_0__widgets_titulo_index_vue___default.a,
-		PanelCard: __WEBPACK_IMPORTED_MODULE_1__widgets_panel_panel_component_vue___default.a,
-		Diente: __WEBPACK_IMPORTED_MODULE_2__diente_diente_vue___default.a
-	},
-	props: ['url', 'nro'],
-	data: function data() {
-		return {
-			breadcrumb: [{ text: 'Dashboard', href: this.url }, { text: 'Presupuestos', href: this.url + '/presupuestos' }, { text: 'Crear Presupuesto', active: true }],
-			pieza_actual: '',
-			tratamiento_actual: '',
-			opcion: 1,
-			todos: ['', 'center', 'top', 'right', 'left', 'bottom', 'ionomero'],
-			tratamientos: [],
-			fields: [{ key: 'pieza', label: 'Pieza' }, { key: 'seccion', label: 'Sección' }, { key: 'secUno', label: 'Sec Uno' }, { key: 'secDos', label: 'Sec Dos' }, { key: 'opcion', label: 'Opcion' }],
-			modalTratamientos: false
-		};
-	},
+				components: {
+								TitleComponent: __WEBPACK_IMPORTED_MODULE_0__widgets_titulo_index_vue___default.a,
+								PanelCard: __WEBPACK_IMPORTED_MODULE_1__widgets_panel_panel_component_vue___default.a,
+								Diente: __WEBPACK_IMPORTED_MODULE_2__diente_diente_vue___default.a
+				},
+				props: ['url', 'nro', 'doctor', 'paciente', 'act_empresa', 'precios', 'precios_table'],
+				data: function data() {
+								return {
+												breadcrumb: [{ text: 'Dashboard', href: this.url }, { text: 'Presupuestos', href: this.url + '/presupuestos' }, { text: 'Crear Presupuesto', active: true }],
+												pieza_actual: '',
+												tratamiento_actual: '',
+												opcion: 1,
+												todos: ['', 'center', 'top', 'right', 'left', 'bottom', 'ionomero'],
+												tratamientos: [],
+												tratamientos_tabla: [],
+												fields: [{ key: 'pieza', label: 'Pieza', class: 'text-center' }, { key: 'tratamiento', label: 'Tratamiento' }, { key: 'deductible', label: 'Deductible', class: 'text-center' }, { key: 'monto', label: 'Monto', class: 'text-center' }, { key: 'total', label: 'Total', class: 'text-center' }, { key: 'action', label: '', class: 'text-center' }],
+												fieldsPrecios: [{ key: 'id', label: 'Nro', class: 'text-center' }, { key: 'detalle', label: 'Tratamiento', sortable: true, sortDirection: 'desc' }, { key: 'monto', label: 'Precio (S/)', class: 'text-center' }, { key: 'action', label: '' }],
+												modalTratamientos: false,
+												currentPage: 1,
+												perPage: 10,
+												totalRows: 0,
+												pageOptions: [5, 10, 15],
+												sortBy: null,
+												sortDesc: false,
+												sortDirection: 'asc',
+												filter: '',
+												actual_pieza: null,
+												fromBtn: null,
+												trat_string: ['', 'center', 'top', 'right', 'left', 'bottom', 'ionomero'],
+												sub_total: this.redondearADos(0),
+												total: this.redondearADos(0),
+												descuento: 0,
+												options_descuento: [{ value: 0, text: '0%' }, { value: 5, text: '5%' }, { value: 10, text: '10%' }]
+								};
+				},
 
-	methods: {
-		range: function range(min, max) {
-			var array = [],
-			    j = 0;
-			if (min <= max) {
-				for (var i = min; i <= max; i++) {
-					array[j] = i;
-					j++;
-				}
-			} else {
-				for (var i = min; i >= max; i--) {
-					array[j] = i;
-					j++;
-				}
-			}
-			return array;
-		},
-		openModal: function openModal(i) {
-			this.$refs.tratamientosModalRef.show();
-		},
-		onSubmitSave: function onSubmitSave() {},
-		onEliminar: function onEliminar() {},
-		onLimpiar: function onLimpiar() {},
-		agregarTratamiento: function agregarTratamiento(idPieza, seccion) {
-			this.pieza_actual = idPieza;
-			this.tratamiento_actual = seccion;
-			this.tratamientos.push({ pieza: idPieza, seccion: seccion, secUno: null, secDos: null, opcion: this.opcion });
-			//console.log(this.tratamientos.length)				
-		},
-		esResina: function esResina(value) {
-			if (value <= 5) return true;
-			if (value == 7) return true;
-			return false;
-		},
-		test: function test() {
-			console.log(this.existeResina(12));
-		},
-		existeResina: function existeResina(pieza) {
-			for (var i = 0; i < this.tratamientos.length; i++) {
-				if (this.tratamientos[i].pieza == pieza && this.esResina(this.tratamientos[i].seccion) && this.tratamientos[i].opcion == this.opcion) {
-					//Es caries
-					return i;
-				}
-			}
-			return -1;
-		},
-		existeTratamiento: function existeTratamiento(seccion, pieza) {
-			for (var i = 0; i < this.tratamientos.length; i++) {
-				// alert( tratamientos[i][0] + '-' + pieza + ', ' + tratamientos[i][1] + '-' + seccion + ', ' + tratamientos[i][4] + '-' + opc_actual )
-				if (this.tratamientos[i].pieza == pieza && this.tratamientos[i].seccion == seccion && this.tratamientos[i].opcion == this.opcion) return true;
-			}
-			return false;
-		},
-		agregarPiezaSeccionATratamientos: function agregarPiezaSeccionATratamientos(seccion, pieza) {
-			if (!this.existeTratamiento(seccion, pieza)) {
-				var ind = this.existeResina(pieza);
-				var flag = 0;
-				if (ind != -1 && this.esResina(seccion)) {
-					if (tratamientos[ind].seccion == undefined && tratamientos[ind].secUno == undefined && tratamientos[ind].opcion == this.opcion) {
-						tratamientos[ind].seccion = seccion;flag = 1;
-					} else if (tratamientos[ind].seccion != undefined && tratamientos[ind].secUno == undefined && tratamientos[ind].opcion == this.opcion) {
-						tratamientos[ind].secDos = seccion;flag = 1;
-					} else if (tratamientos[ind].seccion != undefined && tratamientos[ind].seccion != undefined && tratamientos[ind].opcion == this.opcion) {
-						alert('Advertencia', 'Sólo se admiten tres resinas por pieza');flag = 1;
-					} else {
-						flag = 0;
-					}
-				}
-			}
-		}
-	}
+				methods: _defineProperty({
+								onFiltered: function onFiltered(filteredItems) {
+												this.totalRows = filteredItems.length;
+												this.currentPage = 1;
+								},
+								aplicarDescuento: function aplicarDescuento() {
+												this.total = this.calcularDescuento();
+								},
+								eliminarTratamiento: function eliminarTratamiento(ind) {
+												alert(ind);
+								},
+								range: function range(min, max) {
+												var array = [],
+												    j = 0;
+												if (min <= max) {
+																for (var i = min; i <= max; i++) {
+																				array[j] = i;
+																				j++;
+																}
+												} else {
+																for (var i = min; i >= max; i--) {
+																				array[j] = i;
+																				j++;
+																}
+												}
+												return array;
+								},
+
+								/*	
+        agregarTratamientoDesdeModal(seccion){	
+        	if( !this.existeTratamiento(seccion, this.actual_pieza) ){
+        		this.tratamientos.push({pieza: this.actual_pieza, seccion: seccion, secUno: null, secDos: null, opcion: this.opcion})				
+        		this.closeModal()
+        		this.mostrarTratamientosEnTabla()
+        	}else{
+        		this.$toasted.show('No puede agregar el mismo tratamiento en la misma pieza.', 
+        								{ 
+        									position: 'top-center',
+        									className: 'toast-danger',
+        									duration: 3500,
+        									containerClass: 'test'
+        								})
+        	}
+        },*/
+								esNumero: function esNumero(value) {
+												return Number.isInteger(value);
+								},
+								closeModal: function closeModal() {
+												this.$refs.tratamientosModalRef.hide();
+												//this.actual_pieza = null
+												this.filter = '';
+								},
+								onSubmitSave: function onSubmitSave() {},
+								onEliminar: function onEliminar() {},
+								onLimpiar: function onLimpiar() {},
+
+								/*
+        agregarTratamiento(seccion, idPieza){					
+        	if( seccion <= 7 ){
+        		this.agregarPiezaSeccionATratamientos(seccion, idPieza)
+        	}else{
+        		this.pieza_actual = idPieza
+        		this.tratamiento_actual = seccion
+        		this.tratamientos.push({pieza: idPieza, seccion: seccion, secUno: null, secDos: null, opcion: this.opcion})							
+        		this.mostrarTratamientosEnTabla()
+        	}
+        },*/
+								esResina: function esResina(value) {
+												if (value <= 5) return true;
+												if (value == 7) return true;
+												return false;
+								},
+								existeResina: function existeResina(pieza) {
+												for (var i = 0; i < this.tratamientos.length; i++) {
+																if (this.tratamientos[i].pieza == pieza && this.esResina(this.tratamientos[i].seccion) && this.tratamientos[i].opcion == this.opcion) {
+																				//Es caries
+																				return i;
+																}
+												}
+												return -1;
+								},
+								existeTratamiento: function existeTratamiento(seccion, pieza) {
+												for (var i = 0; i < this.tratamientos.length; i++) {
+																if (this.tratamientos[i].pieza == pieza && this.tratamientos[i].seccion == seccion && this.tratamientos[i].opcion == this.opcion) return true;
+												}
+												return false;
+								},
+								/*	        
+        agregarPiezaSeccionATratamientos(seccion, pieza){	    //Puede ser mejor        
+          if( !this.existeTratamiento(seccion, pieza) ){
+              var ind = this.existeResina(pieza)
+              var flag = 0
+              if( ind != -1 && this.esResina(seccion) ){
+                  if( this.tratamientos[ind].secUno == null && this.tratamientos[ind].secDos == null && this.tratamientos[ind].opcion == this.opcion){
+                      this.tratamientos[ind].secUno = seccion;    flag = 1
+                  }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos == null && this.tratamientos[ind].opcion == this.opcion){
+                      this.tratamientos[ind].secDos = seccion;    flag = 1
+                  }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos != null && this.tratamientos[ind].opcion == this.opcion){
+                      this.$toasted.show('No puede agregar más de tres resinas en una sola pieza.', {
+        	position: 'top-center', className: 'toast-danger', duration: 3500, containerClass: 'test'
+        })
+                      flag = 1	    
+                  }else{
+                      flag = 0
+                  }
+              }
+              if( flag == 0 ){
+                  this.tratamientos.push({pieza, seccion, secUno: null, secDos: null, opcion: this.opcion})	                    
+              }		                
+              this.mostrarTratamientosEnTabla()
+          }else{
+          	this.$toasted.show('No puede agregar el mismo tratamiento en la misma pieza.', 
+        { 
+        	position: 'top-center',
+        	className: 'toast-danger',
+        	duration: 3500,
+        	containerClass: 'test'
+        })	            	
+          }
+        },*/
+								/*
+        calcularTotalesMonto(monto){
+        	this.sub_total = this.redondearADos(parseFloat(this.sub_total) + parseFloat(monto))
+        	this.total = this.sub_total //this.redondearADos(this.sub_total - (this.sub_total * (this.getDescuentoActual()/100)))
+        	//this.calcularMontosPorDescuento()
+        },
+        /*
+        calcularMontosPorDescuento(){
+        	//console.log(this.getDescuentoActual())
+        this.total = this.redondearADos(this.sub_total - (this.sub_total * (this.getDescuentoActual()/100)))
+        },*/
+								agregarDatosATabla: function agregarDatosATabla(ind, pieza, tratamiento, monto) {
+												//Puede ser mejor       	
+												this.tratamientos_tabla.push({ id: ind, pieza: pieza, tratamiento: tratamiento, deductible: 0, monto: monto, total: monto });
+												//this.calcularTotalesMonto(monto)		    	
+								},
+								redondearADos: function redondearADos(total) {
+												return parseFloat(Math.round(total * 100) / 100).toFixed(2);
+								},
+								menorAMayor: function menorAMayor(a, b) {
+												return a.pieza - b.pieza;
+												/*
+            if (a[0] === b[0]) {
+                return 0;
+            }
+            else {
+                return (a[0] < b[0]) ? -1 : 1;
+            }
+            */
+								},
+								mostrarTratamientosEnTabla: function mostrarTratamientosEnTabla() {
+												this.tratamientos_tabla = [];
+												this.sub_total = 0;
+												this.tratamientos.sort(this.menorAMayor);
+												var monto = 0;
+												for (var i = 0; i < this.tratamientos.length; i++) {
+																if (this.tratamientos[i].opcion == this.opcion) {
+																				var pz = this.tratamientos[i].pieza;
+																				var sec = this.tratamientos[i].seccion;
+																				var ind_sec_tabla;
+																				//Puede ser Mejor
+																				if (this.tratamientos[i].secUno == null && this.tratamientos[i].secDos == null) {
+																								ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec);
+																								monto += parseFloat(this.precios[ind_sec_tabla].monto);
+																								this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, this.precios[ind_sec_tabla].monto);
+																				} else if (this.tratamientos[i].secUno != null && this.tratamientos[i].secDos == null) {
+																								sec = 29;
+																								ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec);
+																								monto += parseFloat(this.precios[ind_sec_tabla].monto);
+																								this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, this.precios[ind_sec_tabla].monto);
+																				} else if (this.tratamientos[i].secUno != null && this.tratamientos[i].secDos != null) {
+																								sec = 30;
+																								ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec);
+																								monto += parseFloat(this.precios[ind_sec_tabla].monto);
+																								this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, this.precios[ind_sec_tabla].monto);
+																				}
+																}
+												}
+												this.sub_total = this.redondearADos(monto);
+												this.total = this.calcularDescuento();
+								},
+								calcularDescuento: function calcularDescuento() {
+												return this.redondearADos(this.sub_total - this.sub_total * (parseFloat(this.descuento) / 100));
+								},
+								getIndiceTratamientoPorSeccion: function getIndiceTratamientoPorSeccion(sec) {
+												for (var i = 0; i < this.precios.length; i++) {
+																if (this.precios[i].id == sec) {
+																				return i;
+																}
+												}
+								},
+								abrirModalDesdePieza: function abrirModalDesdePieza(idPieza) {
+												this.actual_pieza = idPieza;
+												this.fromBtn = false;
+												this.$refs.tratamientosModalRef.show();
+								},
+								abrirModalDesdeBtn: function abrirModalDesdeBtn() {
+												this.actual_pieza = null;
+												this.fromBtn = true;
+												this.$refs.tratamientosModalRef.show();
+								},
+								middlewareTratamientoResina: function middlewareTratamientoResina(seccion, pieza) {
+												this.actual_pieza = null;
+												this.fromBtn = false;
+												this.agregarTratamiento(seccion, pieza);
+								},
+								middlewareTratamientoResinaFromModal: function middlewareTratamientoResinaFromModal(seccion, pieza) {
+												if (this.actual_pieza == null && !this.fromBtn) return 0;
+
+												if (this.fromBtn) {
+																this.agregarTratamiento(seccion, null);
+																this.fromBtn = false;
+												} else {
+																this.agregarTratamiento(seccion, this.actual_pieza);
+																this.actual_pieza = null;
+												}
+												this.closeModal();
+								},
+								agregarTratamiento: function agregarTratamiento(seccion, pieza) {
+												var addPieza = true;
+												if (pieza != null) {
+																if (!this.existeTratamiento(seccion, pieza)) {
+																				if (this.esResina(seccion)) {
+																								var ind = this.existeResina(pieza);
+																								if (ind != -1) {
+																												if (this.tratamientos[ind].secUno == null && this.tratamientos[ind].secDos == null && this.tratamientos[ind].opcion == this.opcion) {
+																																this.tratamientos[ind].secUno = seccion;addPieza = false;
+																																this.mostrarTratamientosEnTabla();
+																												} else if (this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos == null && this.tratamientos[ind].opcion == this.opcion) {
+																																this.tratamientos[ind].secDos = seccion;addPieza = false;
+																																this.mostrarTratamientosEnTabla();
+																												} else if (this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos != null && this.tratamientos[ind].opcion == this.opcion) {
+																																this.$toasted.show('No puede agregar más de tres resinas en una sola pieza.', {
+																																				position: 'top-center', className: 'toast-danger', duration: 3500, containerClass: 'test'
+																																});
+																																addPieza = false;
+																												}
+																								}
+																				}
+																} else {
+																				this.$toasted.show('No puede agregar el mismo tratamiento en la misma pieza.', {
+																								position: 'top-center', className: 'toast-danger', duration: 3500, containerClass: 'test'
+																				});
+																				addPieza = false;
+																}
+												}
+												if (addPieza) {
+																this.tratamientos.push({ pieza: pieza, seccion: seccion, secUno: null, secDos: null, opcion: this.opcion });
+																this.mostrarTratamientosEnTabla();
+												}
+								},
+								despitarSeccionDiente: function despitarSeccionDiente(seccion, pieza) {
+												var sec = 'pz' + pieza;
+												if (seccion == '7') {
+																this.$refs[sec][0].isMiddle = false; //!this.isMiddle
+												} else if (this.trat_string[seccion] == 'top') {
+																this.$refs[sec][0].isTop = false; //!this.isTop
+												} else if (this.trat_string[seccion] == 'right') {
+																this.$refs[sec][0].isRight = false; //!this.isRight
+												} else if (this.trat_string[seccion] == 'left') {
+																this.$refs[sec][0].isLeft = false; //!this.isLeft
+												} else if (this.trat_string[seccion] == 'bottom') {
+																this.$refs[sec][0].isBottom = false; //!this.isBottom
+												} else if (this.trat_string[seccion] == 'ionomero') this.$refs[sec][0].isIonomero = false; //!this.isIonomero	        	
+								}
+				}, 'eliminarTratamiento', function eliminarTratamiento(id) {
+								var flag = 0;
+								if (this.esResina(this.tratamientos[id].seccion)) {
+												//Eliminar caries
+												if (this.tratamientos[id].secUno != null && this.tratamientos[id].secDos != null) {
+																this.despitarSeccionDiente(this.tratamientos[id].secDos, this.tratamientos[id].pieza);
+																this.tratamientos[id].secDos = null;flag = 1;
+												} else if (this.tratamientos[id].secUno != null && this.tratamientos[id].secDos == null) {
+																this.despitarSeccionDiente(this.tratamientos[id].secUno, this.tratamientos[id].pieza);
+																this.tratamientos[id].secUno = null;flag = 1;
+												} else {
+																flag = 0;
+												}
+								}
+								if (!flag) {
+												if (this.tratamientos[id].seccion <= 7) {
+																this.despitarSeccionDiente(this.tratamientos[id].seccion, this.tratamientos[id].pieza);
+												}
+												this.tratamientos.splice(id, 1);
+								}
+								this.mostrarTratamientosEnTabla();
+				})
 });
 
 /***/ }),
@@ -40410,7 +40725,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			isRight: false,
 			isMiddle: false,
 			isIonomero: false,
-			trat_string: ['', 'center', 'top', 'right', 'left', 'bottom', 'ionomero']
+			trat_string: ['', 'center', 'top', 'right', 'left', 'bottom', 'ionomero'],
+			nro_resinas: 0
 		};
 	},
 
@@ -40418,20 +40734,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		accionDiente: function accionDiente(seccion) {
 			//Validación multi tratamiento
 			this.pintarDienteSeleccionado(seccion);
-			this.$emit('click', this.pieza, seccion);
+			this.$emit('click', seccion, this.pieza);
 		},
 		pintarDienteSeleccionado: function pintarDienteSeleccionado(seccion) {
-			if (this.trat_string[seccion] == 'center') this.isMiddle = !this.isMiddle;
+			if (seccion == '7' && !this.esCuartaResina()) this.isMiddle = true; //!this.isMiddle
 
-			if (this.trat_string[seccion] == 'top') this.isTop = !this.isTop;
+			if (this.trat_string[seccion] == 'top' && !this.esCuartaResina()) this.isTop = true; //!this.isTop
 
-			if (this.trat_string[seccion] == 'right') this.isRight = !this.isRight;
+			if (this.trat_string[seccion] == 'right' && !this.esCuartaResina()) this.isRight = true; //!this.isRight
 
-			if (this.trat_string[seccion] == 'left') this.isLeft = !this.isLeft;
+			if (this.trat_string[seccion] == 'left' && !this.esCuartaResina()) this.isLeft = true; //!this.isLeft
 
-			if (this.trat_string[seccion] == 'bottom') this.isBottom = !this.isBottom;
+			if (this.trat_string[seccion] == 'bottom' && !this.esCuartaResina()) this.isBottom = true; //!this.isBottom
 
-			if (this.trat_string[seccion] == 'ionomero') this.isIonomero = !this.isIonomero;
+			if (this.trat_string[seccion] == 'ionomero' && !this.esCuartaResina()) this.isIonomero = true; //!this.isIonomero
+		},
+		esCuartaResina: function esCuartaResina() {
+			this.nro_resinas = 0;
+			if (this.isMiddle) {
+				this.nro_resinas++;
+			}
+			if (this.isTop) {
+				this.nro_resinas++;
+			}
+			if (this.isRight) {
+				this.nro_resinas++;
+			}
+			if (this.isLeft) {
+				this.nro_resinas++;
+			}
+			if (this.isBottom) {
+				this.nro_resinas++;
+			}
+			return this.nro_resinas >= 3;
 		}
 	}
 });
@@ -40444,7 +40779,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { ref: "referencia", staticClass: "diente" }, [
+  return _c("div", { staticClass: "diente" }, [
     _c("div", {
       staticClass: "ionomero",
       class: { active: _vm.isIonomero },
@@ -40503,10 +40838,10 @@ var render = function() {
     _c("div", {
       staticClass: "middle",
       class: { active: _vm.isMiddle },
-      attrs: { id: _vm.pieza + "-1" },
+      attrs: { id: _vm.pieza + "-7" },
       on: {
         click: function($event) {
-          _vm.accionDiente(1)
+          _vm.accionDiente(7)
         }
       }
     })
@@ -40706,8 +41041,8 @@ var render = function() {
                                 on: { click: _vm.onEliminar }
                               },
                               [
-                                _c("i", { staticClass: "fas fa-trash-alt" }),
-                                _vm._v(" Eliminar\n\t\t\t\t\t\t\t\t")
+                                _c("i", { staticClass: "fas fa-times" }),
+                                _vm._v(" Cancelar\n\t\t\t\t\t\t\t\t")
                               ]
                             ),
                             _vm._v(" "),
@@ -40750,7 +41085,7 @@ var render = function() {
                                     staticClass: "od-modal",
                                     on: {
                                       click: function($event) {
-                                        _vm.openModal(i)
+                                        _vm.abrirModalDesdePieza(i)
                                       }
                                     }
                                   },
@@ -40758,8 +41093,10 @@ var render = function() {
                                 ),
                                 _vm._v(" "),
                                 _c("Diente", {
+                                  ref: "pz" + i,
+                                  refInFor: true,
                                   attrs: { pieza: i },
-                                  on: { click: _vm.agregarTratamiento }
+                                  on: { click: _vm.middlewareTratamientoResina }
                                 })
                               ],
                               1
@@ -40784,7 +41121,7 @@ var render = function() {
                                     staticClass: "od-modal",
                                     on: {
                                       click: function($event) {
-                                        _vm.openModal(i)
+                                        _vm.abrirModalDesdePieza(i)
                                       }
                                     }
                                   },
@@ -40792,8 +41129,10 @@ var render = function() {
                                 ),
                                 _vm._v(" "),
                                 _c("Diente", {
+                                  ref: "pz" + i,
+                                  refInFor: true,
                                   attrs: { pieza: i },
-                                  on: { click: _vm.agregarTratamiento }
+                                  on: { click: _vm.middlewareTratamientoResina }
                                 })
                               ],
                               1
@@ -40813,8 +41152,10 @@ var render = function() {
                               { staticClass: "d-inline-block text-center" },
                               [
                                 _c("Diente", {
+                                  ref: "pz" + i,
+                                  refInFor: true,
                                   attrs: { pieza: i },
-                                  on: { click: _vm.agregarTratamiento }
+                                  on: { click: _vm.middlewareTratamientoResina }
                                 }),
                                 _vm._v(" "),
                                 _c(
@@ -40823,7 +41164,7 @@ var render = function() {
                                     staticClass: "od-modal",
                                     on: {
                                       click: function($event) {
-                                        _vm.openModal(i)
+                                        _vm.abrirModalDesdePieza(i)
                                       }
                                     }
                                   },
@@ -40847,8 +41188,10 @@ var render = function() {
                               { staticClass: "d-inline-block text-center" },
                               [
                                 _c("Diente", {
+                                  ref: "pz" + i,
+                                  refInFor: true,
                                   attrs: { pieza: i },
-                                  on: { click: _vm.agregarTratamiento }
+                                  on: { click: _vm.middlewareTratamientoResina }
                                 }),
                                 _vm._v(" "),
                                 _c(
@@ -40857,7 +41200,7 @@ var render = function() {
                                     staticClass: "od-modal",
                                     on: {
                                       click: function($event) {
-                                        _vm.openModal(i)
+                                        _vm.abrirModalDesdePieza(i)
                                       }
                                     }
                                   },
@@ -40888,7 +41231,7 @@ var render = function() {
                                     staticClass: "od-modal",
                                     on: {
                                       click: function($event) {
-                                        _vm.openModal(i)
+                                        _vm.abrirModalDesdePieza(i)
                                       }
                                     }
                                   },
@@ -40896,8 +41239,10 @@ var render = function() {
                                 ),
                                 _vm._v(" "),
                                 _c("Diente", {
+                                  ref: "pz" + i,
+                                  refInFor: true,
                                   attrs: { pieza: i },
-                                  on: { click: _vm.agregarTratamiento }
+                                  on: { click: _vm.middlewareTratamientoResina }
                                 })
                               ],
                               1
@@ -40922,7 +41267,7 @@ var render = function() {
                                     staticClass: "od-modal",
                                     on: {
                                       click: function($event) {
-                                        _vm.openModal(i)
+                                        _vm.abrirModalDesdePieza(i)
                                       }
                                     }
                                   },
@@ -40930,8 +41275,10 @@ var render = function() {
                                 ),
                                 _vm._v(" "),
                                 _c("Diente", {
+                                  ref: "pz" + i,
+                                  refInFor: true,
                                   attrs: { pieza: i },
-                                  on: { click: _vm.agregarTratamiento }
+                                  on: { click: _vm.middlewareTratamientoResina }
                                 })
                               ],
                               1
@@ -40951,8 +41298,10 @@ var render = function() {
                               { staticClass: "d-inline-block text-center" },
                               [
                                 _c("Diente", {
+                                  ref: "pz" + i,
+                                  refInFor: true,
                                   attrs: { pieza: i },
-                                  on: { click: _vm.agregarTratamiento }
+                                  on: { click: _vm.middlewareTratamientoResina }
                                 }),
                                 _vm._v(" "),
                                 _c(
@@ -40961,7 +41310,7 @@ var render = function() {
                                     staticClass: "od-modal",
                                     on: {
                                       click: function($event) {
-                                        _vm.openModal(i)
+                                        _vm.abrirModalDesdePieza(i)
                                       }
                                     }
                                   },
@@ -40985,8 +41334,10 @@ var render = function() {
                               { staticClass: "d-inline-block text-center" },
                               [
                                 _c("Diente", {
+                                  ref: "pz" + i,
+                                  refInFor: true,
                                   attrs: { pieza: i },
-                                  on: { click: _vm.agregarTratamiento }
+                                  on: { click: _vm.middlewareTratamientoResina }
                                 }),
                                 _vm._v(" "),
                                 _c(
@@ -40995,7 +41346,7 @@ var render = function() {
                                     staticClass: "od-modal",
                                     on: {
                                       click: function($event) {
-                                        _vm.openModal(i)
+                                        _vm.abrirModalDesdePieza(i)
                                       }
                                     }
                                   },
@@ -41018,22 +41369,39 @@ var render = function() {
                           "b-col",
                           { staticClass: "text-left", attrs: { cols: "6" } },
                           [
-                            _c("b-button", { on: { click: _vm.test } }, [
-                              _vm._v("Agregar Tratamiento Extra")
-                            ])
+                            _c(
+                              "b-button",
+                              { on: { click: _vm.abrirModalDesdeBtn } },
+                              [_vm._v("Agregar Tratamiento Extra")]
+                            )
                           ],
                           1
                         ),
                         _vm._v(" "),
                         _c(
                           "b-col",
-                          { staticClass: "text-right", attrs: { cols: "6" } },
+                          {
+                            staticClass: "text-right pr-4",
+                            attrs: { cols: "6" }
+                          },
                           [
-                            _c("div", { staticClass: "subtotal-layout" }, [
+                            _c("div", { staticClass: "subtotal-layout pt-1" }, [
                               _c("div", { staticClass: "sub d-inline-block" }, [
-                                _vm._v("Subtotal (S/): ")
+                                _vm._v("Subtotal: ")
                               ]),
-                              _c("span", [_vm._v("00000.00")])
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "d-inline-block presupuesto-sub text-left"
+                                },
+                                [
+                                  _c("span", [
+                                    _vm._v("S/ " + _vm._s(_vm.sub_total))
+                                  ])
+                                ]
+                              )
                             ])
                           ]
                         )
@@ -41043,7 +41411,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "b-row",
-                      { staticClass: "pt-4" },
+                      { staticClass: "pt-4 pb-3" },
                       [
                         _c(
                           "b-col",
@@ -41052,8 +41420,9 @@ var render = function() {
                             _c("b-table", {
                               attrs: {
                                 "show-empty": "",
-                                items: _vm.tratamientos,
-                                fields: _vm.fields
+                                items: _vm.tratamientos_tabla,
+                                fields: _vm.fields,
+                                "empty-text": "No existen campos para mostrar"
                               },
                               scopedSlots: _vm._u([
                                 {
@@ -41069,7 +41438,7 @@ var render = function() {
                                   }
                                 },
                                 {
-                                  key: "seccion",
+                                  key: "tratamiento",
                                   fn: function(row) {
                                     return [
                                       _vm._v(
@@ -41081,7 +41450,7 @@ var render = function() {
                                   }
                                 },
                                 {
-                                  key: "secUno",
+                                  key: "deductible",
                                   fn: function(row) {
                                     return [
                                       _vm._v(
@@ -41093,11 +41462,11 @@ var render = function() {
                                   }
                                 },
                                 {
-                                  key: "secDos",
+                                  key: "monto",
                                   fn: function(row) {
                                     return [
                                       _vm._v(
-                                        "\t\t\t\t\t\t\t\t    \t\n\t\t\t\t\t\t\t\t    \t" +
+                                        "\t\t\t\t\t\t\t\t    \t\n\t\t\t\t\t\t\t\t    \tS/ " +
                                           _vm._s(row.value) +
                                           "\n\t\t\t\t\t\t\t\t    "
                                       )
@@ -41105,19 +41474,200 @@ var render = function() {
                                   }
                                 },
                                 {
-                                  key: "opcion",
+                                  key: "total",
                                   fn: function(row) {
                                     return [
                                       _vm._v(
-                                        "\t\t\t\t\t\t\t\t    \t\n\t\t\t\t\t\t\t\t    \t" +
+                                        "\t\t\t\t\t\t\t\t    \t\n\t\t\t\t\t\t\t\t    \tS/ " +
                                           _vm._s(row.value) +
                                           "\n\t\t\t\t\t\t\t\t    "
+                                      )
+                                    ]
+                                  }
+                                },
+                                {
+                                  key: "action",
+                                  fn: function(row) {
+                                    return [
+                                      _c(
+                                        "a",
+                                        {
+                                          staticClass: "tratamiento-delete",
+                                          attrs: { href: "#" },
+                                          on: {
+                                            click: function($event) {
+                                              $event.preventDefault()
+                                              _vm.eliminarTratamiento(
+                                                row.item.id
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n\t\t\t\t\t\t\t\t    \t\tEliminar\n\t\t\t\t\t\t\t\t    \t"
+                                          )
+                                        ]
                                       )
                                     ]
                                   }
                                 }
                               ])
                             })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      { staticClass: "pt-4 pb-3" },
+                      [
+                        _c(
+                          "b-col",
+                          {
+                            staticClass: "text-right pr-4",
+                            attrs: { cols: "12" }
+                          },
+                          [
+                            _c("div", { staticClass: "subtotal-layout" }, [
+                              _c("div", { staticClass: "sub d-inline-block" }, [
+                                _vm._v("Subtotal: ")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "d-inline-block presupuesto-sub text-left"
+                                },
+                                [
+                                  _c("span", [
+                                    _vm._v("S/ " + _vm._s(_vm.sub_total))
+                                  ])
+                                ]
+                              )
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-col",
+                          {
+                            staticClass: "text-right pr-4",
+                            attrs: { cols: "12" }
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "subtotal-layout" },
+                              [
+                                _c(
+                                  "div",
+                                  { staticClass: "sub d-inline-block" },
+                                  [_vm._v("Descuento: ")]
+                                ),
+                                _vm._v(" "),
+                                _c("b-form-select", {
+                                  staticClass: "presupuesto-form",
+                                  attrs: { options: _vm.options_descuento },
+                                  on: {
+                                    input: function($event) {
+                                      _vm.aplicarDescuento()
+                                    }
+                                  },
+                                  model: {
+                                    value: _vm.descuento,
+                                    callback: function($$v) {
+                                      _vm.descuento = $$v
+                                    },
+                                    expression: "descuento"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-col",
+                          {
+                            staticClass: "text-right pr-4",
+                            attrs: { cols: "12" }
+                          },
+                          [
+                            _c("div", { staticClass: "subtotal-layout" }, [
+                              _c("div", { staticClass: "sub d-inline-block" }, [
+                                _vm._v("Total: ")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "d-inline-block presupuesto-sub text-left"
+                                },
+                                [
+                                  _c("span", [
+                                    _vm._v("S/ " + _vm._s(_vm.total))
+                                  ])
+                                ]
+                              )
+                            ])
+                          ]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-row",
+                      [
+                        _c(
+                          "b-col",
+                          {
+                            staticClass: "text-center pt-4 pb-4",
+                            attrs: { cols: "12" }
+                          },
+                          [
+                            _c(
+                              "b-button",
+                              {
+                                attrs: { type: "submit", variant: "success" },
+                                on: { click: _vm.onSubmitSave }
+                              },
+                              [
+                                _c("i", { staticClass: "fas fa-save" }),
+                                _vm._v("  Guardar\n\t\t\t\t\t\t\t\t")
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-button",
+                              {
+                                attrs: { variant: "danger" },
+                                on: { click: _vm.onEliminar }
+                              },
+                              [
+                                _c("i", { staticClass: "fas fa-times" }),
+                                _vm._v(" Cancelar\n\t\t\t\t\t\t\t\t")
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-button",
+                              {
+                                attrs: { variant: "warning" },
+                                on: { click: _vm.onLimpiar }
+                              },
+                              [
+                                _c("i", { staticClass: "fas fa-eraser" }),
+                                _vm._v("  Limpiar\n\t\t\t\t\t\t\t\t")
+                              ]
+                            )
                           ],
                           1
                         )
@@ -41139,9 +41689,179 @@ var render = function() {
         "b-modal",
         {
           ref: "tratamientosModalRef",
-          attrs: { id: "modal1", title: "Bootstrap-Vue" }
+          attrs: {
+            id: "modal1",
+            title: "Lista de Tratamientos",
+            size: "lg",
+            "no-fade": "",
+            "hide-footer": ""
+          }
         },
-        [_c("p", { staticClass: "my-4" }, [_vm._v("Hello from modal!")])]
+        [
+          _c(
+            "b-row",
+            [
+              _c(
+                "b-col",
+                { attrs: { cols: "12" } },
+                [
+                  _c("b-input-group", [
+                    _c("div", { staticClass: "input-group-append" }, [
+                      _c("span", { staticClass: "icon-input" }, [
+                        _c("i", {
+                          staticClass: "fas fa-search",
+                          attrs: { "aria-hidden": "true" }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.filter,
+                          expression: "filter"
+                        }
+                      ],
+                      staticClass: "odInput",
+                      attrs: { placeholder: "Buscar...", type: "text" },
+                      domProps: { value: _vm.filter },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.filter = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-col",
+                { attrs: { cols: "12" } },
+                [
+                  _c("b-table", {
+                    attrs: {
+                      "show-empty": "",
+                      items: _vm.precios_table,
+                      fields: _vm.fieldsPrecios,
+                      "current-page": _vm.currentPage,
+                      "per-page": _vm.perPage,
+                      filter: _vm.filter,
+                      "sort-by": _vm.sortBy,
+                      "sort-desc": _vm.sortDesc,
+                      "sort-direction": _vm.sortDirection
+                    },
+                    on: {
+                      "update:sortBy": function($event) {
+                        _vm.sortBy = $event
+                      },
+                      "update:sortDesc": function($event) {
+                        _vm.sortDesc = $event
+                      },
+                      filtered: _vm.onFiltered
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "id",
+                        fn: function(row) {
+                          return [
+                            _vm._v(
+                              "\t\t\t\t\t\t\t\t    \t\n\t\t\t\t\t\t\t" +
+                                _vm._s(row.value) +
+                                "\n\t\t\t\t\t\t"
+                            )
+                          ]
+                        }
+                      },
+                      {
+                        key: "detalle",
+                        fn: function(row) {
+                          return [
+                            _vm._v(
+                              "\t\t\t\t\t\t\t\t    \t\n\t\t\t\t\t\t\t" +
+                                _vm._s(row.value) +
+                                "\n\t\t\t\t\t\t"
+                            )
+                          ]
+                        }
+                      },
+                      {
+                        key: "monto",
+                        fn: function(row) {
+                          return [
+                            _vm._v(
+                              "\t\t\t\t\t\t\t\t    \t\n\t\t\t\t\t\t\tS/ " +
+                                _vm._s(row.value) +
+                                "\n\t\t\t\t\t\t"
+                            )
+                          ]
+                        }
+                      },
+                      {
+                        key: "action",
+                        fn: function(row) {
+                          return [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    _vm.middlewareTratamientoResinaFromModal(
+                                      row.item.id,
+                                      _vm.actual_pieza
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n\t\t\t\t\t\t\t\tAgregar\n\t\t\t\t\t\t\t"
+                                )
+                              ]
+                            )
+                          ]
+                        }
+                      }
+                    ])
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-col",
+                { staticClass: "text-center", attrs: { cols: "12" } },
+                [
+                  _c("b-pagination", {
+                    staticClass: "d-inline-flex",
+                    attrs: {
+                      "total-rows": _vm.totalRows,
+                      "per-page": _vm.perPage
+                    },
+                    model: {
+                      value: _vm.currentPage,
+                      callback: function($$v) {
+                        _vm.currentPage = $$v
+                      },
+                      expression: "currentPage"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
       )
     ],
     1

@@ -34,8 +34,18 @@ class PresupuestoController extends Controller{
     }
 
     public function nuevo($idPaciente, $idDoctor){
-        $lastPresupuesto = DB::select('call OP_obtenerUltimoPresupuesto()')[0]->presupuesto;        
-        return view($this->path . '.nuevo', compact('idPaciente', 'idDoctor', 'lastPresupuesto'));
+        $lastPresupuesto = DB::select('call OP_obtenerUltimoPresupuesto()')[0]->presupuesto; 
+        $doctor = DB::select('call OP_obtenerDoctores_presupuesto('. $idDoctor .')')[0];
+        $doctor = json_encode($doctor);
+        $paciente = DB::select('call OP_obtenerPacientes_presupuesto('. $idPaciente .')')[0];
+        $paciente = json_encode($paciente);
+        $act_empresa = DB::select('call OP_obtenerEmpresaActual_paciente('. $idPaciente .')')[0]->empresa_id;        
+        $precios = DB::select('call OP_obtenerPrecios_EmpresaId('. $act_empresa .')');       
+        $precios = json_encode($precios);
+        $precios_tabla = DB::select('call OP_obtenerPreciosParaTabla_EmpresaId('. $act_empresa .')');
+        $precios_tabla = json_encode($precios_tabla);
+
+        return view($this->path . '.nuevo', compact('lastPresupuesto', 'doctor', 'paciente', 'precios', 'precios_tabla', 'act_empresa'));
     }
 
     public function show(Presupuesto $presupuesto)

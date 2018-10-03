@@ -39,6 +39,24 @@
     transform translate(-50%, -50%)
     transition all .1s ease-out
     cursor pointer
+    color: black
+    font-weight: bold
+    font-size: 1.1em
+    &.corona
+        border: 2px solid yellow
+    &.exodoncia::before
+        content: 'X'    
+    &.sellante::before
+        content: 'S'
+    &.incrustracion::before
+        content: 'INC'
+        font-size: .70em
+        margin-left: 1px
+    &.palito::before
+        content: ''
+        border-left: 4px solid black
+        maring-top: 1px
+        
 
 .ionomero
     background #73a5b6
@@ -76,5 +94,5 @@
     display: inline-block
     cursor: pointer
     &:hover
-        opacity: .9
-        font-weight: 600
+        font-weight: 700
+        color: #3f3f3f

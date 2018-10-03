@@ -54,6 +54,28 @@
   -webkit-transition: all 0.1s ease-out;
   transition: all 0.1s ease-out;
   cursor: pointer;
+  color: #000;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+.middle.corona {
+  border: 2px solid #ff0;
+}
+.middle.exodoncia::before {
+  content: 'X';
+}
+.middle.sellante::before {
+  content: 'S';
+}
+.middle.incrustracion::before {
+  content: 'INC';
+  font-size: 0.7em;
+  margin-left: 1px;
+}
+.middle.palito::before {
+  content: '';
+  border-left: 4px solid #000;
+  maring-top: 1px;
 }
 .ionomero {
   background: #73a5b6;
@@ -95,6 +117,6 @@
   cursor: pointer;
 }
 .od-modal:hover {
-  opacity: 0.9;
-  font-weight: 600;
+  font-weight: 700;
+  color: #3f3f3f;
 }
