@@ -27,6 +27,52 @@ BEGIN
   WHERE u.id = XID AND u.is_deleted = '0';
 END;
 
+
+-- ---------------------------------------------------------------------------------
+-- DOCTORS
+-- ---------------------------------------------------------------------------------
+-- COLUMNS
+DROP TABLE IF EXISTS `medicos`;
+DROP TABLE IF EXISTS `doctores`;
+CREATE TABLE doctores(
+	id int auto_increment primary key,
+	nombres varchar(90) not null,
+	apellidos varchar(90) not null,
+	dni varchar(8) not null,
+	email varchar(90) null,
+	direccion varchar(90) not null,
+	fechanacimiento date not null,
+	genero varchar(25) not null,
+	estado varchar(25) not null,
+	telefono varchar(50) null,
+	celular varchar(50) null,
+	celular_aux varchar(50) null,
+	margen_ganancia decimal null,
+  is_deleted boolean not null,
+	updated_at date not null,
+	created_at date not null
+);
+
+-- PROCEDURES
+DROP PROCEDURE IF EXISTS `OP_ObtenerDoctores`;
+
+CREATE PROCEDURE `OP_ObtenerDoctores`()
+BEGIN
+  SELECT d.id, d.nombres, d.apellidos, d.dni, d.email, d.direccion, d.telefono, d.celular, d.margen_ganancia
+  FROM doctores d
+  WHERE d.is_deleted = '0';
+END;
+
+DROP PROCEDURE IF EXISTS `OP_ObtenerDoctores_Id`;
+
+CREATE PROCEDURE `OP_ObtenerDoctores_Id`(IN XID INT)
+BEGIN
+  SELECT d.id, d.nombres, d.apellidos, d.dni, d.email, d.direccion, d.telefono, d.celular, d.margen_ganancia,
+         d.genero, d.estado, d.celular_aux
+  FROM doctores d
+  WHERE d.id = XID AND d.is_deleted = '0';
+END;
+
 -- ---------------------------------------------------------------------------------
 -- PACIENTES
 -- ---------------------------------------------------------------------------------

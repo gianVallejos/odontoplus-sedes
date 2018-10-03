@@ -17,6 +17,8 @@ import PacienteShow from './paciente/show.vue'
 import FooterComponent from './footer/footerComponent.vue'
 import Users from './users/index.vue'
 import UserForm from './users/form.vue'
+import Doctores from './doctores/index.vue'
+//import DoctoresForm from './udoctores/form.vue'
 import Flash from './widgets/alert/flash.vue'
 
 const app = new Vue({
@@ -28,7 +30,8 @@ const app = new Vue({
     	PacienteCreate,
     	PacienteShow,
 			Users,
-			UserForm		
+			UserForm,
+			Doctores		
     }
 })
 
