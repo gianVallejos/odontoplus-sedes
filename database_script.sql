@@ -74,6 +74,34 @@ BEGIN
 END;
 
 -- ---------------------------------------------------------------------------------
+-- TRATAMIENTOS
+-- ---------------------------------------------------------------------------------
+-- COLUMNS
+ALTER TABLE tratamientos
+ADD COLUMN is_active BOOLEAN DEFAULT TRUE;
+ALTER TABLE tratamientos
+ADD COLUMN is_deleted BOOLEAN DEFAULT FALSE;
+
+-- PROCEDURES
+DROP PROCEDURE IF EXISTS `OP_ObtenerTratamientos`;
+
+CREATE PROCEDURE `OP_ObtenerTratamientos`()
+BEGIN
+  SELECT t.id, t.detalle, t.is_active
+  FROM tratamientos t
+  WHERE t.is_deleted = '0';
+END;
+
+DROP PROCEDURE IF EXISTS `OP_ObtenerTratamientos_Id`;
+
+CREATE PROCEDURE `OP_ObtenerTratamientos_Id`(IN XID INT)
+BEGIN
+  SELECT t.id, t.detalle, t.is_active
+  FROM tratamientos t
+  WHERE t.id = XID AND t.is_deleted = '0';
+END;
+
+-- ---------------------------------------------------------------------------------
 -- PACIENTES
 -- ---------------------------------------------------------------------------------
 -- ----------------------------
