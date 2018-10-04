@@ -137,7 +137,6 @@
   export default{
     mounted() { 
       console.log('Users mounted')
-			console.log(this.user.name)
 			if(this.display != 'new'){
 				this.fillForm()
 			}
