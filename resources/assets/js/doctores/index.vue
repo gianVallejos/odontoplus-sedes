@@ -64,7 +64,7 @@
 
           <b-row align-h="between">
             <b-col align-self="start">
-              Mostrando {{ currentPage }} de {{ totalRows }} registros.
+              Mostrando {{ currentPage }} de {{ Math.ceil(totalRows / perPage) }} páginas
             </b-col>
             <b-col cols="auto">
               <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />

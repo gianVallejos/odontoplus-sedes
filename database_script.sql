@@ -101,6 +101,36 @@ BEGIN
   WHERE t.id = XID AND t.is_deleted = '0';
 END;
 
+
+-- ---------------------------------------------------------------------------------
+-- EMPRESAS
+-- ---------------------------------------------------------------------------------
+-- COLUMNS
+ALTER TABLE empresas
+ADD COLUMN sucursal varchar(120) null ;
+ALTER TABLE empresas
+ADD COLUMN is_deleted BOOLEAN DEFAULT FALSE;
+
+-- PROCEDURES
+DROP PROCEDURE IF EXISTS `OP_ObtenerEmpresas`;
+
+CREATE PROCEDURE `OP_ObtenerEmpresas`()
+BEGIN
+  SELECT e.id, e.nombre, e.ruc, e.sucursal
+  FROM empresas e
+  WHERE e.is_deleted = '0';
+END;
+
+DROP PROCEDURE IF EXISTS `OP_ObtenerEmpresas_Id`;
+
+CREATE PROCEDURE `OP_ObtenerEmpresas_Id`(IN XID INT)
+BEGIN
+  SELECT e.id, e.nombre, e.ruc, e.sucursal
+  FROM empresas e
+  WHERE e.id = XID AND e.is_deleted = '0';
+END;
+
+
 -- ---------------------------------------------------------------------------------
 -- PACIENTES
 -- ---------------------------------------------------------------------------------

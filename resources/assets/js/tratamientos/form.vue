@@ -155,9 +155,9 @@
 				else if (this.display == 'new') {
 					request = { method: 'POST', url: '/tratamientos/'+ this.record_id, data: this.form }
 				}
-				else if (this.display == 'show' && action == 'delete' && confirm('¿Esta seguro de eliminar este Usuario?')) {
+				else if (this.display == 'show' && action == 'delete' && confirm('¿Está seguro de eliminar este registro?')) {
 					request = { method: 'DELETE', url: '/tratamientos/'+ this.record_id,  }
-					mssgOnFail = 'El usuario no podido ser eliminado.'
+					mssgOnFail = 'El registro no ha podido ser eliminado.'
 				}
 
 				if(request){
