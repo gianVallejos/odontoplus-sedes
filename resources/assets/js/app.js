@@ -19,6 +19,8 @@ import Users from './users/index.vue'
 import UserForm from './users/form.vue'
 import Doctores from './doctores/index.vue'
 import DoctorForm from './doctores/form.vue'
+import Tratamientos from './tratamientos/index.vue'
+import TratamientoForm from './tratamientos/form.vue'
 import Flash from './widgets/alert/flash.vue'
 
 const app = new Vue({
@@ -32,7 +34,9 @@ const app = new Vue({
 			Users,
 			UserForm,
 			Doctores,
-			DoctorForm		
+			DoctorForm,
+			Tratamientos,
+			TratamientoForm		
     }
 })
 

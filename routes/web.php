@@ -20,7 +20,7 @@ Route::get('/container-general', 'HomeController@containerGeneral');
 Route::resource('users', 'UserController');
 Route::resource('doctores', 'DoctorController');
 Route::resource('pacientes', 'PacienteController');
-Route::resource('tratamientos', 'TratamientosController');
+Route::resource('tratamientos', 'TratamientoController');
 //APIS 
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
 Route::get('api-v1/op-obtener-pacientes', 'WsOdontoplusController@OP_obtenerPacientes')->name('pacientes.obtener');

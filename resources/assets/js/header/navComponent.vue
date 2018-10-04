@@ -60,7 +60,7 @@
 		    	</a>
 		        <ul class="dropdown-menu">
 		          <li class="li-dropdown">
-		          	<a href="#">
+		          	<a :href="url + '/tratamientos'">
 		          		<i class="fas fa-tooth"></i>Tratamientos
 		          	</a>
 		          </li>
