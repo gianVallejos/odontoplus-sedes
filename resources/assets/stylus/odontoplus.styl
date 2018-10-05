@@ -333,10 +333,13 @@ table.b-table
 			
 .opcion-btn
 	width: 100%
+	background: $btnModificarBc!important
 	&.active
 		background: $btnInfoBc!important
-		&:hover
-			background: transparent!important		
+		outline: none
+		box-shadow: none
+	&:hover
+		opacity: .9	
 
 .subtotal-layout
 	line-height: 40px
@@ -356,3 +359,32 @@ table.b-table
 .presupuesto-form,
 .presupuesto-sub
 	width: 90px
+	
+.swal2-popup
+	&.swal2-modal
+		border-radius: 0px
+		font-family: 'Rubik', sans-serif
+	.swal2-styled
+		border-radius: 0px!important
+		
+.my-alert
+	border: none!important
+	background-color: $btnInfoBc!important
+	font-weight: bold
+	font-family: 'Open Sans', sans-serif!important	
+	&:focus, :active
+		border: none!important
+		box-shadow: none!important
+	&:hover
+		opacity: .9
+	&.confirm-alert
+		background: $btnGuardarBc!important
+		font-size: .9em!important
+	&.cancel-alert
+		background: $btnCancelarBc!important		
+		font-size: .9em!important
+
+.swal2-container
+	&.swal2-shown
+		background: #000
+		color: #ff0!important

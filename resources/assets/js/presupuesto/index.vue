@@ -27,7 +27,7 @@
 								    </b-input-group>
 								</div>
 							</div>
-							<div class="col-md-6">							
+							<div class="col-md-6">	
 								<div class="float-right d-inline-block">
 									<b-button-group>										
 										<b-button :href="url+'/presupuestos/create'" variant="success">
@@ -100,23 +100,16 @@
 		mounte(){
 			console.log('Presupuesto')
 		},
-		created() {
-	    	axios.get(this.url + '/api-v1/op-obtener-presupuestos')
-	    		 	.then((response) => {	      		 
-			      		this.mydata = response.data;
-			      		this.totalRows = Math.ceil(this.mydata.length)
-	    			})
-	    },
 		components:{
 			TitleComponent,
 			PanelCard
 		},
 		props: [	
-			'url'
+			'url',
+			'mydata'
 		],
 		data(){
 			return{
-				mydata: [],
 				breadcrumb: [
 			    	{ text: 'Dashboard', href: this.url },
 			    	{ text: 'Presupuestos', active: true}
@@ -131,7 +124,7 @@
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,
-			    totalRows: 0,
+			    totalRows: Math.ceil(this.mydata.length),
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,
 			    sortDesc: false,

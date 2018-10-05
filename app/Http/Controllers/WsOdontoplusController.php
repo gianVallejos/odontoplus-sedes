@@ -101,9 +101,27 @@ class WsOdontoplusController extends Controller
         return response()->json(['success' => 'success']);
     }
 
-    function OP_obtenerPresupuestos(){
-        $data = DB::select('call OP_obtenerPresupuestos()'); 
-        $data = json_encode($data);
-        print $data;
+    function OP_saveNuevoPresupuesto(Request $request){  
+        $idPaciente = $request->pacienteId;
+        $idDoctor = $request->doctorId;
+        $nroPresupuesto = $request->nroPresupuesto;
+        $descuento = $request->descuento;
+        $tratamientos = $request->tratamientos;
+
+        $res_general = DB::select('call OP_agregarPresupuestoGeneral('. $nroPresupuesto .', '. $idPaciente .', ' . $idDoctor .', ' . $descuento . ')');        
+        foreach( $tratamientos as $rt ){
+            $sec1 = ( isset($rt['secUno']) ) ? $rt['secUno'] : '0';
+            $sec2 = ( isset($rt['secDos']) ) ? $rt['secDos'] : '0';
+            $pza = ( isset($rt['pieza']) ? $rt['pieza'] : '0' );            
+            $res_detalle = DB::select('call OP_agregarPresupuestosDetalles('. $nroPresupuesto .', ' . $pza . ', ' . $rt['seccion'] . ', ' . $sec1 . ', ' . $sec2 .', '. $rt['opcion'] .')');
+        }
+
+        $resg = $res_general[0]->ESTADO;
+        $resd = $res_detalle[0]->ESTADO;
+        if( $resg == 0 || $resd == 0 ){
+            return 'error';
+        }
+
+        return 'ok';
     }
 }

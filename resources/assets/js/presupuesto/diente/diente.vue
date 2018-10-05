@@ -6,7 +6,7 @@
 			<div :id="pieza+'-3'" class="diente-section right" v-on:click="accionDiente(3)" v-bind:class="{ active: isRight }"></div>
 			<div :id="pieza+'-5'" class="diente-section bottom" v-on:click="accionDiente(5)" v-bind:class="{ active: isBottom }"></div>
 			<div :id="pieza+'-4'" class="diente-section left" v-on:click="accionDiente(4)" v-bind:class="{ active: isLeft }"></div>		
-			<div :id="pieza+'-7'" class="middle" v-on:click="accionDiente(7)" v-bind:class="{ active: isMiddle }"></div>		
+			<div :id="pieza+'-7'" class="middle" v-on:click="accionDiente(7)" v-bind:class="[ {active: isMiddle}, {corona: isCorona}, extra_trat ]"></div>		
 		</div>
 	
 </template>
@@ -27,8 +27,10 @@
 				isRight: false,
 				isMiddle: false,
 				isIonomero: false,
+				isCorona: false,
 				trat_string: ['', 'center', 'top', 'right', 'left', 'bottom', 'ionomero'],
-				nro_resinas: 0
+				nro_resinas: 0,
+				extra_trat: ''		
 			}
 		},
 		methods: {
@@ -55,6 +57,10 @@
 
 				if( this.trat_string[seccion] == 'ionomero' && !this.esCuartaResina() )
 					this.isIonomero = true//!this.isIonomero
+
+				if( seccion >= 8 && seccion <= 11 ){
+					this.isCorona = true
+				}
 			},
 			esCuartaResina(){
 				this.nro_resinas = 0

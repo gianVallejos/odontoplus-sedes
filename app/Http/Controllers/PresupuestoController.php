@@ -15,7 +15,10 @@ class PresupuestoController extends Controller{
 
     public function index()
     {
-        return view($this->path . '.index');
+        $data = DB::select('call OP_obtenerPresupuestos()'); 
+        $mydata = json_encode($data);
+        
+        return view($this->path . '.index', compact('mydata'));
     }
     
     public function create()
@@ -43,9 +46,11 @@ class PresupuestoController extends Controller{
         $precios = DB::select('call OP_obtenerPrecios_EmpresaId('. $act_empresa .')');       
         $precios = json_encode($precios);
         $precios_tabla = DB::select('call OP_obtenerPreciosParaTabla_EmpresaId('. $act_empresa .')');
-        $precios_tabla = json_encode($precios_tabla);
+        $precios_tabla = json_encode($precios_tabla);       
 
-        return view($this->path . '.nuevo', compact('lastPresupuesto', 'doctor', 'paciente', 'precios', 'precios_tabla', 'act_empresa'));
+        $fechahora = date('d-m-Y H:i:s');        
+
+        return view($this->path . '.nuevo', compact('lastPresupuesto', 'doctor', 'paciente', 'precios', 'precios_tabla', 'act_empresa', 'fechahora'));
     }
 
     public function show(Presupuesto $presupuesto)

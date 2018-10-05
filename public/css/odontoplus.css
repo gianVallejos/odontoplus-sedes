@@ -426,12 +426,16 @@ table.b-table > thead > tr table.b-table:focus {
 }
 .opcion-btn {
   width: 100%;
+  background: #858ea7 !important;
 }
 .opcion-btn.active {
   background: #305f94 !important;
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
-.opcion-btn.active:hover {
-  background: transparent !important;
+.opcion-btn:hover {
+  opacity: 0.9;
 }
 .subtotal-layout {
   line-height: 40px;
@@ -453,4 +457,38 @@ table.b-table > thead > tr table.b-table:focus {
 .presupuesto-form,
 .presupuesto-sub {
   width: 90px;
+}
+.swal2-popup.swal2-modal {
+  border-radius: 0px;
+  font-family: 'Rubik', sans-serif;
+}
+.swal2-popup .swal2-styled {
+  border-radius: 0px !important;
+}
+.my-alert {
+  border: none !important;
+  background-color: #305f94 !important;
+  font-weight: bold;
+  font-family: 'Open Sans', sans-serif !important;
+}
+.my-alert:focus,
+.my-alert :active {
+  border: none !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+.my-alert:hover {
+  opacity: 0.9;
+}
+.my-alert.confirm-alert {
+  background: #0aab8a !important;
+  font-size: 0.9em !important;
+}
+.my-alert.cancel-alert {
+  background: #ab4240 !important;
+  font-size: 0.9em !important;
+}
+.swal2-container.swal2-shown {
+  background: #000;
+  color: #ff0 !important;
 }

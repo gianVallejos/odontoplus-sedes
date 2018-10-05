@@ -33,3 +33,4 @@ Route::get('/api-v1/op-eliminar-paciente-id/{id}', 'WsOdontoplusController@OP_el
 
 //Presupuestos API
 Route::get('/api-v1/op-obtener-presupuestos', 'WsOdontoplusController@OP_obtenerPresupuestos');
+Route::post('/api-v1/save-nuevo-presupuesto', 'WsOdontoplusController@OP_saveNuevoPresupuesto');

@@ -2,6 +2,6 @@
 
 @section('content')
 	
-	<presupuesto-index url='{{ route("home") }}' />
+	<presupuesto-index url='{{ route("home") }}' :mydata='{{ $mydata }}' />
 
 @endsection

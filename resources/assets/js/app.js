@@ -3,8 +3,11 @@
 import Vue from 'vue'
 import BootstrapVue from "bootstrap-vue"
 import Toasted from 'vue-toasted'
+import VueSweetalert2 from 'vue-sweetalert2'
+
 Vue.use(BootstrapVue)
 Vue.use(Toasted)
+Vue.use(VueSweetalert2)
 
 import HeaderComponent from './header/headerComponent.vue'
 import NavComponent from './header/navComponent.vue'

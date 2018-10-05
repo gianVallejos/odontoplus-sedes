@@ -7,47 +7,47 @@
 			<b-col cols="12" class="pt-3">				
 				<PanelCard>
 					<span slot="heading">Presupuesto Nro {{ nro }} </span>
-					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">						
+					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">												
 						<div class="presupuesto-top">
 							<b-row>							
-									<b-col cols="6 pb-2">
-										<span>Fecha:</span><div class="d-inline-block texto">01/10/2018</div>
+									<b-col cols="6 pb-2">										
+										<span>Fecha:</span>
+										<div class="d-inline-block texto">
+											{{ fechahora }}
+										</div>										
 									</b-col>
 									<b-col cols="6 pb-2">
-										<span>Nro Historia:</span><div class="d-inline-block texto">000035</div>
+										<span>Nro Historia:</span><div class="d-inline-block texto">{{ paciente.id }}</div>										
 									</b-col>
 									<b-col cols="6 pb-2">
-										<span>Empresa:</span><div class="d-inline-block texto">CORE</div>
+										<span>Paciente:</span><div class="d-inline-block texto">{{ paciente.nombres }} {{ paciente.apellidos }}</div>
 									</b-col>
 									<b-col cols="6 pb-2">
-										<span>Sede:</span><div class="d-inline-block texto">Cajamarca</div>
+										<span>Doctor:</span><div class="d-inline-block texto">{{ doctor.nombres }} {{ doctor.apellidos }}</div>
 									</b-col>
 									<b-col cols="6 pb-2">
-										<span>Doctor:</span><div class="d-inline-block texto">Nombre del Doctor</div>
+										<span>Empresa:</span><div class="d-inline-block texto">{{ paciente.empresa }}</div>
 									</b-col>
 									<b-col cols="6 pb-2">
-										<span>Paciente:</span><div class="d-inline-block texto">Nombre de Paciente</div>
+										<span>Sede:</span><div class="d-inline-block texto">Cajamarca</div>					
 									</b-col>							
 							</b-row>
 						</div>
 						<b-row class="pb-3">
 							<b-col cols="6" class="pr-0 pl-0 pt-4">
-								<b-button variant="primary" class="opcion-btn active">Odontograma #1</b-button>
+								<button class="btn opcion-btn" v-on:click="cambiarOpcion(1)" v-bind:class="{ active: this.opc1 }">Odontograma #1</button>
 							</b-col>
 							<b-col cols="6" class="pl-0 pr-0 pt-4">
-								<b-button variant="warning" class="opcion-btn">Odontograma #2</b-button>
+								<button class="btn opcion-btn" v-on:click="cambiarOpcion(2)" v-bind:class="{ active: !this.opc1 }">Odontograma #2</button>
 							</b-col>
 						</b-row>
-						<b-row>
+						<b-row v-if="!isSuccess" >
 							<b-col cols="12" class="text-center pt-4 pb-4">
 								<b-button type="submit" variant="success" v-on:click="onSubmitSave">
 									<i class="fas fa-save"></i>&nbsp; Guardar
 								</b-button>								
-								<b-button  variant="danger" v-on:click="onEliminar">
+								<b-button :href="url + '/presupuestos'" variant="danger">
 									<i class="fas fa-times"></i>&nbsp;Cancelar
-								</b-button>
-								<b-button variant="warning" v-on:click="onLimpiar">
-									<i class="fas fa-eraser"></i>&nbsp; Limpiar
 								</b-button>
 							</b-col>
 						</b-row>
@@ -167,16 +167,13 @@
 								</div>
 							</b-col>
 						</b-row>
-						<b-row>
+						<b-row v-if="!isSuccess" >
 							<b-col cols="12" class="text-center pt-4 pb-4">
 								<b-button type="submit" variant="success" v-on:click="onSubmitSave">
 									<i class="fas fa-save"></i>&nbsp; Guardar
 								</b-button>								
-								<b-button  variant="danger" v-on:click="onEliminar">
+								<b-button :href="url + '/presupuestos'" variant="danger">
 									<i class="fas fa-times"></i>&nbsp;Cancelar
-								</b-button>
-								<b-button variant="warning" v-on:click="onLimpiar">
-									<i class="fas fa-eraser"></i>&nbsp; Limpiar
 								</b-button>
 							</b-col>
 						</b-row>
@@ -229,6 +226,7 @@
 	import TitleComponent from '../widgets/titulo/index.vue'
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import Diente from './diente/diente.vue'
+	import axios from 'axios'
 
 	export default{
 		created(){									
@@ -246,7 +244,8 @@
 			'paciente', 
 			'act_empresa',
 			'precios',
-			'precios_table'
+			'precios_table',
+			'fechahora'
 		],
 		data(){
 			return {
@@ -286,6 +285,7 @@
 			    filter: '',
 			    actual_pieza: null,
 			    fromBtn: null,
+			    opc1: true,
 			    trat_string: ['', 'center', 'top', 'right', 'left', 'bottom', 'ionomero'],
 			    sub_total: this.redondearADos(0),
 			    total: this.redondearADos(0),
@@ -294,7 +294,8 @@
 			    	{ value: 0, text: '0%' },
 			    	{ value: 5, text: '5%' },
 			    	{ value: 10, text: '10%' }
-			    ]
+			    ],
+			    isSuccess: false
 			}
 		},
 		methods: {
@@ -349,14 +350,107 @@
 				this.filter = ''
 			},			
 			onSubmitSave(){
-
+				if( this.tratamientos.length != 0 ){
+						this.$swal({ 
+							 title: '<span style="#fff; font-size: 1em">Atención</span>', 
+							 html: '<span style="font-size: 1em">' +
+							 		'A continuación se guardará el actual presupuesto y no podrá ser modificado.' + 
+							 		'<br /><br />¿Seguro que deseas guardar este presupuesto?' +
+							 		'</span>',	
+							 animation: false, 
+							 showConfirmButton: true, 
+							 showCancelButton: true,
+							 confirmButtonText: 'Aceptar',
+							 confirmButtonClass: ['my-alert', 'confirm-alert'],
+							 cancelButtonText: 'Cancelar',
+							 cancelButtonClass: ['my-alert', 'cancel-alert'],
+							 showCloseButton: true
+							}).then((result) => {
+								if( result.value ){
+									this.guardarTratamiento()
+								}	
+							})
+				}else{
+					this.$swal({ 
+							 title: '<span style="#fff; font-size: 1em">Alerta</span>', 
+							 html: 'Debe agregar por lo menos un tratamiento',								 
+							 showConfirmButton: false, 
+							 showCancelButton: false,
+							 showCloseButton: false,							 
+							 type: 'warning',
+							 toast: true,
+							 position: 'top',
+							 timer: 3000
+							})
+				}
 			},
-			onEliminar(){
+			guardarTratamiento(){
+				axios.post(this.url + '/api-v1/save-nuevo-presupuesto', {
+					pacienteId: this.paciente.id,
+					doctorId: this.doctor.id,
+					nroPresupuesto: this.nro,
+					descuento: this.descuento,
+					tratamientos: this.tratamientos
+				}).then( (request) => {	
+						if( request.data == "ok" ){
+							this.isSuccess = true
+							this.$swal({ 
+								title: '<span style="#fff; font-size: 1em">Éxito</span>',	
+								html: 'Presupuesto guardado correctamente',								 
+							 	showConfirmButton: false, 
+							 	showCancelButton: false,
+							 	showCloseButton: false,							 
+							 	type: 'success',
+							 	toast: true,
+							 	position: 'top',
+							 	timer: 3000						 	
+							}).then(() => {
+								window.location.href = this.url + '/presupuestos'
+							})
+						}
+							/*
+					if( request.data.success == 'success' ){
+						console.log(request.data)						
+						this.success = true						
+					}else{
+						console.log(request.data)						
+                        this.success = false						
+					}
 
+					if( !this.success ){
+						this.allerros = request.data.error
+						this.$toasted.show('Existen campos inválidos. Por favor verificalos.', 
+											{ 
+												position: 'top-center',
+												className: 'toast-danger',
+												duration: 3500,
+												containerClass: 'test'
+											})
+					}else{
+						this.allerros = []
+						this.$toasted.show('Campo agregado correctamente.', 
+											{ 
+												position: 'top-center',
+												className: 'toast-success',
+												duration: 3500,
+												containerClass: 'test'
+											})
+						this.isDisabled = true
+						setTimeout(function () {
+						    window.location.href = this.url + '/pacientes'
+						}.bind(this), 3500)
+					}*/
+				}).catch((error) => {
+					console.log(error)
+                    this.$toasted.show('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 
+										{ 
+												position: 'top-center',
+												className: 'toast-danger',
+												duration: 3500,
+												containerClass: 'test'
+									})                   	                   	
+                })
 			},
-			onLimpiar(){
-
-			},			
 			/*
 			agregarTratamiento(seccion, idPieza){					
 				if( seccion <= 7 ){
@@ -512,6 +606,7 @@
 					this.fromBtn = false
 				}else{
 					this.agregarTratamiento(seccion, this.actual_pieza)
+					this.pintarOtroTratamiento(seccion, this.actual_pieza)
 					this.actual_pieza = null
 				}
 				this.closeModal()
@@ -550,7 +645,7 @@
 
 				}
 	        },
-	        despitarSeccionDiente(seccion, pieza){
+	        despintarSeccionDiente(seccion, pieza){
 	        	var sec = 'pz' + pieza
 	        	if( seccion == '7' ){
 					this.$refs[sec][0].isMiddle = false//!this.isMiddle
@@ -562,29 +657,126 @@
 					this.$refs[sec][0].isLeft = false//!this.isLeft
 	        	}else if( this.trat_string[seccion] == 'bottom' ){
 					this.$refs[sec][0].isBottom = false//!this.isBottom
-	        	}else if( this.trat_string[seccion] == 'ionomero' )
+	        	}else if( this.trat_string[seccion] == 'ionomero' ){
 					this.$refs[sec][0].isIonomero = false//!this.isIonomero	        	
+	        	}else if( seccion >= 8 && seccion <= 11 ){
+	        		this.$refs[sec][0].isCorona = false
+	        	}else if( seccion >= 8 && seccion <= 23 ){
+	        		this.$refs[sec][0].extra_trat = ''
+	        	}else if( seccion >= 26 && seccion <= 28 ){
+	        		this.$refs[sec][0].extra_trat = ''
+	        	}else if( seccion == 31 ){
+	        		this.$refs[sec][0].extra_trat = ''
+	        	}
 	        },
 	        eliminarTratamiento(id){
 	            var flag = 0;  
 	            if( this.esResina(this.tratamientos[id].seccion) ){ //Eliminar caries
 	                if( this.tratamientos[id].secUno != null && this.tratamientos[id].secDos != null ){	
-	                	this.despitarSeccionDiente(this.tratamientos[id].secDos, this.tratamientos[id].pieza)
+	                	this.despintarSeccionDiente(this.tratamientos[id].secDos, this.tratamientos[id].pieza)
 	                    this.tratamientos[id].secDos = null; flag = 1
 	                }else if( this.tratamientos[id].secUno != null && this.tratamientos[id].secDos == null ){
-	                    this.despitarSeccionDiente(this.tratamientos[id].secUno, this.tratamientos[id].pieza)
+	                    this.despintarSeccionDiente(this.tratamientos[id].secUno, this.tratamientos[id].pieza)
 	                    this.tratamientos[id].secUno = null; flag = 1
 	                }else{
 	                    flag = 0
 	                }
 	            }
 	            if( !flag ){
-	            	if( this.tratamientos[id].seccion <= 7 ){
-	            		this.despitarSeccionDiente(this.tratamientos[id].seccion, this.tratamientos[id].pieza)
+	            	if( this.tratamientos[id].pieza != null ){
+	            		this.despintarSeccionDiente(this.tratamientos[id].seccion, this.tratamientos[id].pieza)
 	            	}
 	                this.tratamientos.splice(id, 1)
 	            }	            
-	            this.mostrarTratamientosEnTabla()
+	            this.restartMainDientes()
+	        },
+	        cambiarOpcion(opc){
+	        	this.opcion = opc
+	        	this.changeOpcionBoton(opc)
+	        	this.restartMainDientes()	        	       	
+	        },
+	        restartMainDientes(){ //Principal	    
+				this.restartAllPintadoDientes()	
+				this.pintarAllSeccionesDePiezas()
+				this.mostrarTratamientosEnTabla()
+	        },
+	        changeOpcionBoton(opc){
+	        	if( opc == 2 ){
+	        		this.opc1 = false
+	        	}else{
+	        		this.opc1 = true
+	        	}
+	        },
+	        restartAllPintadoDientes(){
+	        	for( var i = 0; i < this.tratamientos.length; i++ ){
+	        		if( this.tratamientos[i].pieza != null ){
+		        		this.despintarSeccionDiente(2, this.tratamientos[i].pieza)
+		        		this.despintarSeccionDiente(3, this.tratamientos[i].pieza)
+		        		this.despintarSeccionDiente(4, this.tratamientos[i].pieza)
+		        		this.despintarSeccionDiente(5, this.tratamientos[i].pieza)
+		        		this.despintarSeccionDiente(6, this.tratamientos[i].pieza)
+		        		this.despintarSeccionDiente(7, this.tratamientos[i].pieza)
+		        		this.despintarSeccionDiente(this.tratamientos[i].seccion, this.tratamientos[i].pieza)
+		        	}
+	        	}
+	        },
+	        pintarAllSeccionesDePiezas(){
+	        	for( var i = 0; i < this.tratamientos.length; i++ ){
+	        		if( this.tratamientos[i].opcion == this.opcion ){
+		        		var pieza = this.tratamientos[i].pieza
+						var sec = this.tratamientos[i].seccion
+						var secUno = this.tratamientos[i].secUno
+						var secDos = this.tratamientos[i].secDos
+
+						if( pieza != null ){
+							if( sec <= 7 ){ //Resina
+							    this.pintarResina(pieza, sec)
+							    this.pintarResinaCompuesta(pieza, secUno)
+							    this.pintarResinaCompuesta(pieza, secDos)
+							}else{
+							    this.pintarOtroTratamiento(sec, pieza) //pintarNoResinas
+							}
+						}
+					}
+	        	}
+	        },
+	        pintarResinaCompuesta(piezaDiente, auxSeccion){
+	            if( auxSeccion != null ){
+	                this.pintarResina(piezaDiente, auxSeccion);
+	            }
+	        },
+	        pintarResina(pieza, seccion){	            
+	            var sec = 'pz' + pieza	            
+	        	if( seccion == '7' ){
+					this.$refs[sec][0].isMiddle = true//!this.isMiddle
+	        	}else if( this.trat_string[seccion] == 'top' ){
+					this.$refs[sec][0].isTop = true//!this.isTop
+	        	}else if( this.trat_string[seccion] == 'right' ){
+					this.$refs[sec][0].isRight = true//!this.isRight
+	        	}else if( this.trat_string[seccion] == 'left' ){
+					this.$refs[sec][0].isLeft = true//!this.isLeft
+	        	}else if( this.trat_string[seccion] == 'bottom' ){
+					this.$refs[sec][0].isBottom = true//!this.isBottom
+	        	}else if( this.trat_string[seccion] == 'ionomero' )
+					this.$refs[sec][0].isIonomero = true//!this.isIonomero	
+	        },
+	        pintarOtroTratamiento(seccion, pieza){
+	        	var sec = 'pz' + pieza
+	        	if( seccion >= 8 && seccion <= 11 ){
+	        		this.$refs[sec][0].isCorona = true
+	        	}else if( seccion >=12 && seccion <= 14 ){
+	        		this.$refs[sec][0].extra_trat = 'exodoncia'
+	        	}else if( seccion >= 15 && seccion <= 17 || seccion >= 20 && seccion <= 21 ){
+	        		this.$refs[sec][0].extra_trat = 'palito'
+	        	}else if( seccion >= 18 && seccion <= 19 ){
+	        		this.$refs[sec][0].extra_trat = 'carilla'
+	        	}else if( seccion >= 22 && seccion <= 23 ){
+	        		this.$refs[sec][0].extra_trat = 'perno'
+	        	}else if( seccion >= 26 && seccion <= 28 ){
+	        		this.$refs[sec][0].extra_trat = 'incrustracion'
+	        	}else if( seccion >= 31 ){
+	        		this.$refs[sec][0].extra_trat = 'sellante'
+	        	}
 	        }
 		}
 	}

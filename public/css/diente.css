@@ -59,23 +59,31 @@
   font-size: 1.1em;
 }
 .middle.corona {
-  border: 2px solid #ff0;
+  border: 1px solid #ff0;
 }
 .middle.exodoncia::before {
   content: 'X';
 }
-.middle.sellante::before {
-  content: 'S';
+.middle.palito::before {
+  content: '';
+  border-left: 4px solid #000;
+  margin-top: 1px;
+}
+.middle.carilla::before {
+  content: '\D8';
+}
+.middle.perno:before {
+  content: '^|';
+  font-size: 0.8em;
+  margin-top: -2px;
 }
 .middle.incrustracion::before {
   content: 'INC';
   font-size: 0.7em;
   margin-left: 1px;
 }
-.middle.palito::before {
-  content: '';
-  border-left: 4px solid #000;
-  maring-top: 1px;
+.middle.sellante::before {
+  content: 'S';
 }
 .ionomero {
   background: #73a5b6;
