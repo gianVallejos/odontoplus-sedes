@@ -24,7 +24,7 @@
 		          	</a>
 		          </li>
 		          <li class="li-dropdown">
-		          	<a href="#">
+		          	<a :href="url + '/doctores'">
 		          		<i class="fas fa-user-md"></i>Doctores
 		          	</a>
 		          </li>
@@ -60,7 +60,7 @@
 		    	</a>
 		        <ul class="dropdown-menu">
 		          <li class="li-dropdown">
-		          	<a href="#">
+		          	<a :href="url + '/tratamientos'">
 		          		<i class="fas fa-tooth"></i>Tratamientos
 		          	</a>
 		          </li>
@@ -70,7 +70,7 @@
 		          	</a>
 		          </li>
 		          <li class="li-dropdown">
-		          	<a href="#">
+		          	<a :href="url + '/empresas'">
 		          		<i class="fas fa-building"></i>Empresas
 		          	</a>
 		          </li>

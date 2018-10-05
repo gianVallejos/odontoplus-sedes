@@ -18,7 +18,11 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('dashboard');
 Route::get('/container-general', 'HomeController@containerGeneral');
 Route::resource('users', 'UserController');
+Route::resource('doctores', 'DoctorController');
 Route::resource('pacientes', 'PacienteController');
+Route::resource('tratamientos', 'TratamientoController');
+Route::resource('empresas', 'EmpresaController');
+//APIS 
 Route::resource('presupuestos', 'PresupuestoController');
 
 Route::get('presupuestos/nuevo/{idPaciente}/{idDoctor}', 'PresupuestoController@nuevo');

@@ -11,6 +11,7 @@ Vue.use(VueSweetalert2)
 
 import HeaderComponent from './header/headerComponent.vue'
 import NavComponent from './header/navComponent.vue'
+import Flash from './widgets/alert/flash.vue'
 
 import ContainerGeneral from './container-general/index.vue'
 import Dashboard from './dashboard/index.vue'
@@ -24,6 +25,12 @@ import PresupuestoReporte from './presupuesto/reporte.vue'
 import FooterComponent from './footer/footerComponent.vue'
 import Users from './users/index.vue'
 import UserForm from './users/form.vue'
+import Doctores from './doctores/index.vue'
+import DoctorForm from './doctores/form.vue'
+import Tratamientos from './tratamientos/index.vue'
+import TratamientoForm from './tratamientos/form.vue'
+import Empresas from './empresas/index.vue'
+import EmpresaForm from './empresas/form.vue'
 
 const app = new Vue({
     el: '#app',
@@ -32,7 +39,27 @@ const app = new Vue({
     	PacienteIndex, PacienteCreate, PacienteShow,
     	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
 		Users, UserForm		
+    	ContainerGeneral,
+			Dashboard,
+    	PacienteIndex,
+    	PacienteCreate,
+    	PacienteShow,
+			Users,
+			UserForm,
+			Doctores,
+			DoctorForm,
+			Tratamientos,
+			TratamientoForm,
+			Empresas,
+			EmpresaForm		
     }
+})
+
+const alert = new Vue({
+	el: '#alert',
+	components: {
+		Flash
+	}
 })
 
 const header = new Vue({

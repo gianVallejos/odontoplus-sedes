@@ -2,11 +2,11 @@
   <b-container>
 		<b-row>
 			<div class="col-md-12">
-				<TitleComponent titulo="Lista de Usuarios" :items="breadcrumb" />
+				<TitleComponent titulo="Tratamientos" :items="breadcrumb" />
 			</div>
       <div class="col-md-12">
         <PanelCard>
-          <span slot="heading">Lista de Usuarios</span>
+          <span slot="heading">Lista de Tratamientos</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
             <!-- User Interface controls -->
             <b-row class="pb-3">
@@ -30,8 +30,8 @@
 							<div class="col-md-6">							
 								<div class="float-right d-inline-block">
 									<b-button-group>										
-										<b-button :href="url+'/users/create'" variant="success">
-											<i class="fas fa-plus"></i>&nbsp; Nuevo Usuario
+										<b-button :href="url+'/tratamientos/create'" variant="success">
+											<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
 										</b-button>
 										<b-button variant="warning">
 											<i class="fas fa-print"></i>&nbsp; Imprimir
@@ -53,13 +53,11 @@
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
                     @filtered="onFiltered" >
-
-              <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/users/'+ row.item.id" class="action" >Detalle</a>
+                  <a :href="url+'/tratamientos/'+ row.item.id" class="action" >Detalle</a>
                   |
-                  <a :href="url+'/users/'+ row.item.id+'/edit'" class="action" >Modificar</a>
+                  <a :href="url+'/tratamientos/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
               </template>
               <template slot="is_active" slot-scope="row">
@@ -89,9 +87,9 @@
 
   export default{
     mounted() { 
-      console.log('Users mounted')
+      console.log('tratamientos mounted')
     },
-    name: 'Users',
+    name: 'tratamientos',
     components:{
 			PanelCard,
       TitleComponent
@@ -103,10 +101,8 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: 'Actions' },
-          { key: 'name', label: 'Nombre', sortable: true, sortDirection: 'desc' },
-          { key: 'email', label: 'Email', sortable: true, 'class': 'text-center' },
-          { key: 'rol', label: 'Rol', sortable: true },
+          { key: 'actions', label: 'Acciones' },
+          { key: 'detalle', label: 'Detalle', sortable: true, sortDirection: 'desc' },
           { key: 'is_active', label: 'Estado', sortable: true }
           ],
         currentPage: 1,
@@ -120,7 +116,7 @@
         modalInfo: { title: '', content: '' },
         breadcrumb: [
           { text: 'Home', href: '/' },
-          { text: 'Lista de Usuarios', active: true }
+          { text: 'Lista de Tratamientos', active: true }
         ]
 			}
 		},
@@ -141,10 +137,6 @@
         this.modalInfo.title = `Row index: ${index}`
         this.modalInfo.content = JSON.stringify(item, null, 2)
         this.$root.$emit('bv::show::modal', 'modalInfo', button)
-      },
-      resetModal () {
-        this.modalInfo.title = ''
-        this.modalInfo.content = ''
       },
       onFiltered (filteredItems) {
         // Trigger pagination to update the number of buttons/pages due to filtering
