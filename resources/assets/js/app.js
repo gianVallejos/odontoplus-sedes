@@ -3,8 +3,11 @@
 import Vue from 'vue'
 import BootstrapVue from "bootstrap-vue"
 import Toasted from 'vue-toasted'
+import VueSweetalert2 from 'vue-sweetalert2'
+
 Vue.use(BootstrapVue)
 Vue.use(Toasted)
+Vue.use(VueSweetalert2)
 
 import HeaderComponent from './header/headerComponent.vue'
 import NavComponent from './header/navComponent.vue'
@@ -15,6 +18,10 @@ import Dashboard from './dashboard/index.vue'
 import PacienteIndex from './paciente/index.vue'
 import PacienteCreate from './paciente/create.vue'
 import PacienteShow from './paciente/show.vue'
+import PresupuestoIndex from './presupuesto/index.vue'
+import PresupuestoCreate from './presupuesto/create.vue'
+import PresupuestoNuevo from './presupuesto/nuevo.vue'
+import PresupuestoReporte from './presupuesto/reporte.vue'
 import FooterComponent from './footer/footerComponent.vue'
 import Users from './users/index.vue'
 import UserForm from './users/form.vue'
@@ -28,6 +35,10 @@ import EmpresaForm from './empresas/form.vue'
 const app = new Vue({
     el: '#app',
     components: {
+    	ContainerGeneral, Dashboard,
+    	PacienteIndex, PacienteCreate, PacienteShow,
+    	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
+		Users, UserForm		
     	ContainerGeneral,
 			Dashboard,
     	PacienteIndex,

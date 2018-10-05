@@ -21,40 +21,19 @@
 	<!--Dynamic StyleSheets added from a view would be pasted here-->
 	@yield('styles')
 </head>
-<body>	
-	<div id="header">
-	@if( Auth::check() )	
-		<header-component 
-			user-name='{{ Auth::user()->name }}' 
-			logout-route='{{ route("logout") }}'
-			url='{{ route("home") }}'
-		>
-		</header-component>
-		<nav-component url='{{ route("home") }}' />
-	@endif
+<body style="background-color: #fff">	
+
+	<div id="header" class="d-none"></div>
+
+	<div id="app" class="contenido">
+		@yield('content')
 	</div>
 
-	<div id="alert">
-		@if(Session::has('alert'))
-			<flash ref="flash_alert" alert="{{ Session::get('alert') }}"/>
-		@endif
-	</div>
-
-	<div id="app">
-		<div class="contenido">
-			@yield('content')
-		</div>
-	</div>
-	
-	<div id="footer">
-	@if( Auth::check() )	
-		<footer-component></footer-component>			
-	@endif
-	</div>
+	<div id="footer" class="d-none"></div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-	<script src="{{ asset('js/app.js?v=1.0.17') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.0.3') }}"></script>
 </body>
 </html>
