@@ -22,6 +22,7 @@ Route::resource('pacientes', 'PacienteController');
 Route::resource('presupuestos', 'PresupuestoController');
 
 Route::get('presupuestos/nuevo/{idPaciente}/{idDoctor}', 'PresupuestoController@nuevo');
+Route::get('presupuestos/reporte/{id}', 'PresupuestoController@reporte');
 
 //Pacientes API
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');

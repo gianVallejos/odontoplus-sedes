@@ -55,24 +55,24 @@
 							<b-col cols="6" class="text-right pl-0 od-right-border">												
 								<div class="d-inline-block text-center" v-for="i in range(18, 11)" >
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
-									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i />
+									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 								</div>				
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
 								<div class="d-inline-block text-center" v-for="i in range(21, 28)" >
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span> 
-									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i />
+									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 								</div>				
 							</b-col>
 							<b-col cols="6" class="text-right pl-0 od-right-border">												
 								<div class="d-inline-block text-center" v-for="i in range(55, 51)" >									
-									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i />
+									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span> 
 								</div>				
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
 								<div class="d-inline-block text-center" v-for="i in range(61, 65)" >									
-									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i />
+									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span> 
 								</div>				
 							</b-col>
@@ -82,24 +82,24 @@
 							<b-col cols="6" class="text-right pl-0 od-right-border">												
 								<div class="d-inline-block text-center" v-for="i in range(85, 81)" >
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
-									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i />
+									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 								</div>				
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
 								<div class="d-inline-block text-center" v-for="i in range(71, 75)" >
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
-									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i />
+									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 								</div>				
 							</b-col>
 							<b-col cols="6" class="text-right pl-0 od-right-border">												
 								<div class="d-inline-block text-center" v-for="i in range(48, 41)" >									
-									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i />
+									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
 								</div>				
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
 								<div class="d-inline-block text-center" v-for="i in range(31, 38)" >									
-									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i />
+									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
 								</div>				
 							</b-col>
@@ -295,7 +295,8 @@
 			    	{ value: 5, text: '5%' },
 			    	{ value: 10, text: '10%' }
 			    ],
-			    isSuccess: false
+			    isSuccess: false,
+			    isEditable: true
 			}
 		},
 		methods: {

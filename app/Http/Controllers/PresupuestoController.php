@@ -53,6 +53,24 @@ class PresupuestoController extends Controller{
         return view($this->path . '.nuevo', compact('lastPresupuesto', 'doctor', 'paciente', 'precios', 'precios_tabla', 'act_empresa', 'fechahora'));
     }
 
+    public function reporte($id){    
+        $pres_general = DB::select('call OP_obtenerPresupuesto_Id("'. $id .'")')[0];
+        $pres_detalle = DB::select('call OP_obtenerPresupuestoDetalle_Id("'. $id .'")');
+        $act_empresa = DB::select('call OP_obtenerEmpresaActual_paciente('. $pres_general->idPaciente .')')[0]->empresa_id; 
+        $precios = DB::select('call OP_obtenerPrecios_EmpresaId('. $act_empresa .')');       
+        
+        $pres_general = json_encode($pres_general);
+        $pres_detalle = json_encode($pres_detalle);
+        $precios = json_encode($precios);
+
+        $view = view($this->path . '.reporte', compact('pres_general', 'pres_detalle', 'precios'));
+        //$pdf = \App::make('dompdf.wrapper');
+        //$pdf->setOptions(['isRemoteEnabled' => true, 'isPhpEnabled' => true]);         
+        //$pdf->loadHTML($view)->setPaper('a4', 'portrait');
+        //return $pdf->stream();
+        return $view;
+    }
+
     public function show(Presupuesto $presupuesto)
     {
         

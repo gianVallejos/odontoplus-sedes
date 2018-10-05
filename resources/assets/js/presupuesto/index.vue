@@ -47,13 +47,11 @@
 					             @filtered="onFiltered">
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">						        	
-						        	<a :href="url+'/presupuestos/'+ row.item.id"  class="action">Detalle</a>
-						        	|
-						        	<a :href="url+'/presupuestos/'+ row.item.id" class="action">Modificar</a>
+						        	<a :href="url+'/presupuestos/reporte/'+ row.item.id" class="action" target="_blank">Ver Presupuesto</a>
 						        </div>
 						    </template>
 						    <template slot="id" slot-scope="row">
-						    	<a :href="url + '/presupuestos/' + row.item.id">
+						    	<a :href="url + '/presupuestos/reporte/' + row.item.id" target="_blank">
 						    		{{ row.value }}
 						    	</a>
 						    </template>
@@ -115,7 +113,7 @@
 			    	{ text: 'Presupuestos', active: true}
 			    ],			    
 			    fields: [				    
-				    { key: 'actions', label: '', 'class': 'text-left' },				    
+				    { key: 'actions', label: '', 'class': 'text-center' },				    
 				    { key: 'id', label: 'Nro', class: 'text-center' }, 				    
 				    { key: 'idPaciente', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },

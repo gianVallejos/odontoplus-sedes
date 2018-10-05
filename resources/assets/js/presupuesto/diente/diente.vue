@@ -1,12 +1,12 @@
 <template>
 		
 		<div class="diente">			
-			<div :id="pieza+'-6'" class="ionomero" v-on:click="accionDiente(6)" v-bind:class="{ active: isIonomero }"></div>	
-			<div :id="pieza+'-2'" class="diente-section top" v-on:click="accionDiente(2)" v-bind:class="{ active: isTop }"></div>
-			<div :id="pieza+'-3'" class="diente-section right" v-on:click="accionDiente(3)" v-bind:class="{ active: isRight }"></div>
-			<div :id="pieza+'-5'" class="diente-section bottom" v-on:click="accionDiente(5)" v-bind:class="{ active: isBottom }"></div>
-			<div :id="pieza+'-4'" class="diente-section left" v-on:click="accionDiente(4)" v-bind:class="{ active: isLeft }"></div>		
-			<div :id="pieza+'-7'" class="middle" v-on:click="accionDiente(7)" v-bind:class="[ {active: isMiddle}, {corona: isCorona}, extra_trat ]"></div>		
+			<div :id="pieza+'-6'" class="ionomero" v-on:click="accionDiente(6)" v-bind:class="[ { active: isIonomero }, { noEditable: !isEditable } ]"></div>	
+			<div :id="pieza+'-2'" class="diente-section top" v-on:click="accionDiente(2)" v-bind:class="[ { active: isTop }, { noEditable: !isEditable } ]"></div>
+			<div :id="pieza+'-3'" class="diente-section right" v-on:click="accionDiente(3)" v-bind:class="[ { active: isRight }, { noEditable: !isEditable } ]"></div>
+			<div :id="pieza+'-5'" class="diente-section bottom" v-on:click="accionDiente(5)" v-bind:class="[ { active: isBottom }, { noEditable: !isEditable } ]"></div>
+			<div :id="pieza+'-4'" class="diente-section left" v-on:click="accionDiente(4)" v-bind:class="[ { active: isLeft }, { noEditable: !isEditable } ]"></div>		
+			<div :id="pieza+'-7'" class="middle" v-on:click="accionDiente(7)" v-bind:class="[ {active: isMiddle}, {corona: isCorona}, { noEditable: !isEditable }, extra_trat ]"></div>		
 		</div>
 	
 </template>
@@ -17,7 +17,8 @@
 			PresupuestoNuevo
 		},
 		props: [
-			'pieza'
+			'pieza',
+			'isEditable'
 		],
 		data() {
 			return {
@@ -35,9 +36,11 @@
 		},
 		methods: {
 			accionDiente(seccion){
-				//Validación multi tratamiento
-				this.pintarDienteSeleccionado(seccion)
-				this.$emit('click', seccion, this.pieza)
+				console.log(this.isEditable)
+				if( this.isEditable ){
+					this.pintarDienteSeleccionado(seccion)
+					this.$emit('click', seccion, this.pieza)
+				}
 			},
 			pintarDienteSeleccionado(seccion){												
 				if( seccion == '7' && !this.esCuartaResina() )

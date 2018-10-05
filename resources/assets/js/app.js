@@ -20,6 +20,7 @@ import PacienteShow from './paciente/show.vue'
 import PresupuestoIndex from './presupuesto/index.vue'
 import PresupuestoCreate from './presupuesto/create.vue'
 import PresupuestoNuevo from './presupuesto/nuevo.vue'
+import PresupuestoReporte from './presupuesto/reporte.vue'
 import FooterComponent from './footer/footerComponent.vue'
 import Users from './users/index.vue'
 import UserForm from './users/form.vue'
@@ -29,7 +30,7 @@ const app = new Vue({
     components: {
     	ContainerGeneral, Dashboard,
     	PacienteIndex, PacienteCreate, PacienteShow,
-    	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo,
+    	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
 		Users, UserForm		
     }
 })
