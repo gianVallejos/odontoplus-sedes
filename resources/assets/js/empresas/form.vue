@@ -2,7 +2,7 @@
   <b-container id="container-template">
 		<b-row>
 			<div class="col-md-12">
-				<TitleComponent titulo="Tratamientos" :items="breadcrumb" />
+				<TitleComponent titulo="Empresas" :items="breadcrumb" />
 			</div>
       <div class="col-md-12">
         <PanelCard>
@@ -16,7 +16,7 @@
 									<b-button v-if="this.display != 'show'" type="submit" variant="success" v-on:click="onSubmit">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
-									<b-button v-if="this.display != 'show'" :href="url + '/tratamientos'" variant="warning">
+									<b-button v-if="this.display != 'show'" :href="url + '/empresas'" variant="warning">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
@@ -28,7 +28,7 @@
 									<b-button variant="danger" v-on:click="onSubmit($event,'delete')">
 									<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
-									<b-button variant="warning" :href="url + '/tratamientos'">
+									<b-button variant="warning" :href="url + '/empresas'">
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
 								</div>
@@ -38,7 +38,7 @@
 									<b-row>
 										<b-col cols="6" class="pt-3 pb-4">
 											<div class="form-title">
-												<i class="fas fa-stethoscope"></i>
+												<i class="far fa-building"></i>
 												<div class="d-inline"> Información General </div>
 											</div>
 											<p class="form-description fz-3 pt-3 pr-4">
@@ -50,15 +50,18 @@
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
-										    <b-form-group label="Detalle" label-for="detalle">
-											    <b-form-input id="detalle" type="text" class="required" v-model="form.detalle" :disabled="this.display == 'show'" placeholder="Detalle" required autocomplete="off"/>
-													<span v-if="all_errors.detalle" :class="['label label-danger']">{{ all_errors.detalle[0] }}</span>
+										    <b-form-group label="Nombre" label-for="nombre">
+											    <b-form-input id="nombre" type="text" class="required" v-model="form.nombre" :disabled="this.display == 'show'" placeholder="Nombre" required autocomplete="off"/>
+													<span v-if="all_errors.nombre" :class="['label label-danger']">{{ all_errors.nombre[0] }}</span>
 										    </b-form-group>
-												<b-form-group label="Estado" label-for="is_active">
-													<b-form-checkbox id="is_active" v-model="form.is_active" :disabled="display == 'show'">
-														Tratamiedo Activado
-													</b-form-checkbox>		
-										    </b-form-group>		
+										    <b-form-group label="RUC" label-for="ruc">
+											    <b-form-input id="ruc" type="text" class="required" v-model="form.ruc" :disabled="this.display == 'show'" pattern="[0-9]{12}" placeholder="RUC" required autocomplete="off"/>
+													<span v-if="all_errors.ruc" :class="['label label-danger']">{{ all_errors.ruc[0] }}</span>
+										    </b-form-group>
+                        <b-form-group label="Sucursal" label-for="ruc">
+											    <b-form-input id="sucursal" type="text" v-model="form.sucursal" :disabled="this.display == 'show'" placeholder="Sucursal" autocomplete="off"/>
+													<span v-if="all_errors.sucursal" :class="['label label-danger']">{{ all_errors.sucursal[0] }}</span>
+										    </b-form-group>
 										</b-col>
 									</b-row>
 
@@ -69,7 +72,7 @@
 									<b-button v-if="this.display != 'show'" type="submit" variant="success" v-on:click="onSubmit">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
-									<b-button v-if="this.display != 'show'" :href="url + '/tratamientos'" variant="warning">
+									<b-button v-if="this.display != 'show'" :href="url + '/empresas'" variant="warning">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
@@ -104,12 +107,12 @@
 
   export default{
     mounted() { 
-      console.log('tratamientos mounted')
+      console.log('empresas mounted')
 			if(this.view_mode != 'new') this.fillForm()
 			this.display = this.view_mode
 			this.panel_title = this.title
     },
-    name: 'Tratamiento-Form',
+    name: 'Empresa-Form',
     components: {
       PanelCard,
       TitleComponent
@@ -123,8 +126,9 @@
     data(){
       return{
         form: {
-					detalle: '',
-					is_active: ''
+					nombre: '',
+					ruc: '',
+					sucursal: ''
 				},
 				display: '',
 				record_id: '',
@@ -132,7 +136,7 @@
 				all_errors: [],
         breadcrumb: [
           { text: 'Home', href: '/' },
-          { text: 'Tratamientos', href: this.url+'/tratamientos' },
+          { text: 'Empresas', href: this.url+'/empresas' },
           { text: this.title, active: true },
 				],
 				toast_config: {
@@ -150,13 +154,13 @@
 				var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
 				
 				if (this.display == 'edit') {
-					request = { method: 'PUT', url: '/tratamientos/'+ this.record_id, data: this.form }
+					request = { method: 'PUT', url: '/empresas/'+ this.record_id, data: this.form }
 				} 
 				else if (this.display == 'new') {
-					request = { method: 'POST', url: '/tratamientos/'+ this.record_id, data: this.form }
+					request = { method: 'POST', url: '/empresas/'+ this.record_id, data: this.form }
 				}
 				else if (this.display == 'show' && action == 'delete' && confirm('¿Está seguro de eliminar este registro?')) {
-					request = { method: 'DELETE', url: '/tratamientos/'+ this.record_id,  }
+					request = { method: 'DELETE', url: '/empresas/'+ this.record_id,  }
 					mssgOnFail = 'El registro no ha podido ser eliminado.'
 				}
 
@@ -164,7 +168,7 @@
 					axios(request).then((response) => {
 						if(response.data.success){
 							console.log('Response:: OK')
-							window.location.href = this.url + '/tratamientos'
+							window.location.href = this.url + '/empresas'
 						}
 						else if (response.data.error){
 							console.log('Response:: FAIL');
@@ -182,12 +186,13 @@
 				console.log(this.record)
 				var tr = JSON.parse(this.record)
 				this.record_id = tr.id
-				this.form.detalle = tr.detalle
-				this.form.is_active = tr.is_active == '1'
+				this.form.nombre = tr.nombre
+				this.form.ruc = tr.ruc
+				this.form.sucursal = tr.sucursal
 			},
 			enableForm(){
 				this.display = 'edit'
-				this.panel_title = 'Modificar Tratamiento'
+				this.panel_title = 'Modificar Empresa'
 			}
     }
   }

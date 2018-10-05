@@ -8,6 +8,7 @@ Vue.use(Toasted)
 
 import HeaderComponent from './header/headerComponent.vue'
 import NavComponent from './header/navComponent.vue'
+import Flash from './widgets/alert/flash.vue'
 
 import ContainerGeneral from './container-general/index.vue'
 import Dashboard from './dashboard/index.vue'
@@ -21,7 +22,8 @@ import Doctores from './doctores/index.vue'
 import DoctorForm from './doctores/form.vue'
 import Tratamientos from './tratamientos/index.vue'
 import TratamientoForm from './tratamientos/form.vue'
-import Flash from './widgets/alert/flash.vue'
+import Empresas from './empresas/index.vue'
+import EmpresaForm from './empresas/form.vue'
 
 const app = new Vue({
     el: '#app',
@@ -36,7 +38,9 @@ const app = new Vue({
 			Doctores,
 			DoctorForm,
 			Tratamientos,
-			TratamientoForm		
+			TratamientoForm,
+			Empresas,
+			EmpresaForm		
     }
 })
 
