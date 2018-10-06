@@ -24,6 +24,8 @@ import Tratamientos from './tratamientos/index.vue'
 import TratamientoForm from './tratamientos/form.vue'
 import Empresas from './empresas/index.vue'
 import EmpresaForm from './empresas/form.vue'
+import Proveedores from './proveedores/index.vue'
+import ProveedorForm from './proveedores/form.vue'
 
 const app = new Vue({
     el: '#app',
@@ -40,7 +42,9 @@ const app = new Vue({
 			Tratamientos,
 			TratamientoForm,
 			Empresas,
-			EmpresaForm		
+			EmpresaForm,
+			Proveedores,
+			ProveedorForm	
     }
 })
 
