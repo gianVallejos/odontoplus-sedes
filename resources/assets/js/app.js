@@ -31,6 +31,8 @@ import Tratamientos from './tratamientos/index.vue'
 import TratamientoForm from './tratamientos/form.vue'
 import Empresas from './empresas/index.vue'
 import EmpresaForm from './empresas/form.vue'
+import IngresosIndex from './ingresos/index.vue'
+import IngresoForm from './ingresos/form.vue'
 
 const app = new Vue({
     el: '#app',
@@ -38,20 +40,15 @@ const app = new Vue({
     	ContainerGeneral, Dashboard,
     	PacienteIndex, PacienteCreate, PacienteShow,
     	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
-		Users, UserForm		
-    	ContainerGeneral,
-			Dashboard,
+		Users, UserForm,
     	PacienteIndex,
     	PacienteCreate,
     	PacienteShow,
-			Users,
-			UserForm,
-			Doctores,
-			DoctorForm,
-			Tratamientos,
-			TratamientoForm,
-			Empresas,
-			EmpresaForm		
+		Users, UserForm,
+		Doctores, DoctorForm,
+		Tratamientos, TratamientoForm,
+		Empresas, EmpresaForm,
+		IngresosIndex, IngresoForm
     }
 })
 

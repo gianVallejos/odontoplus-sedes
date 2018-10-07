@@ -110,6 +110,9 @@ p {
 .form-control::placeholder {
   color: #858ea7;
 }
+.help-required {
+  border-left: 4px solid #ab4240;
+}
 .col-form-label {
   font-family: 'Rubik', sans-serif;
 }
@@ -338,11 +341,12 @@ p {
 }
 .badge {
   border-radius: 0;
+  padding: 5px 12px;
 }
-.badge-danger {
+.badge.badge-danger {
   background-color: #ab4240;
 }
-.badge-success {
+.badge.badge-success {
   background-color: #0aab8a;
 }
 .actions-table {
@@ -407,6 +411,11 @@ table.b-table > thead > tr table.b-table:focus {
 }
 .label-danger {
   font-size: 0.9em;
+}
+.alert {
+  border: 0px;
+  margin: 0px;
+  padding: 12px 0px 12px 0px;
 }
 .toast-danger {
   background: #ab4240 !important;

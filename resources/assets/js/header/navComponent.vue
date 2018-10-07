@@ -37,7 +37,7 @@
 		    	</a>
 		        <ul class="dropdown-menu">
 		          <li class="li-dropdown">
-		          	<a href="#">
+		          	<a :href="url + '/ingresos'">
 		          		<i class="fas fa-money-check-alt"></i>Ingresos
 		          	</a>
 		          </li>

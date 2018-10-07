@@ -22,13 +22,14 @@ Route::resource('doctores', 'DoctorController');
 Route::resource('pacientes', 'PacienteController');
 Route::resource('tratamientos', 'TratamientoController');
 Route::resource('empresas', 'EmpresaController');
-//APIS 
-Route::resource('presupuestos', 'PresupuestoController');
 
+Route::resource('presupuestos', 'PresupuestoController');
 Route::get('presupuestos/nuevo/{idPaciente}/{idDoctor}', 'PresupuestoController@nuevo');
 Route::get('presupuestos/reporte/{id}', 'PresupuestoController@reporte');
 
-//Pacientes API
+Route::resource('ingresos', 'IngresoController');
+
+//APIS 
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
 Route::get('api-v1/op-obtener-pacientes', 'WsOdontoplusController@OP_obtenerPacientes')->name('pacientes.obtener');
 Route::post('api-v1/op-crear-paciente', 'WsOdontoplusController@OP_crearPaciente')->name('paientes.crear');
