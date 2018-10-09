@@ -154,7 +154,7 @@
 
   	export default{
     	mounted() { 
-      		console.log('ingresos mounted')
+      		console.log('ingresos mounted')      		
 			if(this.view_mode != 'new'){
 				this.fillForm()	
 			} 
@@ -235,8 +235,7 @@
 						}
 					}
 
-					if(request){					
-						console.log('request: ' + JSON.stringify(request))
+					if(request){											
 						axios(request).then((response) => {
 							console.log(response.data)
 							if(response.data.success){
@@ -255,13 +254,11 @@
 					}
 				},
 				fillForm(){
-					console.log(this.record)
-					var tr = JSON.parse(this.record)
-					this.record_id = tr.id
-					this.form.idPaciente = tr.hc
-					this.form.paciente = tr.nombrePaciente
-					this.form.doctor = tr.idDoctor
-					
+					this.record_id = this.record.id
+					this.form.fecha = this.record.fecha
+					this.form.idPaciente = this.record.hc
+					this.form.paciente = this.record.nombrePaciente
+					this.form.doctor = this.record.idDoctor
 				},
 				enableForm(){
 					this.display = 'edit'

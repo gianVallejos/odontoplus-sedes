@@ -28,6 +28,10 @@ Route::get('presupuestos/nuevo/{idPaciente}/{idDoctor}', 'PresupuestoController@
 Route::get('presupuestos/reporte/{id}', 'PresupuestoController@reporte');
 
 Route::resource('ingresos', 'IngresoController');
+Route::get('ingresos/line-item/{id}', 'IngresoController@lineItem')->name('ingresos.lineitem');
+Route::post('ingresos/line-item', 'IngresoController@lineItemSave');
+Route::put('ingresos/line-item/{id}', 'IngresoController@lineItemUpdate');
+Route::delete('ingresos/line-item/{id}', 'IngresoController@lineItemDelete');
 
 //APIS 
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');

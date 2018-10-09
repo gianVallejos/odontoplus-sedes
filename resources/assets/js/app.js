@@ -33,6 +33,7 @@ import Empresas from './empresas/index.vue'
 import EmpresaForm from './empresas/form.vue'
 import IngresosIndex from './ingresos/index.vue'
 import IngresoForm from './ingresos/form.vue'
+import IngresoLineItem from './ingresos/line-item.vue'
 
 const app = new Vue({
     el: '#app',
@@ -48,7 +49,7 @@ const app = new Vue({
 		Doctores, DoctorForm,
 		Tratamientos, TratamientoForm,
 		Empresas, EmpresaForm,
-		IngresosIndex, IngresoForm
+		IngresosIndex, IngresoForm, IngresoLineItem
     }
 })
 

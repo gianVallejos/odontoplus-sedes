@@ -312,6 +312,7 @@ p {
 .table tbody tr td a.action {
   color: #0aab8a !important;
   text-decoration: none;
+  cursor: pointer;
 }
 .table tbody tr td a.action:hover {
   text-decoration: underline;
@@ -500,4 +501,10 @@ table.b-table > thead > tr table.b-table:focus {
 .swal2-container.swal2-shown {
   background: #000;
   color: #ff0 !important;
+}
+span.title-sec {
+  display: inline-block;
+  width: 130px;
+  font-weight: bold;
+  height: 30px;
 }
