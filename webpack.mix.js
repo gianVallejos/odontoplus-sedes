@@ -5,3 +5,4 @@ mix.stylus('resources/assets/stylus/odontoplus.styl', 'public/css');
 mix.stylus('resources/assets/stylus/header.styl', 'public/css');
 mix.stylus('resources/assets/stylus/dashboard.styl', 'public/css');
 mix.stylus('resources/assets/stylus/auth.styl', 'public/css');
+mix.stylus('resources/assets/stylus/diente.styl', 'public/css');
