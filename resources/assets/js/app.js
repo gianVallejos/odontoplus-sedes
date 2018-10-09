@@ -41,22 +41,11 @@ const app = new Vue({
     	ContainerGeneral, Dashboard,
     	PacienteIndex, PacienteCreate, PacienteShow,
     	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
-		Users, UserForm		
-    	ContainerGeneral,
-			Dashboard,
-    	PacienteIndex,
-    	PacienteCreate,
-    	PacienteShow,
-			Users,
-			UserForm,
-			Doctores,
-			DoctorForm,
-			Tratamientos,
-			TratamientoForm,
-			Empresas,
-			EmpresaForm,
-			Proveedores,
-			ProveedorForm,
+			Users, UserForm,		
+			Doctores, DoctorForm,
+			Tratamientos, TratamientoForm,
+			Empresas, EmpresaForm,
+			Proveedores, ProveedorForm,
 			ProveedorLineItems	
     }
 })
