@@ -34,6 +34,9 @@ import EmpresaForm from './empresas/form.vue'
 import Proveedores from './proveedores/index.vue'
 import ProveedorForm from './proveedores/form.vue'
 import ProveedorLineItems from './proveedores/line_items.vue'
+import IngresosIndex from './ingresos/index.vue'
+import IngresoForm from './ingresos/form.vue'
+import IngresoLineItem from './ingresos/line-item.vue'
 
 const app = new Vue({
     el: '#app',
@@ -41,8 +44,9 @@ const app = new Vue({
     	ContainerGeneral, Dashboard,
     	PacienteIndex, PacienteCreate, PacienteShow,
     	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
-			Users, UserForm,		
-			Doctores, DoctorForm,
+		Users, UserForm,
+		Doctores, DoctorForm,
+		IngresosIndex, IngresoForm, IngresoLineItem
 			Tratamientos, TratamientoForm,
 			Empresas, EmpresaForm,
 			Proveedores, ProveedorForm,

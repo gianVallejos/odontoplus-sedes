@@ -61,15 +61,16 @@
                 </div>
               </template>
             </b-table>
-
-          <b-row align-h="between">
-            <b-col align-self="start">
-              Mostrando {{ currentPage }} de {{ Math.ceil(totalRows / perPage) }} páginas
-            </b-col>
-            <b-col cols="auto">
-              <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
-            </b-col>
+            
+          <b-row>
+                <b-col md="6" class="pt-3 fz-3">
+                  Mostrando {{ currentPage }} de {{ Math.round(totalRows / perPage) }} páginas                  
+                </b-col>
+                <b-col md="6" class="my-1 text-right">
+                  <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
+                </b-col>
           </b-row>
+
           </div>
         </PanelCard>
 			</div>

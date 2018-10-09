@@ -100,31 +100,31 @@
 				    		iconUrl: 'fas fa-user-md',
 				    		name: 'Doctores',
 				    		color: 'modificar',
-				    		url: '/'
+				    		url: this.url + '/doctores'
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-tooth',
 				    		name: 'Tratamientos',
 				    		color: 'guardar',
-				    		url: '/'
+				    		url: this.url + '/tratamientos'
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-dollar-sign',
 				    		name: 'Precios',
 				    		color: 'modificar',
-				    		url: '/'
+				    		url: this.url + '/precios'
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-building',
 				    		name: 'Empresas',
 				    		color: 'guardar',
-				    		url: '/'
+				    		url: this.url + '/empresas'
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-money-check-alt',
 				    		name: 'Ingresos',
 				    		color: 'info',
-				    		url: '/'
+				    		url: this.url + '/ingresos'
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-money-bill',

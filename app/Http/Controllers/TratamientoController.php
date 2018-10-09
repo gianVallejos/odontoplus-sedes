@@ -23,7 +23,7 @@ class TratamientoController extends Controller{
     }
 
     public function create(){
-        return view('tratamientos.new');    
+        return view('tratamientos.new');   
     }
 
     public function show($id){

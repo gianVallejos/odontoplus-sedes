@@ -6,7 +6,7 @@
 			</b-col>
 			<b-col cols="12" class="pt-3">				
 				<PanelCard>
-					<span slot="heading">Lista de Pacientes </span>
+					<span slot="heading">Lista de Ingresos </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						
 						<div class="row pb-3">
@@ -30,8 +30,8 @@
 							<div class="col-md-6">							
 								<div class="float-right d-inline-block">
 									<b-button-group>										
-										<b-button :href="url+'/pacientes/create'" variant="success">
-											<i class="fas fa-plus"></i>&nbsp; Nuevo Paciente
+										<b-button :href="url+'/ingresos/create'" variant="success">
+											<i class="fas fa-plus"></i>&nbsp; Nuevo Ingreso
 										</b-button>
 										<!--b-button variant="warning">
 											<i class="fas fa-print"></i>&nbsp; Imprimir
@@ -41,36 +41,40 @@
 							</div>
 						</div>
 
-
-						<b-table show-empty :items="mydata" :fields="fields" :current-page="currentPage" :per-page="perPage"
+						<b-table show-empty :items="ingresos" :fields="fields" :current-page="currentPage" :per-page="perPage"
 					             :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
 					             @filtered="onFiltered">
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">						        	
-						        	<a :href="url+'/pacientes/'+ row.item.id + '/false'"  class="action">Detalle</a>
+						        	<a :href="url+'/ingresos/line-item/'+ row.item.id"  class="action">Detalle</a>
 						        	|
-						        	<a :href="url+'/pacientes/'+ row.item.id + '/true'" class="action">Modificar</a>
+						        	<a :href="url+'/ingresos/'+ row.item.id +'/edit/'" class="action">Modificar</a>
 						        </div>
 						    </template>
-						    <template slot="id" slot-scope="row">
+						    <template slot="fecha" slot-scope="row">
 						    	{{ row.value }}
 						    </template>
-						    <template slot="nombres" slot-scope="row">
-						    	<a :href="url + '/pacientes/' + row.item.id + '/false'">
-						      		{{ row.value }} {{ row.item.apellidos }}
-						      	</a>
-						    </template>						    	
-						    <template slot="dni" slot-scope="row">
+						    <template slot="hc" slot-scope="row">
 						      		{{ row.value }}
+						    </template>						    	
+						    <template slot="nombrePaciente" slot-scope="row">
+						    	<a :href="url + '/pacientes/' + row.item.hc + '/false'">
+						      		{{ row.value }}
+						      	</a>
 						    </template>
-						    <template slot="celular" slot-scope="row">
+						    <template slot="nombreDoctor" slot-scope="row">
+						    	<a :href="url + '/doctores/' + row.item.idDoctor ">
 						      		{{row.value }}
+						      	</a>
 						    </template>		
-						    <template slot="telefono" slot-scope="row">
-						      		{{row.value }}
+						    <template slot="monto_total" slot-scope="row">
+						      		S/ {{row.value }}
 						    </template>	
-						    <template slot="empresa_nombre" slot-scope="row">
-						      		{{row.value }}
+						    <template slot="mg" slot-scope="row">
+						      		S/ {{row.value }}
+						    </template>		
+						    <template slot="mg_core" slot-scope="row">
+						      		S/ {{row.value }}
 						    </template>		
 					    </b-table>
 					    <b-row>
@@ -96,22 +100,16 @@
 
 	export default{
 		mounted(){
-			console.log('Paciente Mounted')			
+			console.log('mounted')
 		},
-		created() {
-	    	axios.get(this.url + '/api-v1/op-obtener-pacientes')
-	    		 	.then((response) => {	      		 
-			      		this.mydata = response.data;
-			      		this.totalRows = Math.ceil(this.mydata.length)
-	    			})
-	    },
+		props: [
+			'url',
+			'ingresos'
+		],
 		components:{
 			TitleComponent,
 			PanelCard
 		},
-		props: [	
-			'url'
-		],
 		data(){
 			return{
 				mydata: [],
@@ -121,12 +119,13 @@
 			    ],			    
 			    fields: [				    
 				    { key: 'actions', label: '', 'class': 'text-left' },				    
-				    { key: 'nombres', label: 'Nombres', sortable: true, sortDirection: 'desc' },
-				    { key: 'id', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
-				    { key: 'dni', label: 'DNI', sortable: true, sortDirection: 'desc' },
-				    { key: 'celular', label: 'Celular', sortable: true, sortDirection: 'desc' },			        
-				    { key: 'telefono', label: 'Teléfono', sortable: true, sortDirection: 'desc' },
-				    { key: 'empresa_nombre', label: 'Empresa', sortable: true, sortDirection: 'desc' }
+				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
+				    { key: 'hc', label: 'HC', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },
+				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },			        
+				    { key: 'monto_total', label: 'Monto Total', sortable: true, sortDirection: 'desc' },
+				    { key: 'mg', label: 'M. Doctor', sortable: true, sortDirection: 'desc' },
+				    { key: 'mg_core', label: 'CORE', sortable: true, sortDirection: 'desc' }
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,
@@ -144,5 +143,5 @@
 		      this.currentPage = 1
 		    }
 		}
-	}
+	}	
 </script>

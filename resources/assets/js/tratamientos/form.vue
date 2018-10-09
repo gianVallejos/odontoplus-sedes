@@ -61,7 +61,6 @@
 										    </b-form-group>		
 										</b-col>
 									</b-row>
-
 							</div>
 
 							<div class="text-center">
@@ -98,7 +97,7 @@
 </template>
 
 <script>
-  import PanelCard from '../widgets/panel/panel-component.vue'
+  	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
 	import axios from 'axios'
 
@@ -111,25 +110,25 @@
     },
     name: 'Tratamiento-Form',
     components: {
-      PanelCard,
-      TitleComponent
+      	PanelCard,
+      	TitleComponent
     },
     props:[
-      'title',
-      'url',
-			'record',
-			'view_mode'
+      	'title',
+      	'url',
+		'record',
+		'view_mode'
     ],
     data(){
       return{
         form: {
-					detalle: '',
-					is_active: ''
-				},
-				display: '',
-				record_id: '',
-				panel_title: '',
-				all_errors: [],
+			detalle: '',
+			is_active: ''
+		},
+		display: '',
+		record_id: '',
+		panel_title: '',
+		all_errors: [],
         breadcrumb: [
           { text: 'Home', href: '/' },
           { text: 'Tratamientos', href: this.url+'/tratamientos' },

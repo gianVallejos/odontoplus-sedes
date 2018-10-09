@@ -1,10 +1,10 @@
 <template>
   <b-container>
 		<b-row>
-			<div class="col-md-12">
+			<b-col cols="12">
 				<TitleComponent titulo="Tratamientos" :items="breadcrumb" />
-			</div>
-      <div class="col-md-12">
+			</b-col>
+      <b-col cols="12">
         <PanelCard>
           <span slot="heading">Lista de Tratamientos</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -66,7 +66,7 @@
             </b-table>
 
           <b-row align-h="between">
-            <b-col align-self="start">
+            <b-col class="fz-3" align-self="start">
               Mostrando {{ currentPage }} de {{ Math.ceil(totalRows / perPage) }} páginas
             </b-col>
             <b-col cols="auto">
@@ -75,7 +75,7 @@
           </b-row>
           </div>
         </PanelCard>
-			</div>
+			</b-col>
 		</b-row>
   </b-container>
 </template>
@@ -103,7 +103,7 @@
         fields: [
           { key: 'actions', label: 'Acciones' },
           { key: 'detalle', label: 'Detalle', sortable: true, sortDirection: 'desc' },
-          { key: 'is_active', label: 'Estado', sortable: true }
+          { key: 'is_active', label: 'Estado', sortable: true, 'class': 'text-center' }
           ],
         currentPage: 1,
         perPage: 10,
