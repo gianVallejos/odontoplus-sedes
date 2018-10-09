@@ -31,6 +31,9 @@ import Tratamientos from './tratamientos/index.vue'
 import TratamientoForm from './tratamientos/form.vue'
 import Empresas from './empresas/index.vue'
 import EmpresaForm from './empresas/form.vue'
+import Proveedores from './proveedores/index.vue'
+import ProveedorForm from './proveedores/form.vue'
+import ProveedorLineItems from './proveedores/line_items.vue'
 import IngresosIndex from './ingresos/index.vue'
 import IngresoForm from './ingresos/form.vue'
 import IngresoLineItem from './ingresos/line-item.vue'
@@ -42,14 +45,12 @@ const app = new Vue({
     	PacienteIndex, PacienteCreate, PacienteShow,
     	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
 		Users, UserForm,
-    	PacienteIndex,
-    	PacienteCreate,
-    	PacienteShow,
-		Users, UserForm,
 		Doctores, DoctorForm,
-		Tratamientos, TratamientoForm,
-		Empresas, EmpresaForm,
 		IngresosIndex, IngresoForm, IngresoLineItem
+			Tratamientos, TratamientoForm,
+			Empresas, EmpresaForm,
+			Proveedores, ProveedorForm,
+			ProveedorLineItems	
     }
 })
 

@@ -22,7 +22,10 @@ Route::resource('doctores', 'DoctorController');
 Route::resource('pacientes', 'PacienteController');
 Route::resource('tratamientos', 'TratamientoController');
 Route::resource('empresas', 'EmpresaController');
+Route::resource('proveedores', 'ProveedorController');
+Route::resource('proveedorLineItems', 'ProveedorLineItemController');
 
+//APIS 
 Route::resource('presupuestos', 'PresupuestoController');
 Route::get('presupuestos/nuevo/{idPaciente}/{idDoctor}', 'PresupuestoController@nuevo');
 Route::get('presupuestos/reporte/{id}', 'PresupuestoController@reporte');

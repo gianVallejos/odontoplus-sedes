@@ -130,6 +130,53 @@ BEGIN
   WHERE e.id = XID AND e.is_deleted = '0';
 END;
 
+-- ---------------------------------------------------------------------------------
+-- PROVEEDORES
+-- ---------------------------------------------------------------------------------
+-- COLUMNS
+ALTER TABLE proveedors
+ADD COLUMN is_deleted BOOLEAN DEFAULT FALSE;
+-- --------------------------------------------------------------------
+
+-- PROCEDURES
+DROP PROCEDURE IF EXISTS `OP_ObtenerProveedores`;
+
+CREATE PROCEDURE `OP_ObtenerProveedores`()
+BEGIN
+  SELECT 	e.id, e.nombres, e.email, e.direccion, e.dni, e.telefono, e.celular, e.empresa,	e.ciudad,	e.ruc,
+	e.banco,	e.nrocuenta,	e.insumo_id,	e.tipo_id
+  FROM proveedors e
+  WHERE e.is_deleted = '0';
+END;
+
+DROP PROCEDURE IF EXISTS `OP_ObtenerProveedores_Id`;
+
+CREATE PROCEDURE `OP_ObtenerProveedores_Id`(IN XID INT)
+BEGIN
+  SELECT e.id, e.nombres, e.email, e.direccion, e.dni, e.telefono, e.celular, e.empresa,	e.ciudad,	e.ruc,
+	e.banco,	e.nrocuenta,	e.insumo_id,	e.tipo_id
+  FROM proveedors e
+  WHERE e.id = XID AND e.is_deleted = '0';
+END;
+
+-- ---------------------------------------------------------------------------------
+-- PROVEEDORS_DETALLE
+-- ---------------------------------------------------------------------------------
+-- COLUMNS
+
+-- --------------------------------------------------------------------
+
+-- PROCEDURES
+
+DROP PROCEDURE IF EXISTS `OP_ObtenerProveedoresDetalles_Id`;
+
+CREATE PROCEDURE `OP_ObtenerProveedoresDetalles_Id`(IN XID INT)
+BEGIN
+  SELECT p.id, p.idProveedor, p.detalle, p.monto
+  FROM proveedors_detalles p
+  WHERE p.idProveedor = XID;
+END;
+
 
 -- ---------------------------------------------------------------------------------
 -- PACIENTES

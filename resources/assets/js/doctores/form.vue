@@ -72,7 +72,7 @@
 									<b-row>
 										<b-col cols="6" class="pt-3 pb-4">
 											<div class="form-title">
-												<i class="fas fa-user"></i>
+												<i class="fas fa-user-md"></i>
 												<div class="d-inline"> Información del Doctor </div>
 											</div>
 											<p class="form-description fz-3 pt-3 pr-4">
@@ -107,7 +107,7 @@
 									<b-row>
 										<b-col cols="6" class="pt-3 pb-4">
 											<div class="form-title">
-												<i class="fas fa-shield-alt"></i>
+												<i class="far fa-address-card"></i>
 												<div class="d-inline">Información de Contacto</div>
 											</div>
 											<p class="form-description fz-3 pt-3 pr-4">
