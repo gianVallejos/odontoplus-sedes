@@ -160,6 +160,25 @@ BEGIN
 END;
 
 -- ---------------------------------------------------------------------------------
+-- PROVEEDORS_DETALLE
+-- ---------------------------------------------------------------------------------
+-- COLUMNS
+
+-- --------------------------------------------------------------------
+
+-- PROCEDURES
+
+DROP PROCEDURE IF EXISTS `OP_ObtenerProveedoresDetalles_Id`;
+
+CREATE PROCEDURE `OP_ObtenerProveedoresDetalles_Id`(IN XID INT)
+BEGIN
+  SELECT p.id, p.idProveedor, p.detalle, p.monto
+  FROM proveedors_detalles p
+  WHERE p.idProveedor = XID;
+END;
+
+
+-- ---------------------------------------------------------------------------------
 -- PACIENTES
 -- ---------------------------------------------------------------------------------
 -- ----------------------------

@@ -257,7 +257,6 @@
     methods:{
 			onSubmit (e, action) {
 				e.preventDefault();
-				console.log(JSON.stringify(this.form))
 				var request
 				var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
 				

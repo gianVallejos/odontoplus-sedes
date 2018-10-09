@@ -26,6 +26,7 @@ import Empresas from './empresas/index.vue'
 import EmpresaForm from './empresas/form.vue'
 import Proveedores from './proveedores/index.vue'
 import ProveedorForm from './proveedores/form.vue'
+import ProveedorLineItems from './proveedores/line_items.vue'
 
 const app = new Vue({
     el: '#app',
@@ -44,7 +45,8 @@ const app = new Vue({
 			Empresas,
 			EmpresaForm,
 			Proveedores,
-			ProveedorForm	
+			ProveedorForm,
+			ProveedorLineItems	
     }
 })
 

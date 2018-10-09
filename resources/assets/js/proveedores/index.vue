@@ -55,7 +55,7 @@
                     @filtered="onFiltered" >
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/proveedores/'+ row.item.id" class="action" >Detalle</a>
+                  <a :href="url+'/proveedorLineItems/'+ row.item.id" class="action" >Detalle</a>
                   |
                   <a :href="url+'/proveedores/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
@@ -98,8 +98,8 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: 'Acciones' },
-          { key: 'nombres', label: 'Nombre', sortable: true, sortDirection: 'desc' },
+          { key: 'actions', label: 'Acciones'},
+          { key: 'nombres', label: 'Nombre', sortable: true },
           { key: 'empresa', label: 'Empresa', sortable: true },
           { key: 'ciudad', label: 'Cuidad', sortable: true },
           { key: 'insumo_id', label: 'Insumo', sortable: true },
