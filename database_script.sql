@@ -178,57 +178,6 @@ BEGIN
 END;
 
 
--- ---------------------------------------------------------------------------------
--- PACIENTES
--- ---------------------------------------------------------------------------------
--- ----------------------------
--- Table structure for pacientes
--- ----------------------------
-DROP TABLE IF EXISTS `pacientes`;
-CREATE TABLE `pacientes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombres` varchar(90) NOT NULL,
-  `apellidos` varchar(90) NOT NULL,
-  `dni` varchar(8) DEFAULT NULL,
-  `email` varchar(90) DEFAULT NULL,
-  `direccion` varchar(90) NOT NULL,
-  `fechanacimiento` date DEFAULT NULL,
-  `genero` varchar(25) DEFAULT NULL,
-  `estado` varchar(25) DEFAULT NULL,
-  `telefono` varchar(50) DEFAULT NULL,
-  `fax` varchar(50) DEFAULT NULL,
-  `celular` varchar(50) DEFAULT NULL,
-  `celular_aux` varchar(50) DEFAULT NULL,
-  `empresa_id` int(11) NOT NULL,
-  `seguro_ind` int(11) DEFAULT NULL,
-  `updated_at` date NOT NULL,
-  `created_at` date NOT NULL,
-  `nombre_apoderado` varchar(150) DEFAULT NULL,
-  `celular_apoderado` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=219 DEFAULT CHARSET=latin1;
-
--- PROCEDURES
-DROP PROCEDURE IF EXISTS `OP_obtenerPacientes`;
-CREATE PROCEDURE `OP_obtenerPacientes`()
-BEGIN
-	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero, 
-				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, 
-				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre
-	FROM pacientes as pc
-	INNER JOIN empresas as emp on emp.id = pc.empresa_id;
-END;
-
-DROP PROCEDURE IF EXISTS `OP_obtenerPacientes_Id`;
-CREATE PROCEDURE `OP_obtenerPacientes_Id`(IN XID INT)
-BEGIN
-	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero, 
-				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, 
-				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre
-	FROM pacientes as pc
-	INNER JOIN empresas as emp on emp.id = pc.empresa_id
-	WHERE pc.id = XID;
-END;
 
 -- ---------------------------------------------------------------------------------
 -- EMPRESAS
@@ -237,36 +186,16 @@ END;
 
 -- PROCEDURES
 DROP PROCEDURE IF EXISTS `OP_obtenerEmpresasJson`;
-CREATE PROCEDURE `OP_obtenerEmpresasJson`()
-BEGIN
-	SELECT id as value, nombre as text FROM empresas;
-END;
-END
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerEmpresasJson`()
 BEGIN
 	SELECT id as value, nombre as text FROM empresas;
-END
+END;
+-- ------------------------------------------------------------------------------------------------------------------------
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPacientes`()
-BEGIN
-	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero, 
-				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, 
-				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre
-	FROM pacientes as pc
-	INNER JOIN empresas as emp on emp.id = pc.empresa_id
-	WHERE pc.isDeleted = false;
-END
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPacientes_Id`(IN XID INT)
-BEGIN
-	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero, 
-				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, 
-				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre
-	FROM pacientes as pc
-	INNER JOIN empresas as emp on emp.id = pc.empresa_id
-	WHERE pc.isDeleted = false AND pc.id = XID;
-END
+-- ---------------------------------------------------------------------------------
+-- PACIENTES
+-- ---------------------------------------------------------------------------------
+-- COLUMNS
 
 DROP TABLE IF EXISTS `pacientes`;
 CREATE TABLE `pacientes` (
@@ -293,18 +222,45 @@ CREATE TABLE `pacientes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=latin1;
 
+-- PROCEDURES
+
+DROP PROCEDURE IF EXISTS `OP_obtenerPacientes`;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPacientes`()
+BEGIN
+	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero, 
+				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, 
+				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre
+	FROM pacientes as pc
+	INNER JOIN empresas as emp on emp.id = pc.empresa_id
+	WHERE pc.isDeleted = false;
+END;
+
+DROP PROCEDURE IF EXISTS `OP_obtenerPacientes_Id`;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPacientes_Id`(IN XID INT)
+BEGIN
+	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero, 
+				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, 
+				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre
+	FROM pacientes as pc
+	INNER JOIN empresas as emp on emp.id = pc.empresa_id
+	WHERE pc.isDeleted = false AND pc.id = XID;
+END;
+-- -------------------------------------------------------------------------------------------------
+
+
+
+
+DROP PROCEDURE IF EXISTS `OP_obtenerDoctores`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerDoctores`()
 BEGIN
   SELECT * FROM doctores;
-END
+END;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerEmpresasJson`()
-BEGIN
-  SELECT id as value, nombre as text FROM empresas;
-END
 
 -- PROCEDURES PRESUPUESTO LAST UPDATE 05-10-2018 17:23:00pm --
 
+
+DROP PROCEDURE IF EXISTS `OP_obtenerPresupuestos`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPresupuestos`()
 BEGIN
   SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pre.idDoctor, pre.descuento, 
@@ -314,21 +270,25 @@ BEGIN
   INNER JOIN pacientes AS pc ON pc.id = pre.idPaciente
   INNER JOIN doctors AS dc ON dc.id = pre.idDoctor
   ORDER BY pre.id DESC; 
-END
+END;
 
 
+DROP PROCEDURE IF EXISTS `OP_obtenerUltimoPresupuesto`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimoPresupuesto`()
 BEGIN
   DECLARE NRO_PRESUPUESTO INT;
   SELECT LPAD(IFNULL(id, 0), 5, '00000') as presupuesto FROM presupuestos ORDER BY id DESC LIMIT 1;
-END
+END;
 
 
+DROP PROCEDURE IF EXISTS `OP_obtenerDoctores`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerDoctores`()
 BEGIN
   SELECT * FROM doctors;
-END
+END;
 
+
+DROP PROCEDURE IF EXISTS `OP_obtenerUltimoPresupuesto`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimoPresupuesto`()
 BEGIN
   DECLARE NRO_PRESUPUESTO INT;
@@ -341,43 +301,54 @@ BEGIN
     SELECT LPAD(id+1, 5, '00000') as presupuesto FROM presupuestos ORDER BY id DESC LIMIT 1;
   END IF;
 
-END
+END;
 
+
+DROP PROCEDURE IF EXISTS `OP_obtenerDoctores_presupuesto`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerDoctores_presupuesto`(IN XID_DOCTOR INT)
 BEGIN
   SELECT id as id, nombres as nombres, apellidos as apellidos, margen_ganancia
     FROM doctors WHERE id = XID_DOCTOR;
-END
+END;
 
+
+DROP PROCEDURE IF EXISTS `OP_obtenerPacientes_presupuesto`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPacientes_presupuesto`(IN XID_PACIENTES INT)
 BEGIN
   SELECT LPAD(pacientes.id, 5, '0') as id, pacientes.nombres, pacientes.apellidos, empresas.nombre as empresa, pacientes.empresa_id 
     FROM pacientes
     INNER JOIN empresas on empresas.id = pacientes.empresa_id
   WHERE pacientes.id = XID_PACIENTES;
-END
+END;
 
+
+DROP PROCEDURE IF EXISTS `OP_obtenerEmpresaActual_paciente`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerEmpresaActual_paciente`(IN XID_PACIENTE INT)
 BEGIN
   SELECT empresa_id FROM pacientes WHERE pacientes.id = XID_PACIENTE;
-END
+END;
 
+
+DROP PROCEDURE IF EXISTS `OP_obtenerPrecios_EmpresaId`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPrecios_EmpresaId`(IN XID_EMPRESA INT)
 BEGIN
   select trat.id, trat.detalle, emprc.monto from precios as emprc
     inner join empresas as emp on emp.id = emprc.idEmpresa
     inner join tratamientos as trat on trat.id = emprc.idTratamiento
   where emp.id = XID_EMPRESA order by idTratamiento;
-END
+END;
 
+
+DROP PROCEDURE IF EXISTS `OP_obtenerPreciosParaTabla_EmpresaId`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPreciosParaTabla_EmpresaId`(IN XID_EMPRESA INT)
 BEGIN
   select trat.id, trat.detalle, emprc.monto from precios as emprc
     inner join empresas as emp on emp.id = emprc.idEmpresa
     inner join tratamientos as trat on trat.id = emprc.idTratamiento
   where emp.id = XID_EMPRESA and trat.id > 7 and trat.id != 29 and trat.id != 30 order by idTratamiento;
-END
+END;
 
+DROP PROCEDURE IF EXISTS `OP_obtenerPresupuesto_Id`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPresupuesto_Id`(IN XID INT)
 BEGIN
   SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pre.idDoctor, pre.descuento, 
@@ -389,31 +360,38 @@ BEGIN
   INNER JOIN doctors AS dc ON dc.id = pre.idDoctor
   INNER JOIN empresas as emp ON emp.id = pc.empresa_id
   WHERE pre.id = XID;
-END
+END;
 
+DROP PROCEDURE IF EXISTS `OP_obtenerPresupuestoDetalle_Id`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPresupuestoDetalle_Id`(IN XID INT)
 BEGIN
   SELECT id, pieza, seccion, secUno, secDos, opcion FROM presupuesto_detalles
     WHERE idPresupuesto = XID;
-END
+END;
 
+
+DROP PROCEDURE IF EXISTS `OP_obtenerEmpresaActual_paciente`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerEmpresaActual_paciente`(IN XID_PACIENTE INT)
 BEGIN
   SELECT empresa_id FROM pacientes WHERE pacientes.id = XID_PACIENTE;
-END
+END;
 
+
+DROP PROCEDURE IF EXISTS `OP_agregarPresupuestoGeneral`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_agregarPresupuestoGeneral`(IN ID_PRESUPUESTO INT, IN XID_PACIENTE INT, IN XID_DOCTOR INT, IN XDESCUENTO INT)
 BEGIN
     INSERT INTO presupuestos(id, fechahora, idPaciente, idDoctor, descuento)
       VALUES (ID_PRESUPUESTO, NOW(), XID_PACIENTE, XID_DOCTOR, XDESCUENTO);
 
     SELECT ROW_COUNT() AS ESTADO;
-END
+END;
 
+
+DROP PROCEDURE IF EXISTS `OP_agregarPresupuestosDetalles`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_agregarPresupuestosDetalles`(IN XID_PRESUPUESTO INT, IN XPIEZA INT, XSECCION INT, IN XSECUNO INT, IN XSECDOS INT, IN XOPCION INT)
 BEGIN
     INSERT INTO presupuesto_detalles(idPresupuesto, pieza, seccion, secUno, secDos, opcion)
     VALUES(XID_PRESUPUESTO, XPIEZA, XSECCION, XSECUNO, XSECDOS, XOPCION);
 
     SELECT ROW_COUNT() AS ESTADO;
-END
+END;
