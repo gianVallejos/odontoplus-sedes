@@ -247,7 +247,17 @@ BEGIN
 END;
 -- -------------------------------------------------------------------------------------------------
 
+-- Ingresos entre fechas
+DROP PROCEDURE IF EXISTS `OP_ObtenerIngresos_Fechas`;
 
+CREATE PROCEDURE `OP_ObtenerIngresos_Fechas`(IN start_date DATE, IN end_date DATE)
+BEGIN
+	SET lc_time_names = 'es_ES';
+	SELECT MONTHNAME(i.fecha) as mes, SUM(i.total) as ingresos
+  FROM ingresos i
+  WHERE (i.fecha BETWEEN start_date AND end_date)
+	GROUP BY (MONTH(i.fecha));
+END;
 
 
 DROP PROCEDURE IF EXISTS `OP_obtenerDoctores`;
