@@ -42,7 +42,7 @@
 		          	</a>
 		          </li>
 		          <li class="li-dropdown">
-		          	<a href="#">
+		          	<a :href="url + '/egresos'">
 		          		<i class="fas fa-money-bill"></i>Egresos
 		          	</a>
 		          </li>

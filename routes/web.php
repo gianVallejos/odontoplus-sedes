@@ -36,6 +36,8 @@ Route::post('ingresos/line-item', 'IngresoController@lineItemSave');
 Route::put('ingresos/line-item/{id}', 'IngresoController@lineItemUpdate');
 Route::delete('ingresos/line-item/{id}', 'IngresoController@lineItemDelete');
 
+Route::resource('egresos', 'EgresoController');
+
 //APIS 
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
 Route::get('api-v1/op-obtener-pacientes', 'WsOdontoplusController@OP_obtenerPacientes')->name('pacientes.obtener');

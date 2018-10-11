@@ -154,7 +154,7 @@
 
   	export default{
     	mounted() { 
-      		console.log('ingresos mounted')      		
+      		console.log('Egresos mounted')      		
 			if(this.view_mode != 'new'){
 				this.fillForm()	
 			} 
