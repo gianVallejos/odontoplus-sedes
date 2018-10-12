@@ -28,4 +28,8 @@ class reporteController extends Controller{
         $data = DB::select('call OP_ObtenerIngresosPorPaciente_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
         return response()->json(['incomes' => $data ]);
     }
+    public function companyIncomes(Request $request){
+        $data = DB::select('call OP_ObtenerIngresosPorEmpresa_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
+        return response()->json(['incomes' => $data ]);
+    }
 }

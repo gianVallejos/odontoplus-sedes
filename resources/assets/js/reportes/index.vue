@@ -10,8 +10,8 @@
 					<b-row slot="body">
 						<b-col cols="6" class="vertical-line">
 							<b-form inline >
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="incomesStartDate" type="date" v-model="incomesChart.range.start"/>
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="incomesEndDate" type="date" v-model="incomesChart.range.end"/>
+									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_start" type="date" v-model="incomesChart.range.start"/>
+									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_end" type="date" v-model="incomesChart.range.end"/>
 									<b-button variant="primary" v-on:click.prevent="fillIncomesChart()">
 										<i class="fas fa-redo-alt"></i>
 									</b-button>
@@ -23,8 +23,8 @@
 						</b-col>
 						<b-col cols="6">
 							<b-form inline >
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="incomesStartDate" type="date" v-model="outputsChart.range.start"/>
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="incomesEndDate" type="date" v-model="outputsChart.range.end"/>
+								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="outp_start" type="date" v-model="outputsChart.range.start"/>
+								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="outp_end" type="date" v-model="outputsChart.range.end"/>
 								<b-button variant="primary" v-on:click.prevent="fillOutputsChart()">
 									<i class="fas fa-redo-alt"></i>
 								</b-button>
@@ -48,28 +48,28 @@
 					<b-row slot="body">
 						<b-col cols="6" class="vertical-line">
 							<b-form inline >
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="incomesStartDate" type="date" v-model="incomesPacienteChart.range.start"/>
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="incomesEndDate" type="date" v-model="incomesPacienteChart.range.end"/>
+									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_paciente_start" type="date" v-model="incomesPacienteChart.range.start"/>
+									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_paciente_end" type="date" v-model="incomesPacienteChart.range.end"/>
 									<b-button variant="primary" v-on:click.prevent="fillIncomesPacientesChart()">
 										<i class="fas fa-redo-alt"></i>
 									</b-button>
 							</b-form>
-							<GChart class="pt-4" type="ColumnChart" :data="incomesPacienteData" :options="incomesPacienteChart" />
+							<GChart class="pt-4" type="BarChart" :data="incomesPacienteData" :options="incomesPacienteChart" />
 							<div class="text-center pt-4 pb-4">	
-								<b-button href="#" variant="success">Ir a Ingresos</b-button>
+								<b-button href="#" variant="success">Ver Pacientes</b-button>
 							</div>
 						</b-col>
 						<b-col cols="6">
 							<b-form inline >
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="incomesStartDate" type="date" v-model="outputsChart.range.start"/>
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="incomesEndDate" type="date" v-model="outputsChart.range.end"/>
-								<b-button variant="primary" v-on:click.prevent="fillOutputsChart()">
+								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_start" type="date" v-model="incomesCompanyChart.range.start"/>
+								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_end" type="date" v-model="incomesCompanyChart.range.end"/>
+								<b-button variant="primary" v-on:click.prevent="fillIncomesEmpresaChart()">
 									<i class="fas fa-redo-alt"></i>
 								</b-button>
 							</b-form>
-							<GChart class="pt-4" type="ColumnChart" :data="outputsData" :options="outputsChart" />
+							<GChart class="pt-4" type="PieChart" :data="incomesCompanyData" :options="incomesCompanyChart" />
 							<div class="text-center pt-4 pb-4">
-								<b-button href="#" variant="success">Ver a Egresos</b-button>
+								<b-button href="#" variant="success">Ver a Empresas</b-button>
 							</div>
 						</b-col>
 					</b-row>
@@ -89,15 +89,18 @@
 	export default{
 		mounted(){
 			console.log('Reports Mounted')
-			this.incomesChart.range.start = this.currentDate(-4)
+			this.incomesChart.range.start = this.currentDate(-5)
 			this.incomesChart.range.end = this.currentDate()
-			this.outputsChart.range.start = this.currentDate(-4)
+			this.outputsChart.range.start = this.currentDate(-5)
 			this.outputsChart.range.end = this.currentDate()
-			this.incomesPacienteChart.range.start = this.currentDate(-4)
+			this.incomesPacienteChart.range.start = this.currentDate(-5)
 			this.incomesPacienteChart.range.end = this.currentDate()
+			this.incomesCompanyChart.range.start = this.currentDate(-5)
+			this.incomesCompanyChart.range.end = this.currentDate()
 			this.fillIncomesChart()
 			this.fillOutputsChart()
 			this.fillIncomesPacientesChart()
+			this.fillIncomesEmpresaChart()
 		},
 		props: [
 			'url'
@@ -116,7 +119,7 @@
 				incomesData: [],
         incomesChart: {			        
           title: 'Ingresos por mes',
-          fontSize: 16,
+          fontSize: 13,
           fontFamily: 'Open Sans',
           subtitle: 'Sales, Expenses',
           width: 500,
@@ -127,7 +130,7 @@
 				outputsData: [],
         outputsChart: {			        
           title: 'Egresos de los Últimos Seis Meses',
-          fontSize: 16,
+          fontSize: 13,
           fontFamily: 'Open Sans',
           width: 500,
           height: 285,
@@ -137,7 +140,17 @@
 				incomesPacienteData: [],
         incomesPacienteChart: {			        
           title: 'Ingresos por paciente',
-          fontSize: 16,
+          fontSize: 13,
+          fontFamily: 'Open Sans',
+          width: 500,
+          height: 285,
+					legend: { position: 'bottom', alignment:'center' },
+          range: { start: '', end: '' }
+				},
+				incomesCompanyData: [],
+        incomesCompanyChart: {			        
+          title: 'Ingresos por Empresa',
+          fontSize: 13,
           fontFamily: 'Open Sans',
           width: 500,
           height: 285,
@@ -178,12 +191,26 @@
 			fillIncomesPacientesChart(){
 				var start = this.incomesPacienteChart.range.start 
 				var end = this.incomesPacienteChart.range.end
-        var request = { method: 'GET', url: this.url + '/reportes/ingresos_paciente?start='+start+'&end='+end }
+        var request = { method: 'GET', url: this.url + '/reportes/ingresos/por_paciente?start='+start+'&end='+end }
         axios(request).then((response) => {
 					var incomes = response.data.incomes
-					this.incomesData = [['Mes', 'Egresos']]
+					this.incomesPacienteData = [['Nombre', 'Monto']]
 					for(var i=0 ; i<incomes.length; i++){
-						this.incomesData.push([ incomes[i].mes.substring(0,3), parseInt(incomes[i].egresos)])
+						this.incomesPacienteData.push([ incomes[i].nombre, parseInt(incomes[i].monto)])
+					}
+        }).catch(function (error) {
+          console.log(error);
+        });
+			},
+			fillIncomesEmpresaChart(){
+				var start = this.incomesCompanyChart.range.start 
+				var end = this.incomesCompanyChart.range.end
+        var request = { method: 'GET', url: this.url + '/reportes/ingresos/por_empresa?start='+start+'&end='+end }
+        axios(request).then((response) => {
+					var incomes = response.data.incomes
+					this.incomesCompanyData = [['Nombre', 'Monto']]
+					for(var i=0 ; i<incomes.length; i++){
+						this.incomesCompanyData.push([ incomes[i].nombre, parseInt(incomes[i].ingresos)])
 					}
         }).catch(function (error) {
           console.log(error);
