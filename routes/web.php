@@ -24,6 +24,7 @@ Route::resource('tratamientos', 'TratamientoController');
 Route::resource('empresas', 'EmpresaController');
 Route::resource('proveedores', 'ProveedorController');
 Route::resource('proveedorLineItems', 'ProveedorLineItemController');
+Route::resource('precios', 'PriceController');
 
 //APIS 
 Route::resource('presupuestos', 'PresupuestoController');
