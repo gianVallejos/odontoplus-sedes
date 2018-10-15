@@ -17,9 +17,6 @@
 									</b-button>
 							</b-form>
 							<GChart class="pt-4" type="ColumnChart" :data="incomesData" :options="incomesChart" />
-							<div class="text-center pt-4 pb-4">	
-								<b-button href="#" variant="success">Ir a Ingresos</b-button>
-							</div>
 						</b-col>
 						<b-col cols="6">
 							<b-form inline >
@@ -30,9 +27,6 @@
 								</b-button>
 							</b-form>
 							<GChart class="pt-4" type="ColumnChart" :data="outputsData" :options="outputsChart" />
-							<div class="text-center pt-4 pb-4">
-								<b-button href="#" variant="success">Ver a Egresos</b-button>
-							</div>
 						</b-col>
 					</b-row>
 				</PanelCard>
@@ -55,9 +49,6 @@
 									</b-button>
 							</b-form>
 							<GChart class="pt-4" type="BarChart" :data="incomesPacienteData" :options="incomesPacienteChart" />
-							<div class="text-center pt-4 pb-4">	
-								<b-button href="#" variant="success">Ver Pacientes</b-button>
-							</div>
 						</b-col>
 						<b-col cols="6">
 							<b-form inline >
@@ -68,9 +59,6 @@
 								</b-button>
 							</b-form>
 							<GChart class="pt-4" type="PieChart" :data="incomesCompanyData" :options="incomesCompanyChart" />
-							<div class="text-center pt-4 pb-4">
-								<b-button href="#" variant="success">Ver a Empresas</b-button>
-							</div>
 						</b-col>
 					</b-row>
 				</PanelCard>
@@ -93,22 +81,35 @@
 									</b-button>
 							</b-form>
 							<GChart class="pt-4" type="PieChart" :data="treatmentsData" :options="treatmentsChart" />
-							<div class="text-center pt-4 pb-4">	
-								<b-button href="#" variant="success">Ver Pacientes</b-button>
-							</div>
 						</b-col>
 						<b-col cols="6">
 							<b-form inline >
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_start" type="date" v-model="incomesCompanyChart.range.start"/>
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_end" type="date" v-model="incomesCompanyChart.range.end"/>
-								<b-button variant="primary" v-on:click.prevent="fillIncomesEmpresaChart()">
+								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_start" type="date" v-model="balance.range.start"/>
+								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_end" type="date" v-model="balance.range.end"/>
+								<b-button variant="primary" v-on:click.prevent="fillBalanceChart()">
 									<i class="fas fa-redo-alt"></i>
 								</b-button>
 							</b-form>
-							<GChart class="pt-4" type="PieChart" :data="incomesCompanyData" :options="incomesCompanyChart" />
-							<div class="text-center pt-4 pb-4">
-								<b-button href="#" variant="success">Ver a Empresas</b-button>
+
+							<div class="balance-chart">
+								<span class="title">Balance</span>
+								<div class="text-center body">
+									<b-row> 
+											<b-col class="text-left label"> Ingresos: </b-col>
+											<b-col class="text-right amount"> S/. {{balance.incomes}} </b-col>	
+									</b-row>
+									<b-row class="balance-line">
+										<b-col class="text-left label"> Egresos: </b-col>
+										<b-col class="text-right amount"> S/. {{balance.outputs}} </b-col>	
+									</b-row>
+									<hr/>
+									<b-row class="balance-line">
+										<b-col class="text-left label"> Balance: </b-col>
+										<b-col class="text-right amount"> S/. {{balance.balance}} </b-col>	
+									</b-row>
+								</div>
 							</div>
+
 						</b-col>
 					</b-row>
 				</PanelCard>
@@ -138,11 +139,14 @@
 			this.incomesCompanyChart.range.end = this.currentDate()
 			this.treatmentsChart.range.start = this.currentDate(-5)
 			this.treatmentsChart.range.end = this.currentDate()
+			this.balance.range.start = this.currentDate(-5)
+			this.balance.range.end = this.currentDate()
 			this.fillIncomesChart()
 			this.fillOutputsChart()
 			this.fillIncomesPacientesChart()
 			this.fillIncomesEmpresaChart()
 			this.fillTreatmentsChart()
+			this.fillBalanceChart()
 		},
 		props: [
 			'url'
@@ -208,6 +212,12 @@
           height: 285,
 					legend: { position: 'bottom', alignment:'center' },
           range: { start: '', end: '' }
+				},
+				balance: {			        
+          incomes: '',
+          outputs: '',
+					balance: '',
+					range: { start: '', end: '' }
         }
 			}
     },
@@ -278,6 +288,19 @@
 					for(var i=0 ; i<treatments.length; i++){
 						this.treatmentsData.push([ treatments[i].tratamiento, parseInt(treatments[i].numero)])
 					}
+        }).catch(function (error) {
+          console.log(error);
+        });
+			},
+			fillBalanceChart(){
+				var start = this.balance.range.start
+				var end = this.balance.range.end
+        var request = { method: 'GET', url: this.url + '/reportes/balance?start='+start+'&end='+end }
+        axios(request).then((response) => {
+					console.log(response.data.ingresos)
+					this.balance.incomes = parseFloat(response.data.ingresos[0].ingresos).toFixed(2)
+					this.balance.outputs = parseFloat(response.data.egresos[0].egresos).toFixed(2)
+					this.balance.balance = parseFloat(this.balance.incomes - this.balance.outputs).toFixed(2)
         }).catch(function (error) {
           console.log(error);
         });

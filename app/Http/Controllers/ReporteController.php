@@ -38,4 +38,10 @@ class reporteController extends Controller{
         $data = DB::select('call OP_ObtenerTratamientosDestacados_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
         return response()->json(['treatments' => $data ]);
     }
+
+    public function totalIncomesOutputs(Request $request){
+        $incomes = DB::select('call OP_ObtenerTotalIngresos_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
+        $outputs = DB::select('call OP_ObtenerTotalEgresos_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
+        return response()->json(['ingresos' => $incomes, 'egresos' => $outputs ]);
+    }
 }

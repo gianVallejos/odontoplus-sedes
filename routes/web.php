@@ -31,6 +31,7 @@ Route::get('reportes/ingresos', 'ReporteController@incomes');
 Route::get('reportes/ingresos/por_paciente', 'ReporteController@pacienteIncomes');
 Route::get('reportes/ingresos/por_empresa', 'ReporteController@companyIncomes');
 Route::get('reportes/egresos', 'ReporteController@outputs');
+Route::get('reportes/balance', 'ReporteController@totalIncomesOutputs');
 Route::get('reportes/tratamientos/destacados', 'ReporteController@treatments');
 
 //APIS 

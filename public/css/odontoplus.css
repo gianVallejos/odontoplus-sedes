@@ -508,3 +508,29 @@ span.title-sec {
   font-weight: bold;
   height: 30px;
 }
+.balance-chart {
+  padding: 40px;
+}
+.balance-chart .title {
+  color: #000;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: Arial;
+}
+.balance-chart .body {
+  padding: 20px 100px 20px 100px;
+}
+.balance-chart .body hr {
+  border: 2px solid #109618;
+}
+.balance-chart .body .row {
+  padding-bottom: 7px;
+  padding-top: 8px;
+}
+.balance-chart .body .row .label {
+  color: #36c;
+  font-size: 16px;
+}
+.balance-chart .body .row .amount {
+  font-size: 18px;
+}
