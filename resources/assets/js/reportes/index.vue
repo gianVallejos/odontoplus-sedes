@@ -29,16 +29,7 @@
 							<GChart class="pt-4" type="ColumnChart" :data="outputsData" :options="outputsChart" />
 						</b-col>
 					</b-row>
-				</PanelCard>
-			</b-col>
-		</b-row>
-
-		<br/>
-
-		<b-row>
-			<b-col cols="12">
-				<PanelCard>
-					<span slot="heading">Ingresos por Pacientes & Empresas</span>
+					<hr slot="body" />
 					<b-row slot="body">
 						<b-col cols="6" class="vertical-line">
 							<b-form inline >
@@ -61,16 +52,7 @@
 							<GChart class="pt-4" type="PieChart" :data="incomesCompanyData" :options="incomesCompanyChart" />
 						</b-col>
 					</b-row>
-				</PanelCard>
-			</b-col>
-		</b-row>
-
-		<br/>
-
-		<b-row>
-			<b-col cols="12">
-				<PanelCard>
-					<span slot="heading">Tratamientos & Balance</span>
+					<hr slot="body" />
 					<b-row slot="body">
 						<b-col cols="6" class="vertical-line">
 							<b-form inline >
