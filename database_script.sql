@@ -247,9 +247,12 @@ BEGIN
 END;
 -- -------------------------------------------------------------------------------------------------
 
+-- --------------------------------------------------------------------
+
+-- REPORTES
+
 -- Ingresos entre fechas
 DROP PROCEDURE IF EXISTS `OP_ObtenerIngresos_Fechas`;
-
 CREATE PROCEDURE `OP_ObtenerIngresos_Fechas`(IN start_date DATE, IN end_date DATE)
 BEGIN
 	SET lc_time_names = 'es_ES';
@@ -259,6 +262,71 @@ BEGIN
 	GROUP BY (MONTH(i.fecha));
 END;
 
+-- Egresos entre fechas
+DROP PROCEDURE IF EXISTS `OP_ObtenerEgresos_Fechas`;
+create procedure OP_ObtenerEgresos_Fechas(IN start_date date, IN end_date date)
+  BEGIN
+	SET lc_time_names = 'es_ES';
+	SELECT MONTHNAME(e.fecha) as mes, SUM(e.cantidad * e.precio_unitario) as egresos
+  FROM egresos e
+	WHERE (e.fecha BETWEEN start_date AND end_date)
+	GROUP BY (MONTH(e.fecha));
+END;
+
+-- Ingresos por paciente
+DROP PROCEDURE IF EXISTS `OP_ObtenerIngresosPorPaciente_Fechas`;
+create procedure OP_ObtenerIngresosPorPaciente_Fechas(IN start_date DATE, IN end_date date)
+BEGIN
+	SELECT SUBSTRING(CONCAT(pacientes.nombres, " ", pacientes.apellidos), 1, 25) as nombre, SUM(total) as monto
+  FROM ingresos INNER JOIN pacientes on pacientes.id = ingresos.idPaciente
+	WHERE ingresos.fecha BETWEEN start_date AND end_date
+	GROUP BY (ingresos.idPaciente) ORDER BY monto DESC LIMIT 10;
+END;
+
+
+-- Ingresos por empresa
+DROP PROCEDURE IF EXISTS `OP_ObtenerIngresosPorEmpresa_Fechas`;
+create procedure OP_ObtenerIngresosPorEmpresa_Fechas(IN start_date DATE, IN end_date date)
+BEGIN
+	SELECT empresas.nombre as nombre, SUM(ingresos.total) as ingresos
+	FROM pacientes
+	INNER JOIN ingresos on ingresos.idPaciente = pacientes.id
+	INNER JOIN empresas on empresas.id = pacientes.empresa_id
+	WHERE ingresos.fecha BETWEEN start_date AND end_date
+	GROUP BY pacientes.empresa_id;
+END;
+
+-- Tratamientos destacados
+DROP PROCEDURE IF EXISTS `OP_ObtenerTratamientosDestacados_Fechas`;
+create procedure OP_ObtenerTratamientosDestacados_Fechas(IN start_date DATE, IN end_date date)
+BEGIN
+	SELECT SUBSTRING(tratamientos.detalle, 1, 25) as tratamiento, count(tratamientos.detalle) as numero
+	FROM ingresos
+		INNER JOIN ingresos_detalle on ingresos_detalle.ingresoId = ingresos.id
+		INNER JOIN precios on precios.id = ingresos_detalle.ingresoId
+		INNER JOIN tratamientos on tratamientos.id = precios.idTratamiento
+	WHERE ingresos.fecha BETWEEN start_date AND end_date
+	GROUP BY (tratamientos.id) ORDER BY count(tratamientos.id) DESC LIMIT 5;
+END;
+
+-- Total Egresos por Fecha
+DROP PROCEDURE IF EXISTS `OP_ObtenerTotalEgresos_Fechas`;
+create procedure OP_ObtenerTotalEgresos_Fechas(IN start_date DATE, IN end_date date)
+BEGIN
+	SELECT SUM(cantidad * precio_unitario) as egresos
+	FROM egresos
+	WHERE fecha BETWEEN start_date AND end_date;
+END;
+-- Total Ingresos por fecha
+DROP PROCEDURE IF EXISTS `OP_ObtenerTotalIngresos_Fechas`;
+create procedure OP_ObtenerTotalIngresos_Fechas(IN start_date DATE, IN end_date date)
+BEGIN
+	SELECT SUM(cantidad * monto) AS ingresos FROM ingresos
+	INNER JOIN ingresos_detalle as idt on idt.ingresoId = ingresos.id
+	WHERE fecha BETWEEN start_date AND end_date;
+END;
+
+-- --------------------------------------------------------------------
 
 DROP PROCEDURE IF EXISTS `OP_obtenerDoctores`;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerDoctores`()
