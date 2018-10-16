@@ -42,7 +42,8 @@
 												<div class="d-inline"> Información General </div>
 											</div>
 											<p class="form-description fz-3 pt-3 pr-4">
-												On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions.
+												Al crear un Tratamiento el Precio Estándar se asignará a todas las empresas registradas. 
+												Si necesita cambiar el precio para una empresa específica pude hacelo en la lista de precios.
 											</p>
 											<br/>
 											<p class="form-description fz-3 pt-3 pr-4">
@@ -54,11 +55,10 @@
 											    <b-form-input id="detalle" type="text" class="required" v-model="form.detalle" :disabled="this.display == 'show'" placeholder="Detalle" required autocomplete="off"/>
 													<span v-if="all_errors.detalle" :class="['label label-danger']">{{ all_errors.detalle[0] }}</span>
 										    </b-form-group>
-												<b-form-group label="Estado" label-for="is_active">
-													<b-form-checkbox id="is_active" v-model="form.is_active" :disabled="display == 'show'">
-														Tratamiedo Activado
-													</b-form-checkbox>		
-										    </b-form-group>		
+										    <b-form-group label="Precio Estándar" label-for="precio_estandar">
+											    <b-form-input id="precio_estandar" type="number" step="0.1" class="required" v-model="form.precio_estandar" :disabled="this.display == 'show'" placeholder="Precio Estándar" required autocomplete="off"/>
+													<span v-if="all_errors.precio_estandar" :class="['label label-danger']">{{ all_errors.precio_estandar[0] }}</span>
+										    </b-form-group>	
 										</b-col>
 									</b-row>
 							</div>
@@ -114,17 +114,17 @@
       	TitleComponent
     },
     props:[
-      	'title',
-      	'url',
-		'record',
-		'view_mode'
+			'title',
+			'url',
+			'record',
+			'view_mode'
     ],
     data(){
       return{
         form: {
-			detalle: '',
-			is_active: ''
-		},
+				detalle: '',
+				precio_estandar: ''
+			},
 		display: '',
 		record_id: '',
 		panel_title: '',
