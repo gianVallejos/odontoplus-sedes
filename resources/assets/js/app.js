@@ -38,6 +38,8 @@ import IngresosIndex from './ingresos/index.vue'
 import IngresoForm from './ingresos/form.vue'
 import IngresoLineItem from './ingresos/line-item.vue'
 import Reportes from './reportes/index.vue'
+import EgresosIndex from './egresos/index.vue'
+import EgresoForm from './egresos/form.vue'
 
 const app = new Vue({
     el: '#app',
@@ -51,6 +53,7 @@ const app = new Vue({
 			Tratamientos, TratamientoForm,
 			Empresas, EmpresaForm,
 			Proveedores, ProveedorForm, ProveedorLineItems,
+		EgresosIndex, EgresoForm,
 			Reportes	
     }
 })

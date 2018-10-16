@@ -6,7 +6,7 @@
 			</b-col>
 			<b-col cols="12" class="pt-3">				
 				<PanelCard>
-					<span slot="heading">Lista de Ingresos </span>
+					<span slot="heading">Lista de Egresos </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						
 						<div class="row pb-3">
@@ -30,8 +30,8 @@
 							<div class="col-md-6">							
 								<div class="float-right d-inline-block">
 									<b-button-group>										
-										<b-button :href="url+'/ingresos/create'" variant="success">
-											<i class="fas fa-plus"></i>&nbsp; Nuevo Ingreso
+										<b-button :href="url+'/egresos/create'" variant="success">
+											<i class="fas fa-plus"></i>&nbsp; Nuevo Egreso
 										</b-button>
 										<!--b-button variant="warning">
 											<i class="fas fa-print"></i>&nbsp; Imprimir
@@ -41,41 +41,41 @@
 							</div>
 						</div>
 
-						<b-table show-empty :items="ingresos" :fields="fields" :current-page="currentPage" :per-page="perPage"
+						<b-table show-empty :items="egresos" :fields="fields" :current-page="currentPage" :per-page="perPage"
 					             :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
 					             @filtered="onFiltered">
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">						        	
-						        	<a :href="url+'/ingresos/line-item/'+ row.item.id"  class="action">Detalle</a>
+						        	<a :href="url+'/egresos/'+ row.item.id"  class="action">Detalle</a>
 						        	|
-						        	<a :href="url+'/ingresos/'+ row.item.id +'/edit/'" class="action">Modificar</a>
+						        	<a :href="url+'/egresos/'+ row.item.id +'/edit/'" class="action">Modificar</a>
 						        </div>
 						    </template>
 						    <template slot="fecha" slot-scope="row">
 						    	{{ row.value }}
 						    </template>
-						    <template slot="hc" slot-scope="row">
+						    <template slot="concepto" slot-scope="row">
+						    	<a :href="url + '/egresos/' + row.item.id">
 						      		{{ row.value }}
+						      	</a>
 						    </template>						    	
-						    <template slot="nombrePaciente" slot-scope="row">
-						    	<a :href="url + '/pacientes/' + row.item.hc + '/false'">
+						    <template slot="doctor" slot-scope="row">
+						    	<a :href="url + '/doctores/' + row.item.doctorId">
 						      		{{ row.value }}
 						      	</a>
 						    </template>
-						    <template slot="nombreDoctor" slot-scope="row">
-						    	<a :href="url + '/doctores/' + row.item.idDoctor ">
-						      		{{row.value }}
-						      	</a>
+						    <template slot="tipo" slot-scope="row">
+						      	{{ row.value }}
 						    </template>		
-						    <template slot="monto_total" slot-scope="row">
-						      		S/ {{row.value }}
+						    <template slot="cantidad" slot-scope="row">
+						      	{{ row.value }}
+						    </template>			
+						    <template slot="monto" slot-scope="row">
+						      	S/ {{ row.value }}
 						    </template>	
-						    <template slot="mg" slot-scope="row">
-						      		S/ {{row.value }}
-						    </template>		
-						    <template slot="mg_core" slot-scope="row">
-						      		S/ {{row.value }}
-						    </template>		
+						    <template slot="total" slot-scope="row">
+						      	S/ {{ row.value }}
+						    </template>							    
 					    </b-table>
 					    <b-row>
 					    	<b-col md="6" class="pt-3 fz-3">
@@ -104,7 +104,7 @@
 		},
 		props: [
 			'url',
-			'ingresos'
+			'egresos'
 		],
 		components:{
 			TitleComponent,
@@ -115,17 +115,17 @@
 				mydata: [],
 				breadcrumb: [
 			    	{ text: 'Dashboard', href: this.url },
-			    	{ text: 'Ingresos', active: true}
+			    	{ text: 'Egresos', active: true}
 			    ],			    
-			    fields: [				    
+			    fields: [		    
 				    { key: 'actions', label: '', 'class': 'text-left' },				    
-				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-				    { key: 'hc', label: 'HC', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
-				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },
-				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },			        
-				    { key: 'monto_total', label: 'Monto Total', sortable: true, sortDirection: 'desc' },
-				    { key: 'mg', label: 'M. Doctor', sortable: true, sortDirection: 'desc' },
-				    { key: 'mg_core', label: 'CORE', sortable: true, sortDirection: 'desc' }
+				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },				    
+				    { key: 'concepto', label: 'Concepto', sortable: true, sortDirection: 'desc' },				    
+				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+				    { key: 'tipo', label: 'Tipo', sortable: true, sortDirection: 'desc' },				    
+				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc' },				    
+				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc' }   
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,
