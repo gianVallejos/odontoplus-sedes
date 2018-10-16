@@ -32,7 +32,7 @@
             <!-- Main table element -->
             <b-table show-empty
                     stacked="md"
-                    :items="items"
+                    :items="data"
                     :fields="fields"
                     :current-page="currentPage"
                     :per-page="perPage"
@@ -41,17 +41,20 @@
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
                     @filtered="onFiltered" >
+
+
               <template slot="empresa" slot-scope="row">
-                <b-badge :variant="row.value == '1' ? 'success' : 'danger'">{{ row.value == '1' ? 'Activo':'Inactivo'}}</b-badge>
-              </template>
-              <template slot="monto" slot-scope="row">
-                <b-badge :variant="row.value == '1' ? 'success' : 'danger'">{{ row.value == '1' ? 'Activo':'Inactivo'}}</b-badge>
+                <select  :v-model="row.id_empresa">
+											<option v-for="(e, index) in companies" :key="index" :value="e.id">
+												{{ e.nombre }}
+											</option>
+								</select>
+
+
               </template>
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table" style="color: #d1d1d1">						        	
+                <div class="actions-table" style="color: #d1d1d1">						        	
                   <a :href="url+'/tratamientos/'+ row.item.id" class="action" >Guardar</a>
-                  |
-                  <a :href="url+'/tratamientos/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
               </template>
             </b-table>
@@ -72,14 +75,14 @@
 </template>
 
 <script>
-  console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
 
   export default{
     mounted() { 
-      console.log('tratamientos mounted')
-      this.setDataTable()
+      console.log('Precios mounted')
+
+      this.fillTableFromControllerData()
     },
     name: 'tratamientos',
     components:{
@@ -87,8 +90,10 @@
       TitleComponent
 		},
     props:[
-      'items',
-      'url'
+      'treatments',
+      'companies',
+      'prices',
+      'url',
     ],
     data(){
 			return{
@@ -98,10 +103,12 @@
           { key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center' },
           { key: 'actions', label: 'Acciones' }
           ],
-        data:[],  
+        data:[],
+        selected:'Core',
+
         currentPage: 1,
         perPage: 10,
-        totalRows: this.items.length,
+        totalRows: this.treatments.length,
         pageOptions: [ 5, 10, 15 ],
         sortBy: null,
         sortDesc: false,
@@ -132,34 +139,33 @@
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
-      setDataTable (){
-        console.log(this.items)
 
-        for(var i = 0; i < this.items.length; i++){
-          console.log( typeof this.items[i].id_tratamiento)
-          var item_id = -1
+      onNewSelectedCompany(){
 
-          if (this.items[i].id_tratamiento == 1){
-            this.data.push(
-              {
-                id_tratamiento: this.items[i].id_tratamiento,
-                tratamiento: this.items[i].tratamiento,
-                pricebook: [
-                  { empresa: this.items[i].empresa, monto: this.items[i].monto }
-                ]
-              }
-            ) 
-            item_id++
+      },
+      fillTableFromControllerData(){
+        var item 
+
+        for(var i=0; i<this.treatments.length; i++){
+          item = {
+            tratamiento: this.treatments[i].detalle,
+            id_tratamiento: this.treatments[i].id,
+            id_empresa: 1,
+            empresa: this.companies[0].nombre,
+            monto: this.getPricefromControllerData(this.treatments[i].id, 1)
           }
-          else{
-           this.data[item_id].pricebook.push({ empresa: this.items[i].empresa, monto: this.items[i].monto })
-            
-          }
-         
-
+          this.data.push(item)
+          console.log(item)
         }
-        console.log(this.data)
 
+      },
+      getPricefromControllerData(treatmentId, companyId ){
+        for(var i = 0; i<this.prices.length; i++){
+          if(this.prices[i].id_empresa == companyId && this.prices[i].id_tratamiento == treatmentId){
+            return this.prices[i].monto
+          }
+        }
+        return 0
       }
 		}
   }

@@ -13,9 +13,13 @@ class PrecioController extends Controller{
     }
 
     public function index(){
-        $prices = DB::select('call OP_ObtenerPrecios()'); 
+        $treatments = DB::select('call OP_ObtenerTratamientos()'); 
+        $companies = DB::select('call OP_ObtenerEmpresas()');
+        $prices = DB::select('call OP_ObtenerPreciosEstandard()');
+        $treatments = json_encode($treatments);
+        $companies = json_encode($companies);
         $prices = json_encode($prices);
 
-        return view('precios.index',compact('prices'));
+        return view('precios.index',compact('treatments', 'companies', 'prices'));     
     }
 }

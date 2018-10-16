@@ -1,5 +1,5 @@
 @extends('layout')
 
 @section('content')
-<precios :items = "{{ $prices }}" url='{{ route("home") }}'/>
+<precios :treatments = "{{ $treatments }}" :companies = "{{ $companies }}"  :prices = "{{ $prices }}"  url='{{ route("home") }}'/>
 @endsection
