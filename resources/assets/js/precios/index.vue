@@ -42,20 +42,24 @@
                     :sort-direction="sortDirection"
                     @filtered="onFiltered" >
 
-
+              <template slot="number" slot-scope="row">
+                {{ row.index + 1 }}
+              </template>
               <template slot="empresa" slot-scope="row">
-                <select  :v-model="row.id_empresa">
-											<option v-for="(e, index) in companies" :key="index" :value="e.id">
+                <b-form-select class="small" v-model="data[row.index].id_empresa" v-on:input="onNewSelectedCompany(row.index)">
+											<option v-for="(e,index) in companies" :key="e.index" :value="e.id">
 												{{ e.nombre }}
 											</option>
-								</select>
-
-
+								</b-form-select>
+              </template>
+              <template slot="monto" slot-scope="row">
+                <b-form-input class="small" type="number" step="0.1" v-model="row.item.monto">
+                </b-form-input>
               </template>
               <template slot="actions" slot-scope="row">
-                <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/tratamientos/'+ row.item.id" class="action" >Guardar</a>
-                </div>
+									<b-button class="small" variant="success" v-on:click.prevent="onModificar(row.index)">
+									  Guardar
+									</b-button>
               </template>
             </b-table>
 
@@ -76,21 +80,21 @@
 
 <script>
 	import PanelCard from '../widgets/panel/panel-component.vue'
-	import TitleComponent from '../widgets/titulo/index.vue'
+  import TitleComponent from '../widgets/titulo/index.vue'
+	import axios from 'axios'  
 
   export default{
     mounted() { 
       console.log('Precios mounted')
-
-      this.fillTableFromControllerData()
+      this.data = this.prices
+      console.table((this.prices))
     },
-    name: 'tratamientos',
+    name: 'precios',
     components:{
 			PanelCard,
       TitleComponent
 		},
     props:[
-      'treatments',
       'companies',
       'prices',
       'url',
@@ -98,17 +102,17 @@
     data(){
 			return{
         fields: [
-          { key: 'tratamiento', label: 'Tratamiento', sortable: true, 'class': 'text-left' },
-          { key: 'empresa', label: 'Empresa', sortable: true, sortDirection: 'desc' },
-          { key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center' },
-          { key: 'actions', label: 'Acciones' }
+          { key: 'number', label: '#' },
+          { key: 'tratamiento', label: 'Tratamiento', 'class': 'text-left' },
+          { key: 'empresa', label: 'Empresa' },
+          { key: 'monto', label: 'Monto', 'class': 'text-center' },
+          { key: 'actions', label: '' }
           ],
+        selected_company: 1,
         data:[],
-        selected:'Core',
-
         currentPage: 1,
         perPage: 10,
-        totalRows: this.treatments.length,
+        totalRows: this.prices.length,
         pageOptions: [ 5, 10, 15 ],
         sortBy: null,
         sortDesc: false,
@@ -140,32 +144,37 @@
         this.currentPage = 1
       },
 
-      onNewSelectedCompany(){
-
-      },
-      fillTableFromControllerData(){
-        var item 
-
-        for(var i=0; i<this.treatments.length; i++){
-          item = {
-            tratamiento: this.treatments[i].detalle,
-            id_tratamiento: this.treatments[i].id,
-            id_empresa: 1,
-            empresa: this.companies[0].nombre,
-            monto: this.getPricefromControllerData(this.treatments[i].id, 1)
+      onNewSelectedCompany(row_index){
+        var item = this.data[row_index]
+        var request = { method: 'GET', url: this.url+'/consulta_precio?empresa_id='+ item.id_empresa + '&tratamiento_id=' + item.id_tratamiento}
+        axios(request).then((response) => {
+          if(response.data.price){
+            this.data[row_index].monto = response.data.price[0].monto
+            this.data[row_index].id = response.data.price[0].id
           }
-          this.data.push(item)
-          console.log(item)
-        }
-
-      },
-      getPricefromControllerData(treatmentId, companyId ){
-        for(var i = 0; i<this.prices.length; i++){
-          if(this.prices[i].id_empresa == companyId && this.prices[i].id_tratamiento == treatmentId){
-            return this.prices[i].monto
+          else{
+            console.log('price not found!')
           }
-        }
-        return 0
+          console.log(JSON.stringify(this.data[row_index]))
+        }).catch(function (error) {
+          console.log(error);
+        });
+      },
+      onModificar(row_index){
+        var item = this.data[row_index]
+        var data = { monto: item.monto }
+        var request = { method: 'PUT', url: this.url+'/precios/'+ item.id, data: data }
+        
+        axios(request).then((response) => {
+          if(response.data.success){
+            console.log('heee!')
+          }
+          else{
+            console.log('price not found!')
+          }
+        }).catch(function (error) {
+          console.log(error);
+        });
       }
 		}
   }

@@ -13,13 +13,40 @@ class PrecioController extends Controller{
     }
 
     public function index(){
-        $treatments = DB::select('call OP_ObtenerTratamientos()'); 
         $companies = DB::select('call OP_ObtenerEmpresas()');
         $prices = DB::select('call OP_ObtenerPreciosEstandard()');
-        $treatments = json_encode($treatments);
         $companies = json_encode($companies);
         $prices = json_encode($prices);
 
-        return view('precios.index',compact('treatments', 'companies', 'prices'));     
+        return view('precios.index',compact('companies', 'prices'));     
+    }
+
+    public function getPrice(Request $request){
+        $price = DB::select('call OP_ObtenerPrecios_EmpresaId_TratamientoId('.$request->query('empresa_id').','.$request->query('tratamiento_id').')');
+        return response()->json(['price' => $price ]);
+    }
+
+
+    public function update(Request $request, $id){
+        
+    	$validator = Validator::make($request->all(), [
+            'monto' => 'required|min:0',
+        ]);
+
+    	if ($validator->passes()) {
+
+            try{
+                $precio = Precio::findOrFail($id);
+                $precio->monto = $request->monto;
+                
+                $precio->save();
+                    
+                return response()->json(['success' => 'success']);
+
+            }catch(Exception $e){
+                return response()->json(['error'=>$e->getMessage()]);
+            }
+        }
+        return response()->json(['error'=>$validator->errors()]);
     }
 }

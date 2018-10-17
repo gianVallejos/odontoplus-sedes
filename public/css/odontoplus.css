@@ -110,6 +110,11 @@ p {
 .form-control::placeholder {
   color: #858ea7;
 }
+.form-control.small {
+  height: 30px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
 .help-required {
   border-left: 4px solid #ab4240;
 }
@@ -291,6 +296,11 @@ p {
   outline: 0;
   -webkit-box-shadow: inset 0 -4px 0 #5d2322;
           box-shadow: inset 0 -4px 0 #5d2322;
+}
+.odBtn.small,
+.btn.small {
+  padding-bottom: 4px;
+  padding-top: 4px;
 }
 .rubikFont {
   font-family: 'Rubik', sans-serif;

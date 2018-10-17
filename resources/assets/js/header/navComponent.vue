@@ -65,7 +65,7 @@
 		          	</a>
 		          </li>
 		          <li class="li-dropdown">
-		          	<a href="#">
+		          	<a :href="url + '/precios'">
 		          		<i class="fas fa-dollar-sign"></i>Precios
 		          	</a>
 		          </li>
