@@ -111,6 +111,11 @@ p {
 .form-control::placeholder {
   color: #858ea7;
 }
+.form-control.small {
+  height: 30px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
 .help-required {
   border-left: 4px solid #ab4240;
 }
@@ -312,6 +317,11 @@ p {
   outline: 0;
   -webkit-box-shadow: inset 0 -4px 0 #5d2322;
           box-shadow: inset 0 -4px 0 #5d2322;
+}
+.odBtn.small,
+.btn.small {
+  padding-bottom: 4px;
+  padding-top: 4px;
 }
 .rubikFont {
   font-family: 'Rubik', sans-serif;
@@ -529,6 +539,32 @@ span.title-sec {
   width: 130px;
   font-weight: bold;
   height: 30px;
+}
+.balance-chart {
+  padding: 40px;
+}
+.balance-chart .title {
+  color: #000;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: Arial;
+}
+.balance-chart .body {
+  padding: 20px 100px 20px 100px;
+}
+.balance-chart .body hr {
+  border: 2px solid #109618;
+}
+.balance-chart .body .row {
+  padding-bottom: 7px;
+  padding-top: 8px;
+}
+.balance-chart .body .row .label {
+  color: #36c;
+  font-size: 16px;
+}
+.balance-chart .body .row .amount {
+  font-size: 18px;
 }
 .custom-radio .custom-control-input:checked~.custom-control-label::before {
   background-color: #305f94 !important;
