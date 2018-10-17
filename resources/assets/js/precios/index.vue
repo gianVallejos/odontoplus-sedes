@@ -87,7 +87,6 @@
     mounted() { 
       console.log('Precios mounted')
       this.data = this.prices
-      console.table((this.prices))
     },
     name: 'precios',
     components:{
@@ -155,7 +154,6 @@
           else{
             console.log('price not found!')
           }
-          console.log(JSON.stringify(this.data[row_index]))
         }).catch(function (error) {
           console.log(error);
         });
@@ -167,7 +165,7 @@
         
         axios(request).then((response) => {
           if(response.data.success){
-            console.log('heee!')
+            console.log('Show toast message!')
           }
           else{
             console.log('price not found!')
