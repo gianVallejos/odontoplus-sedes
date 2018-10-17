@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Validator;
 
 class TratamientoController extends Controller{
     public static $validation_rules = [
-        'detalle' => 'required|max:120'
+        'detalle' => 'required|max:120',
+        'precio_estandar' => 'required|min:0'
     ];
 
     public function __construct(){
@@ -46,9 +47,9 @@ class TratamientoController extends Controller{
             try{
                 $tratamiento = new tratamiento();
                 $tratamiento->detalle = $request->detalle;
-                $tratamiento->is_active = $request->is_active;
                 $tratamiento->save();
-
+                self::insertStandardPricesToAllCompanies($tratamiento->id, $request->precio_estandar);
+                
                 $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Tratamiento registrado correctamente']));
                     
                 return response()->json(['success' => 'success']);
@@ -58,6 +59,13 @@ class TratamientoController extends Controller{
             }
         }
         return response()->json(['error'=>$validator->errors()]);
+    }
+
+    public function insertStandardPricesToAllCompanies($treatmentId, $price){
+        $companies = DB::select('call OP_ObtenerEmpresas()');
+        foreach ($companies as $company) {
+            DB::select('call OP_AgregarPreciosPorEmpresa('.$company->id.','.$treatmentId.','.$price.')');
+        }
     }
 
     public function update(Request $request, $id){

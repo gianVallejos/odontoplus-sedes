@@ -60,9 +60,6 @@
                   <a :href="url+'/tratamientos/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
               </template>
-              <template slot="is_active" slot-scope="row">
-                <b-badge :variant="row.value == '1' ? 'success' : 'danger'">{{ row.value == '1' ? 'Activo':'Inactivo'}}</b-badge>
-              </template>
             </b-table>
 
           <b-row align-h="between">
@@ -102,8 +99,7 @@
 			return{
         fields: [
           { key: 'actions', label: 'Acciones' },
-          { key: 'detalle', label: 'Detalle', sortable: true, sortDirection: 'desc' },
-          { key: 'is_active', label: 'Estado', sortable: true, 'class': 'text-center' }
+          { key: 'detalle', label: 'Detalle', sortable: true, sortDirection: 'desc' }
           ],
         currentPage: 1,
         perPage: 10,
@@ -133,11 +129,6 @@
 		      evt.preventDefault();
 		      alert(JSON.stringify(this.form));
 		  },
-      info (item, index, button) {
-        this.modalInfo.title = `Row index: ${index}`
-        this.modalInfo.content = JSON.stringify(item, null, 2)
-        this.$root.$emit('bv::show::modal', 'modalInfo', button)
-      },
       onFiltered (filteredItems) {
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length

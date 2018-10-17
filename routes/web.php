@@ -24,6 +24,8 @@ Route::resource('tratamientos', 'TratamientoController');
 Route::resource('empresas', 'EmpresaController');
 Route::resource('proveedores', 'ProveedorController');
 Route::resource('proveedorLineItems', 'ProveedorLineItemController');
+Route::resource('precios', 'PrecioController');
+Route::get('consulta_precio', 'PrecioController@getPrice');
 
 //REPORTS
 Route::get('reportes', 'ReporteController@index');
