@@ -2,7 +2,7 @@
   <b-container>
 		<b-row>
 			<div class="col-md-12">
-				<TitleComponent titulo="Lista de Usuarios" :items="breadcrumb" />
+				<TitleComponent titulo="Usuarios" :items="breadcrumb" />
 			</div>
       <div class="col-md-12">
         <PanelCard>
@@ -33,9 +33,6 @@
 										<b-button :href="url+'/users/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Usuario
 										</b-button>
-										<b-button variant="warning">
-											<i class="fas fa-print"></i>&nbsp; Imprimir
-										</b-button>
 									</b-button-group>
 								</div>
 							</div>
@@ -52,7 +49,8 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
-                    @filtered="onFiltered" >
+                    @filtered="onFiltered"
+                    empty-text="No existen campos para mostrar" >
 
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
@@ -62,14 +60,19 @@
                   <a :href="url+'/users/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
               </template>
+              <template slot="name" slot-scope="row">                
+                  <a :href="url + '/users/' + row.item.id">
+                    {{ row.value }}
+                  </a>
+              </template>
               <template slot="is_active" slot-scope="row">
                 <b-badge :variant="row.value == '1' ? 'success' : 'danger'">{{ row.value == '1' ? 'Activo':'Inactivo'}}</b-badge>
               </template>
             </b-table>
 
           <b-row align-h="between">
-            <b-col align-self="start">
-              Mostrando {{ currentPage }} de {{ Math.ceil(totalRows / perPage) }} páginas
+            <b-col class="fz-2">
+              Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas
             </b-col>
             <b-col cols="auto">
               <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
@@ -105,10 +108,10 @@
         fields: [
           { key: 'actions', label: 'Actions' },
           { key: 'name', label: 'Nombre', sortable: true, sortDirection: 'desc' },
-          { key: 'email', label: 'Email', sortable: true, 'class': 'text-center' },
+          { key: 'email', label: 'Email', sortable: true },
           { key: 'rol', label: 'Rol', sortable: true },
-          { key: 'is_active', label: 'Estado', sortable: true }
-          ],
+          { key: 'is_active', label: 'Estado', sortable: true, 'class': 'text-center' }
+        ],
         currentPage: 1,
         perPage: 10,
         totalRows: this.items.length,
@@ -119,8 +122,8 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Home', href: '/' },
-          { text: 'Lista de Usuarios', active: true }
+          { text: 'Home', href: this.url + '/' },
+          { text: 'Usuarios', active: true }
         ]
 			}
 		},
@@ -150,6 +153,11 @@
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
+      },
+      totalCurrentPages(){
+        var res = Math.round(this.totalRows / this.perPage)
+        if( res == 0 ) return res + 1
+        return Math.ceil(this.totalRows / this.perPage )
       }
 		}
   }

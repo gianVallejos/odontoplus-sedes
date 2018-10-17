@@ -1,5 +1,8 @@
 @extends('layout')
 
 @section('content')
-	<paciente-show url='{{ route("home") }}' actual-id='{{ $id }}' :empresas="{{ $empresas }}" :flag="{{ $flag }}" />
+
+	<paciente-form  title = "Detalle de Paciente" url='{{ route("home") }}' :paciente='{{ $paciente }}' 
+					:cur-user='{{ Auth::user() }}' :empresas='{{ $empresas }}' view_mode='show' />
+	
 @endsection

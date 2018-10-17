@@ -15,8 +15,8 @@ class PresupuestoController extends Controller{
 
     public function index()
     {
-        $data = DB::select('call OP_obtenerPresupuestos()'); 
-        $mydata = json_encode($data);
+        $presupuesto = DB::select('call OP_obtenerPresupuestos()'); 
+        $mydata = json_encode($presupuesto);
         
         return view($this->path . '.index', compact('mydata'));
     }

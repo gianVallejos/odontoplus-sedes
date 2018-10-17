@@ -1,7 +1,5 @@
 @extends('layout')
 
 @section('content')
-	
-	<paciente-index url='{{ route("home") }}' status='{{ session("status") }}' />
-
+	<Pacientes :items='{{ $pacientes }}' url='{{ route("home") }}' />
 @endsection

@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="pb-4">
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Empresas" :items="breadcrumb" />
@@ -32,18 +32,14 @@
 									<b-button-group>										
 										<b-button :href="url+'/empresas/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nueva Empresa
-										</b-button>
-										<b-button variant="warning">
-											<i class="fas fa-print"></i>&nbsp; Imprimir
-										</b-button>
+										</b-button>										
 									</b-button-group>
 								</div>
 							</div>
             </b-row>
 
             <!-- Main table element -->
-            <b-table show-emptyjs
-                    stacked="md"
+            <b-table show-empty
                     :items="items"
                     :fields="fields"
                     :current-page="currentPage"
@@ -52,7 +48,9 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
-                    @filtered="onFiltered" >
+                    @filtered="onFiltered" 
+                    empty-text="No existen campos para mostrar"
+              >
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">						        	
                   <a :href="url+'/empresas/'+ row.item.id" class="action" >Detalle</a>
@@ -60,14 +58,19 @@
                   <a :href="url+'/empresas/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
               </template>
+              <template slot="nombre" slot-scope="row">
+                  <a :href="url + '/empresas/' + row.item.id ">
+                    {{ row.value }}
+                  </a>
+              </template>
             </b-table>
 
-          <b-row align-h="between">
-            <b-col align-self="start">
-              Mostrando {{ currentPage }} de {{ Math.ceil(totalRows / perPage) }} páginas
+          <b-row>
+            <b-col md="6" class="pt-3 fz-3">
+              Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas
             </b-col>
-            <b-col cols="auto">
-              <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+            <b-col md="6" class="my-1 text-right">
+              <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
             </b-col>
           </b-row>
           </div>
@@ -98,11 +101,10 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: 'Acciones' },
+          { key: 'actions', label: '' },
           { key: 'nombre', label: 'Nombre', sortable: true, sortDirection: 'desc' },
-          { key: 'ruc', label: 'RUC', sortable: true, sortDirection: 'desc' },
-          { key: 'sucursal', label: 'Sucursal', sortable: true, sortDirection: 'desc' }
-          ],
+          { key: 'ruc', label: 'RUC', sortable: true, sortDirection: 'desc' }
+        ],
         currentPage: 1,
         perPage: 10,
         totalRows: this.items.length,
@@ -113,8 +115,8 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Home', href: '/' },
-          { text: 'Lista de Empresas', active: true }
+          { text: 'Dashboard', href: this.url },
+          { text: 'Empresas', active: true }
         ]
 			}
 		},
@@ -131,6 +133,11 @@
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
+      },
+      totalCurrentPages(){
+        var res = Math.round(this.totalRows / this.perPage)
+        if( res == 0 ) return res + 1
+        return Math.ceil(this.totalRows / this.perPage )
       }
 		}
   }

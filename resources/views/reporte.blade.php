@@ -7,6 +7,8 @@
 	<title>
 		Odontoplus - Software Odontológico
 	</title>
+
+	<link rel="icon" href="{{ asset('images/favicon.ico')}}">
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">

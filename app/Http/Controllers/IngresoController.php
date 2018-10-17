@@ -17,7 +17,7 @@ class IngresoController extends Controller
 
     public static $validation_line_item_rules = [        
         'tratamiento' => 'required',
-        'cantidad' => 'required|numeric',
+        'cantidad' => 'required|integer',
         'monto' => 'required|numeric',
         'total' => 'numeric'
     ];
@@ -56,9 +56,7 @@ class IngresoController extends Controller
                 $ingreso->fecha = $request->fecha;                
                 $ingreso->save();
 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Ingreso registrado correctamente']));
-                    
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'created']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -177,9 +175,7 @@ class IngresoController extends Controller
                 $ingreso->fecha = $request->fecha;                
                 $ingreso->save();
 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Ingreso modificado correctamente']));
-                    
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'updated']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -190,13 +186,18 @@ class IngresoController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        
         try{
-            $ingreso = Ingreso::findOrFail($id);
-            $ingreso->is_deleted = true;
-            $ingreso->save();
+            $canDelete = DB::select('call OP_esIngresoBorrable_Id('. $id .')');            
+            if( $canDelete[0]->CAN_DELETE == '1' ){
+                $ingreso = Ingreso::findOrFail($id);
+                $ingreso->is_deleted = true;
+                $ingreso->save();
 
-            $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Ingreso eliminado correctamente']));
-            return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'deleted']);
+            }else{
+                return response()->json(['error' => 'cantDeleted']);
+            }
 
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);

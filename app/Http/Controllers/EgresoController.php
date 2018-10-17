@@ -11,9 +11,9 @@ class EgresoController extends Controller{
     public static $validation_rules = [
         'fecha' => 'required|date',
         'tipo' => 'required',
-        'doctor' => 'nullable',
+        'doctor' => 'required_if:tipo,Pago a Personal',
         'cantidad' => 'required|numeric',
-        'concepto' => 'required',
+        'concepto' => 'required|string|max:125',
         'monto' => 'required|numeric',
         'total' => 'numeric',
     ];
@@ -55,9 +55,7 @@ class EgresoController extends Controller{
                 $egreso->observacion = $request->nota;
                 $egreso->save();
                 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Egreso registrado correctamente']));
-                    
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'created']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -102,9 +100,7 @@ class EgresoController extends Controller{
                 $egreso->observacion = $request->nota;
                 $egreso->save();     
 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Egreso modificado correctamente']));
-                    
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'updated']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -120,8 +116,7 @@ class EgresoController extends Controller{
             $egreso->is_deleted = true;
             $egreso->save();
 
-            $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Egreso eliminado correctamente']));
-            return response()->json(['success' => 'success']);
+            return response()->json(['success' => 'deleted']);
 
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);
