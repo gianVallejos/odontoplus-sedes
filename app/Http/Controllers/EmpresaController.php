@@ -47,21 +47,38 @@ class EmpresaController extends Controller{
 
     	if ($validator->passes()) {
             try{
+                DB::beginTransaction();
+
                 $empresa = new Empresa();
                 $empresa->nombre = $request->nombre;
                 $empresa->ruc = $request->ruc;
                 $empresa->sucursal = $request->sucursal;
                 $empresa->save();
+                $pricesInserted = self::insertTreatmentsStandardPrices($empresa->id);
 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Empresa registrada correctamente']));
-                    
-                return response()->json(['success' => 'success']);
-
+                if($pricesInserted){
+                    DB::commit();
+                    $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Empresa registrada correctamente']));
+                    return response()->json(['success' => 'success']);
+                }else{
+                    DB::rollback();
+                    return response()->json(['error' => 'Ha ocurrido un error al insertar la empresa o sus precios']);
+                }
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
             }
         }
         return response()->json(['error'=>$validator->errors()]);
+    }
+
+    public function insertTreatmentsStandardPrices($companyId){
+        $prices = DB::select('call OP_ObtenerPreciosEstandard()');
+         
+        foreach ($prices as $price) {
+            $status = DB::select('call OP_AgregarPrecios_EmpresaId_TratamientoId('.$companyId.','.$price->id_tratamiento.','.$price->monto.')');
+            if($status == 0) return false;
+        }
+        return true;
     }
 
     public function update(Request $request, $id){

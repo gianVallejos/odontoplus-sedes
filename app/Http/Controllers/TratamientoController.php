@@ -50,7 +50,7 @@ class TratamientoController extends Controller{
                 $tratamiento = new tratamiento();
                 $tratamiento->detalle = $request->detalle;
                 $tratamiento->save();
-                $pricesInserted = self::insertStandardPricesToAllCompanies($tratamiento->id, $request->precio_estandar);
+                $pricesInserted = self::insertCompaniesStandardPrices($tratamiento->id, $request->precio_estandar);
                 
                 if($pricesInserted){
                     DB::commit();
@@ -68,11 +68,11 @@ class TratamientoController extends Controller{
         return response()->json(['error'=>$validator->errors()]);
     }
 
-    public function insertStandardPricesToAllCompanies($treatmentId, $price){
+    public function insertCompaniesStandardPrices($treatmentId, $price){
         $companies = DB::select('call OP_ObtenerEmpresas()');
          
         foreach ($companies as $company) {
-            $status = DB::select('call OP_AgregarPreciosPorEmpresa('.$company->id.','.$treatmentId.','.$price.')');
+            $status = DB::select('call OP_AgregarPrecios_EmpresaId_TratamientoId('.$company->id.','.$treatmentId.','.$price.')');
             if($status == 0) return false;
         }
         return true;
