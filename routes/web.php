@@ -27,6 +27,15 @@ Route::resource('proveedorLineItems', 'ProveedorLineItemController');
 Route::resource('precios', 'PrecioController');
 Route::get('consulta_precio', 'PrecioController@getPrice');
 
+//REPORTS
+Route::get('reportes', 'ReporteController@index');
+Route::get('reportes/ingresos', 'ReporteController@incomes');
+Route::get('reportes/ingresos/por_paciente', 'ReporteController@pacienteIncomes');
+Route::get('reportes/ingresos/por_empresa', 'ReporteController@companyIncomes');
+Route::get('reportes/egresos', 'ReporteController@outputs');
+Route::get('reportes/balance', 'ReporteController@totalIncomesOutputs');
+Route::get('reportes/tratamientos/destacados', 'ReporteController@treatments');
+
 //APIS 
 Route::resource('presupuestos', 'PresupuestoController');
 Route::get('presupuestos/nuevo/{idPaciente}/{idDoctor}', 'PresupuestoController@nuevo');
