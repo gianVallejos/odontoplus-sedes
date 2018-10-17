@@ -14,41 +14,83 @@
 			<b-col class="pt-5" cols="6">
 				<PanelCard>
 					<span slot="heading">Últimos Pacientes</span>
-					<FormBuscar slot="body" />
-					<div class="table mt-3 mb-4" slot="body">
-						<TableComponent :fields="ultimosPacientes" />
+					<div class="input-group" slot="body">
+						<span class="icon-input">
+					    	<i class="fas fa-search" aria-hidden="true"></i>
+					    </span>
+						<input v-model="filterPacientes"  placeholder="Buscar..." type="text" class="form-control odInput">
 					</div>
-					<b-button slot="footer" href="#" variant="primary">Ver Pacientes</b-button>
+					<div class="table mt-3 mb-4" slot="body">
+						<b-table show-empty
+					             :items="pacientes"
+					             :fields="fieldsPacientes"					             
+					             :filter="filterPacientes"	
+					             :empty-text="emptyMessage"		
+					    >					      
+					    	<template slot="hc" slot-scope="row">
+					    		{{ row.value }}
+					    	</template>
+					    	<template slot="nombre" slot-scope="row">
+					    		{{ row.value }}
+					    	</template>
+					    	<template slot="actions" slot-scope="row">
+					    		<a :href="url + '/pacientes/' + row.item.hc + '/false'">Ver Paciente</a>
+					    	</template>
+
+					    </b-table>
+					</div>
+					<b-button slot="footer" :href="url + '/pacientes'" variant="primary">Ver Pacientes</b-button>
 				</PanelCard>
 			</b-col>
 			<b-col class="pt-5" cols="6">
 				<PanelCard>
 					<span slot="heading">Últimos Presupuestos</span>
-					<FormBuscar slot="body" />
-					<div class="table mt-3 mb-4" slot="body">
-						<TableComponent :fields="ultimosPacientes" />
+					<div class="input-group" slot="body">
+						<span class="icon-input">
+					    	<i class="fas fa-search" aria-hidden="true"></i>
+					    </span>
+						<input v-model="filterPresupuestos"  placeholder="Buscar..." type="text" class="form-control odInput">
 					</div>
-					<b-button slot="footer" href="#" variant="primary">Ver Pacientes</b-button>
+					<div class="table mt-3 mb-4" slot="body">
+						<b-table show-empty
+					             :items="presupuestos"
+					             :fields="fieldsPresupuestos"					             
+					             :filter="filterPresupuestos"	
+					             :empty-text="emptyMessage"	
+					    >					      
+					    	<template slot="pacientes" slot-scope="row">
+					    		{{ row.value }}
+					    	</template>
+					    	<template slot="doctores" slot-scope="row">
+					    		{{ row.value }}
+					    	</template>
+					    	<template slot="actions" slot-scope="row">
+					    		<a :href="url + '/presupuestos/reporte/' + row.item.id" target="_blank">Ver Presupuesto</a>
+					    	</template>
+
+					    </b-table>
+					</div>
+					<b-button slot="footer" :href="url + '/presupuestos'" variant="primary">Ver Presupuestos</b-button>
 				</PanelCard>
 			</b-col>
-			<b-col class="pt-5" cols="12">
+			<b-col class="pt-5" cols="12" v-if="user.rolid == 1">
 				<PanelCard>
-					<span slot="heading">Reporte de Ingresos & Egresos</span>
+					<span slot="heading">Reporte de Finanzas</span>
 					<b-row slot="body">
 						<b-col cols="6" class="vertical-line">
 							<GChart class="pt-4" type="LineChart" :data="chartData" :options="chartOptions" />
 							<div class="text-center pt-4 pb-4">
-								<b-button href="#" variant="success">Ir a Ingresos</b-button>
+								<b-button :href="url + '/ingresos'" variant="success">Ir a Ingresos</b-button>
 							</div>
 						</b-col>
 						<b-col cols="6">
 							<GChart class="pt-4" type="LineChart" :data="chartData" :options="chartOptionsEgresos" />
 							<div class="text-center pt-4 pb-4">
-								<b-button href="#" variant="success">Ver a Egresos</b-button>
+								<b-button :href="url + '/egresos'" variant="success">Ir a Egresos</b-button>
 							</div>
 						</b-col>
 					</b-row>
-					<b-button slot="footer" href="#" variant="primary">Ver Reportes</b-button>
+					<b-button slot="footer" :href="url + '/reportes'" variant="primary">Ver Reportes</b-button>
 				</PanelCard>
 			</b-col>
 		</b-row>
@@ -68,7 +110,10 @@
 			console.log('Dashboard Mounted')
 		},
 		props: [
-			'url'
+			'url',
+			'pacientes',
+			'presupuestos',
+			'user'
 		],
 		components:{
 			TitleComponent,
@@ -130,7 +175,7 @@
 				    		iconUrl: 'fas fa-money-bill',
 				    		name: 'Egresos',
 				    		color: 'nuevo',
-				    		url: '/'
+				    		url: this.url + '/egresos'
 				    	}			    	
 			    ],
 			    ultimosPacientes: [
@@ -165,7 +210,20 @@
 			        width: 500,
 			        height: 285,
 			        legend: { position: 'bottom' }
-			    }
+			    },			    
+			    fieldsPacientes: [				    				    
+				    { key: 'hc', label: 'HC', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+				    { key: 'nombres', label: 'Paciente', sortable: true, sortDirection: 'desc' },
+				    { key: 'actions', label: '', 'class': 'text-left' }
+			    ],
+			    filterPacientes: '',
+			    fieldsPresupuestos: [				    				    				    
+				    { key: 'pacientes', label: 'Paciente', sortable: true, sortDirection: 'desc' },
+				    { key: 'doctores', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+				    { key: 'actions', label: '', 'class': 'text-left' }
+			    ],
+			    filterPresupuestos: '',
+			    emptyMessage: 'No existen campos para mostrar'
 			}
 		}
 	}

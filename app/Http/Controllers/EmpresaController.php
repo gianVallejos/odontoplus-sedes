@@ -11,8 +11,7 @@ class EmpresaController extends Controller{
 
     public static $validation_rules = [
         'nombre' => 'required|max:120',
-        'ruc' => 'required|regex:/(^[0-9]{12}$)/u',
-        'sucursal' => 'nullable|max:120'
+        'ruc' => 'nullable|digits:12'
     ];
 
     public function __construct(){
@@ -22,11 +21,12 @@ class EmpresaController extends Controller{
     public function index(){
         $empresas = DB::select('call OP_ObtenerEmpresas()'); 
         $empresas = json_encode($empresas);
-        return view('empresas.index',compact('empresas'));
+
+        return view('empresas.index', compact('empresas'));
     }
 
     public function create(){
-        return view('empresas.new');    
+        return view('empresas.create');    
     }
 
     public function show($id){
@@ -41,8 +41,7 @@ class EmpresaController extends Controller{
         return view('empresas.edit', compact('empresa'));
     }
     
-    public function store(Request $request){
-        
+    public function store(Request $request){        
     	$validator = Validator::make($request->all(), self::$validation_rules );
 
     	if ($validator->passes()) {
@@ -50,18 +49,16 @@ class EmpresaController extends Controller{
                 $empresa = new Empresa();
                 $empresa->nombre = $request->nombre;
                 $empresa->ruc = $request->ruc;
-                $empresa->sucursal = $request->sucursal;
                 $empresa->save();
 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Empresa registrada correctamente']));
-                    
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'created']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
             }
         }
-        return response()->json(['error'=>$validator->errors()]);
+
+        return response()->json(['error' => $validator->errors()]);
     }
 
     public function update(Request $request, $id){
@@ -73,16 +70,15 @@ class EmpresaController extends Controller{
                 $empresa = Empresa::findOrFail($id);
                 $empresa->nombre = $request->nombre;
                 $empresa->ruc = $request->ruc;
-                $empresa->sucursal = $request->sucursal;
                 $empresa->save();
 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Empresa actualizada.']));
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'updated']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
             }
         }
+        
         return response()->json(['error'=>$validator->errors()]);
     }
 
@@ -92,9 +88,7 @@ class EmpresaController extends Controller{
             $empresa->is_deleted = true;
             $empresa->save();
 
-            $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Empresa Eliminada.']));
-            return response()->json(['success' => 'success']);
-
+            return response()->json(['success' => 'deleted']);
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);
         }

@@ -46,7 +46,7 @@
 										<i class="fas fa-plus"></i>&nbsp; Nuevo Presupuesto
 									</b-button>
 									<b-button :href="url + '/presupuestos'" variant="danger">
-										<i class="fas fa-times"></i>&nbsp;Cancelar
+										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
 							</b-col>
@@ -122,7 +122,7 @@
 			    },
 			    allerros: [],
 			    fields: [				    				    
-				    { key: 'id', label: 'Nro', class: 'text-center' }, 				    
+				    { key: 'id', label: 'Nro Historia', class: 'text-center' }, 				    
 				    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
 				    { key: 'actions', label: '', sortable: false },				    
 			    ],
@@ -139,27 +139,12 @@
 		methods: {
 			onSubmit () {
 				if( this.form.idPacienteSelected == null ){
-					this.$toasted.show('Para crear un presupuesto debe seleccionar un paciente', 
-										{ 
-											position: 'top-center',
-											className: 'toast-danger',
-											duration: 3500,
-											containerClass: 'test'
-										})
+					this.toastFunction('Para crear un presupuesto debe seleccionar un paciente', 'error')
 				}else if( this.form.doctorSelected == null ){
-					this.$toasted.show('Para crear un presupuesto debe seleccionar un doctor', 
-										{ 
-											position: 'top-center',
-											className: 'toast-danger',
-											duration: 3500,
-											containerClass: 'test'
-										})
+					this.toastFunction('Para crear un presupuesto debe seleccionar un doctor', 'error')
 				}else{
 					window.location.href = this.url + '/presupuestos/nuevo/' + this.form.idPacienteSelected + '/' + this.form.doctorSelected
 				}
-			},
-			onSelectPaciente (){
-				alert('hi')
 			},
 			hideModal(){
 				this.$refs.myModalRef.hide()
@@ -173,7 +158,17 @@
 		    	this.form.idPacienteSelected = id
 		    	this.form.pacienteSelected = nombres + ' ' + apellidos
 		    	this.$refs.myModalRef.hide()
-		    }
+		    },
+			toastFunction(msg, type){
+			 	this.$swal({
+						type: type,
+						title: msg,
+						toast: true,
+						position: 'top',
+						showConfirmButton: false,
+	  					timer: 3000
+				})
+			}
 		}
 	}
 </script>

@@ -15,9 +15,8 @@ import Flash from './widgets/alert/flash.vue'
 
 import ContainerGeneral from './container-general/index.vue'
 import Dashboard from './dashboard/index.vue'
-import PacienteIndex from './paciente/index.vue'
-import PacienteCreate from './paciente/create.vue'
-import PacienteShow from './paciente/show.vue'
+import Pacientes from './pacientes/index.vue'
+import PacienteForm from './pacientes/form.vue'
 import PresupuestoIndex from './presupuesto/index.vue'
 import PresupuestoCreate from './presupuesto/create.vue'
 import PresupuestoNuevo from './presupuesto/nuevo.vue'
@@ -44,7 +43,7 @@ const app = new Vue({
     el: '#app',
     components: {
     	ContainerGeneral, Dashboard,
-    	PacienteIndex, PacienteCreate, PacienteShow,
+    	Pacientes, PacienteForm,
     	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
 		Users, UserForm,
 		Doctores, DoctorForm,

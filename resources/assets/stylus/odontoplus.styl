@@ -79,6 +79,7 @@ p
 	position: absolute
 	top: 10px
 	left: 15px
+	z-index: 999
 	i 
 		color: #7f7f7f
 
@@ -109,14 +110,26 @@ p
 	width: 100%
 	height: 40px
 	padding: 12px 20px
-	padding-left: 34px
-	border: 1px solid #d1d1d1
+	padding-left: 38px
 	color: #7f7f7f
-	font-size: .9em
+	font-size: 1em
 	&:focus
 		outline: none   	
 	&.buscar
 		width: auto!important
+
+.invalid-feedback
+	font-family: 'Open Sans', sans-serif
+	color: $btnCancelarBc
+	font-size: .9em
+
+.custom-select.is-invalid, .form-control.is-invalid, .was-validated .custom-select:invalid, .was-validated .form-control:invalid
+	border-color: $btnCancelarBc
+	&:focus
+		outline: none
+		box-shadow: none
+		border-color: $btnCancelarBc
+		background: #f3f3f3
 
 .odBtn,
 .btn	
@@ -145,7 +158,7 @@ p
 			color: $btnInfoBc!important
 			box-shadow: inset 0 -4px 0 $btnInfoBc
 			background: transparent
-			text-decoration: none						
+			text-decoration: none					
 		&:focus
 			outline: 0
 			background: $btnInfoBc!important
@@ -258,6 +271,7 @@ p
 .badge
 	border-radius: 0
 	padding: 5px 12px
+	font-weight: normal
 	&.badge-danger
 		background-color: #ab4240
 	&.badge-success
@@ -405,3 +419,13 @@ span
 		width: 130px
 		font-weight: bold
 		height: 30px
+		
+.custom-radio 
+	.custom-control-input:checked~
+		&.custom-control-label::before
+			background-color: #305f94!important
+			
+.custom-checkbox 
+	.custom-control-input:checked~
+		&.custom-control-label::before
+			background-color: #305f94!important

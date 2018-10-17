@@ -47,7 +47,7 @@
 									<i class="fas fa-save"></i>&nbsp; Guardar
 								</b-button>								
 								<b-button :href="url + '/presupuestos'" variant="danger">
-									<i class="fas fa-times"></i>&nbsp;Cancelar
+									<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 								</b-button>
 							</b-col>
 						</b-row>
@@ -173,7 +173,7 @@
 									<i class="fas fa-save"></i>&nbsp; Guardar
 								</b-button>								
 								<b-button :href="url + '/presupuestos'" variant="danger">
-									<i class="fas fa-times"></i>&nbsp;Cancelar
+									<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 								</b-button>
 							</b-col>
 						</b-row>
@@ -194,14 +194,14 @@
 			    		<input v-model="filter" placeholder="Buscar..." type="text" class="odInput">
 					</b-input-group>
 				</b-col>
-				<b-col cols="12">
+				<b-col cols="12" class="pt-3">
 					<b-table show-empty :items="precios_table" :fields="fieldsPrecios" 
 								:current-page="currentPage" :per-page="perPage" :filter="filter" 
 								:sort-by.sync="sortBy" :sort-desc.sync="sortDesc" 
 								:sort-direction="sortDirection" @filtered="onFiltered">						
-						<template slot="id" slot-scope="row" >								    	
-							{{ row.value }}
-						</template>
+						<template slot="index" slot-scope="row">
+					      {{ row.index + 1 }}
+					    </template>
 						<template slot="detalle" slot-scope="row">								    	
 							{{ row.value }}
 						</template>
@@ -269,7 +269,7 @@
 				    { key: 'action', label: '', class: 'text-center'}
 			    ],
 			    fieldsPrecios: [
-			    	{ key: 'id', label: 'Nro', class: 'text-center'},
+			    	'index',
 			    	{ key: 'detalle', label: 'Tratamiento', sortable: true, sortDirection: 'desc'},
 			    	{ key: 'monto', label: 'Precio (S/)', class: 'text-center'},
 			    	{ key: 'action', label: '' }
@@ -353,7 +353,7 @@
 			onSubmitSave(){
 				if( this.tratamientos.length != 0 ){
 						this.$swal({ 
-							 title: '<span style="#fff; font-size: 1em">Atención</span>', 
+							 title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
 							 html: '<span style="font-size: 1em">' +
 							 		'A continuación se guardará el actual presupuesto y no podrá ser modificado.' + 
 							 		'<br /><br />¿Seguro que deseas guardar este presupuesto?' +
@@ -372,17 +372,7 @@
 								}	
 							})
 				}else{
-					this.$swal({ 
-							 title: '<span style="#fff; font-size: 1em">Alerta</span>', 
-							 html: 'Debe agregar por lo menos un tratamiento',								 
-							 showConfirmButton: false, 
-							 showCancelButton: false,
-							 showCloseButton: false,							 
-							 type: 'warning',
-							 toast: true,
-							 position: 'top',
-							 timer: 3000
-							})
+					this.toastFunction('Debe agregar por lo menos un tratamiento', 'warning')					
 				}
 			},
 			guardarTratamiento(){
@@ -395,19 +385,7 @@
 				}).then( (request) => {	
 						if( request.data == "ok" ){
 							this.isSuccess = true
-							this.$swal({ 
-								title: '<span style="#fff; font-size: 1em">Éxito</span>',	
-								html: 'Presupuesto guardado correctamente',								 
-							 	showConfirmButton: false, 
-							 	showCancelButton: false,
-							 	showCloseButton: false,							 
-							 	type: 'success',
-							 	toast: true,
-							 	position: 'top',
-							 	timer: 3000						 	
-							}).then(() => {
-								window.location.href = this.url + '/presupuestos'
-							})
+							this.toastFunctionRedirect('<span style="#fff; font-size: 1em">Éxito</span>', 'Presupuesto guardado correctamente <br />Redireccionando...', 'success')
 						}
 							/*
 					if( request.data.success == 'success' ){
@@ -442,14 +420,8 @@
 						}.bind(this), 3500)
 					}*/
 				}).catch((error) => {
-					console.log(error)
-                    this.$toasted.show('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 
-										{ 
-												position: 'top-center',
-												className: 'toast-danger',
-												duration: 3500,
-												containerClass: 'test'
-									})                   	                   	
+					console.log('Error: ' + error)
+					this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
                 })
 			},
 			/*
@@ -626,17 +598,13 @@
 			                        this.tratamientos[ind].secDos = seccion;    addPieza = false
 			                        this.mostrarTratamientosEnTabla()
 			                    }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos != null && this.tratamientos[ind].opcion == this.opcion){
-			                        this.$toasted.show('No puede agregar más de tres resinas en una sola pieza.', {
-														position: 'top-center', className: 'toast-danger', duration: 3500, containerClass: 'test'
-													})
+			                        this.toastFunction('No puede agregar más de tres resinas en una sola pieza.', 'error')			                        
 			                        addPieza = false	    
 			                    }
 							}
 					   	}
 					}else{
-				   		this.$toasted.show('No puede agregar el mismo tratamiento en la misma pieza.', { 
-												position: 'top-center', className: 'toast-danger', duration: 3500, containerClass: 'test'
-											})
+						this.toastFunction('No puede agregar el mismo tratamiento en la misma pieza.', 'error')				   		
 					   addPieza = false
 					}
 				}
@@ -778,7 +746,31 @@
 	        	}else if( seccion >= 31 ){
 	        		this.$refs[sec][0].extra_trat = 'sellante'
 	        	}
-	        }
+	        },
+			toastFunction(msg, type){
+			 	this.$swal({
+						type: type,
+						title: msg,
+						toast: true,
+						position: 'top',
+						showConfirmButton: false,
+	  					timer: 3000
+				})
+			},
+			toastFunctionRedirect(title, msg, type){
+				this.$swal({
+						type: type,
+						title: title,
+						html: msg,
+						toast: false,
+						position: 'center',
+						showConfirmButton: false,
+	  					timer: 3000,
+	  					backdrop: `rgba(0, 0, 0, 0.6)`
+				}).then(() => {
+					window.location.href = this.url + '/presupuestos'
+				})	
+			}
 		}
 	}
 </script>

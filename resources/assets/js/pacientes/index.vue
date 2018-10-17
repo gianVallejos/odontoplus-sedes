@@ -2,7 +2,7 @@
 	<b-container class="pb-4">				
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Dashboard" :items="breadcrumb" />				
+				<TitleComponent titulo="Pacientes" :items="breadcrumb" />				
 			</b-col>
 			<b-col cols="12" class="pt-3">				
 				<PanelCard>
@@ -41,22 +41,30 @@
 							</div>
 						</div>
 
-
-						<b-table show-empty :items="mydata" :fields="fields" :current-page="currentPage" :per-page="perPage"
-					             :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-					             @filtered="onFiltered">
+						<b-table show-empty 
+								 stacked="md"
+								 :items="items" 
+								 :fields="fields" 
+								 :current-page="currentPage" 
+								 :per-page="perPage"
+					             :filter="filter" 
+					             :sort-by.sync="sortBy" 
+					             :sort-desc.sync="sortDesc" 
+					             :sort-direction="sortDirection"
+					             @filtered="onFiltered"
+					             empty-text="No existen campos para mostrar" >
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">						        	
-						        	<a :href="url+'/pacientes/'+ row.item.id + '/false'"  class="action">Detalle</a>
+						        	<a :href="url+'/pacientes/'+ row.item.id"  class="action">Detalle</a>
 						        	|
-						        	<a :href="url+'/pacientes/'+ row.item.id + '/true'" class="action">Modificar</a>
+						        	<a :href="url+'/pacientes/'+ row.item.id +'/edit/'" class="action">Modificar</a>
 						        </div>
 						    </template>
 						    <template slot="id" slot-scope="row">
 						    	{{ row.value }}
 						    </template>
 						    <template slot="nombres" slot-scope="row">
-						    	<a :href="url + '/pacientes/' + row.item.id + '/false'">
+						    	<a :href="url + '/pacientes/' + row.item.id ">
 						      		{{ row.value }} {{ row.item.apellidos }}
 						      	</a>
 						    </template>						    	
@@ -70,12 +78,14 @@
 						      		{{row.value }}
 						    </template>	
 						    <template slot="empresa_nombre" slot-scope="row">
+								<a :href="url + '/empresas/' + row.item.empresa_id ">
 						      		{{row.value }}
+						      	</a>
 						    </template>		
 					    </b-table>
 					    <b-row>
 					    	<b-col md="6" class="pt-3 fz-3">
-					    		Mostrando {{ currentPage }} de {{ Math.round(totalRows / perPage) }} páginas					    		
+					    		Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas					    		
 					    	</b-col>
 						    <b-col md="6" class="my-1 text-right">
 						    	<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
@@ -98,18 +108,13 @@
 		mounted(){
 			console.log('Paciente Mounted')			
 		},
-		created() {
-	    	axios.get(this.url + '/api-v1/op-obtener-pacientes')
-	    		 	.then((response) => {	      		 
-			      		this.mydata = response.data;
-			      		this.totalRows = Math.ceil(this.mydata.length)
-	    			})
-	    },
+		name: 'Pacientes',		
 		components:{
 			TitleComponent,
 			PanelCard
 		},
 		props: [	
+			'items',
 			'url'
 		],
 		data(){
@@ -130,7 +135,7 @@
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,
-			    totalRows: 0,
+			    totalRows: this.items.length,
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,
 			    sortDesc: false,
@@ -138,11 +143,38 @@
 			    filter: ''
 			}
 		},
+	    computed: {
+	      sortOptions () {
+	        // Create an options list from our fields
+	        return this.fields
+	          .filter(f => f.sortable)
+	          .map(f => { return { text: f.label, value: f.key } })
+	      }
+	    },
 		methods: {
-			onFiltered (filteredItems) {
-		      this.totalRows = filteredItems.length
-		      this.currentPage = 1
-		    }
+			onSubmit (evt) {
+		      evt.preventDefault();
+		      alert(JSON.stringify(this.form));
+		  	},
+	      	info (item, index, button) {
+	        	this.modalInfo.title = `Row index: ${index}`
+	        	this.modalInfo.content = JSON.stringify(item, null, 2)
+	        	this.$root.$emit('bv::show::modal', 'modalInfo', button)
+	      	},
+	      	resetModal () {
+		        this.modalInfo.title = ''
+	        	this.modalInfo.content = ''
+	      	},
+	      	onFiltered (filteredItems) {
+		        // Trigger pagination to update the number of buttons/pages due to filtering
+	        	this.totalRows = filteredItems.length
+	        	this.currentPage = 1
+	      	},
+	      	totalCurrentPages(){
+	        	var res = Math.round(this.totalRows / this.perPage)
+        		if( res == 0 ) return res + 1
+        		return Math.ceil(this.totalRows / this.perPage )
+	      	}
 		}
 	}
 </script>

@@ -6,29 +6,37 @@
 			</div>
       <div class="col-md-12">
         <PanelCard>
-          <span slot="heading">{{panel_title}}</span>
+          <span slot="heading">{{ title }}</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
  
 						<b-form>
 							<!--input type="hidden" name="_token" :value="csrf"-->
 							<div class="text-center">
-								<div v-if="this.display != 'show'">								
-									<b-button v-if="this.display != 'show'" type="submit" variant="success" v-on:click="onSubmit">
+								<div v-if="displayStatus != 'show'">	
+									<b-button v-if="displayStatus == 'edit'" type="submit" variant="success" v-on:click.prevent="onGuardarModificar">
+										<i class="fas fa-save"></i>&nbsp; Guardar
+									</b-button>						
+									<b-button v-if="displayStatus == 'new'" type="submit" variant="success" v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
-									<b-button v-if="this.display != 'show'" :href="url + '/empresas'" variant="warning">
+									<b-button v-if="displayStatus == 'edit'" variant="warning" v-on:click.prevent="onCancelarModificar">
+										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
+									</b-button>
+									<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
-
-								<div v-if="this.display == 'show'">
-									<b-button variant="primary" v-on:click="enableForm">
+								<div v-if="displayStatus == 'show'">									
+									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
-									<b-button variant="danger" v-on:click="onSubmit($event,'delete')">
-									<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
+									<b-button variant="danger" v-on:click.prevent="onEliminar(
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+							   				  v-if="curUser.rolid == 1">
+										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
-									<b-button variant="warning" :href="url + '/empresas'">
+									<b-button variant="warning" v-on:click.prevent="onRegresar">
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
 								</div>
@@ -39,10 +47,10 @@
 										<b-col cols="6" class="pt-3 pb-4">
 											<div class="form-title">
 												<i class="far fa-building"></i>
-												<div class="d-inline"> Información General </div>
+												<div class="d-inline"> Información de Empresa </div>
 											</div>
 											<p class="form-description fz-3 pt-3 pr-4">
-												On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions.
+												La gestión de empresas es esencial para el manejo de diferentes precios de tratamientos en caso de convenios o alianzas estratégicas.
 											</p>
 											<br/>
 											<p class="form-description fz-3 pt-3 pr-4">
@@ -51,40 +59,48 @@
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
 										    <b-form-group label="Nombre" label-for="nombre">
-											    <b-form-input id="nombre" type="text" class="required" v-model="form.nombre" :disabled="this.display == 'show'" placeholder="Nombre" required autocomplete="off"/>
+											    <b-form-input id="nombre" type="text" class="required" 
+											    	v-model="form.nombre" :disabled=isDisabled 
+											    	placeholder="Nombre" autocomplete="off"/>
 													<span v-if="all_errors.nombre" :class="['label label-danger']">{{ all_errors.nombre[0] }}</span>
 										    </b-form-group>
 										    <b-form-group label="RUC" label-for="ruc">
-											    <b-form-input id="ruc" type="text" class="required" v-model="form.ruc" :disabled="this.display == 'show'" pattern="[0-9]{12}" placeholder="RUC" required autocomplete="off"/>
+											    <b-form-input id="ruc" type="text"
+											    	v-model="form.ruc" :disabled=isDisabled 
+											    	maxlength="12" placeholder="RUC" autocomplete="off"/>
 													<span v-if="all_errors.ruc" :class="['label label-danger']">{{ all_errors.ruc[0] }}</span>
-										    </b-form-group>
-                        <b-form-group label="Sucursal" label-for="ruc">
-											    <b-form-input id="sucursal" type="text" v-model="form.sucursal" :disabled="this.display == 'show'" placeholder="Sucursal" autocomplete="off"/>
-													<span v-if="all_errors.sucursal" :class="['label label-danger']">{{ all_errors.sucursal[0] }}</span>
-										    </b-form-group>
+										    </b-form-group>                        					
 										</b-col>
 									</b-row>
 
 							</div>
 
 							<div class="text-center">
-								<div v-if="this.display != 'show'">								
-									<b-button v-if="this.display != 'show'" type="submit" variant="success" v-on:click="onSubmit">
+								<div v-if="displayStatus != 'show'">	
+									<b-button v-if="displayStatus == 'edit'" type="submit" variant="success" v-on:click.prevent="onGuardarModificar">
+										<i class="fas fa-save"></i>&nbsp; Guardar
+									</b-button>						
+									<b-button v-if="displayStatus == 'new'" type="submit" variant="success" v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
-									<b-button v-if="this.display != 'show'" :href="url + '/empresas'" variant="warning">
+									<b-button v-if="displayStatus == 'edit'" variant="warning" v-on:click.prevent="onCancelarModificar">
+										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
+									</b-button>
+									<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
-
-								<div v-if="this.display == 'show'">
-									<b-button variant="primary" v-on:click="enableForm">
+								<div v-if="displayStatus == 'show'">									
+									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
-									<b-button variant="danger" v-on:click="onSubmit($event,'delete')">
-									<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
+									<b-button variant="danger" v-on:click.prevent="onEliminar(
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+							   				  v-if="curUser.rolid == 1">
+										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
-									<b-button variant="warning" :href="url + '/pacientes'">
+									<b-button variant="warning" v-on:click.prevent="onRegresar">
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
 								</div>
@@ -107,92 +123,193 @@
 
   export default{
     mounted() { 
-      console.log('empresas mounted')
-			if(this.view_mode != 'new') this.fillForm()
-			this.display = this.view_mode
-			this.panel_title = this.title
+    	this.initActualView()
+		console.log('Empresas Form Component')
     },
     name: 'Empresa-Form',
     components: {
-      PanelCard,
-      TitleComponent
+      	PanelCard,
+      	TitleComponent
     },
     props:[
-      'title',
-      'url',
-			'record',
-			'view_mode'
+      	'title',
+      	'url',
+		'record',
+		'curUser',
+		'view_mode'
     ],
     data(){
       return{
         form: {
-					nombre: '',
-					ruc: '',
-					sucursal: ''
-				},
-				display: '',
-				record_id: '',
-				panel_title: '',
-				all_errors: [],
+			nombre: '',
+			ruc: ''
+		},
+		displayStatus: '',
+        isDisabled: false,
+		record_id: '',
+		all_errors: [],
         breadcrumb: [
-          { text: 'Home', href: '/' },
-          { text: 'Empresas', href: this.url+'/empresas' },
-          { text: this.title, active: true },
-				],
-				toast_config: {
-					position: 'top-center',
-					className: 'toast-danger',
-					duration: 3500,
-					containerClass: 'container-template'
-				}
+          { text: 'Dashboard', href: this.url },
+          { text: 'Empresas', href: this.url + '/empresas' },
+          { text: this.title, active: true }
+		]
       }
     },
     methods:{
-			onSubmit (e, action) {
-				e.preventDefault();
-				var request
-				var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
-				
-				if (this.display == 'edit') {
-					request = { method: 'PUT', url: '/empresas/'+ this.record_id, data: this.form }
-				} 
-				else if (this.display == 'new') {
-					request = { method: 'POST', url: '/empresas/'+ this.record_id, data: this.form }
-				}
-				else if (this.display == 'show' && action == 'delete' && confirm('¿Está seguro de eliminar este registro?')) {
-					request = { method: 'DELETE', url: '/empresas/'+ this.record_id,  }
-					mssgOnFail = 'El registro no ha podido ser eliminado.'
-				}
-
+			initActualView(){    		
+				this.displayStatus = this.view_mode
+		    	if( this.displayStatus == 'new' ){
+		    		this.onDisplayNuevo()
+		    	}else if( this.displayStatus == 'show' ){
+		    		this.onDisplayDetalle()
+		    	}else if( this.displayStatus == 'edit' ){
+		    		this.onDisplayModificar()
+		    		this.setControllerDataToForms()
+		    	}     	   
+	    	},
+	    	onDisplayNuevo(){    		
+	    		this.displayStatus = 'new'
+				this.setEnableForm()
+	    	}, 
+	    	onDisplayDetalle(){
+	    		this.displayStatus = 'show'
+				this.setDisableForm()
+				this.setControllerDataToForms()
+	    	},	
+	    	onDisplayModificar(){
+	    		this.displayStatus = 'edit'
+	    		this.setEnableForm()			
+	    	},
+	    	setEnableForm(){
+	    		this.isDisabled = false
+	    	},
+	    	setDisableForm(){
+	    		this.isDisabled = true
+	    	},
+	    	setControllerDataToForms(){
+	    		this.record_id = this.record.id
+	    		this.form.nombre = this.record.nombre
+				this.form.ruc = this.record.ruc    		
+	    	},
+	    	onGuardarNuevo(){
+	    		var request = { method: 'POST', url: this.url + '/empresas', data: this.form }
+	    		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'	    		
+	    		this.onSubmit(request, mssgOnFail)    															
+	    	},
+	    	onGuardarModificar(){
+	    		var request = { method: 'PUT', url: this.url + '/empresas/'+ this.record_id, data: this.form }    			
+	    		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
+	    		this.onSubmit(request, mssgOnFail)
+	    	},
+	    	onEliminar(msg){
+	    		this.$swal({ 
+							title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+							html:  '<span style="font-size: 1em">' + msg +
+								   '</span>',	
+							animation: false, 
+							showConfirmButton: true, 
+							showCancelButton: true,
+							confirmButtonText: 'Aceptar',
+							confirmButtonClass: ['my-alert', 'confirm-alert'],
+							cancelButtonText: 'Cancelar',
+							cancelButtonClass: ['my-alert', 'cancel-alert'],
+							showCloseButton: true
+				}).then((result) => {
+					if( result.value ){
+						var request = { method: 'DELETE', url: this.url + '/empresas/' + this.record_id, data: this.form }
+		    			var mssgOnFail = 'Ha ocurrido un error al eliminar este registro.'
+		    			this.onSubmit(request, mssgOnFail)  
+					}	
+				})
+	    	},
+			onSubmit(request, error_msg) {						
+				self = this
 				if(request){
 					axios(request).then((response) => {
 						if(response.data.success){
 							console.log('Response:: OK')
-							window.location.href = this.url + '/empresas'
-						}
-						else if (response.data.error){
-							console.log('Response:: FAIL');
-							this.all_errors = response.data.error
-							console.log(JSON.stringify(this.all_errors))
-							this.$toasted.show( ( mssgOnFail ),this.toast_config)
+							if( response.data.success == 'created' ){							
+								self.setDisableForm()
+								self.toastFunctionRedirect('Éxito', 'La empresa ha sido creada correctamente. <br />Redireccionando...', 'success')
+							}else if( response.data.success == 'updated' ){													
+								self.toastFunction('La empresa ha sido modificada correctamente.', 'success')
+								self.afterSuccessGuardar()							
+							}else if (response.data.success = 'deleted' ){							
+								self.form.is_active = !self.form.is_active
+								self.toastFunctionRedirect('Éxito', 'La empresa ha sido eliminada correctamente. <br />Redireccionando...', 'success')
+							}
+						}else if (response.data.error){
+							if( response.data.error == 'cantDeleted'){
+								self.toastFunction('La empresa está relacionada a tratamientos activos por lo tanto no se puede eliminar.', 'error')
+							}else{
+								console.log('Response:: FAIL');
+								self.all_errors = response.data.error
+								self.toastFunction(error_msg, 'error')
+							}
 						}
 					}).catch(function (error) {
-						console.log(error);
+						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
 					});
 				}
-
 			},
-			fillForm(){
-				console.log(this.record)
-				var tr = JSON.parse(this.record)
-				this.record_id = tr.id
-				this.form.nombre = tr.nombre
-				this.form.ruc = tr.ruc
-				this.form.sucursal = tr.sucursal
+			afterSuccessGuardar(){	
+				this.displayStatus = 'show'
+				this.setDisableForm()
+				this.setFormDataToUser()
+				this.cleanErrosMessage()
+				this.setEmptyPasswordFields()
 			},
-			enableForm(){
-				this.display = 'edit'
-				this.panel_title = 'Modificar Empresa'
+	    	setFormDataToUser(){
+	    		this.record.id = this.record_id
+	    		this.record.nombre = this.form.nombre
+				this.record.ruc = this.form.ruc
+	    	},
+			cleanErrosMessage(){
+				this.all_errors = []
+			},
+			setEmptyPasswordFields(){
+				this.form.password = ''
+				this.form.confirm_password = ''
+			},
+			redireccionarToIndex(){ //Btn Regresar
+				window.location.href = this.url + '/empresas'
+			},
+	    	onRegresar(){
+	    		this.redireccionarToIndex()
+	    	},
+			onCancelarModificar(){
+				this.displayStatus = 'show'
+				this.setControllerDataToForms()
+				this.setDisableForm()
+				this.cleanErrosMessage()
+				this.setEmptyPasswordFields()
+			},
+			onCancelarNuevo(){
+				this.redireccionarToIndex()
+			},
+			toastFunction(msg, type){
+			 	this.$swal({
+						type: type,
+						title: msg,
+						toast: true,
+						position: 'top',
+						showConfirmButton: false,
+	  					timer: 3000
+				})
+			},
+			toastFunctionRedirect(title, msg, type){
+				this.$swal({
+						type: type,
+						title: title,
+						html: msg,
+						toast: false,
+						position: 'center',
+						showConfirmButton: false,
+	  					timer: 3000,
+	  					backdrop: `rgba(0, 0, 0, 0.6)`
+				}).then(() => {
+					this.redireccionarToIndex()
+				})	
 			}
     }
   }

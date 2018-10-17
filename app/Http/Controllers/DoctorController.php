@@ -10,17 +10,17 @@ use Illuminate\Support\Facades\Validator;
 class DoctorController extends Controller{
 
     public static $validation_rules = [
-        'nombres' => 'required|max:90',
-        'apellidos' => 'required|max:90',
-        'dni' => 'required|regex:/(^[0-9]{8}$)/u',
-        'email' => 'max:90',
-        'direccion' => 'required|max:90',
-        'fechanacimiento' => 'required',
-        'genero' => 'required|max:25',
-        'estado' => 'required|max:25',
-        'telefono' => 'nullable|max:50',
-        'celular' => 'nullable|max:50',
-        'celular_aux' => 'nullable|max:50',
+        'nombres' => 'required|string|max:90',
+        'apellidos' => 'required|string|max:90',
+        'dni' => 'required|digits:8',
+        'email' => 'nullable|email|max:90',
+        'direccion' => 'required|string|max:90',
+        'fechanacimiento' => 'required|date',
+        'genero' => 'nullable|string|max:25',
+        'estado' => 'nullable|string|max:25',
+        'telefono' => 'nullable|string|max:50',
+        'celular' => 'nullable|string|max:50',
+        'celular_aux' => 'nullable|string|max:50',
         'margen_ganancia' => 'nullable|min:0|max:100'
     ];
 
@@ -31,11 +31,13 @@ class DoctorController extends Controller{
     public function index(){
         $doctors = DB::select('call OP_ObtenerDoctores()'); 
         $doctors = json_encode($doctors);
+        
         return view('doctors.index',compact('doctors'));
     }
 
     public function create(){
-        return view('doctors.new');    
+
+        return view('doctors.create');    
     }
 
     public function show($id){
@@ -70,10 +72,8 @@ class DoctorController extends Controller{
                 $doctor->celular_aux = $request->celular_aux;
                 $doctor->margen_ganancia = $request->margen_ganancia;
                 $doctor->save();
-
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Doctor registrado correctamente']));
                     
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'created']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -103,8 +103,7 @@ class DoctorController extends Controller{
                 $doctor->margen_ganancia = $request->margen_ganancia;
                 $doctor->save();
 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Doctor actualizado.']));
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'updated']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -115,12 +114,14 @@ class DoctorController extends Controller{
 
     public function destroy(Request $request, $id){
         try{
-            $doctor = Doctor::findOrFail($id);
-            $doctor->is_deleted = true;
-            $doctor->save();
+            $canDelete = DB::select('call OP_esDoctorBorrable_Id('. $id .')');
+            if( $canDelete[0]->CAN_DELETE == '1' ){
+                $res = DB::select('call OP_eliminarDoctor_Id('. $id .')');
 
-            $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Doctor Eliminado.']));
-            return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'deleted']);
+            }else{
+                return response()->json(['error' => 'cantDeleted']);
+            }
 
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);

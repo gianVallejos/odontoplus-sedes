@@ -93,6 +93,12 @@
 .barra .barra-list > li.item.dropdown.show a {
   color: #fff;
 }
+.barra .barra-list > li.item.active {
+  background: #0aab8a;
+}
+.barra .barra-list > li.item.active a {
+  color: #f3f3f3;
+}
 .barra .barra-list li.dropdown ul.dropdown-menu .li-dropdown a {
   display: block;
   padding: 5px 0px 5px 0px;

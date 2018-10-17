@@ -75,6 +75,7 @@ p {
   position: absolute;
   top: 10px;
   left: 15px;
+  z-index: 999;
 }
 .icon-input i {
   color: #7f7f7f;
@@ -120,16 +121,36 @@ p {
   width: 100%;
   height: 40px;
   padding: 12px 20px;
-  padding-left: 34px;
-  border: 1px solid #d1d1d1;
+  padding-left: 38px;
   color: #7f7f7f;
-  font-size: 0.9em;
+  font-size: 1em;
 }
 .odInput:focus {
   outline: none;
 }
 .odInput.buscar {
   width: auto !important;
+}
+.invalid-feedback {
+  font-family: 'Open Sans', sans-serif;
+  color: #ab4240;
+  font-size: 0.9em;
+}
+.custom-select.is-invalid,
+.form-control.is-invalid,
+.was-validated .custom-select:invalid,
+.was-validated .form-control:invalid {
+  border-color: #ab4240;
+}
+.custom-select.is-invalid:focus,
+.form-control.is-invalid:focus,
+.was-validated .custom-select:invalid:focus,
+.was-validated .form-control:invalid:focus {
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-color: #ab4240;
+  background: #f3f3f3;
 }
 .odBtn,
 .btn {
@@ -343,6 +364,7 @@ p {
 .badge {
   border-radius: 0;
   padding: 5px 12px;
+  font-weight: normal;
 }
 .badge.badge-danger {
   background-color: #ab4240;
@@ -507,4 +529,10 @@ span.title-sec {
   width: 130px;
   font-weight: bold;
   height: 30px;
+}
+.custom-radio .custom-control-input:checked~.custom-control-label::before {
+  background-color: #305f94 !important;
+}
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+  background-color: #305f94 !important;
 }
