@@ -54,8 +54,8 @@ const app = new Vue({
 			Tratamientos, TratamientoForm,
 			Empresas, EmpresaForm,
 			Proveedores, ProveedorForm, ProveedorLineItems,
-		EgresosIndex, EgresoForm,
-		Precios	
+			EgresosIndex, EgresoForm,
+			Precios,	
 			Reportes	
     }
 })
