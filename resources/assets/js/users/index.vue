@@ -106,7 +106,7 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: 'Actions' },
+          { key: 'actions', label: '', 'class': 'action-width' },
           { key: 'name', label: 'Nombre', sortable: true, sortDirection: 'desc' },
           { key: 'email', label: 'Email', sortable: true },
           { key: 'rol', label: 'Rol', sortable: true },

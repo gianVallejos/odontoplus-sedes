@@ -126,7 +126,7 @@
 			    	{ text: 'Egresos', active: true}
 			    ],			    
 			    fields: [		    
-				    { key: 'actions', label: '', 'class': 'text-left' },				    
+				    { key: 'actions', label: '', 'class': 'action-width text-left' },				    
 				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },				    
 				    { key: 'concepto', label: 'Concepto', sortable: true, sortDirection: 'desc' },				    
 				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },

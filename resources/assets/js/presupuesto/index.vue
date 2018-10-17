@@ -120,7 +120,7 @@
 			    	{ text: 'Presupuestos', active: true}
 			    ],			    
 			    fields: [				    
-				    { key: 'actions', label: '', 'class': 'text-center' },				    
+				    { key: 'actions', label: '', 'class': 'action-width text-center' },				    
 				    { key: 'id', label: 'Nro', class: 'text-center' }, 				    
 				    { key: 'idPaciente', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },

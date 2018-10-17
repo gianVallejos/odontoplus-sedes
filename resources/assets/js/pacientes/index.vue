@@ -125,7 +125,7 @@
 			    	{ text: 'Pacientes', active: true}
 			    ],			    
 			    fields: [				    
-				    { key: 'actions', label: '', 'class': 'text-left' },				    
+				    { key: 'actions', label: '', 'class': 'action-width' },				    
 				    { key: 'nombres', label: 'Nombres', sortable: true, sortDirection: 'desc' },
 				    { key: 'id', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'dni', label: 'DNI', sortable: true, sortDirection: 'desc' },
