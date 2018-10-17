@@ -29,7 +29,7 @@ class UserController extends Controller{
         $user = DB::select('call OP_ObtenerUsuarios_Id('.$id.')')[0];
         $user = json_encode($user);       
         
-        return view('users.show', compact('user'));
+        return view('users.show', compact('user', 'id'));
     }
 
     public function edit($id){
@@ -42,10 +42,10 @@ class UserController extends Controller{
     public function store(Request $request){
         
     	$validator = Validator::make($request->all(), [
-            'name' => 'required|max:120',
-            'email' => 'required|unique:users|max:150',
-            'password' => 'required|min:8|max:150',
-            'confirm_password' => 'required|max:150|same:password',
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users|max:255',
+            'password' => 'required|min:6|max:50|same:confirm_password',
+            'confirm_password' => 'required|same:password|min:6|max:50',
             'rolid' => 'required|regex:/(^[1-2]{1}$)/u',
             'is_active' => 'required'
         ]);
@@ -61,10 +61,8 @@ class UserController extends Controller{
                 $user->rolid = $request->rolid;
                 $user->is_active = $request->is_active;
                 $user->save();
-
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'User was successful added!']));
                     
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'created']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -76,10 +74,10 @@ class UserController extends Controller{
     public function update(Request $request, $id){
         
     	$validator = Validator::make($request->all(), [
-            'name' => 'required|max:120',
-            'email' => 'required|max:150|email|unique:users,email,'. $id.',id',
-            'password' => 'nullable|min:8|max:150',
-            'confirm_password' => 'nullable|max:150|same:password',
+            'name' => 'required|max:255',
+            'email' => 'required|max:255|email|unique:users,email,'. $id.',id',
+            'password' => 'nullable|min:6|max:50|same:confirm_password',
+            'confirm_password' => 'same:password|nullable|min:6|max:50|',
             'rolid' => 'required|regex:/(^[1-2]{1}$)/u'
         ]);
 
@@ -90,11 +88,12 @@ class UserController extends Controller{
                 $user->email = $request->email;
                 $user->rolid = $request->rolid;
                 $user->is_active = $request->is_active;
-                if(!empty($request->password)) $user->password = Hash::make($request->password);
+                if( !empty($request->password) && !empty($request->confirm_password) ){
+                    $user->password = Hash::make($request->password);  
+                } 
                 $user->save();
 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Usuario actualizado.']));
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'updated']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -106,12 +105,10 @@ class UserController extends Controller{
     public function destroy(Request $request, $id){
         try{
             $user = User::findOrFail($id);
-            $user->is_deleted = true;
-            $user->is_active = false;
+            $user->is_active = !$request->is_active;
             $user->save();
 
-            $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Usuario Eliminado.']));
-            return response()->json(['success' => 'success']);
+            return response()->json(['success' => 'deleted']);
 
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);

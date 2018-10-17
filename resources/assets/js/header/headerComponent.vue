@@ -1,8 +1,8 @@
 <template>
 	<div class="header">
 		<div class="container">
-			<a href="/">
-				<img :src=logoUrl class="logoHeaderComponent" alt="Logo">
+			<a :href="url + '/'">
+				<img :src=logoUrl class="logoHeaderComponent" alt="Logo de Empresa">
 			</a>
 			<div class="head-right">
 				<ul>
@@ -10,11 +10,11 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<div class="profileImage">
 						  		<span class="perfil-img">
-						  			<img :src=perfilUrl alt="Perfil">	
+						  			<img :src=perfilUrl alt="Imagen de Perfil">	
 						  		</span>
 						  		<div class="user-name">
-						  			<p>{{ userName }} </p>
-						  			<span>Administrador</span>
+						  			<p>{{ user.name }} </p>						  			
+						  			<span>{{ rol[user.rolid-1].nombre }}</span>
 						  		</div>
 						  		<i class="fa fa-angle-down lnr"></i>
 						  		<div class="clearfix"></div>
@@ -22,9 +22,14 @@
 						</a>
 						<ul class="dropdown-menu">
 					    	<li>
-					    		<a href="#">
+					    		<a :href="url + '/users/' + user.id">
 					    			<i class="fas fa-user"></i>Ver Perfil
 					    		</a>
+					    	</li>
+					    	<li v-if="user.rolid == 1">
+					    		<a :href="url + '/users'">
+					          		<i class="fas fa-users"></i>Usuarios
+					          	</a>
 					    	</li>
 					    	<li>
 					    		<a :href="logoutRoute" v-on:click="logout" >
@@ -51,11 +56,15 @@
 			return {
 				logoUrl: this.url + '/images/empresa/logotipo.png',
 				perfilUrl: this.url + '/images/sistema/perfil-default.png',
-				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+				rol: [
+					{id: 1, nombre: 'Administrador' },
+					{id: 2, nombre: 'Colaborador' }
+				]
 			}
 		},
 		props: [
-			'userName',
+			'user',
 			'logoutRoute',
 			'url'
 		],

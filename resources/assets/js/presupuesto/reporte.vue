@@ -3,7 +3,7 @@
 		<b-row class="pb-2 mt-4">
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
-					<img :src="this.url + '/images/empresa/logotipo_pdf.png'" />
+					<img :src="this.url + '/images/empresa/logotipo_pdf.png'" alt="Logo Empresa" />
 					<span>Jr. Silva Santisteban #507, Cajamarca - Perú</span>
 					<span>citas@sonrisacore.com</span>
 					<span>(076) 284095 (Citas) </span>

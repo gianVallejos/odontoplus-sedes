@@ -2,6 +2,6 @@
 
 @section('content')
 	
-	<ingresos-index url='{{ route("home") }}' :ingresos="{{ $ingresos }}" />
+	<ingresos-index url='{{ route("home") }}' :cur-user='{{ Auth::user() }}' :ingresos="{{ $ingresos }}" />
 
 @endsection

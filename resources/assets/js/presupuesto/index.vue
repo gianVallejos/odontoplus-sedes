@@ -42,9 +42,17 @@
 						</div>
 
 
-						<b-table show-empty :items="mydata" :fields="fields" :current-page="currentPage" :per-page="perPage"
-					             :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-					             @filtered="onFiltered">
+						<b-table show-empty 
+								 :items="mydata" 
+								 :fields="fields" 
+								 :current-page="currentPage" 
+								 :per-page="perPage"
+					             :filter="filter" 
+					             :sort-by.sync="sortBy" 
+					             :sort-desc.sync="sortDesc" 
+					             :sort-direction="sortDirection"
+					             @filtered="onFiltered"
+					             empty-text="No existen campos para mostrar" >
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">						        	
 						        	<a :href="url+'/presupuestos/reporte/'+ row.item.id" class="action" target="_blank">Ver Presupuesto</a>
@@ -59,12 +67,12 @@
 								{{ row.value }}						      	
 						    </template>						    	
 						    <template slot="nombrePaciente" slot-scope="row">
-						    	<a :href="url + '/pacientes/' + row.item.idPaciente + '/false'">
+						    	<a :href="url + '/pacientes/' + row.item.idPaciente">
 						      		{{ row.value }}
 						      	</a>
 						    </template>
 						    <template slot="nombreDoctor" slot-scope="row">
-						    	<a :href="url + '/doctores/' + row.item.idDoctor + '/false'">
+						    	<a :href="url + '/doctores/' + row.item.idDoctor">
 						      		{{row.value }}
 						      	</a>
 						    </template>		
@@ -74,7 +82,7 @@
 					    </b-table>
 					    <b-row>
 					    	<b-col md="6" class="pt-3 fz-3">
-					    		Mostrando {{ currentPage }} de {{ Math.round(totalRows / perPage) }} páginas					    		
+					    		Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas					    		
 					    	</b-col>
 						    <b-col md="6" class="my-1 text-right">
 						    	<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
@@ -92,8 +100,7 @@
 <script>
 	import TitleComponent from '../widgets/titulo/index.vue'
 	import PanelCard from '../widgets/panel/panel-component.vue'
-	import axios from 'axios'
-
+	
 	export default{
 		mounte(){
 			console.log('Presupuesto')
@@ -122,7 +129,7 @@
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,
-			    totalRows: Math.ceil(this.mydata.length),
+			    totalRows: this.mydata.length,
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,
 			    sortDesc: false,
@@ -134,6 +141,11 @@
 			onFiltered (filteredItems) {
 		      this.totalRows = filteredItems.length
 		      this.currentPage = 1
+		    },
+		    totalCurrentPages(){
+		 	   var res = Math.ceil(this.totalRows / this.perPage )
+		       if( res == 0 ) return res + 1
+		       return res
 		    }
 		}
 	}

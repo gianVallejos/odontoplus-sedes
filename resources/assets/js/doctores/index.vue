@@ -2,7 +2,7 @@
   <b-container>
 		<b-row>
 			<div class="col-md-12">
-				<TitleComponent titulo="Lista de Doctores" :items="breadcrumb" />
+				<TitleComponent titulo="Doctores" :items="breadcrumb" />
 			</div>
       <div class="col-md-12">
         <PanelCard>
@@ -33,9 +33,6 @@
 										<b-button :href="url+'/doctores/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Doctor
 										</b-button>
-										<b-button variant="warning">
-											<i class="fas fa-print"></i>&nbsp; Imprimir
-										</b-button>
 									</b-button-group>
 								</div>
 							</div>
@@ -52,19 +49,37 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
-                    @filtered="onFiltered" >
-              <template slot="actions" slot-scope="row">
-                  <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/doctores/'+ row.item.id" class="action" >Detalle</a>
-                  |
-                  <a :href="url+'/doctores/'+ row.item.id+'/edit'" class="action" >Modificar</a>
-                </div>
-              </template>
+                    @filtered="onFiltered"
+                    empty-text="No existen campos para mostrar" >
+                <template slot="actions" slot-scope="row">
+                    <div class="actions-table" style="color: #d1d1d1">						        	
+                    <a :href="url+'/doctores/'+ row.item.id" class="action" >Detalle</a>
+                    |
+                    <a :href="url+'/doctores/'+ row.item.id+'/edit'" class="action" >Modificar</a>
+                  </div>
+                </template>
+                <template slot="nombres" slot-scope="row">
+                    <a :href="url + '/doctores/' + row.item.id ">
+                      {{ row.value }} {{ row.item.apellidos }}
+                    </a>
+                </template>
+                <template slot="dni" slot-scope="row">                    
+                      {{ row.value }}
+                </template>
+                <template slot="email" slot-scope="row">                    
+                      {{ row.value }}
+                </template>
+                <template slot="celular" slot-scope="row">                    
+                      {{ row.value }}
+                </template>
+                <template slot="margen_ganancia" slot-scope="row">                                      
+                      {{ (row.value == null) ? '0%' : row.value + '%' }}
+                </template>
             </b-table>
             
           <b-row>
                 <b-col md="6" class="pt-3 fz-3">
-                  Mostrando {{ currentPage }} de {{ Math.round(totalRows / perPage) }} páginas                  
+                  Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas                  
                 </b-col>
                 <b-col md="6" class="my-1 text-right">
                   <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
@@ -94,19 +109,19 @@
 		},
     props:[
       'items',
-      'url'
+      'url',
+      'curUser'
     ],
     data(){
 			return{
         fields: [
-          { key: 'actions', label: 'Actions' },
+          { key: 'actions', label: '' },
           { key: 'nombres', label: 'Nombres', sortable: true, sortDirection: 'desc' },
-          { key: 'apellidos', label: 'Apellidos', sortable: true },
           { key: 'dni', label: 'DNI', sortable: true },
-          { key: 'email', label: 'Email', sortable: true, 'class': 'text-center' },
+          { key: 'email', label: 'Email', sortable: true },
           { key: 'celular', label: 'Celular', sortable: true },
-          { key: 'margen_ganancia', label: 'Margen de Ganancia', sortable: true }
-          ],
+          { key: (this.curUser.rolid == 1) ? 'margen_ganancia' : '', label: 'Margen de Ganancia', sortable: true, 'class': 'text-center' }
+        ],
         currentPage: 1,
         perPage: 10,
         totalRows: this.items.length,
@@ -117,8 +132,8 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Home', href: '/' },
-          { text: 'Lista de Doctores', active: true }
+            { text: 'Dashboard', href: this.url },
+            { text: 'Doctores', active: true}
         ]
 			}
 		},
@@ -144,6 +159,11 @@
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
+      },
+      totalCurrentPages(){
+        var res = Math.round(this.totalRows / this.perPage)
+        if( res == 0 ) return res + 1
+        return Math.ceil(this.totalRows / this.perPage )
       }
 		}
   }

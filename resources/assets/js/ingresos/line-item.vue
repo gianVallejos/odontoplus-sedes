@@ -2,11 +2,11 @@
 	<b-container class="pb-4">				
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Ingreso Detalle" :items="breadcrumb" />				
+				<TitleComponent titulo="Ingresos" :items="breadcrumb" />				
 			</b-col>
 			<b-col cols="12" class="pt-3">				
 				<PanelCard>
-					<span slot="heading">Detalle General de Ingreso</span>
+					<span slot="heading">Detalle de Ingreso</span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">	
 
 						<b-row>
@@ -26,11 +26,11 @@
 								<span class="title-sec">Monto Total:</span>
 								<div class="d-inline-block texto"> S/ {{ mydata.monto_total }}</div>
 							</b-col>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6" v-if="curUser.rolid == 1">
 								<span class="title-sec">Margen Doctor:</span>
 								<div class="d-inline-block texto"> S/ {{ mydata.mg }}</div>
 							</b-col>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6" v-if="curUser.rolid == 1">
 								<span class="title-sec">Margen Empresa:</span>
 								<div class="d-inline-block texto"> S/ {{ mydata.mg_core }}</div>
 							</b-col>
@@ -41,7 +41,7 @@
 									<i class="fas fa-info-circle"></i>&nbsp; Ver Detalle
 								</b-button>
 								<b-button :href="url + '/ingresos'" variant="warning">
-									<i class="fas fa-times-circle"></i>&nbsp;Cancelar
+									<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 								</b-button>
 
 							</b-col>							
@@ -67,6 +67,7 @@
 			'url',
 			'title',
 			'record',
+			'curUser',
 			'record-detail',
 			'tratamientos'
 		],
@@ -80,7 +81,7 @@
 				breadcrumb: [
 			    	{ text: 'Dashboard', href: this.url },
 			    	{ text: 'Ingresos', href: this.url + '/ingresos' },
-			    	{ text: 'Ingresos Detalle', active: true}
+			    	{ text: 'Ingresos por Items', active: true}
 			    ],
 			    ingreso_id: this.record.id,
 			    mydata: {

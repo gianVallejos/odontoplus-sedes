@@ -1,19 +1,30 @@
 <template>
 	<b-col cols="12" class="pt-3">				
 		<PanelCard>
-			<span slot="heading">Ingreso por Tratamientos</span>
+			<span slot="heading">Ingresos por items</span>
 			<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 				<b-row  v-if="!isAddTratamiento" >
 					<b-col cols="12" class="text-center pt-0 pb-1">
 						<b-btn variant="secondary" v-on:click.prevent="agregarTratamiento()" >
 							<i class="fas fa-plus"></i>&nbsp; Agregar Tratamiento
 						</b-btn>
+						<b-btn variant="primary">
+							<i class="fas fa-file-pdf"></i>&nbsp; PDF
+						</b-btn>
 					</b-col>
 				</b-row>				
 				<b-row class="pt-4" v-if="!isAddTratamiento" >				
-					<b-table show-empty :items="record" :fields="fields" :current-page="currentPage" :per-page="perPage"
-					             :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-					             @filtered="onFiltered">
+					<b-table 	show-empty 
+								:items="record" 
+								:fields="fields" 
+								:current-page="currentPage" 
+								:per-page="perPage"
+					            :filter="filter" 
+					            :sort-by.sync="sortBy" 
+					            :sort-desc.sync="sortDesc" 
+					            :sort-direction="sortDirection"
+					            @filtered="onFiltered"
+					            empty-text="No existen campos para mostrar" >
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">						        	
 						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.tratamiento, row.item.cantidad, row.item.monto )" class="action">Modificar</a>
@@ -37,7 +48,7 @@
 				</b-row>
 				<b-row v-if="!isAddTratamiento" >
 				   	<b-col md="6" class="pt-3 fz-3">
-				   		Mostrando {{ currentPage }} de {{ Math.round(totalRows / perPage) }} páginas				
+				   		Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas				
 					</b-col>
 					<b-col md="6" class="my-1 text-right">
 					   	<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
@@ -106,9 +117,17 @@
 								  </b-input-group>
 						</b-col>
 						<b-col cols="12" class="pt-3 pb-2">
-							<b-table show-empty :items="tratamientos" :fields="fieldsPac" :current-page="currentPagePac" :per-page="perPagePac" :filter="filterPac" :sort-by.sync="sortByPac" :sort-desc.sync="sortDescPac" 
-										:sort-direction="sortDirectionPac"
-							             @filtered="onFilteredPac">							        
+							<b-table show-empty 
+									 :items="tratamientos" 
+									 :fields="fieldsPac" 
+									 :current-page="currentPagePac" 
+									 :per-page="perPagePac" 
+									 :filter="filterPac" 
+									 :sort-by.sync="sortByPac" 
+									 :sort-desc.sync="sortDescPac" 
+									 :sort-direction="sortDirectionPac"
+							         @filtered="onFilteredPac"
+							         empty-text="No existen campos para mostrar" >							        
 									<template slot="detalle" slot-scope="row">							    	
 									    {{ row.value }}
 									</template>
@@ -252,17 +271,12 @@
 												})
 						this.actualizarTotal(response.data.total, response.data.mg, response.data.mg_core)
 						this.cerrarAddTratamiento()
-						this.$toasted.show('Ingreso agregado correctamente', {
-												position: 'top-center',
-												className: 'toast-success',
-												duration: 3500,
-												containerClass: 'container-template'
-											})
+						this.toastFunction('Ingreso agregado correctamente', 'success')						
 					}
 					else if (response.data.error){
 						console.log('Response:: FAIL');
 						this.allerros = response.data.error
-						this.$toasted.show( ( mssgOnFail ),this.toast_config)
+						this.toastFunction(mssgOnFail, 'error')
 					}
 				}).catch(function (error) {
 					console.log(error);
@@ -284,49 +298,52 @@
 																})
 						this.actualizarTotal(response.data.total, response.data.mg, response.data.mg_core)
 						this.cerrarAddTratamiento()
-						this.$toasted.show('Ingreso modificado correctamente', {
-												position: 'top-center',
-												className: 'toast-success',
-												duration: 3500,
-												containerClass: 'container-template'
-											})
+						this.toastFunction('Ingreso modificado correctamente.', 'success')						
 						this.ingresoDetalleId = ''
 					}
 					else if (response.data.error){
 						console.log('Response:: FAIL');
 						this.allerros = response.data.error
-						this.$toasted.show( ( mssgOnFail ),this.toast_config)
+						this.toastFunction(mssgOnFail, 'error')
 					}
 				}).catch(function (error) {
 					console.log(error);
 				})
 			},
 			eliminarIngresoDetalle($id){
-				if( confirm('¿Está seguro de eliminar este registro?') ){
-					var request = { method: 'DELETE', url: this.url + '/ingresos/line-item/' + $id }				
-					axios(request).then((response) => {										
-						if(response.data.success){
-							console.log('Response:: OK')							
-							setTimeout(function () {
-							    this.$toasted.show('Ingreso eliminado correctamente', {
-												position: 'top-center',
-												className: 'toast-success',
-												duration: 3500,
-												containerClass: 'container-template'})
-							}.bind(this), 1500)
-
-							window.location.href = this.url + '/ingresos/line-item/' + this.id
-							this.ingresoDetalleId = ''
-						}
-						else if (response.data.error){
-							console.log('Response:: FAIL');
-							this.allerros = response.data.error
-							this.$toasted.show( ( mssgOnFail ),this.toast_config)
-						}
-					}).catch(function (error) {
-						console.log(error);
-					})
-				}
+				this.$swal({ 
+								title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+								html:  '<span style="font-size: 1em">' +
+									   'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
+							   		   '<br /><br />¿Seguro que desea eliminar este registro?' +
+									   '</span>',	
+								animation: false, 
+								showConfirmButton: true, 
+								showCancelButton: true,
+								confirmButtonText: 'Aceptar',
+								confirmButtonClass: ['my-alert', 'confirm-alert'],
+								cancelButtonText: 'Cancelar',
+								cancelButtonClass: ['my-alert', 'cancel-alert'],
+								showCloseButton: true
+				}).then((result) => {
+					if( result.value ){
+						var request = { method: 'DELETE', url: this.url + '/ingresos/line-item/' + $id }				
+						axios(request).then((response) => {										
+							if(response.data.success){
+								console.log('Response:: OK')					
+								this.toastFunctionRedirect('Éxito', 'El registro ha sido eliminado correctamente. <br />Redireccionando...', 'success')
+								this.ingresoDetalleId = ''
+							}
+							else if (response.data.error){
+								console.log('Response:: FAIL');
+								this.allerros = response.data.error
+								this.toastFunction(mssgOnFail, 'error')
+							}
+						}).catch(function (error) {
+							console.log(error);
+						})
+					}
+				})
 			},
 			modificarIngresoDetalle(ingresoDetalleId, precioId, cantidad, monto){
 				this.form.precioId = this.id
@@ -350,7 +367,36 @@
 	        },
 	        actualizarTotal(total, mg, mg_core){	        	
 	        	this.$emit('calcular-total', total, mg, mg_core)
-	        }
+	        },
+	      	totalCurrentPages(){
+	        	var res = Math.round(this.totalRows / this.perPage)
+        		if( res == 0 ) return res + 1
+        		return Math.ceil(this.totalRows / this.perPage )
+	      	},
+			toastFunction(msg, type){
+				 this.$swal({
+						type: type,
+						title: msg,
+						toast: true,
+						position: 'top',
+						showConfirmButton: false,
+		  				timer: 3000
+				})
+			},
+			toastFunctionRedirect(title, msg, type){
+				this.$swal({
+						type: type,
+						title: title,
+						html: msg,
+						toast: false,
+						position: 'center',
+						showConfirmButton: false,
+		  				timer: 3000,
+		  				backdrop: `rgba(0, 0, 0, 0.6)`
+				}).then(() => {
+					window.location.href = this.url + '/ingresos/line-item/' + this.id
+				})	
+			}
 		}
 
 	}

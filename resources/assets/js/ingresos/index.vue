@@ -2,7 +2,7 @@
 	<b-container class="pb-4">				
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Dashboard" :items="breadcrumb" />				
+				<TitleComponent titulo="Ingresos" :items="breadcrumb" />				
 			</b-col>
 			<b-col cols="12" class="pt-3">				
 				<PanelCard>
@@ -41,9 +41,17 @@
 							</div>
 						</div>
 
-						<b-table show-empty :items="ingresos" :fields="fields" :current-page="currentPage" :per-page="perPage"
-					             :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-					             @filtered="onFiltered">
+						<b-table show-empty 
+								 :items="ingresos" 
+								 :fields="fields" 
+								 :current-page="currentPage" 
+								 :per-page="perPage"
+					             :filter="filter" 
+					             :sort-by.sync="sortBy" 
+					             :sort-desc.sync="sortDesc" 
+					             :sort-direction="sortDirection"
+					             @filtered="onFiltered"
+					             empty-text="No existen campos para mostrar" >
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">						        	
 						        	<a :href="url+'/ingresos/line-item/'+ row.item.id"  class="action">Detalle</a>
@@ -78,8 +86,8 @@
 						    </template>		
 					    </b-table>
 					    <b-row>
-					    	<b-col md="6" class="pt-3 fz-3">
-					    		Mostrando {{ currentPage }} de {{ Math.round(totalRows / perPage) }} páginas					    		
+					    	<b-col md="6" class="pt-3 fz-3">			    		
+					    		Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas					    							    		
 					    	</b-col>
 						    <b-col md="6" class="my-1 text-right">
 						    	<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
@@ -104,7 +112,8 @@
 		},
 		props: [
 			'url',
-			'ingresos'
+			'ingresos',
+			'curUser'
 		],
 		components:{
 			TitleComponent,
@@ -124,12 +133,12 @@
 				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },
 				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },			        
 				    { key: 'monto_total', label: 'Monto Total', sortable: true, sortDirection: 'desc' },
-				    { key: 'mg', label: 'M. Doctor', sortable: true, sortDirection: 'desc' },
-				    { key: 'mg_core', label: 'CORE', sortable: true, sortDirection: 'desc' }
+				    { key: (this.curUser.rolid == 1) ? 'mg' : '', label: 'M. Doctor', sortable: true, sortDirection: 'desc' },
+				    { key: (this.curUser.rolid == 1) ? 'mg_core' : '', label: 'CORE', sortable: true, sortDirection: 'desc' }
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,
-			    totalRows: 0,
+			    totalRows: this.ingresos.length,
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,
 			    sortDesc: false,
@@ -141,7 +150,12 @@
 			onFiltered (filteredItems) {
 		      this.totalRows = filteredItems.length
 		      this.currentPage = 1
-		    }
+		    },
+	      	totalCurrentPages(){
+	        	var res = Math.round(this.totalRows / this.perPage)
+        		if( res == 0 ) return res + 1
+        		return Math.ceil(this.totalRows / this.perPage )
+	      	}
 		}
 	}	
 </script>

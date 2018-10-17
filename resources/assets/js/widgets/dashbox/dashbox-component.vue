@@ -20,7 +20,8 @@
 			'iconUrl',
 			'name',
 			'color',
-			'url'
+			'url',
+			'user'
 		],
 		methods: {
 			say: function () {

@@ -1,5 +1,7 @@
 @extends('layout')
 
 @section('content')
-<Users :items = "{{ $users }}" url='{{ route("home") }}'/>
+	@if( Auth::user()->rolid == 1 )
+		<Users :items = "{{ $users }}" url='{{ route("home") }}'/>
+	@endif
 @endsection
