@@ -30,7 +30,7 @@ class PrecioController extends Controller{
     public function update(Request $request, $id){
         
     	$validator = Validator::make($request->all(), [
-            'monto' => 'required|min:0',
+            'monto' => 'required|numeric|between:0,99999999.99'
         ]);
 
     	if ($validator->passes()) {
@@ -38,9 +38,7 @@ class PrecioController extends Controller{
             try{
                 $precio = Precio::findOrFail($id);
                 $precio->monto = $request->monto;
-                
                 $precio->save();
-                    
                 return response()->json(['success' => 'success']);
 
             }catch(Exception $e){

@@ -42,13 +42,22 @@ class TratamientoController extends Controller{
 
     	if ($validator->passes()) {
             try{
+                DB::beginTransaction();
+
                 $tratamiento = new tratamiento();
                 $tratamiento->detalle = $request->detalle;
                 $tratamiento->save();
-                self::insertStandardPricesToAllCompanies($tratamiento->id, $request->precio_estandar);
+                $pricesInserted = self::insertCompaniesStandardPrices($tratamiento->id, $request->precio_estandar);
                 
-                return response()->json(['success' => 'created']);
-
+                if($pricesInserted){
+                    DB::commit();
+                    $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Tratamiento registrado correctamente']));
+                    return response()->json(['success' => 'success']);
+                }
+                else{
+                    DB::rollback();
+                    return response()->json(['error' => 'Ha ocurrido un error al insertar el tratamiento o sus precios']);
+                }
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
             }
@@ -56,11 +65,14 @@ class TratamientoController extends Controller{
         return response()->json(['error'=>$validator->errors()]);
     }
 
-    public function insertStandardPricesToAllCompanies($treatmentId, $price){
+    public function insertCompaniesStandardPrices($treatmentId, $price){
         $companies = DB::select('call OP_ObtenerEmpresas()');
+         
         foreach ($companies as $company) {
-            DB::select('call OP_AgregarPreciosPorEmpresa('.$company->id.','.$treatmentId.','.$price.')');
+            $status = DB::select('call OP_AgregarPrecios_EmpresaId_TratamientoId('.$company->id.','.$treatmentId.','.$price.')');
+            if($status == 0) return false;
         }
+        return true;
     }
 
     public function update(Request $request, $id){

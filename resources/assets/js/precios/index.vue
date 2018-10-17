@@ -27,6 +27,18 @@
                         </b-input-group>
                     </div>
                 </div>
+                <div class="col-md-6">							
+                  <div class="float-right d-inline-block">
+                    <b-button-group>										
+                      <b-button :href="this.url+'/tratamientos'" variant="secondary">
+                        <i class="fas fa-tooth"></i>&nbsp; Ir a Tratamientos
+                      </b-button>
+                      <b-button :href="this.url+'/empresas'" variant="warning">
+                        <i class="fas fa-building"></i>&nbsp; Ir a Empresas
+                      </b-button>
+                    </b-button-group>
+                  </div>
+							  </div>
             </b-row>
 
             <!-- Main table element -->
@@ -53,8 +65,10 @@
 								</b-form-select>
               </template>
               <template slot="monto" slot-scope="row">
-                <b-form-input class="small" type="number" step="0.1" v-model="row.item.monto">
-                </b-form-input>
+                <b-input-group class="small" prepend="S/.">
+                  <b-form-input class="small" type="text" v-model="row.item.monto"></b-form-input>
+                </b-input-group>
+                <span v-if="all_errors.row_index == row.index" :class="['label label-danger']">{{ all_errors.monto[0] }}</span>
               </template>
               <template slot="actions" slot-scope="row">
 									<b-button class="small" variant="success" v-on:click.prevent="onModificar(row.index)">
@@ -87,7 +101,6 @@
     mounted() { 
       console.log('Precios mounted')
       this.data = this.prices
-      console.table((this.prices))
     },
     name: 'precios',
     components:{
@@ -108,7 +121,7 @@
           { key: 'monto', label: 'Monto', 'class': 'text-center' },
           { key: 'actions', label: '' }
           ],
-        selected_company: 1,
+        all_errors: [],
         data:[],
         currentPage: 1,
         perPage: 10,
@@ -139,12 +152,12 @@
           alert(JSON.stringify(this.form));
       },
       onFiltered (filteredItems) {
-        // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
 
       onNewSelectedCompany(row_index){
+        this.cleanErrosMessage()
         var item = this.data[row_index]
         var request = { method: 'GET', url: this.url+'/consulta_precio?empresa_id='+ item.id_empresa + '&tratamiento_id=' + item.id_tratamiento}
         axios(request).then((response) => {
@@ -155,26 +168,30 @@
           else{
             console.log('price not found!')
           }
-          console.log(JSON.stringify(this.data[row_index]))
         }).catch(function (error) {
           console.log(error);
         });
       },
       onModificar(row_index){
+        this.cleanErrosMessage()
         var item = this.data[row_index]
         var data = { monto: item.monto }
         var request = { method: 'PUT', url: this.url+'/precios/'+ item.id, data: data }
         
         axios(request).then((response) => {
           if(response.data.success){
-            console.log('heee!')
+            console.log('Show toast message!')
           }
-          else{
-            console.log('price not found!')
+          else if (response.data.error){
+            this.all_errors = response.data.error
+            this.all_errors.row_index = row_index
           }
         }).catch(function (error) {
           console.log(error);
         });
+      },
+      cleanErrosMessage(){
+        this.all_errors = []
       }
 		}
   }
