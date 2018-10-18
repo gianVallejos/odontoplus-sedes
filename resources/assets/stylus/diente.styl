@@ -1,0 +1,122 @@
+.diente
+    position relative
+    width 52px
+    height 52px
+    -webkit-print-color-adjust: exact
+
+.diente-section
+    background #73a5b6
+    border 1px solid #000
+    width 22px
+    height 22px
+    position absolute
+    top 50%
+    left 50%
+    border-radius 0 0 100% 0
+    cursor pointer
+    transition all .1s ease-out
+    -webkit-print-color-adjust: exact
+    &.top
+        transform rotate(225deg)
+        transform-origin 0% 0%
+    &.right
+        transform rotate(315deg)
+        transform-origin 0% 0%
+    &.bottom
+        transform rotate(45deg)
+        transform-origin 0% 0%
+    &.left
+        transform rotate(135deg)
+        transform-origin 0% 0%
+
+.middle
+    border 1px solid black
+    position absolute
+    height 26px
+    width 26px
+    border-radius 50%
+    background #73a5b6
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
+    transition all .1s ease-out
+    cursor pointer
+    color: black
+    font-weight: bold
+    font-size: 1.1em
+    -webkit-print-color-adjust: exact
+    &.corona
+        border: 1px solid yellow
+    &.exodoncia::before
+        content: 'X'  
+    &.palito::before
+        content: ''
+        border-left: 4px solid black
+        margin-top: 1px  
+    &.carilla::before
+        content: '\00D8'
+    &.perno:before
+        content: '^|'
+        font-size: .8em
+        margin-top: -2px
+    &.incrustracion::before
+        content: 'INC'
+        font-size: .70em
+        margin-left: 1px
+    &.sellante::before
+        content: 'S'
+        
+.ionomero
+    background #73a5b6
+    border 1px solid black
+    width 34px
+    height 34px
+    position absolute
+    top 19px
+    left 50%
+    border-radius 0 5px 100% 5px
+    cursor pointer
+    transition all .1s ease-out
+    transform rotate(45deg)
+    transform-origin 0% 0%
+
+.diente-section.active,
+  .middle.active,
+  .ionomero.active
+    background #da2a26
+
+.diente-section:hover,
+  .middle:hover,
+  .ionomero:hover
+    background #da2a26
+    
+.diente-section, .middle, .ionomero
+    &.noEditable
+        cursor: auto
+        
+.diente-section, .middle, .ionomero
+    &.noEditable
+        &:hover
+            background: #73a5b6!important
+
+.left-wrap
+    width 573px
+    
+.od-right-border
+    border-right: 1px solid rgba(0, 0, 0, .1)
+
+.od-modal
+    padding-top: 10px
+    padding-bottom: 1px
+    display: inline-block
+    cursor: pointer
+    &:hover
+        font-weight: 700
+        color: #3f3f3f
+    &.noEditable
+        cursor: auto
+        &:hover
+            font-weight: normal
+            color: auto
+
+@page { margin: 0; }

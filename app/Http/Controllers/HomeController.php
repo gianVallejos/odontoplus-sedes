@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -24,7 +25,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data2 = 'test data';
-        return view('home', compact('data2'));
+        $last_pacientes = DB::select('call OP_obtenerUltimosDiezPacientes()');
+        $last_pacientes = json_encode($last_pacientes);
+
+        $last_presupuestos = DB::select('call OP_obtenerUltimosDiezPresupuestos()');
+        $last_presupuestos = json_encode($last_presupuestos);
+        
+        return view('home', compact('last_pacientes', 'last_presupuestos'));
+    }
+
+    public function containerGeneral(){
+        return view('container-general');
     }
 }

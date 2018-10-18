@@ -1,8 +1,8 @@
 <template>
 	<div class="header">
 		<div class="container">
-			<a href="/">
-				<img :src=logoUrl class="logoHeaderComponent" alt="Logo">
+			<a :href="url + '/'">
+				<img :src=logoUrl class="logoHeaderComponent" alt="Logo de Empresa">
 			</a>
 			<div class="head-right">
 				<ul>
@@ -10,11 +10,11 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<div class="profileImage">
 						  		<span class="perfil-img">
-						  			<img :src=perfilUrl alt="Perfil">	
+						  			<img :src=perfilUrl alt="Imagen de Perfil">	
 						  		</span>
 						  		<div class="user-name">
-						  			<p>Username </p>
-						  			<span>Administrador</span>
+						  			<p>{{ user.name }} </p>						  			
+						  			<span>{{ rol[user.rolid-1].nombre }}</span>
 						  		</div>
 						  		<i class="fa fa-angle-down lnr"></i>
 						  		<div class="clearfix"></div>
@@ -22,14 +22,22 @@
 						</a>
 						<ul class="dropdown-menu">
 					    	<li>
-					    		<a href="#">
+					    		<a :href="url + '/users/' + user.id">
 					    			<i class="fas fa-user"></i>Ver Perfil
 					    		</a>
 					    	</li>
+					    	<li v-if="user.rolid == 1">
+					    		<a :href="url + '/users'">
+					          		<i class="fas fa-users"></i>Usuarios
+					          	</a>
+					    	</li>
 					    	<li>
-					    		<a href="#">
+					    		<a :href="logoutRoute" v-on:click="logout" >
 					    			<i class="fas fa-power-off"></i>Cerrar Sesión
 					    		</a>
+					    		<form id="logout-form" :action="logoutRoute" method="POST" style="display: none;">
+		                            <input type="hidden" name="_token" :value="csrf">
+		                        </form>
 					    	</li>
 					  	</ul>
 					</li>
@@ -46,9 +54,25 @@
 		},
 		data() {
 			return {
-				logoUrl: 'images/empresa/logotipo.png',
-				perfilUrl: 'images/sistema/perfil-default.png'
+				logoUrl: this.url + '/images/empresa/logotipo.png',
+				perfilUrl: this.url + '/images/sistema/perfil-default.png',
+				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+				rol: [
+					{id: 1, nombre: 'Administrador' },
+					{id: 2, nombre: 'Colaborador' }
+				]
 			}
+		},
+		props: [
+			'user',
+			'logoutRoute',
+			'url'
+		],
+		methods: {
+			logout (evt) {
+		      evt.preventDefault()
+		      document.getElementById('logout-form').submit()
+		    }			
 		}
 	}
 </script>

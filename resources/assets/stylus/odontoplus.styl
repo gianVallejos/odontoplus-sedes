@@ -3,19 +3,35 @@
   font-family: 'Open Sans', sans-serif;
 */
 $btnInfoBc = #305f94
+$btnInfoBcVariant = #024590
 $btnGuardarBc = #0aab8a
+$btnGuardarBcVariant = #096754
 $btnNuevoBc = #464d5c
+$btnNuevoBcVariant = #2a2e37
 $btnModificarBc = #858ea7
+$btnModificarBcVariant = #4c546b
 $btnCancelarBc = #ab4240
+$btnCancelarBcVariant = #5d2322
 $btnInfoC = #f3f3f3
 
+html
+	margin: 0
+	padding: 0
+	height: 100%
 
 body
 	background: #d1d1d1
 	color: #464D5C
 	font-family: 'Open Sans', sans-serif
 	font-size: 14px
+	margin: 0
+	padding: 0
+	height: 100%
 	
+#app
+	min-height: 100%
+	position: relative
+
 h1, h2, h3, h4, h5
 	font-family: 'Rubik', sans-serif
 	
@@ -33,8 +49,8 @@ ul
 p 
 	margin: 0
 
-footer
-	position: fixed
+.footer
+	position: relative
 	bottom: 0
 	width: 100%
 	height: 60px
@@ -59,13 +75,79 @@ footer
 		background: #fff
 		text-align: right
 	
+.icon-input
+	position: absolute
+	top: 10px
+	left: 15px
+	z-index: 999
+	i 
+		color: #7f7f7f
+
+.form-control
+	height: 40px
+	border: 1px solid #d1d1d1
+	color: $btnNuevoBc
+	font-size: 1em
+	border-radius: 0px
+	&:focus
+		outline: none
+		box-shadow: none   
+		border: 1px solid #d1d1d1 	
+	&:disabled
+		color: #7f7f7f
+	&.required
+		border-left: 4px solid $btnCancelarBc
+	&::placeholder
+		color: $btnModificarBc
+	&.small
+		height: 30px
+		padding-top: 1px
+		padding-bottom: 1px
+		font-size: 13px
+
+.input-group
+	&.small
+		.input-group-text
+			font-size: 12px
+			height: 30px
+			padding-top: 1px
+			padding-bottom: 1px
+			font-size: 13px
+.input-group-text
+	border-radius: 0px
+.help-required
+	border-left: 4px solid $btnCancelarBc
+		
+.col-form-label
+	font-family: 'Rubik', sans-serif
+
 .odInput
 	width: 100%
 	height: 40px
 	padding: 12px 20px
-	border: 1px solid #d1d1d1
+	padding-left: 38px
+	color: #7f7f7f
+	font-size: 1em
+	&:focus
+		outline: none   	
+	&.buscar
+		width: auto!important
 
-.odBtn
+.invalid-feedback
+	font-family: 'Open Sans', sans-serif
+	color: $btnCancelarBc
+	font-size: .9em
+
+.custom-select.is-invalid, .form-control.is-invalid, .was-validated .custom-select:invalid, .was-validated .form-control:invalid
+	border-color: $btnCancelarBc
+	&:focus
+		outline: none
+		box-shadow: none
+		border-color: $btnCancelarBc
+		background: #f3f3f3
+
+.odBtn,
+.btn	
 	display: inline-block
 	color: $btnInfoC!important
 	border: none
@@ -78,72 +160,84 @@ footer
 	font-family: 'Rubik', sans-serif
 	transition: all .5s ease-out	
 	&:focus
-		outline: 0
-	&.info
+		outline: none!important
+		background: #f3f3f3!important
+	&:active
+		outline: none!important
+		box-shadow: none!important
+	&.info,
+	&.btn-primary
 		background: $btnInfoBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnInfoBc!important
-			border-bottom: 4px solid $btnInfoBc
-			background: $btnInfoC
-			text-decoration: none			
+			box-shadow: inset 0 -4px 0 $btnInfoBc
+			background: transparent
+			text-decoration: none					
 		&:focus
-			color: $btnInfoBc!important
 			outline: 0
-			background: $btnInfoC
-			border-bottom: 4px solid $btnInfoBc
-	&.guardar
+			background: $btnInfoBc!important
+			color: $btnInfoC!important
+			box-shadow: inset 0 -4px 0 $btnInfoBcVariant	
+	&.guardar,
+	&.btn-success
 		background: $btnGuardarBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnGuardarBc!important
-			border-bottom: 4px solid $btnGuardarBc
-			background: $btnInfoC
+			box-shadow: inset 0 -4px 0 $btnGuardarBc
+			background: transparent
 			text-decoration: none
 		&:focus
-			color: $btnGuardarBc!important
 			outline: 0
-			background: $btnInfoC
-			border-bottom: 4px solid $btnGuardarBc
-	&.nuevo
+			background: $btnGuardarBc!important
+			color: $btnInfoC!important
+			box-shadow: inset 0 -4px 0 $btnGuardarBcVariant
+	&.nuevo,
+	&.btn-secondary
 		background: $btnNuevoBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnNuevoBc!important
-			border-bottom: 4px solid $btnNuevoBc
-			background: $btnInfoC
+			box-shadow: inset 0 -4px 0 $btnNuevoBc
+			background: transparent
 			text-decoration: none
 		&:focus
-			color: $btnNuevoBc!important
+			background: $btnNuevoBc!important
+			color: $btnInfoC!important
 			outline: 0
-			background: $btnInfoC
-			border-bottom: 4px solid $btnNuevoBc
-	&.modificar
+			box-shadow: inset 0 -4px 0 $btnNuevoBcVariant
+	&.modificar,
+	&.btn-warning
 		background: $btnModificarBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnModificarBc!important
-			border-bottom: 4px solid $btnModificarBc
-			background: $btnInfoC
+			box-shadow: inset 0 -4px 0 $btnModificarBc
+			background: transparent
 			text-decoration: none
 		&:focus
-			color: $btnModificarBc!important
+			background: $btnModificarBc!important
+			color: $btnInfoC!important
 			outline: 0
-			background: $btnInfoC
-			border-bottom: 4px solid $btnModificarBc
-	&.cancelar
+			box-shadow: inset 0 -4px 0 $btnModificarBcVariant
+	&.cancelar,
+	&.btn-danger
 		background: $btnCancelarBc
 		color: $btnInfoC!important
 		&:hover
 			color: $btnCancelarBc!important
-			border-bottom: 4px solid $btnCancelarBc
-			background: $btnInfoC
+			box-shadow: inset 0 -4px 0 $btnCancelarBc
+			background: transparent
 			text-decoration: none
 		&:focus
-			color: $btnCancelarBc!important
+			background: $btnCancelarBc!important
+			color: $btnInfoC!important
 			outline: 0
-			background: $btnInfoC
-			border-bottom: 4px solid $btnCancelarBc
+			box-shadow: inset 0 -4px 0 $btnCancelarBcVariant
+	&.small
+		padding-bottom: 4px
+		padding-top: 4px
 
 .rubikFont
 	font-family: 'Rubik', sans-serif
@@ -151,3 +245,276 @@ footer
 .contenido
 	padding-top: 30px
 	padding-bottom: 35px
+	
+.table 
+	thead 
+		th
+			border-top: none
+	tbody
+		tr 
+			border-bottom: 1px solid #dee2e6
+			td
+				a
+					text-decoration: underline
+					color: $btnNuevoBc
+					&.action
+						color: $btnGuardarBc!important
+						text-decoration: none
+						cursor: pointer
+						&:hover
+							text-decoration: underline
+.breadcrumb
+	float: right
+	border-radius: 0px
+	background: #f3f3f3
+	padding: .45rem 1rem
+	
+//Modal		
+.modal-content
+	border-radius: 0px
+	border: none
+	border-top: 4px solid $btnInfoBc
+	
+.modal-header
+	padding: 1.1em 1.4em .7em 1.4em
+	.close
+		padding: .6em
+
+.modal-title
+	line-height: auto
+	font-size: 1.4em
+	color: #868da7
+	font-family: 'Rubik', sans-serif
+
+.badge
+	border-radius: 0
+	padding: 5px 12px
+	font-weight: normal
+	&.badge-danger
+		background-color: #ab4240
+	&.badge-success
+		background-color: #0aab8a
+	
+.actions-table
+	font-size: .85em
+	a 
+		margin-right: 2px
+
+.table		
+	font-size: .9em
+
+.fz-1
+	font-size: .7em
+.fz-2
+	font-size: .85em
+.fz-3
+	font-size: .9em
+.fz-4
+	font-size: 1em
+	
+.page-item.active 
+	.page-link
+		background-color: $btnNuevoBc!important
+		border-color: $btnNuevoBc
+		&:hover
+			color: $btnNuevoBc
+		&:focus, &:active
+			box-shadow: none
+.page-link
+	color: $btnNuevoBc
+	font-size: .9em
+
+table.b-table 
+	> thead 
+		> tr 
+			> th.sorting, table.b-table 
+				&:focus
+					outline: none
+					
+.form-title
+	font-size: 1.3em
+	font-weight: 600
+	font-family: 'Rubik', sans-serif
+	i
+		font-size: 1.1em
+	
+.form-description
+	color: #868da7
+	font-family: 'Open Sans', sans-serif
+	
+.col-form-label
+	font-family: 'Open Sans', sans-serif
+	
+.required-red,
+.label-danger
+	color: #ab4240
+
+.label-danger
+	font-size: .9em
+	
+.alert
+	border: 0px
+	margin: 0px
+	padding: 12px 0px 12px 0px 
+
+.toast-danger
+	background: $btnCancelarBc!important
+	
+.toast-success
+	background: $btnGuardarBc
+	
+.presupuesto-top
+	span
+		width: 100px
+		margin-right: 10px		
+		display: inline-block
+		font-weight: 600
+	.texto
+		border-bottom: 1px solid #f3f3f3
+		width: 72%
+			
+.opcion-btn
+	width: 100%
+	background: $btnModificarBc!important
+	&.active
+		background: $btnInfoBc!important
+		outline: none
+		box-shadow: none
+	&:hover
+		opacity: .9	
+
+.subtotal-layout
+	line-height: 40px
+	vertical-align: bottom
+	font-size: 16px
+	.sub
+		font-family: 'Rubik', sans-serif		
+		font-weight: 600
+		padding-right: 20px
+
+.tratamiento-delete
+	text-decoration: none!important
+	&:hover
+		font-weight: 700
+		color: #3f3f3f
+		
+.presupuesto-form,
+.presupuesto-sub
+	width: 90px
+	
+.swal2-popup
+	&.swal2-modal
+		border-radius: 0px
+		font-family: 'Rubik', sans-serif
+	.swal2-styled
+		border-radius: 0px!important
+		
+.my-alert
+	border: none!important
+	background-color: $btnInfoBc!important
+	font-weight: bold
+	font-family: 'Open Sans', sans-serif!important	
+	&:focus, :active
+		border: none!important
+		box-shadow: none!important
+	&:hover
+		opacity: .9
+	&.confirm-alert
+		background: $btnGuardarBc!important
+		font-size: .9em!important
+	&.cancel-alert
+		background: $btnCancelarBc!important		
+		font-size: .9em!important
+
+.swal2-container
+	&.swal2-shown
+		background: #000
+		color: #ff0!important
+		
+span
+	&.title-sec
+		display: inline-block
+		width: 130px
+		font-weight: bold
+		height: 30px
+
+.balance-chart
+	padding: 40px
+	.title
+		color: #000000
+		font-size: 13px
+		font-weight: bold
+		font-family: Arial
+	.body
+		padding: 20px 100px 20px 100px
+		hr
+			border: 2px solid #109618
+		.row
+			padding-bottom: 7px
+			padding-top: 8px
+			.label
+				color: #3366cc
+				font-size: 16px
+			.amount
+				font-size: 18px
+
+		
+.custom-radio 
+	.custom-control-input:checked~
+		&.custom-control-label::before
+			background-color: #305f94!important
+			
+.custom-checkbox 
+	.custom-control-input:checked~
+		&.custom-control-label::before
+			background-color: #305f94!important
+			
+.action-width
+	width: 150px!important
+	
+.input-table-width
+	width: 180px!important
+.input-empresa-table-width
+	width: 250px!important
+	
+.square-reportes
+	border: 1px solid rgba(0, 0, 0, 0.1); 
+	margin: .5em; 
+	padding: 1.5em
+	
+.balanceLayout
+	font-size: 1.25em
+	.title-balance
+		display: inline-block
+		width: 120px
+		padding: 5px 0px
+		font-weight: 700
+		color: #305f94
+	.text-balance
+		text-align: right
+		display: inline-block
+	.line-balance		
+		width: 100%
+		margin: 15px 0px 5px 0px
+		height: 3px
+		background: #0aab8a
+	.balanceLayout-general
+		display: flex
+		justify-content: center
+		align-items: center 
+		width: 100%
+		height: 301px;
+		.content
+			display: inline-block
+			width: 50%
+
+.reportes-text
+	height: 40px
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1)
+	margin-bottom: 20px
+	font-size: 1.6em
+	
+
+.scrollable
+	overflow-y:auto
+	height:700px

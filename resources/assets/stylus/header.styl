@@ -38,6 +38,7 @@
         font-size 1em
         color #fff
         line-height 1em
+        text-transform: uppercase
     span
         font-size .85em
         color #0aab8a
@@ -69,7 +70,8 @@
             text-transform uppercase
             margin-right -4px
             &.item
-                i
+                i 
+                    display: inline
                     margin-right 8px
                     font-size: 1.1em
                 a
@@ -91,6 +93,10 @@
                         background #0AAB8A
                         a
                             color #fff
+                &.active                    
+                    background #0AAB8A
+                    a
+                        color #f3f3f3
         li
             &.dropdown
                 ul

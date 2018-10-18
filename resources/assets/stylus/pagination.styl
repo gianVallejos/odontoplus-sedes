@@ -1,0 +1,47 @@
+.pagination 
+  display: flex;
+  @include list-unstyled();
+  @include border-radius();
+  li 
+    &:first-child 
+      .page-link
+        margin-left: 0;
+        @include border-left-radius($border-radius);
+    &:last-child 
+      .page-link
+        @include border-right-radius($border-radius);
+
+    &.active .page-link
+      z-index: 1;
+      color: $pagination-active-color;
+      background-color: $pagination-active-bg;
+      border-color: $pagination-active-border-color;
+
+    &.disabled .page-link 
+      color: $pagination-disabled-color;
+      pointer-events: none;
+      // Opinionated: remove the "hand" cursor set previously for .page-link
+      cursor: auto;
+      background-color: $pagination-disabled-bg;
+      border-color: $pagination-disabled-border-color;
+    a
+      position: relative;
+      display: block;
+      padding: .3em .8em;
+      margin-left: -1px;
+      line-height: 1.5em;
+      color: #000;
+      background-color: #ff0;
+      border: 1px solid black
+      &:hover
+        z-index: 2;
+        color: $pagination-hover-color;
+        text-decoration: none;
+        background-color: $pagination-hover-bg;
+        border-color: $pagination-hover-border-color;
+      &:focus
+        z-index: 2;
+        outline: $pagination-focus-outline;
+        box-shadow: $pagination-focus-box-shadow;
+      &:not(:disabled):not(.disabled)
+        cursor: pointer;
