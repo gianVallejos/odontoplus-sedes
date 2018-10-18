@@ -65,6 +65,14 @@ class IngresoController extends Controller
         return response()->json(['error'=>$validator->errors()]);
     }
 
+    public function reporte($id){
+        $igeneral = DB::select('call OP_obtenerIngresos_Id('. $id .')')[0];
+        $igeneral = json_encode($igeneral);        
+        $idetalle = DB::select('call OP_obtenerIngresoDetalle_Id('. $id .')');
+        $idetalle = json_encode($idetalle);
+        return view($this->path . '.reporte', compact('igeneral', 'idetalle'));        
+    }
+
     public function lineItem($id){
         $ingresos = DB::select('call OP_obtenerIngresos_Id('. $id .')')[0];
         $hc = $ingresos->hc;

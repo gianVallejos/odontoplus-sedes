@@ -8,7 +8,7 @@
 						<b-btn variant="secondary" v-on:click.prevent="agregarTratamiento()" >
 							<i class="fas fa-plus"></i>&nbsp; Agregar Tratamiento
 						</b-btn>
-						<b-btn variant="primary">
+						<b-btn variant="primary" :href="this.url + '/ingresos/reporte/' + this.id" target="_blank">
 							<i class="fas fa-file-pdf"></i>&nbsp; PDF
 						</b-btn>
 					</b-col>
