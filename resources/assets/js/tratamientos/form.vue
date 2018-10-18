@@ -33,7 +33,7 @@
 									<b-button variant="danger" v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
-							   				  v-if="curUser.rolid == 1">
+							   				  v-if="curUser.rolid == 1 && canDeleteTratamiento()">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
 									<b-button variant="warning" v-on:click.prevent="onRegresar">
@@ -82,7 +82,7 @@
 									<b-button variant="danger" v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
-							   				  v-if="curUser.rolid == 1">
+							   				  v-if="curUser.rolid == 1 && canDeleteTratamiento()">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
 									<b-button variant="warning" v-on:click.prevent="onRegresar" >
@@ -325,6 +325,11 @@
 				}).then(() => {
 					this.redireccionarToIndex()
 				})	
+			},
+			canDeleteTratamiento(){
+				if( this.record_id == null ) return false
+				if( this.record_id <= 31 ) return false
+				return true
 			}
     }
   }

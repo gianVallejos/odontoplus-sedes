@@ -13,16 +13,14 @@ class PresupuestoController extends Controller{
         $this->middleware('auth');
     }
 
-    public function index()
-    {
+    public function index(){
         $presupuesto = DB::select('call OP_obtenerPresupuestos()'); 
         $mydata = json_encode($presupuesto);
         
         return view($this->path . '.index', compact('mydata'));
     }
     
-    public function create()
-    {
+    public function create(){
         $pacientes = DB::select('call OP_obtenerPacientes()');
         $pacientes = json_encode($pacientes);
         $doctores = DB::select('call OP_obtenerDoctores()');
@@ -31,9 +29,32 @@ class PresupuestoController extends Controller{
         return view($this->path . '.create', compact('pacientes', 'doctores'));
     }
 
-    public function store($id)
-    {
-        //
+    public function store(Request $request){
+        $idPaciente = $request->pacienteId;
+        $idDoctor = $request->doctorId;
+        $nroPresupuesto = $request->nroPresupuesto;
+        $descuento = $request->descuento;
+        $tratamientos = $request->tratamientos;
+
+        DB::beginTransaction();
+
+        $res_general = DB::select('call OP_agregarPresupuestoGeneral('. $nroPresupuesto .', '. $idPaciente .', ' . $idDoctor .', ' . $descuento . ')');        
+        foreach( $tratamientos as $rt ){
+            $sec1 = ( isset($rt['secUno']) ) ? $rt['secUno'] : '0';
+            $sec2 = ( isset($rt['secDos']) ) ? $rt['secDos'] : '0';
+            $pza = ( isset($rt['pieza']) ? $rt['pieza'] : '0' );            
+            $res_detalle = DB::select('call OP_agregarPresupuestosDetalles('. $nroPresupuesto .', ' . $pza . ', ' . $rt['seccion'] . ', ' . $sec1 . ', ' . $sec2 .', '. $rt['opcion'] .')');
+        }
+
+        $resg = $res_general[0]->ESTADO;
+        $resd = $res_detalle[0]->ESTADO;
+        if( $resg == 0 || $resd == 0 ){
+            DB::rollback();
+            return 'error';            
+        }
+
+        DB::commit();
+        return 'ok';
     }
 
     public function nuevo($idPaciente, $idDoctor){
@@ -86,8 +107,15 @@ class PresupuestoController extends Controller{
         //
     }
 
-    public function destroy(Presupuesto $presupuesto)
+    public function destroy(Request $request, $id)
     {
-        //
+        try{            
+            $res = DB::select('call OP_eliminarPresupuesto_Id('. $id .')');
+
+            return response()->json(['success' => 'deleted']);
+            
+        }catch(Exception $e){
+            return response()->json(['error'=>$e->getMessage()]);
+        }
     }
 }

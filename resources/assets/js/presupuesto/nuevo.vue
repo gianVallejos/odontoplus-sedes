@@ -376,7 +376,7 @@
 				}
 			},
 			guardarTratamiento(){
-				axios.post(this.url + '/api-v1/save-nuevo-presupuesto', {
+				axios.post(this.url + '/presupuestos', {
 					pacienteId: this.paciente.id,
 					doctorId: this.doctor.id,
 					nroPresupuesto: this.nro,
@@ -743,7 +743,7 @@
 	        		this.$refs[sec][0].extra_trat = 'perno'
 	        	}else if( seccion >= 26 && seccion <= 28 ){
 	        		this.$refs[sec][0].extra_trat = 'incrustracion'
-	        	}else if( seccion >= 31 ){
+	        	}else if( seccion == 31 ){
 	        		this.$refs[sec][0].extra_trat = 'sellante'
 	        	}
 	        },

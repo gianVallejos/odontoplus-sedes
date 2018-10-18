@@ -89,6 +89,9 @@
 				</b-button>
 			</b-col>			
 		</b-row>		
+		<div class="divFooter">
+			Odontoplus: Software de Gestión de Presupuestado Odontológico © 2018 | contacto@odontoplus.pe - www.odontoplus.pe
+		</div>
 		
 	</b-container>
 </template>
@@ -192,5 +195,21 @@
 		font-weight: bold;
 		width: 140px;
 		display: inline-block;
+	}
+	@media screen {
+	  div.divFooter {
+	    display: none;
+	  }
+	}
+	@media print {
+	  div.divFooter {
+	    position: fixed;
+	    bottom: 0;
+	    left: 0;
+	    padding: 7px 0px 7px 0px;
+	    text-align: center;
+	    width: 100%;
+	    font-size: .85em;
+	  }
 	}
 </style>
