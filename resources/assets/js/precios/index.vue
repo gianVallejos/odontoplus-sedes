@@ -155,7 +155,7 @@
         
         axios(request).then((response) => {
           if(response.data.success){
-            console.log('Show toast message!')
+            this.toastFunction('Precio actualizado correctamente', 'success')
           }
           else if (response.data.error){
             this.all_errors = response.data.error
@@ -169,6 +169,21 @@
       },
       cleanErrosMessage(){
         this.all_errors = []
+      },
+      toastFunction(msg, type){
+        this.$swal({
+            type: type,
+            title: msg,
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+              timer: 3000
+        })
+      },
+      totalCurrentPages(){
+        var res = Math.round(this.totalRows / this.perPage)
+        if( res == 0 ) return res + 1
+        return Math.ceil(this.totalRows / this.perPage )
       }
 		}
   }

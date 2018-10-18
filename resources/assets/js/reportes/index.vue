@@ -6,93 +6,185 @@
 			</b-col>
 			<b-col cols="12">
 				<PanelCard>
-					<span slot="heading">Reporte de Ingresos & Egresos</span>
+					<span slot="heading">Reporte Estadístico</span>
 					<b-row slot="body">
-						<b-col cols="6" class="vertical-line">
-							<b-form inline >
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_start" type="date" v-model="incomesChart.range.start"/>
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_end" type="date" v-model="incomesChart.range.end"/>
-									<b-button variant="primary" v-on:click.prevent="fillIncomesChart()">
-										<i class="fas fa-redo-alt"></i>
-									</b-button>
-							</b-form>
-							<GChart class="pt-4" type="ColumnChart" :data="incomesData" :options="incomesChart" />
-						</b-col>
-						<b-col cols="6">
-							<b-form inline >
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="outp_start" type="date" v-model="outputsChart.range.start"/>
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="outp_end" type="date" v-model="outputsChart.range.end"/>
-								<b-button variant="primary" v-on:click.prevent="fillOutputsChart()">
-									<i class="fas fa-redo-alt"></i>
-								</b-button>
-							</b-form>
-							<GChart class="pt-4" type="ColumnChart" :data="outputsData" :options="outputsChart" />
-						</b-col>
-					</b-row>
-					<hr slot="body" />
-					<b-row slot="body">
-						<b-col cols="6" class="vertical-line">
-							<b-form inline >
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_paciente_start" type="date" v-model="incomesPacienteChart.range.start"/>
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_paciente_end" type="date" v-model="incomesPacienteChart.range.end"/>
-									<b-button variant="primary" v-on:click.prevent="fillIncomesPacientesChart()">
-										<i class="fas fa-redo-alt"></i>
-									</b-button>
-							</b-form>
-							<GChart class="pt-4" type="BarChart" :data="incomesPacienteData" :options="incomesPacienteChart" />
-						</b-col>
-						<b-col cols="6">
-							<b-form inline >
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_start" type="date" v-model="incomesCompanyChart.range.start"/>
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_end" type="date" v-model="incomesCompanyChart.range.end"/>
-								<b-button variant="primary" v-on:click.prevent="fillIncomesEmpresaChart()">
-									<i class="fas fa-redo-alt"></i>
-								</b-button>
-							</b-form>
-							<GChart class="pt-4" type="PieChart" :data="incomesCompanyData" :options="incomesCompanyChart" />
-						</b-col>
-					</b-row>
-					<hr slot="body" />
-					<b-row slot="body">
-						<b-col cols="6" class="vertical-line">
-							<b-form inline >
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_paciente_start" type="date" v-model="treatmentsChart.range.start"/>
-									<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_paciente_end" type="date" v-model="treatmentsChart.range.end"/>
-									<b-button variant="primary" v-on:click.prevent="fillTreatmentsChart()">
-										<i class="fas fa-redo-alt"></i>
-									</b-button>
-							</b-form>
-							<GChart class="pt-4" type="PieChart" :data="treatmentsData" :options="treatmentsChart" />
-						</b-col>
-						<b-col cols="6">
-							<b-form inline >
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_start" type="date" v-model="balance.range.start"/>
-								<b-input class="mb-2 mr-sm-2 mb-sm-0" id="inc_company_end" type="date" v-model="balance.range.end"/>
-								<b-button variant="primary" v-on:click.prevent="fillBalanceChart()">
-									<i class="fas fa-redo-alt"></i>
-								</b-button>
-							</b-form>
-
-							<div class="balance-chart">
-								<span class="title">Balance</span>
-								<div class="text-center body">
-									<b-row> 
-											<b-col class="text-left label"> Ingresos: </b-col>
-											<b-col class="text-right amount"> S/. {{balance.incomes}} </b-col>	
-									</b-row>
-									<b-row class="balance-line">
-										<b-col class="text-left label"> Egresos: </b-col>
-										<b-col class="text-right amount"> S/. {{balance.outputs}} </b-col>	
-									</b-row>
-									<hr/>
-									<b-row class="balance-line">
-										<b-col class="text-left label"> Balance: </b-col>
-										<b-col class="text-right amount"> S/. {{balance.balance}} </b-col>	
-									</b-row>
-								</div>
+						<b-col xl="6" cols="12">
+							<div class="square-reportes">
+								<h5 class="text-center reportes-text">Balance Financiero</h5>
+								<b-form-row>
+									<b-col cols="6">
+										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
+											<b-input id="inc_paciente_start" type="date" v-model="balance.range.start" />
+										</b-form-group>
+									</b-col>
+									<b-col cols="6">
+										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
+											<b-input-group>
+												<b-form-input id="inc_paciente_end" type="date" v-model="balance.range.end" />
+											   	<b-input-group-append>
+											    	<b-btn variant="primary" v-on:click.prevent="fillBalanceChart()" >
+											    		<i class="fas fa-search"></i>
+											    	</b-btn>
+											    </b-input-group-append>
+										    </b-input-group>								
+									    </b-form-group>											
+									</b-col>
+								</b-form-row>
+								<div class="balanceLayout">
+									<div class="balanceLayout-general">
+										<div class="content">
+											<b-row>
+												<b-col cols="12">
+													<span class="title-balance">Ingresos: </span>
+													<span class="float-right pt-1 pb-1">S/ {{balance.incomes}}</span>
+												</b-col>
+												<b-col cols="12">
+													<span class="title-balance">Egresos: </span>
+													<span class="float-right pt-1 pb-1">S/ {{balance.outputs}}</span>
+												</b-col>
+												<b-col cols="12">
+													<div class="line-balance"></div>
+												</b-col>
+												<b-col cols="12">
+													<span class="title-balance">Balance: </span>
+													<span class="float-right pt-1 pb-1">S/ {{balance.balance}}</span>
+												</b-col>
+											</b-row>
+										</div>
+									</div>
+								</div>								
 							</div>
-
 						</b-col>
+						
+						<b-col xl="6" cols="12">							
+							<div class="square-reportes">
+								<h5 class="text-center reportes-text">Tratamientos Destacados</h5>
+								<b-form-row>
+									<b-col cols="6">
+										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
+											<b-input id="inc_paciente_start" type="date" v-model="treatmentsChart.range.start" />
+										</b-form-group>
+									</b-col>
+									<b-col cols="6">
+										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
+											<b-input-group>
+												<b-form-input id="inc_paciente_end" type="date" v-model="treatmentsChart.range.end" />
+											   	<b-input-group-append>
+											    	<b-btn variant="primary" v-on:click.prevent="fillTreatmentsChart()" >
+											    		<i class="fas fa-search"></i>
+											    	</b-btn>
+											    </b-input-group-append>
+										    </b-input-group>								
+									    </b-form-group>											
+									</b-col>
+								</b-form-row>
+								<GChart class="pb-3" type="PieChart" :data="treatmentsData" :options="treatmentsChart" :resizeDebounce="480" />								
+							</div>
+						</b-col>	
+						<b-col xl="6" cols="12">	
+							<div class="square-reportes">
+								<h5 class="text-center reportes-text">Ingresos de los últimos seis meses</h5>
+								<b-form-row>
+									<b-col cols="6">
+										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
+											<b-input id="inc_start" type="date" v-model="incomesChart.range.start"/>
+										</b-form-group>
+									</b-col>
+									<b-col cols="6">
+										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
+											<b-input-group>
+												<b-form-input id="inc_end" type="date" v-model="incomesChart.range.end" />
+											   	<b-input-group-append>
+											    	<b-btn variant="primary" v-on:click.prevent="fillIncomesChart()" >
+											    		<i class="fas fa-search"></i>
+											    	</b-btn>
+											    </b-input-group-append>
+										    </b-input-group>								
+									    </b-form-group>	
+									</b-col>
+								</b-form-row>							
+								<GChart class="pb-3" type="ColumnChart" :data="incomesData" :options="incomesChart" :resizeDebounce="480" />							
+							</div>													
+						</b-col>
+						<b-col xl="6" cols="12">
+							<div class="square-reportes">
+								<h5 class="text-center reportes-text">Egresos de los últimos seis meses</h5>
+								<b-form-row>
+									<b-col cols="6">
+										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
+											<b-input class="mb-2 mr-sm-2 mb-sm-0" id="outp_start" type="date" v-model="outputsChart.range.start"/>
+										</b-form-group>
+									</b-col>
+									<b-col cols="6">
+										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
+											<b-input-group>
+												<b-form-input id="outp_end" type="date" v-model="outputsChart.range.end" />
+											   	<b-input-group-append>
+											    	<b-btn variant="primary" v-on:click.prevent="fillOutputsChart()" >
+											    		<i class="fas fa-search"></i>
+											    	</b-btn>
+											    </b-input-group-append>
+										    </b-input-group>								
+									    </b-form-group>											
+									</b-col>
+								</b-form-row>
+								<GChart class="pb-3" type="ColumnChart" :data="outputsData" :options="outputsChart" :resizeDebounce="480" />
+							</div>
+						</b-col>
+
+						<b-col xl="6" cols="12">
+							<div class="square-reportes">
+								<h5 class="text-center reportes-text">Ingresos por Paciente</h5>
+								<b-form-row>
+									<b-col cols="6">
+										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
+											<b-input id="inc_paciente_start" type="date" v-model="incomesPacienteChart.range.start" />
+										</b-form-group>
+									</b-col>
+									<b-col cols="6">
+										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
+											<b-input-group>
+												<b-form-input id="inc_paciente_end" type="date" v-model="incomesPacienteChart.range.end" />
+											   	<b-input-group-append>
+											    	<b-btn variant="primary" v-on:click.prevent="fillIncomesPacientesChart()" >
+											    		<i class="fas fa-search"></i>
+											    	</b-btn>
+											    </b-input-group-append>
+										    </b-input-group>								
+									    </b-form-group>											
+									</b-col>
+								</b-form-row>
+								<GChart class="pb-3" type="BarChart" :data="incomesPacienteData" :options="incomesPacienteChart" :resizeDebounce="480" />				
+							</div>
+						</b-col>
+						<b-col xl="6" cols="12">
+							<div class="square-reportes">
+								<h5 class="text-center reportes-text" >Ingresos por Empresa</h5>
+								<b-form-row>
+									<b-col cols="6">
+										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
+											<b-input id="inc_paciente_start" type="date" v-model="incomesCompanyChart.range.start" />
+										</b-form-group>
+									</b-col>
+									<b-col cols="6">
+										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
+											<b-input-group>
+												<b-form-input id="inc_paciente_end" type="date" v-model="incomesCompanyChart.range.end" />
+											   	<b-input-group-append>
+											    	<b-btn variant="primary" v-on:click.prevent="fillIncomesEmpresaChart()" >
+											    		<i class="fas fa-search"></i>
+											    	</b-btn>
+											    </b-input-group-append>
+										    </b-input-group>								
+									    </b-form-group>											
+									</b-col>
+								</b-form-row>
+								<GChart class="pb-3" type="PieChart" :data="incomesCompanyData" :options="incomesCompanyChart" :resizeDebounce="480" />
+							</div>
+						</b-col>	
+
+
+						
 					</b-row>
 				</PanelCard>
 			</b-col>
@@ -141,67 +233,67 @@
 		data(){
 			return{
 				breadcrumb: [
-          { text: 'Home', href: this.url },
-          { text: 'Reportes', href: '/' }
-			  ],
-				incomesData: [],
+          			{ text: 'Dashboard', href: this.url + '/' },
+        			  { text: 'Reportes', active: true }
+			  	],
+			  	width: 480,
+			  	height: 480,
+		incomesData: [],
         incomesChart: {			        
-          title: 'Ingresos por mes',
+          title: '',
           fontSize: 13,
           fontFamily: 'Open Sans',
-          subtitle: 'Sales, Expenses',
-          width: 500,
-          height: 285,
-          legend: { position: 'bottom', alignment:'center' },
+          subtitle: 'Sales, Expenses',          
+          height: 285,          
+          legend: 'none',
           range: { start: '', end: '' }
-				},
-				outputsData: [],
+		},
+		outputsData: [],
         outputsChart: {			        
-          title: 'Egresos de los Últimos Seis Meses',
+          title: '',
           fontSize: 13,
           fontFamily: 'Open Sans',
-          width: 500,
           height: 285,
-					legend: { position: 'bottom', alignment:'center' },
+          legend: 'none',
           range: { start: '', end: '' }
-				},
-				incomesPacienteData: [],
+		},
+		incomesPacienteData: [],
         incomesPacienteChart: {			        
-          title: 'Ingresos por paciente',
+          title: '',
           fontSize: 13,
           fontFamily: 'Open Sans',
-          width: 500,
           height: 285,
-					legend: { position: 'bottom', alignment:'center' },
+		  legend: 'none',
           range: { start: '', end: '' }
-				},
-				incomesCompanyData: [],
+		},
+		incomesCompanyData: [],
         incomesCompanyChart: {			        
-          title: 'Ingresos por Empresa',
+          title: '',
           fontSize: 13,
           fontFamily: 'Open Sans',
-          width: 500,
           height: 285,
 					legend: { position: 'bottom', alignment:'center' },
           range: { start: '', end: '' }
 				},
 				treatmentsData: [],
         treatmentsChart: {			        
-          title: 'Tratamientos Destacados',
+          title: '',
           fontSize: 13,
           fontFamily: 'Open Sans',
-          width: 500,
           height: 285,
-					legend: { position: 'bottom', alignment:'center' },
+          pieHole: 0.5,
+		  legend: {position: 'bottom'},
           range: { start: '', end: '' }
 				},
-				balance: {			        
-          incomes: '',
-          outputs: '',
-					balance: '',
-					range: { start: '', end: '' }
-        }
-			}
+		 pieSliceText: 'none',
+		  balance: {			        
+	          incomes: '',
+	          outputs: '',
+						balance: '',
+						range: { start: '', end: '' }
+          }
+
+		}
     },
     methods:{
       fillIncomesChart(){

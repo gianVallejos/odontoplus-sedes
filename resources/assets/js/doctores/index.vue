@@ -115,7 +115,7 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: '' },
+          { key: 'actions', label: '', 'class': 'action-width' },
           { key: 'nombres', label: 'Nombres', sortable: true, sortDirection: 'desc' },
           { key: 'dni', label: 'DNI', sortable: true },
           { key: 'email', label: 'Email', sortable: true },

@@ -191,8 +191,8 @@ BEGIN
   WHERE precios.idEmpresa = empresaId AND precios.idTratamiento = tratamientoId;
 END;
 
-DROP PROCEDURE IF EXISTS `OP_AgregarPreciosPorEmpresa`;
-create procedure OP_AgregarPreciosPorEmpresa(IN empresaId int, IN tratamientoId int, IN precio decimal)
+DROP PROCEDURE IF EXISTS `OP_AgregarPrecios_EmpresaId_TratamientoId`;
+create procedure OP_AgregarPrecios_EmpresaId_TratamientoId(IN empresaId int, IN tratamientoId int, IN precio decimal)
 BEGIN
   INSERT INTO precios (idEmpresa, idTratamiento, monto) values (empresaId, tratamientoId, precio);
   SELECT ROW_COUNT() AS ESTADO;
@@ -494,3 +494,19 @@ BEGIN
 
     SELECT ROW_COUNT() AS ESTADO;
 END;
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimosDiezPacientes`()
+SELECT id as hc, CONCAT(nombres, ' ', apellidos) as nombres 
+    FROM pacientes 
+  WHERE pacientes.is_deleted = 0
+ORDER BY created_at DESC LIMIT 10
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimosDiezPresupuestos`()
+BEGIN
+  SELECT presupuestos.id, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) AS pacientes, doctors.nombres as doctores 
+    FROM presupuestos
+  INNER JOIN pacientes on pacientes.id = presupuestos.idPaciente
+  INNER JOIN doctors on doctors.id = presupuestos.idDoctor
+    WHERE presupuestos.is_deleted = 0
+  ORDER BY fechahora DESC;
+END

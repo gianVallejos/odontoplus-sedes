@@ -36,6 +36,7 @@ import ProveedorLineItems from './proveedores/line_items.vue'
 import IngresosIndex from './ingresos/index.vue'
 import IngresoForm from './ingresos/form.vue'
 import IngresoLineItem from './ingresos/line-item.vue'
+import IngresoReporte from './ingresos/reporte.vue'
 import Reportes from './reportes/index.vue'
 import EgresosIndex from './egresos/index.vue'
 import EgresoForm from './egresos/form.vue'
@@ -49,7 +50,7 @@ const app = new Vue({
     	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
 			Users, UserForm,
 			Doctores, DoctorForm,
-			IngresosIndex, IngresoForm, IngresoLineItem,
+			IngresosIndex, IngresoForm, IngresoLineItem, IngresoReporte,
 			Tratamientos, TratamientoForm,
 			Empresas, EmpresaForm,
 			Proveedores, ProveedorForm, ProveedorLineItems,

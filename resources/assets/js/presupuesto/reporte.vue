@@ -41,6 +41,12 @@
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> &nbsp;Imprimir
 				</b-button>
+				<b-button variant="danger" v-on:click.prevent="onEliminar(
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+							   				  v-if="curUser.rolid == 1" >
+					<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
+				</b-button>
 			</b-col>			
 		</b-row>
 		<b-row class="d-print-none" v-if="isMultipleOption">
@@ -168,28 +174,40 @@
 					<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 						<i class="fas fa-print"></i> &nbsp;Imprimir
 					</b-button>
+					<b-button variant="danger" v-on:click.prevent="onEliminar(
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+							   				  v-if="curUser.rolid == 1" >
+					<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
+				</b-button>
 				</b-col>			
 			</b-row>
+			<div class="divFooter">
+				Odontoplus: Software de Gestión de Presupuestado Odontológico © 2018 | contacto@odontoplus.pe - www.odontoplus.pe
+			</div>
 		</section>
 		
 	</b-container>
 </template>
 <script>
 	import Diente from './diente/diente.vue'
+	import axios from 'axios'
 
 	export default{
 		mounted(){			
+			this.record_id = this.pgeneral.id
 			this.tratamientos = this.pdetalle
 			this.descuento = this.pgeneral.descuento
 			this.isMultipleOptions()
 			this.haveDescuento()
-			this.restartMainDientes()
+			this.restartMainDientes()			
 		},
 		components: {
 			Diente
 		},
 		props: [
 			'url',
+			'curUser',
 			'pgeneral',
 			'pdetalle',
 			'precios'
@@ -233,7 +251,8 @@
 				isEditable: false,
 				opc1: true,
 				isMultipleOption: false,
-				isDescuento: false
+				isDescuento: false,
+				record_id: ''
 			}
 		},
 		methods: {
@@ -284,14 +303,10 @@
 	        	this.changeOpcionBoton(opc)
 	        	this.restartMainDientes()	        	       	
 	        },
-	        restartMainDientes(){ //Principal	
-	        	console.log('ok')	
-				this.restartAllPintadoDientes()	
-				console.log('ok')	
-				this.pintarAllSeccionesDePiezas()            
-				console.log('ok')	
-				this.mostrarTratamientosEnTabla()
-				console.log('ok')	            
+	        restartMainDientes(){ //Principal		        	
+				this.restartAllPintadoDientes()					
+				this.pintarAllSeccionesDePiezas()            				
+				this.mostrarTratamientosEnTabla()				           
 	        },
 	        restartAllPintadoDientes(){
 	        	for( var i = 0; i < this.tratamientos.length; i++ ){	        		
@@ -333,7 +348,7 @@
 	        	this.tratamientos.sort(this.menorAMayor)
 	        	var monto = 0    	
 	        	for( var i = 0; i < this.tratamientos.length; i++ ){
-	        		console.log('!!!' + this.tratamientos[i].opcion)
+	        		//console.log('!!!' + this.tratamientos[i].opcion)
 	                if( this.tratamientos[i].opcion == this.opcion ){
 	                    var pz = this.tratamientos[i].pieza
 	                    var sec = this.tratamientos[i].seccion
@@ -444,7 +459,72 @@
 	        	}else{
 	        		this.opc1 = true
 	        	}
-	        }
+	        },
+	    	onEliminar(msg){
+	    		this.$swal({ 
+							title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+							html:  '<span style="font-size: 1em">' + msg +
+								   '</span>',	
+							animation: false, 
+							showConfirmButton: true, 
+							showCancelButton: true,
+							confirmButtonText: 'Aceptar',
+							confirmButtonClass: ['my-alert', 'confirm-alert'],
+							cancelButtonText: 'Cancelar',
+							cancelButtonClass: ['my-alert', 'cancel-alert'],
+							showCloseButton: true
+				}).then((result) => {
+					if( result.value ){
+						var request = { method: 'DELETE', url: this.url + '/presupuestos/' + this.record_id, data: this.form }
+		    			var mssgOnFail = 'Ha ocurrido un error al eliminar este registro.'
+		    			this.onSubmit(request, mssgOnFail)  
+					}	
+				})
+	    	},
+			onSubmit(request, error_msg) {
+				self = this
+				if(request){
+					axios(request).then((response) => {
+						if(response.data.success){
+							console.log('Response:: OK')
+							if (response.data.success = 'deleted' ){	
+								self.toastFunctionRedirect('Éxito', 'El presupuesto ha sido eliminado correctamente. <br />Redireccionando...', 'success')
+							}
+						}else if (response.data.error){							
+								console.log('Response:: FAIL');
+								self.all_errors = response.data.error
+								self.toastFunction(error_msg, 'error')							
+						}
+					}).catch(function (error) {
+						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+					});
+				}
+			},
+			toastFunction(msg, type){
+			 	this.$swal({
+						type: type,
+						title: msg,
+						toast: true,
+						position: 'top',
+						showConfirmButton: false,
+	  					timer: 3000
+				})
+			},
+			toastFunctionRedirect(title, msg, type){
+				this.$swal({
+						type: type,
+						title: title,
+						html: msg,
+						toast: false,
+						position: 'center',
+						showConfirmButton: false,
+	  					timer: 3000,
+	  					backdrop: `rgba(0, 0, 0, 0.6)`
+				}).then(() => {
+					window.location.href = this.url + '/presupuestos/'
+				})	
+			}
+
 		}
 	}
 </script>
@@ -507,5 +587,22 @@
 		font-weight: bold;
 		font-family: 'Open Sans', sans-serif;
 		font-size: 1.3em;
+	}
+
+	@media screen {
+	  div.divFooter {
+	    display: none;
+	  }
+	}
+	@media print {
+	  div.divFooter {
+	    position: fixed;
+	    bottom: 0;
+	    left: 0;
+	    padding: 7px 0px 7px 0px;
+	    text-align: center;
+	    width: 100%;
+	    font-size: .85em;
+	  }
 	}
 </style>

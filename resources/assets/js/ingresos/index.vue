@@ -127,7 +127,7 @@
 			    	{ text: 'Ingresos', active: true}
 			    ],			    
 			    fields: [				    
-				    { key: 'actions', label: '', 'class': 'text-left' },				    
+				    { key: 'actions', label: '', 'class': 'action-width text-left' },				    
 				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 				    { key: 'hc', label: 'HC', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },
