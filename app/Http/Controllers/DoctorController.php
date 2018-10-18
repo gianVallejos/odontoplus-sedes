@@ -29,7 +29,7 @@ class DoctorController extends Controller{
     }
 
     public function index(){
-        $doctors = DB::select('call OP_ObtenerDoctores()'); 
+        $doctors = DB::select('call OP_ObtenerDoctores_DESC()'); 
         $doctors = json_encode($doctors);
         
         return view('doctors.index',compact('doctors'));

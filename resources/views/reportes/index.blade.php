@@ -1,5 +1,7 @@
 @extends('layout')
 
 @section('content')
-<reportes url='{{ route("home") }}' />
+	@if( Auth::user()->rolid == 1 )
+		<reportes url='{{ route("home") }}' />
+	@endif
 @endsection

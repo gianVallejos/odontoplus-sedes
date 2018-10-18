@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="pb-4">
 		<b-row>
 			<b-col cols="12">
 				<TitleComponent titulo="Tratamientos" :items="breadcrumb" />
@@ -33,9 +33,6 @@
 										<b-button :href="url+'/tratamientos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
 										</b-button>
-										<b-button variant="warning">
-											<i class="fas fa-print"></i>&nbsp; Imprimir
-										</b-button>
 									</b-button-group>
 								</div>
 							</div>
@@ -43,7 +40,6 @@
 
             <!-- Main table element -->
             <b-table show-empty
-                    stacked="md"
                     :items="items"
                     :fields="fields"
                     :current-page="currentPage"
@@ -52,7 +48,8 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
-                    @filtered="onFiltered" >
+                    @filtered="onFiltered" 
+                    empty-text="No existen campos para mostrar" >
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">						        	
                   <a :href="url+'/tratamientos/'+ row.item.id" class="action" >Detalle</a>
@@ -60,16 +57,22 @@
                   <a :href="url+'/tratamientos/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
               </template>
+              <template slot="detalle" slot-scope="row">
+                  <a :href="url + '/tratamientos/' + row.item.id ">
+                    {{ row.value }}
+                  </a>
+              </template>
             </b-table>
 
-          <b-row align-h="between">
-            <b-col class="fz-3" align-self="start">
-              Mostrando {{ currentPage }} de {{ Math.ceil(totalRows / perPage) }} páginas
-            </b-col>
-            <b-col cols="auto">
-              <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
-            </b-col>
-          </b-row>
+            <b-row>
+                  <b-col md="6" class="pt-3 fz-3">
+                    Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas                  
+                  </b-col>
+                  <b-col md="6" class="my-1 text-right">
+                    <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
+                  </b-col>
+            </b-row>
+
           </div>
         </PanelCard>
 			</b-col>
@@ -84,9 +87,9 @@
 
   export default{
     mounted() { 
-      console.log('tratamientos mounted')
+      console.log('Tratamiento Mounted') 
     },
-    name: 'tratamientos',
+    name: 'Tratamientos',
     components:{
 			PanelCard,
       TitleComponent
@@ -98,8 +101,8 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: 'Acciones' },
-          { key: 'detalle', label: 'Detalle', sortable: true, sortDirection: 'desc' }
+          { key: 'actions', label: '', 'class': 'action-width' },
+          { key: 'detalle', label: 'Nombre de Tratamiento', sortable: true, sortDirection: 'desc' }
           ],
         currentPage: 1,
         perPage: 10,
@@ -111,8 +114,8 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Home', href: '/' },
-          { text: 'Lista de Tratamientos', active: true }
+          { text: 'Dashboard', href: this.url + '/' },
+          { text: 'Tratamientos', active: true }
         ]
 			}
 		},
@@ -133,6 +136,11 @@
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
+      },
+      totalCurrentPages(){
+          var res = Math.round(this.totalRows / this.perPage)
+          if( res == 0 ) return res + 1
+          return Math.ceil(this.totalRows / this.perPage )
       }
 		}
   }

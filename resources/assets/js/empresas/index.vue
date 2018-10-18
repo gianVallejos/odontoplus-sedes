@@ -101,7 +101,7 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: '' },
+          { key: 'actions', label: '', 'class': 'action-width' },
           { key: 'nombre', label: 'Nombre', sortable: true, sortDirection: 'desc' },
           { key: 'ruc', label: 'RUC', sortable: true, sortDirection: 'desc' }
         ],

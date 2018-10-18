@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TratamientoController extends Controller{
-    public static $validation_rules = [
-        'detalle' => 'required|max:120',
-        'precio_estandar' => 'required|min:0'
-    ];
-
     public function __construct(){
         $this->middleware('auth');
     }
@@ -39,9 +34,11 @@ class TratamientoController extends Controller{
         return view('tratamientos.edit', compact('tratamiento'));
     }
     
-    public function store(Request $request){
-        
-    	$validator = Validator::make($request->all(), self::$validation_rules );
+    public function store(Request $request){        
+    	$validator = Validator::make($request->all(), [
+            'detalle' => 'required|max:120',
+            'precio_estandar' => 'required|numeric|between:0,99999999.99'
+        ]);
 
     	if ($validator->passes()) {
             try{
@@ -53,13 +50,11 @@ class TratamientoController extends Controller{
                 $pricesInserted = self::insertCompaniesStandardPrices($tratamiento->id, $request->precio_estandar);
                 
                 if($pricesInserted){
-                    DB::commit();
-                    $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Tratamiento registrado correctamente']));
-                    return response()->json(['success' => 'success']);
-                }
-                else{
+                    DB::commit();                    
+                    return response()->json(['success' => 'created']);
+                }else{
                     DB::rollback();
-                    return response()->json(['error' => 'Ha ocurrido un error al insertar el tratamiento o sus precios']);
+                    return response()->json(['error' => 'commitFailed']);
                 }
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -71,7 +66,7 @@ class TratamientoController extends Controller{
     public function insertCompaniesStandardPrices($treatmentId, $price){
         $companies = DB::select('call OP_ObtenerEmpresas()');
          
-        foreach ($companies as $company) {
+        foreach ($companies as $company) {        
             $status = DB::select('call OP_AgregarPrecios_EmpresaId_TratamientoId('.$company->id.','.$treatmentId.','.$price.')');
             if($status == 0) return false;
         }
@@ -80,7 +75,9 @@ class TratamientoController extends Controller{
 
     public function update(Request $request, $id){
         
-    	$validator = Validator::make($request->all(), self::$validation_rules );
+    	$validator = Validator::make($request->all(), [
+            'detalle' => 'required|max:120'
+        ]);
 
     	if ($validator->passes()) {
             try{
@@ -89,8 +86,7 @@ class TratamientoController extends Controller{
                 $tratamiento->is_active = $request->is_active;
                 $tratamiento->save();
 
-                $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Tratamiento actualizado.']));
-                return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'updated']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -101,12 +97,15 @@ class TratamientoController extends Controller{
 
     public function destroy(Request $request, $id){
         try{
-            $tratamiento = Tratamiento::findOrFail($id);
-            $tratamiento->is_deleted = true;
-            $tratamiento->save();
+            $canDelete = DB::select('call OP_esTratamientoBorrable_Id('. $id .')');
+            
+            if( $canDelete[0]->CAN_DELETE == '1' ){
+                $res = DB::select('call OP_eliminarTratamiento_Id('. $id .')');
 
-            $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Tratamiento Eliminado.']));
-            return response()->json(['success' => 'success']);
+                return response()->json(['success' => 'deleted']);
+            }else{
+                return response()->json(['error' => 'cantDeleted']);
+            }            
 
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);

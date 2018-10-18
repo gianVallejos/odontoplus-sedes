@@ -19,7 +19,7 @@ class EmpresaController extends Controller{
     }
 
     public function index(){
-        $empresas = DB::select('call OP_ObtenerEmpresas()'); 
+        $empresas = DB::select('call OP_ObtenerEmpresas_DESC()'); 
         $empresas = json_encode($empresas);
 
         return view('empresas.index', compact('empresas'));

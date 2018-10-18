@@ -43,7 +43,6 @@
 
             <!-- Main table element -->
             <b-table show-empty
-                    stacked="md"
                     :items="data"
                     :fields="fields"
                     :current-page="currentPage"
@@ -52,10 +51,16 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
-                    @filtered="onFiltered" >
+                    @filtered="onFiltered" 
+                    empty-text="No existen campos para mostrar" >
 
               <template slot="number" slot-scope="row">
                 {{ row.index + 1 }}
+              </template>
+              <template slot="tratamiento" slot-scope="row">
+                  <a :href="url + '/tratamientos/' + row.item.id_tratamiento">
+                    {{ row.value }}
+                  </a>
               </template>
               <template slot="empresa" slot-scope="row">
                 <b-form-select class="small" v-model="data[row.index].id_empresa" v-on:input="onNewSelectedCompany(row.index)">
@@ -79,7 +84,7 @@
 
           <b-row align-h="between">
             <b-col class="fz-3" align-self="start">
-              Mostrando {{ currentPage }} de {{ Math.ceil(totalRows / perPage) }} páginas
+              Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas
             </b-col>
             <b-col cols="auto">
               <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
@@ -116,13 +121,13 @@
 			return{
         fields: [
           { key: 'number', label: '#' },
-          { key: 'tratamiento', label: 'Tratamiento', 'class': 'text-left' },
-          { key: 'empresa', label: 'Empresa' },
-          { key: 'monto', label: 'Monto', 'class': 'text-center' },
-          { key: 'actions', label: '' }
-          ],
+          { key: 'tratamiento', label: 'Nombre de Tratamiento', 'class': 'text-left' },
+          { key: 'empresa', label: 'Empresa', 'class': 'input-empresa-table-width' },
+          { key: 'monto', label: 'Monto', 'class': 'input-table-width' },
+          { key: 'actions', label: '', 'class': 'input-table-width text-center' }
+        ],
         all_errors: [],
-        data:[],
+        data: [],
         currentPage: 1,
         perPage: 10,
         totalRows: this.prices.length,
@@ -131,10 +136,9 @@
         sortDesc: false,
         sortDirection: 'asc',
         filter: null,
-        modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Home', href: '/' },
-          { text: 'Lista de Precios', active: true }
+          { text: 'Dashboard', href: this.url + '/' },
+          { text: 'Precios', active: true }
         ]
 			}
 		},
@@ -180,7 +184,7 @@
         
         axios(request).then((response) => {
           if(response.data.success){
-            console.log('Show toast message!')
+            this.toastFunction('Precio actualizado correctamente', 'success')
           }
           else if (response.data.error){
             this.all_errors = response.data.error
@@ -192,6 +196,21 @@
       },
       cleanErrosMessage(){
         this.all_errors = []
+      },
+      toastFunction(msg, type){
+        this.$swal({
+            type: type,
+            title: msg,
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+              timer: 3000
+        })
+      },
+      totalCurrentPages(){
+        var res = Math.round(this.totalRows / this.perPage)
+        if( res == 0 ) return res + 1
+        return Math.ceil(this.totalRows / this.perPage )
       }
 		}
   }

@@ -46,6 +46,7 @@ Route::get('ingresos/line-item/{id}', 'IngresoController@lineItem')->name('ingre
 Route::post('ingresos/line-item', 'IngresoController@lineItemSave');
 Route::put('ingresos/line-item/{id}', 'IngresoController@lineItemUpdate');
 Route::delete('ingresos/line-item/{id}', 'IngresoController@lineItemDelete');
+Route::get('ingresos/reporte/{id}', 'IngresoController@reporte');
 
 Route::resource('egresos', 'EgresoController');
 

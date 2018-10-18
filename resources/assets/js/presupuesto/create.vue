@@ -15,7 +15,8 @@
 									<div class="d-inline"> Crear Presupuesto </div>
 								</div>
 								<p class="form-description fz-3 pt-3 pr-4">
-									On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer sur la mise en page elle-même. 
+									Para crear un presupuesto debe seleccionar el paciente a tratar y el doctor responsable. 
+									<br /><br />Al seleccionar "nuevo presupuesto", le aparecerá un odontograma interactivo, en donde podrá agregar los tratamientos de la historia clínica a cotizar. 
 								</p>
 							</b-col>
 							<b-col cols="6" class="pt-1 pb-4">	

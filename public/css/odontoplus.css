@@ -583,3 +583,60 @@ span.title-sec {
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
   background-color: #305f94 !important;
 }
+.action-width {
+  width: 150px !important;
+}
+.input-table-width {
+  width: 180px !important;
+}
+.input-empresa-table-width {
+  width: 250px !important;
+}
+.square-reportes {
+  border: 1px solid rgba(0,0,0,0.1);
+  margin: 0.5em;
+  padding: 1.5em;
+}
+.balanceLayout {
+  font-size: 1.25em;
+}
+.balanceLayout .title-balance {
+  display: inline-block;
+  width: 120px;
+  padding: 5px 0px;
+  font-weight: 700;
+  color: #305f94;
+}
+.balanceLayout .text-balance {
+  text-align: right;
+  display: inline-block;
+}
+.balanceLayout .line-balance {
+  width: 100%;
+  margin: 15px 0px 5px 0px;
+  height: 3px;
+  background: #0aab8a;
+}
+.balanceLayout .balanceLayout-general {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 301px;
+}
+.balanceLayout .balanceLayout-general .content {
+  display: inline-block;
+  width: 50%;
+}
+.reportes-text {
+  height: 40px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  font-size: 1.6em;
+}
