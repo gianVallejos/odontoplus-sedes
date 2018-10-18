@@ -583,3 +583,7 @@ span.title-sec {
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
   background-color: #305f94 !important;
 }
+.scrollable {
+  overflow-y: auto;
+  height: 700px;
+}

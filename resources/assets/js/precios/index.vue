@@ -42,49 +42,47 @@
             </b-row>
 
             <!-- Main table element -->
-            <b-table show-empty
-                    stacked="md"
-                    :items="data"
-                    :fields="fields"
-                    :current-page="currentPage"
-                    :per-page="perPage"
-                    :filter="filter"
-                    :sort-by.sync="sortBy"
-                    :sort-desc.sync="sortDesc"
-                    :sort-direction="sortDirection"
-                    @filtered="onFiltered" >
+            <div class="scrollable">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tratamiento</th>
+                    <th scope="col">Empresa</th>
+                    <th scope="col">Monto</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in prices" :key="index" >
+                    <th scope="row">{{ index + 1}}</th>
+                    <td>{{item.tratamiento}}</td>
+                    <td>
+                      <b-form-select :ref="'emp-'+index" class="small" v-model="item.id_empresa" v-on:input="onSelectedCompany(index)">
+                        <option v-for="(e,index) in companies" :key="index" :value="e.id">
+                          {{ e.nombre }}
+                        </option>
+                      </b-form-select>
+                    </td>
+                    <td>
+                      <b-input-group class="small" prepend="S/.">
+                        <b-form-input :ref="'monto-'+index" class="small" type="text" v-model="item.monto"></b-form-input>
+                      </b-input-group>
+                      <div class="text-center">
+                      <span v-if="all_errors.index == index" :class="['label label-danger']">{{ all_errors.monto[0] }}</span>
 
-              <template slot="number" slot-scope="row">
-                {{ row.index + 1 }}
-              </template>
-              <template slot="empresa" slot-scope="row">
-                <b-form-select class="small" v-model="data[row.index].id_empresa" v-on:input="onNewSelectedCompany(row.index)">
-											<option v-for="(e,index) in companies" :key="e.index" :value="e.id">
-												{{ e.nombre }}
-											</option>
-								</b-form-select>
-              </template>
-              <template slot="monto" slot-scope="row">
-                <b-input-group class="small" prepend="S/.">
-                  <b-form-input class="small" type="text" v-model="row.item.monto"></b-form-input>
-                </b-input-group>
-                <span v-if="all_errors.row_index == row.index" :class="['label label-danger']">{{ all_errors.monto[0] }}</span>
-              </template>
-              <template slot="actions" slot-scope="row">
-									<b-button class="small" variant="success" v-on:click.prevent="onModificar(row.index)">
-									  Guardar
-									</b-button>
-              </template>
-            </b-table>
+                      </div>
+                    </td>
+                    <td>
+                      <b-button class="small" variant="success" v-on:click.prevent="onModificar(index)">
+                        Guardar
+                      </b-button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-          <b-row align-h="between">
-            <b-col class="fz-3" align-self="start">
-              Mostrando {{ currentPage }} de {{ Math.ceil(totalRows / perPage) }} páginas
-            </b-col>
-            <b-col cols="auto">
-              <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
-            </b-col>
-          </b-row>
           </div>
         </PanelCard>
 			</b-col>
@@ -114,26 +112,9 @@
     ],
     data(){
 			return{
-        fields: [
-          { key: 'number', label: '#' },
-          { key: 'tratamiento', label: 'Tratamiento', 'class': 'text-left' },
-          { key: 'empresa', label: 'Empresa' },
-          { key: 'monto', label: 'Monto', 'class': 'text-center' },
-          { key: 'actions', label: '' }
-          ],
         all_errors: [],
-        data:[],
-        currentPage: 1,
-        perPage: 10,
-        totalRows: this.prices.length,
-        pageOptions: [ 5, 10, 15 ],
-        sortBy: null,
-        sortDesc: false,
-        sortDirection: 'asc',
-        filter: null,
-        modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Home', href: '/' },
+          { text: 'Home', href: this.url },
           { text: 'Lista de Precios', active: true }
         ]
 			}
@@ -147,23 +128,16 @@
       }
     },
     methods:{
-      onSubmit (evt) {
-          evt.preventDefault();
-          alert(JSON.stringify(this.form));
-      },
-      onFiltered (filteredItems) {
-        this.totalRows = filteredItems.length
-        this.currentPage = 1
-      },
-
-      onNewSelectedCompany(row_index){
+      onSelectedCompany(index){
         this.cleanErrosMessage()
-        var item = this.data[row_index]
-        var request = { method: 'GET', url: this.url+'/consulta_precio?empresa_id='+ item.id_empresa + '&tratamiento_id=' + item.id_tratamiento}
+        var company_id = this.$refs['emp-'+index][0].$el.value
+        var treatment_id = this.prices[index].id_tratamiento
+        var request = { method: 'GET', url: this.url+'/consulta_precio?empresa_id='+ company_id + '&tratamiento_id=' + treatment_id}
+
         axios(request).then((response) => {
           if(response.data.price){
-            this.data[row_index].monto = response.data.price[0].monto
-            this.data[row_index].id = response.data.price[0].id
+            this.prices[index].id = response.data.price[0].id
+            this.$refs['monto-'+index][0].$el.value = response.data.price[0].monto
           }
           else{
             console.log('price not found!')
@@ -171,12 +145,13 @@
         }).catch(function (error) {
           console.log(error);
         });
+
       },
-      onModificar(row_index){
+      onModificar(index){
         this.cleanErrosMessage()
-        var item = this.data[row_index]
-        var data = { monto: item.monto }
-        var request = { method: 'PUT', url: this.url+'/precios/'+ item.id, data: data }
+        var id = this.prices[index].id
+        var amount = this.$refs['monto-'+index][0].$el.value
+        var request = { method: 'PUT', url: this.url+'/precios/'+ id, data: { monto: amount } }
         
         axios(request).then((response) => {
           if(response.data.success){
@@ -184,11 +159,13 @@
           }
           else if (response.data.error){
             this.all_errors = response.data.error
-            this.all_errors.row_index = row_index
+            this.all_errors.index = index
+            console.log(response.data.error)
           }
         }).catch(function (error) {
           console.log(error);
         });
+        
       },
       cleanErrosMessage(){
         this.all_errors = []
