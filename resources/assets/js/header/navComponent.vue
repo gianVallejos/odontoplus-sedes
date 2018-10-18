@@ -74,11 +74,11 @@
 			          		<i class="fas fa-building"></i>Empresas
 			          	</a>
 		        	</li>
-		        	<li class="li-dropdown">
+		        	<!--li class="li-dropdown">
 			          	<a :href="url + '/proveedores'">
 			          		<i class="fas fa-flask"></i>Proveedores
 			          	</a>
-		        	</li>
+		        	</li-->
 					<li class="li-dropdown" v-if="user.rolid == 1">
 		        	  	<a :href="url + '/users'">
 		          			<i class="fas fa-users"></i>Usuarios

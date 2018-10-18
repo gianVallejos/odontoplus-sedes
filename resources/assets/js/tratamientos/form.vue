@@ -255,6 +255,8 @@
 						}else if (response.data.error){
 							if( response.data.error == 'cantDeleted'){
 								self.toastFunction('El tratamiento está relacionado a presupuestos activos por lo tanto no se puede eliminar.', 'error')
+							}else if(response.data.error == 'commitFailed'){
+								self.toastFunction('Ha ocurrido un error al insertar el tratamiento o sus precios')
 							}else{
 								console.log('Response:: FAIL');
 								self.all_errors = response.data.error

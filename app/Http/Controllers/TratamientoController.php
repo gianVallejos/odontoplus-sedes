@@ -50,13 +50,11 @@ class TratamientoController extends Controller{
                 $pricesInserted = self::insertCompaniesStandardPrices($tratamiento->id, $request->precio_estandar);
                 
                 if($pricesInserted){
-                    DB::commit();
-                    $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Tratamiento registrado correctamente']));
-                    return response()->json(['success' => 'success']);
-                }
-                else{
+                    DB::commit();                    
+                    return response()->json(['success' => 'created']);
+                }else{
                     DB::rollback();
-                    return response()->json(['error' => 'Ha ocurrido un error al insertar el tratamiento o sus precios']);
+                    return response()->json(['error' => 'commitFailed']);
                 }
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -68,7 +66,7 @@ class TratamientoController extends Controller{
     public function insertCompaniesStandardPrices($treatmentId, $price){
         $companies = DB::select('call OP_ObtenerEmpresas()');
          
-        foreach ($companies as $company) {
+        foreach ($companies as $company) {        
             $status = DB::select('call OP_AgregarPrecios_EmpresaId_TratamientoId('.$company->id.','.$treatmentId.','.$price.')');
             if($status == 0) return false;
         }
