@@ -213,8 +213,10 @@
 			this.incomesCompanyChart.range.end = this.currentDate()
 			this.treatmentsChart.range.start = this.currentDate(-5)
 			this.treatmentsChart.range.end = this.currentDate()
+			
 			this.balance.range.start = this.currentDate(-5)
 			this.balance.range.end = this.currentDate()
+			
 			this.fillIncomesChart()
 			this.fillOutputsChart()
 			this.fillIncomesPacientesChart()
@@ -316,10 +318,10 @@
         var request = { method: 'GET', url: this.url + '/reportes/egresos?start='+start+'&end='+end }
         axios(request).then((response) => {
 					var outputs = response.data.outputs
-					this.outputsData = [['Mes', 'Egresos']]
+					this.outputsData = [['Mes', 'Egresos']]					
 					for(var i=0 ; i<outputs.length; i++){
 						this.outputsData.push([ outputs[i].mes.substring(0,3), parseInt(outputs[i].egresos)])
-					}
+					}					
         }).catch(function (error) {
           console.log(error);
         });
@@ -372,9 +374,10 @@
         var request = { method: 'GET', url: this.url + '/reportes/balance?start='+start+'&end='+end }
         axios(request).then((response) => {
 					console.log(response.data.ingresos)
-					this.balance.incomes = parseFloat(response.data.ingresos[0].ingresos).toFixed(2)
-					this.balance.outputs = parseFloat(response.data.egresos[0].egresos).toFixed(2)
-					this.balance.balance = parseFloat(this.balance.incomes - this.balance.outputs).toFixed(2)
+					console.log('egresos: ' + JSON.stringify(response.data.egresos))
+					this.balance.incomes = (response.data.ingresos[0].ingresos != null ) ? parseFloat(response.data.ingresos[0].ingresos).toFixed(2) : '0.00'
+					this.balance.outputs = (response.data.egresos[0].egresos != null ) ? parseFloat(response.data.egresos[0].egresos).toFixed(2) : '0.00'
+					this.balance.balance = ((this.balance.incomes - this.balance.outputs) != null ) ? parseFloat(this.balance.incomes - this.balance.outputs).toFixed(2) : '0.00'
         }).catch(function (error) {
           console.log(error);
         });
