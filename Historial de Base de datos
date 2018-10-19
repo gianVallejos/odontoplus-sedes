@@ -1,0 +1,9 @@
+19-10-2018 3:37:00 pm
+
+DB_HOST=192.168.1.105
+DB_PORT=3306
+DB_DATABASE=odontoplus_bd
+DB_USERNAME=root
+DB_PASSWORD=
+
+---------------------------------

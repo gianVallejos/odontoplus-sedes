@@ -56,7 +56,7 @@
 						        <div class="actions-table" style="color: #d1d1d1">						        	
 						        	<a :href="url+'/ingresos/line-item/'+ row.item.id"  class="action">Detalle</a>
 						        	|
-						        	<a :href="url+'/ingresos/'+ row.item.id +'/edit/'" class="action">Modificar</a>
+						        	<a :href="url+'/ingresos/'+ row.item.id +'/edit'" class="action">Modificar</a>
 						        </div>
 						    </template>
 						    <template slot="fecha" slot-scope="row">
@@ -66,7 +66,7 @@
 						      		{{ row.value }}
 						    </template>						    	
 						    <template slot="nombrePaciente" slot-scope="row">
-						    	<a :href="url + '/pacientes/' + row.item.hc + '/false'">
+						    	<a :href="url + '/pacientes/' + row.item.hc">
 						      		{{ row.value }}
 						      	</a>
 						    </template>
