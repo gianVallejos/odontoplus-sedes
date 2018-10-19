@@ -109,9 +109,9 @@
 	export default{
 		mounted(){
 			console.log('Dashboard Mounted')
-			this.incomesChart.range.start = this.currentDate(-5)
+			this.incomesChart.range.start = this.currentDate(-4)
 			this.incomesChart.range.end = this.currentDate()
-			this.outputsChart.range.start = this.currentDate(-5)
+			this.outputsChart.range.start = this.currentDate(-4)
 			this.outputsChart.range.end = this.currentDate()
 			this.fillIncomesChart()
 			this.fillOutputsChart()
@@ -243,6 +243,7 @@
 					for(var i=0 ; i<incomes.length; i++){
 						this.incomesData.push([ incomes[i].mes.substring(0,3), parseInt(incomes[i].ingresos)])
 					}
+					if (outputs.length == 0) this.outputsData.push([ '', 0])
         }).catch(function (error) {
           console.log(error);
         });
@@ -257,6 +258,7 @@
 					for(var i=0 ; i<outputs.length; i++){
 						this.outputsData.push([ outputs[i].mes.substring(0,3), parseInt(outputs[i].egresos)])
 					}
+					if (outputs.length == 0) this.outputsData.push([ '', 0])
         }).catch(function (error) {
           console.log(error);
         });
