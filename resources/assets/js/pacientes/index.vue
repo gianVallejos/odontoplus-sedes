@@ -54,10 +54,10 @@
 					             @filtered="onFiltered"
 					             empty-text="No existen campos para mostrar" >
 							<template slot="actions" slot-scope="row" class="md-2">
-						        <div class="actions-table" style="color: #d1d1d1">						        	
+						        <div class="actions-table" style="color: #d1d1d1">						        
 						        	<a :href="url+'/pacientes/'+ row.item.id"  class="action">Detalle</a>
 						        	|
-						        	<a :href="url+'/pacientes/'+ row.item.id +'/edit/'" class="action">Modificar</a>
+						        	<a :href="url+'/pacientes/'+ row.item.id +'/edit'" class="action">Modificar</a>
 						        </div>
 						    </template>
 						    <template slot="id" slot-scope="row">
@@ -90,8 +90,7 @@
 						    <b-col md="6" class="my-1 text-right">
 						    	<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
 						    </b-col>
-					    </b-row>
-
+					    </b-row>						
 					</div>
 				</PanelCard>
 			</b-col>
