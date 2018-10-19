@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="{{ asset('css/header.css?v=1.0.1') }}">
 	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
-	<link rel="stylesheet" href="{{ asset('css/diente.css?v=1.0.5') }}" />
+	<link rel="stylesheet" href="{{ asset('css/diente.css?v=1.0.6') }}" />
 
 	<!--Dynamic StyleSheets added from a view would be pasted here-->
 	@yield('styles')

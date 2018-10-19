@@ -18,7 +18,7 @@ class PacienteController extends Controller
     public static $validation_rules = [
         'nombres' => 'required|string|max:90',
         'apellidos' => 'required|string|max:90',
-        'dni' => 'required|digits:8',
+        'dni' => 'required|unique:pacientes|digits:8',
         'direccion' => 'required|string|max:90',
         'fechanacimiento' => 'required|date|before:now',
         'email' => 'nullable|email|max:90',

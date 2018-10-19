@@ -26,7 +26,7 @@
 					            @filtered="onFiltered"
 					            empty-text="No existen campos para mostrar" >
 							<template slot="actions" slot-scope="row" class="md-2">
-						        <div class="actions-table" style="color: #d1d1d1">						        	
+						        <div class="actions-table" style="color: #d1d1d1" v-if="curUser.rolid == 1">							        						        	
 						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.tratamiento, row.item.cantidad, row.item.monto )" class="action">Modificar</a>
 						        	|
 						        	<a v-on:click="eliminarIngresoDetalle(row.item.id)" class="action">Eliminar</a>
@@ -164,7 +164,8 @@
 			'url',
 			'record',
 			'tratamientos',
-			'id'
+			'id',
+			'curUser'
 		],
 		components: {
 			PanelCard

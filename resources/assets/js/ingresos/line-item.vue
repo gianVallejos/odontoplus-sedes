@@ -49,7 +49,7 @@
 					</div>
 				</PanelCard>
 			</b-col>
-			<line-item-detalle :record="recordDetail" :tratamientos="tratamientos" :id="ingreso_id" :url="url" v-on:calcular-total="actualizarTotal" />
+			<line-item-detalle :record="recordDetail" :tratamientos="tratamientos" :id="ingreso_id" :url="url" :cur-user="curUser" v-on:calcular-total="actualizarTotal" />
 		</b-row>
 	</b-container>
 </template>

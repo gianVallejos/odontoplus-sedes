@@ -342,6 +342,17 @@
 					}
 	        	}
 	        },
+	        menorAMayor(a, b) {
+	        	return a.pieza - b.pieza
+	            /*
+	            if (a[0] === b[0]) {
+	                return 0;
+	            }
+	            else {
+	                return (a[0] < b[0]) ? -1 : 1;
+	            }
+	            */
+	        },
 	        mostrarTratamientosEnTabla(){
 	        	this.tratamientos_tabla = []	
 	        	this.sub_total = 0
@@ -415,7 +426,7 @@
 	        		this.$refs[sec][0].extra_trat = 'perno'
 	        	}else if( seccion >= 26 && seccion <= 28 ){
 	        		this.$refs[sec][0].extra_trat = 'incrustracion'
-	        	}else if( seccion >= 31 ){
+	        	}else if( seccion == 31 ){
 	        		this.$refs[sec][0].extra_trat = 'sellante'
 	        	}
 	        },
