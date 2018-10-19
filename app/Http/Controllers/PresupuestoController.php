@@ -83,7 +83,14 @@ class PresupuestoController extends Controller{
         $pres_general = json_encode($pres_general);
         $pres_detalle = json_encode($pres_detalle);
         $precios = json_encode($precios);
-
+/*
+        print_r($pres_general);
+        echo '<br><br>';
+        print_r($pres_detalle);
+        echo '<br><br>';
+        print_r($precios);
+        die();
+*/
         $view = view($this->path . '.reporte', compact('pres_general', 'pres_detalle', 'precios'));
         //$pdf = \App::make('dompdf.wrapper');
         //$pdf->setOptions(['isRemoteEnabled' => true, 'isPhpEnabled' => true]);         

@@ -62,10 +62,11 @@
   -webkit-print-color-adjust: exact;
 }
 .middle.corona {
-  border: 1px solid #ff0;
+  border: 2px solid #ff0;
 }
 .middle.exodoncia::before {
   content: 'X';
+  color: #da2a26;
 }
 .middle.palito::before {
   content: '';
@@ -74,11 +75,13 @@
 }
 .middle.carilla::before {
   content: '\D8';
+  color: #ffd900;
 }
 .middle.perno:before {
   content: '^|';
   font-size: 0.8em;
   margin-top: -2px;
+  color: #da2a26;
 }
 .middle.incrustracion::before {
   content: 'INC';

@@ -1,6 +1,6 @@
 <template>
 	<b-container>
-		<b-row class="pb-2 mt-4">
+		<b-row class="pb-2" style="margin-top: -20px;">
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
 					<img :src="this.url + '/images/empresa/logotipo_pdf.png'" alt="Logo Empresa" />
@@ -13,7 +13,7 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5>PRESUPUESTO NRO {{ pgeneral.id }} - {{ pgeneral.idPaciente }}</h5>
+						<h5>PRESUPUESTO NRO {{ pgeneral.id }} - HC {{ pgeneral.idPaciente }}</h5>
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 							<tr>
@@ -342,6 +342,17 @@
 					}
 	        	}
 	        },
+	        menorAMayor(a, b) {
+	        	return a.pieza - b.pieza
+	            /*
+	            if (a[0] === b[0]) {
+	                return 0;
+	            }
+	            else {
+	                return (a[0] < b[0]) ? -1 : 1;
+	            }
+	            */
+	        },
 	        mostrarTratamientosEnTabla(){
 	        	this.tratamientos_tabla = []	
 	        	this.sub_total = 0
@@ -415,7 +426,7 @@
 	        		this.$refs[sec][0].extra_trat = 'perno'
 	        	}else if( seccion >= 26 && seccion <= 28 ){
 	        		this.$refs[sec][0].extra_trat = 'incrustracion'
-	        	}else if( seccion >= 31 ){
+	        	}else if( seccion == 31 ){
 	        		this.$refs[sec][0].extra_trat = 'sellante'
 	        	}
 	        },
@@ -596,8 +607,9 @@
 	}
 	@media print {
 	  div.divFooter {
+	  	display: none;
 	    position: fixed;
-	    bottom: 0;
+	    top: 0;
 	    left: 0;
 	    padding: 7px 0px 7px 0px;
 	    text-align: center;
@@ -605,4 +617,10 @@
 	    font-size: .85em;
 	  }
 	}
+	
+	@page{ 
+	    size: auto;
+	    margin: auto;  
+	}
+
 </style>

@@ -21,6 +21,11 @@
 						  	</div>
 						</a>
 						<ul class="dropdown-menu">
+							<li>
+					    		<a :href="url + '/'">
+					    			<i class="fas fa-home"></i>Inicio
+					    		</a>
+					    	</li>
 					    	<li>
 					    		<a :href="url + '/users/' + user.id">
 					    			<i class="fas fa-user"></i>Ver Perfil

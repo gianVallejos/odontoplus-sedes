@@ -325,23 +325,7 @@
 					}
 				}
 				return array;
-			},	
-			/*	
-			agregarTratamientoDesdeModal(seccion){	
-				if( !this.existeTratamiento(seccion, this.actual_pieza) ){
-					this.tratamientos.push({pieza: this.actual_pieza, seccion: seccion, secUno: null, secDos: null, opcion: this.opcion})				
-					this.closeModal()
-					this.mostrarTratamientosEnTabla()
-				}else{
-					this.$toasted.show('No puede agregar el mismo tratamiento en la misma pieza.', 
-											{ 
-												position: 'top-center',
-												className: 'toast-danger',
-												duration: 3500,
-												containerClass: 'test'
-											})
-				}
-			},*/
+			},
 			esNumero(value){
 				return Number.isInteger(value)
 			},
@@ -424,17 +408,6 @@
 					this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
                 })
 			},
-			/*
-			agregarTratamiento(seccion, idPieza){					
-				if( seccion <= 7 ){
-					this.agregarPiezaSeccionATratamientos(seccion, idPieza)
-				}else{
-					this.pieza_actual = idPieza
-					this.tratamiento_actual = seccion
-					this.tratamientos.push({pieza: idPieza, seccion: seccion, secUno: null, secDos: null, opcion: this.opcion})							
-					this.mostrarTratamientosEnTabla()
-				}
-			},*/
 			esResina(value){
 	            if( value <= 5 ) return true;
 	            if( value == 7 ) return true;
@@ -453,50 +426,7 @@
 	                if( this.tratamientos[i].pieza == pieza && this.tratamientos[i].seccion == seccion && this.tratamientos[i].opcion == this.opcion ) return true;
 	            }
 	            return false;
-	        },/*	        
-	        agregarPiezaSeccionATratamientos(seccion, pieza){	    //Puede ser mejor        
-	            if( !this.existeTratamiento(seccion, pieza) ){
-	                var ind = this.existeResina(pieza)
-	                var flag = 0
-	                if( ind != -1 && this.esResina(seccion) ){
-	                    if( this.tratamientos[ind].secUno == null && this.tratamientos[ind].secDos == null && this.tratamientos[ind].opcion == this.opcion){
-	                        this.tratamientos[ind].secUno = seccion;    flag = 1
-	                    }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos == null && this.tratamientos[ind].opcion == this.opcion){
-	                        this.tratamientos[ind].secDos = seccion;    flag = 1
-	                    }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos != null && this.tratamientos[ind].opcion == this.opcion){
-	                        this.$toasted.show('No puede agregar más de tres resinas en una sola pieza.', {
-												position: 'top-center', className: 'toast-danger', duration: 3500, containerClass: 'test'
-											})
-	                        flag = 1	    
-	                    }else{
-	                        flag = 0
-	                    }
-	                }
-	                if( flag == 0 ){
-	                    this.tratamientos.push({pieza, seccion, secUno: null, secDos: null, opcion: this.opcion})	                    
-	                }		                
-	                this.mostrarTratamientosEnTabla()
-	            }else{
-	            	this.$toasted.show('No puede agregar el mismo tratamiento en la misma pieza.', 
-											{ 
-												position: 'top-center',
-												className: 'toast-danger',
-												duration: 3500,
-												containerClass: 'test'
-											})	            	
-	            }
-	        },*/	        
-	        /*
-	        calcularTotalesMonto(monto){
-	        	this.sub_total = this.redondearADos(parseFloat(this.sub_total) + parseFloat(monto))
-	        	this.total = this.sub_total //this.redondearADos(this.sub_total - (this.sub_total * (this.getDescuentoActual()/100)))
-	        	//this.calcularMontosPorDescuento()
 	        },
-	        /*
-	        calcularMontosPorDescuento(){
-	        	//console.log(this.getDescuentoActual())
-				this.total = this.redondearADos(this.sub_total - (this.sub_total * (this.getDescuentoActual()/100)))
-	        },*/
 	        agregarDatosATabla(ind, pieza, tratamiento, monto){	 //Puede ser mejor       	
 		    	this.tratamientos_tabla.push({id: ind, pieza, tratamiento, deductible: 0, monto, total: monto})
 		    	//this.calcularTotalesMonto(monto)		    	
