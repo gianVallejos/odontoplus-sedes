@@ -322,15 +322,15 @@ BEGIN
 END
 ;
 
-create procedure OP_ObtenerIngresos_Fechas (IN start_date date, IN end_date date)
-BEGIN
+DROP PROCEDURE IF EXISTS `OP_ObtenerIngresos_Fechas`;
+create procedure OP_ObtenerIngresos_Fechas(IN start_date date, IN end_date date)
+  BEGIN
 	SET lc_time_names = 'es_ES';
-	SELECT MONTHNAME(i.fecha) as mes, SUM(i.total) as ingresos
-  FROM ingresos i
-  WHERE (i.fecha BETWEEN start_date AND end_date)
-	GROUP BY (MONTH(i.fecha));
-END
-;
+	SELECT MONTHNAME(ingresos.fecha) as mes, SUM(idt.cantidad * idt.monto) as ingresos FROM ingresos
+	INNER JOIN ingresos_detalle as idt on idt.ingresoId = ingresos.id
+	WHERE ingresos.fecha BETWEEN start_date AND end_date
+	GROUP BY (MONTH(ingresos.fecha));
+END;
 
 create procedure OP_ObtenerPreciosEstandard ()
 BEGIN
