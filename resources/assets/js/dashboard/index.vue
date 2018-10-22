@@ -109,12 +109,7 @@
 	export default{
 		mounted(){
 			console.log('Dashboard Mounted')
-			this.incomesChart.range.start = this.currentDate(-4)
-			this.incomesChart.range.end = this.currentDate()
-			this.outputsChart.range.start = this.currentDate(-4)
-			this.outputsChart.range.end = this.currentDate()
-			this.fillIncomesChart()
-			this.fillOutputsChart()
+			this.initChats()
 		},
 		props: [
 			'url',
@@ -229,6 +224,16 @@
 			}
 		},
 		methods:{
+			initChats(){
+				var today = this.currentDate()
+				var sixsMonthsAgo = this.currentDate(-4)
+				this.incomesChart.range.start = sixsMonthsAgo
+				this.incomesChart.range.end = today
+				this.outputsChart.range.start = sixsMonthsAgo
+				this.outputsChart.range.end = today
+				this.fillIncomesChart()
+				this.fillOutputsChart()
+			},
 			fillIncomesChart(){
 				var start = this.incomesChart.range.start 
 				var end = this.incomesChart.range.end
