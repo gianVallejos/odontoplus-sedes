@@ -447,7 +447,7 @@
 						}
 					}else if (response.data.error){
 						if( response.data.error == 'cantDeleted'){
-							self.toastFunction('El paciente está relacionado a presupuestos activos por lo tanto no se puede eliminar.', 'error')
+							self.toastFunction('El paciente está relacionado a presupuestos o ingresos activos por lo tanto no se puede eliminar.', 'error')
 						}else{
 							console.log('Response:: FAIL');
 							self.all_errors = response.data.error

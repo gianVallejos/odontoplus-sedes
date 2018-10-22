@@ -19,24 +19,18 @@
 							<tr>
 								<td class="pr-title">FECHA: </td>
 								<td colspan="3">{{ igeneral.fecha }}</td>
+							</tr>							
+							<tr>
+								<td class="pr-title">NRO HISTORIA: </td>
+								<td colspan="3">{{ igeneral.hc }}</td>
 							</tr>	
 							<tr>
 								<td class="pr-title">PACIENTE: </td>
 								<td colspan="3">{{ igeneral.nombrePaciente }}</td>
 							</tr>
 							<tr>
-								<td class="pr-title">DOCTOR: </td>
-								<td colspan="3">{{ igeneral.nombreDoctor }}</td>
-							</tr>
-							<tr>
 								<td class="pr-title" >TOTAL: </td>
 								<td colspan="3">S/ {{ igeneral.monto_total }}</td>								
-							</tr>
-							<tr v-if="this.curUser.rolid == 1">
-								<td class="pr-title" >MARGEN EMPRESA: </td>
-								<td>S/ {{ igeneral.mg_core }}</td>
-								<td class="pr-title">MARGEN DOCTOR: </td>
-								<td>S/ {{ igeneral.mg }}</td>
 							</tr>
 					</table>
 				</div>

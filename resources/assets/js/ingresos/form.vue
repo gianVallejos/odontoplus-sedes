@@ -30,12 +30,12 @@
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
-									<b-button variant="danger" v-on:click.prevent="onEliminar(
+									<!--b-button variant="danger" v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
 							   				  v-if="curUser.rolid == 1">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
-									</b-button>
+									</b-button-->
 									<b-button variant="warning" v-on:click.prevent="onRegresar">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
@@ -58,9 +58,9 @@
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
-										    <b-form-group label="Fecha" label-for="fecha">
+										    <b-form-group label="Fecha de Creación" label-for="fecha">
 											    <b-form-input id="fecha" type="date" v-model="form.fecha"  
-											    			   :disabled=isDisabled autocomplete="off" class="required" />
+											    			   disabled autocomplete="off" />
 											    <span v-if="all_errors.fecha" :class="['label label-danger']">{{ all_errors.fecha[0] }}</span>
 										    </b-form-group>
 												
@@ -77,17 +77,6 @@
 												    </b-input-group-append>
 										    	</b-input-group>
 										    	<span v-if="all_errors.paciente" :class="['label label-danger']">{{ all_errors.paciente[0] }}</span>
-											</b-form-group>
-
-											<b-form-group label="Doctor">
-												<b-form-select v-model="form.doctor" 
-															   :disabled=isDisabled class="required">
-													<option :value="null">Ningun Doctor Seleccionado</option>
-													<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
-														{{ doctor.nombres }} {{ doctor.apellidos}}
-													</option>
-												</b-form-select>
-												<span v-if="all_errors.doctor" :class="['label label-danger']">{{ all_errors.doctor[0] }}</span>
 											</b-form-group>
 										</b-col>
 									</b-row>
@@ -112,12 +101,12 @@
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
-									<b-button variant="danger" v-on:click.prevent="onEliminar(
+									<!--b-button variant="danger" v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
 							   				  v-if="curUser.rolid == 1">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
-									</b-button>
+									</b-button-->
 									<b-button variant="warning" v-on:click.prevent="onRegresar">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
@@ -206,8 +195,7 @@
 	        form: {
 				fecha: this.getMyDate(),
 				idPaciente: '',
-				paciente: '',
-				doctor: null
+				paciente: ''
 			},
 			displayStatus: '',
         	isDisabled: false,
@@ -284,8 +272,7 @@
 		    		this.record_id = this.record.id
 					this.form.fecha = this.record.fecha
 					this.form.idPaciente = this.record.hc
-					this.form.paciente = this.record.nombrePaciente
-					this.form.doctor = this.record.idDoctor						
+					this.form.paciente = this.record.nombrePaciente				
 		    	},
 		    	onGuardarNuevo(){
 		    		var request = { method: 'POST', url: this.url + '/ingresos', data: this.form }
@@ -360,7 +347,6 @@
 					this.record.fecha = this.form.fecha
 					this.record.idPaciente = this.form.hc
 					this.record.paciente = this.form.nombrePaciente
-					this.record.doctor = this.form.idDoctor
 		    	},
 				cleanErrosMessage(){
 					this.all_errors = []
