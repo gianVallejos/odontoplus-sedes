@@ -78,13 +78,13 @@
 					<span slot="heading">Reporte de Finanzas</span>
 					<b-row slot="body">
 						<b-col cols="6" class="vertical-line">
-							<GChart class="pt-4" type="ColumnChart" :data="incomesData" :options="incomesChart" />
+							<GChart class="pt-4" type="ColumnChart" :data="incomesData" :options="incomesChart" :resizeDebounce="480" />
 							<div class="text-center pt-4 pb-4">
 								<b-button :href="url + '/ingresos'" variant="success">Ir a Ingresos</b-button>
 							</div>
 						</b-col>
 						<b-col cols="6">
-							<GChart class="pt-4" type="ColumnChart" :data="outputsData" :options="outputsChart" />
+							<GChart class="pt-4" type="ColumnChart" :data="outputsData" :options="outputsChart" :resizeDebounce="480" />
 							<div class="text-center pt-4 pb-4">
 								<b-button :href="url + '/egresos'" variant="success">Ir a Egresos</b-button>
 							</div>
@@ -195,8 +195,6 @@
           fontSize: 14,
           fontFamily: 'Open Sans',
           subtitle: 'Sales, Expenses',
-          width: 500,
-          height: 285,
           legend: { position: 'bottom', alignment:'center' },
           range: { start: '', end: '' }
 				},
@@ -205,8 +203,6 @@
           title: 'Egresos de los Últimos Seis Meses',
           fontSize: 14,
           fontFamily: 'Open Sans',
-          width: 500,
-          height: 285,
 					legend: { position: 'bottom', alignment:'center' },
           range: { start: '', end: '' }
 				},

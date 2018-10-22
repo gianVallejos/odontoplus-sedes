@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Paciente;
+use App\Ingreso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -99,6 +100,11 @@ class PacienteController extends Controller
                 $paciente->nombre_apoderado = $request->nombre_apoderado;
                 $paciente->celular_apoderado = $request->celular_apoderado;
                 $paciente->save();
+
+                //Crear nuevo ingreso
+                $ingreso = new Ingreso();
+                $ingreso->idPaciente = $paciente->id;             
+                $ingreso->save();
                     
                 return response()->json(['success' => 'created']);
 
@@ -171,7 +177,7 @@ class PacienteController extends Controller
             $canDelete = DB::select('call OP_esPacienteBorrable_Id('. $id .')');
             if( $canDelete[0]->CAN_DELETE == '1' ){
                 $res = DB::select('call OP_eliminarPaciente_Id('. $id .')');
-
+                $res2 = DB::select('call OP_eliminarIngreso_Id('. $id .')');
                 return response()->json(['success' => 'deleted']);
             }else{
                 return response()->json(['error' => 'cantDeleted']);

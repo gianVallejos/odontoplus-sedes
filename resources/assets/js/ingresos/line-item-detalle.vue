@@ -1,7 +1,7 @@
 <template>
 	<b-col cols="12" class="pt-3">				
 		<PanelCard>
-			<span slot="heading">Ingresos por items</span>
+			<span slot="heading">Agregar Tratamientos</span>
 			<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 				<b-row  v-if="!isAddTratamiento" >
 					<b-col cols="12" class="text-center pt-0 pb-1">
@@ -10,6 +10,9 @@
 						</b-btn>
 						<b-btn variant="primary" :href="this.url + '/ingresos/reporte/' + this.id" target="_blank">
 							<i class="fas fa-file-pdf"></i>&nbsp; PDF
+						</b-btn>
+						<b-btn :href="url + '/ingresos'" variant="warning">
+							<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 						</b-btn>
 					</b-col>
 				</b-row>				
@@ -27,7 +30,7 @@
 					            empty-text="No existen campos para mostrar" >
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1" v-if="curUser.rolid == 1">							        						        	
-						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.tratamiento, row.item.cantidad, row.item.monto )" class="action">Modificar</a>
+						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento, row.item.cantidad, row.item.monto )" class="action">Modificar</a>
 						        	|
 						        	<a v-on:click="eliminarIngresoDetalle(row.item.id)" class="action">Eliminar</a>
 						        </div>
@@ -43,7 +46,13 @@
 						    </template>		
 						    <template slot="total" slot-scope="row">
 						      		S/ {{row.value }}
-						    </template>							    
+						    </template>		
+						    <template slot="mg" slot-scope="row">
+						      		S/ {{row.value }}
+						    </template>
+						    <template slot="mg_core" slot-scope="row">
+						      		S/ {{row.value }}
+						    </template>					    
 					</b-table>					
 				</b-row>
 				<b-row v-if="!isAddTratamiento" >
@@ -58,31 +67,55 @@
 				<b-row  v-if="isAddTratamiento">					
 					<b-col rows="12">
 						<div class="pt-3 pb-3 pl-2 pr-2" >
-						    <b-form-group label="Seleccionar Tratamiento" label-for="pacientes">
-								<b-input-group>
-							      	<b-form-input id="tratamientos" type="text" v-model="form.tratamiento" placeholder="Ningun Tratamiento Seleccionado" disabled />
-							      	<b-input-group-append>
-								    	<b-btn class="pl-3 pr-3" variant="success" v-b-modal.exampleModal >
-								    		<i class="fas fa-search"></i>
-								    	</b-btn>
-								    </b-input-group-append>								    
-							   	</b-input-group>
-							   	<span v-if="allerros.tratamiento" :class="['label label-danger']">{{ allerros.tratamiento[0] }}</span>
-							</b-form-group>
+							<b-form-row>
+								<b-col cols="3">
+									<b-form-group label="Fecha" label-for="fecha">
+										<b-form-input id="fecha" type="date" v-model="form.fecha"  
+											    			   :disabled=isDisabled autocomplete="off" class="required" />
+										<span v-if="allerros.fecha" :class="['label label-danger']">{{ allerros.fecha[0] }}</span>
+									</b-form-group>
+								</b-col>
+								<b-col cols="9">
+									<b-form-group label="Doctor">
+										<b-form-select v-model="form.doctor" :disabled=isDisabled class="required" >
+											<option :value="null">Ningun Doctor Seleccionado</option>
+											<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
+												{{ doctor.nombres }} {{ doctor.apellidos}}
+											</option>
+										</b-form-select>
+										<span v-if="allerros.doctor" :class="['label label-danger']">{{ allerros.doctor[0] }}</span>
+									</b-form-group>
+								</b-col>								
+							</b-form-row>
+
 							<b-form-row>
 								<b-col>
+									<b-form-group label="Seleccionar Tratamiento" label-for="pacientes">
+										<b-input-group>
+									      	<b-form-input id="tratamientos" type="text" v-model="form.tratamiento" 
+									      				  placeholder="Ningun Tratamiento Seleccionado" class="required" disabled />
+									      	<b-input-group-append>
+										    	<b-btn class="pl-3 pr-3" variant="success" v-b-modal.exampleModal >
+										    		<i class="fas fa-search"></i>
+										    	</b-btn>
+										    </b-input-group-append>								    
+									   	</b-input-group>
+									   	<span v-if="allerros.tratamiento" :class="['label label-danger']">{{ allerros.tratamiento[0] }}</span>
+									</b-form-group>
+								</b-col>
+								<b-col cols="2">
 								    <b-form-group label="Cantidad" label-for="cantidad">
 										<b-form-input v-on:input="calculateTotal" id="cantidad" type="text" v-model="form.cantidad" placeholder="Cantidad" autocomplete="off" class="required" :disabled=isDisabled required  />
 										<span v-if="allerros.cantidad" :class="['label label-danger']">{{ allerros.cantidad[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col>
+								<b-col cols="2">
 									<b-form-group label="Monto" label-for="monto">
 										<b-form-input v-on:input="calculateTotal" id="monto" type="text" v-model="form.monto" placeholder="Monto" autocomplete="off" class="required" :disabled=isDisabled required />
 										<span v-if="allerros.monto" :class="['label label-danger']">{{ allerros.monto[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col>
+								<b-col cols="2">
 									<b-form-group label="Total" label-for="total">
 										<b-form-input id="total" type="text" v-model="form.total" placeholder="Total" autocomplete="off" disabled />
 										<span v-if="allerros.total" :class="['label label-danger']">{{ allerros.total[0] }}</span>
@@ -159,11 +192,14 @@
 	export default{
 		mounted(){
 			console.log('Line item detalle Mounted')
+			console.log('!: ' + JSON.stringify(this.record))
+			console.log('!!: ' + JSON.stringify(this.doctores))
 		},
 		props:[
 			'url',
 			'record',
 			'tratamientos',
+			'doctores',
 			'id',
 			'curUser'
 		],
@@ -174,10 +210,14 @@
 			return{
 				fields: [			
 					{ key: 'actions', label: '' },		    
+					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
+					{ key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
 				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
-				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', 'class': 'text-center' }	
+				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+				    { key: (this.curUser.rolid == 1) ? 'mg' : ''	, label: 'Doctor', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+				    { key: (this.curUser.rolid == 1) ? 'mg_core' : ''	, label: 'CORE', sortable: true, sortDirection: 'desc', 'class': 'text-center' }				    
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,
@@ -211,7 +251,9 @@
 			    	tratamiento: '',
 					cantidad: 1,
 					monto: 0,
-					total: 0
+					total: 0,
+					fecha: this.getMyDate(),
+					doctor: null
 			    },
 			    ingresoDetalleId: ''
 			}
@@ -244,7 +286,7 @@
 				this.hideModal()
 			},
 			calculateTotal(){				
-				this.form.total = parseFloat(this.form.cantidad) * parseFloat(this.form.monto)				
+				this.form.total = this.redondearADos(parseFloat(this.form.cantidad) * parseFloat(this.form.monto))				
 			},
 			restartFormValues(){
 				this.form.precioId = ''
@@ -252,25 +294,46 @@
 				this.form.cantidad = 1
 				this.form.monto = 0
 				this.form.total = 0
+				this.form.fecha = this.getMyDate()
+				this.form.doctor = null
 				this.allerros = ''
 			},
 			agregarIngresoATabla(element){		
 				this.record.unshift(element)				
+			},
+			getDoctorId(nombreDoctor){
+				for( var i = 0; i < this.doctores.length; i++ ){
+					if( this.doctores[i].id == idDoctor )
+						return this.doctores[i].nombres + ' ' + this.doctores[i].apellidos
+				}
+			},
+			getDoctorName(idDoctor){
+				for( var i = 0; i < this.doctores.length; i++ ){
+					if( this.doctores[i].id == idDoctor )
+						return this.doctores[i].nombres + ' ' + this.doctores[i].apellidos
+				}
 			},
 			agregarLineItem(){
 				var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
 				var request = { method: 'POST', url: this.url + '/ingresos/line-item', data: this.form }
 				axios(request).then((response) => {					
 					if(response.data.success){
-						console.log('Response:: OK')						
+						console.log('Response:: OK')		
+						console.log('!!!: ' + JSON.stringify(response.data))				
 						this.agregarIngresoATabla({ id: response.data.last_ingreso, 
 													idTratamiento: this.form.precioId, 
+													fecha: this.form.fecha,
 													tratamiento: this.form.tratamiento, 
-													cantidad: this.form.cantidad, 
-													monto: this.redondearADos(this.form.monto), 
-													total: this.redondearADos(this.form.total) 
+													cantidad: this.form.cantidad,
+													monto: this.redondearADos(this.form.monto),
+													total: this.redondearADos(this.form.total),
+													idDoctor: this.form.doctor,
+													nombreDoctor: this.getDoctorName(this.form.doctor),
+													mg: this.redondearADos(response.data.mg),
+													mg_core: this.redondearADos(response.data.mg_core)
 												})
-						this.actualizarTotal(response.data.total, response.data.mg, response.data.mg_core)
+						console.log('table: ' + JSON.stringify(this.record))
+						this.actualizarTotal(response.data.total)
 						this.cerrarAddTratamiento()
 						this.toastFunction('Ingreso agregado correctamente', 'success')						
 					}
@@ -292,12 +355,17 @@
 						this.updateTabla(this.ingresoDetalleId,{
 																  id: this.ingresoDetalleId, 
 																  idTratamiento: this.form.precioId, 
+																  fecha: this.form.fecha,
 																  tratamiento: this.form.tratamiento, 
-																  cantidad: this.form.cantidad, 
-																  monto: this.redondearADos(this.form.monto), 
-																  total: this.redondearADos(this.form.total) 
+																  cantidad: this.form.cantidad,
+																  monto: this.redondearADos(this.form.monto),
+																  total: this.redondearADos(this.form.total),
+																  idDoctor: this.form.doctor,
+																  nombreDoctor: this.getDoctorName(this.form.doctor),
+																  mg: this.redondearADos(response.data.mg),
+																  mg_core: this.redondearADos(response.data.mg_core)
 																})
-						this.actualizarTotal(response.data.total, response.data.mg, response.data.mg_core)
+						this.actualizarTotal(response.data.total)
 						this.cerrarAddTratamiento()
 						this.toastFunction('Ingreso modificado correctamente.', 'success')						
 						this.ingresoDetalleId = ''
@@ -346,12 +414,14 @@
 					}
 				})
 			},
-			modificarIngresoDetalle(ingresoDetalleId, precioId, cantidad, monto){
+			modificarIngresoDetalle(ingresoDetalleId, fecha, doctorId, precioId, cantidad, monto){				
 				this.form.precioId = this.id
 			    this.form.tratamiento = precioId
 				this.form.cantidad = cantidad
+				this.form.fecha = fecha
+				this.form.doctor = doctorId
 				this.form.monto = monto
-				this.form.total = parseFloat(cantidad) * parseFloat(monto)
+				this.form.total = this.redondearADos(parseFloat(cantidad) * parseFloat(monto))
 				this.isAddTratamiento = true
 				this.isModificarIngreso = true
 				this.ingresoDetalleId = ingresoDetalleId				
@@ -363,17 +433,30 @@
 					}
 				}
 			},
-	        redondearADos(total){
-	        	return parseFloat(Math.round(total * 100) / 100).toFixed(2)
-	        },
-	        actualizarTotal(total, mg, mg_core){	        	
-	        	this.$emit('calcular-total', total, mg, mg_core)
+	        actualizarTotal(total){	        	
+	        	this.$emit('calcular-total', total)
 	        },
 	      	totalCurrentPages(){
 	        	var res = Math.round(this.totalRows / this.perPage)
         		if( res == 0 ) return res + 1
         		return Math.ceil(this.totalRows / this.perPage )
 	      	},
+			setMyDateToToday() {
+				this.myDate = new Date();		      
+			},
+			addADayToMyDate() {
+				if (this.myDate){ // as myDate can be null		        
+					this.myDate = new Date(this.myDate.setDate(this.myDate.getDate()));
+				}
+			},
+			getMyDate(){
+				this.setMyDateToToday()
+				this.addADayToMyDate()
+				return this.myDate && this.myDate.toISOString().split('T')[0]			    	
+			},
+	        redondearADos(total){
+	        	return parseFloat(Math.round(total * 100) / 100).toFixed(2)
+	        },
 			toastFunction(msg, type){
 				 this.$swal({
 						type: type,

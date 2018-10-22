@@ -11,11 +11,12 @@ class IngresoController extends Controller
 {    
     public static $validation_rules = [
         'fecha' => 'required|date',
-        'paciente' => 'required',
-        'doctor' => 'required'
+        'paciente' => 'required'
     ];
 
     public static $validation_line_item_rules = [        
+        'fecha' => 'required|date',
+        'doctor' => 'required',
         'tratamiento' => 'required',
         'cantidad' => 'required|integer',
         'monto' => 'required|numeric',
@@ -52,7 +53,6 @@ class IngresoController extends Controller
             try{
                 $ingreso = new Ingreso();
                 $ingreso->idPaciente = $request->idPaciente;
-                $ingreso->idMedico = $request->doctor;
                 $ingreso->fecha = $request->fecha;                
                 $ingreso->save();
 
@@ -74,24 +74,32 @@ class IngresoController extends Controller
     }
 
     public function lineItem($id){
-        $ingresos = DB::select('call OP_obtenerIngresos_Id('. $id .')')[0];
-        $hc = $ingresos->hc;
-        $ingresos = json_encode($ingresos);
-        $ingreso_detalle = DB::select('call OP_obtenerIngresoDetalle_Id('. $id .')');        
-        $ingreso_detalle = json_encode($ingreso_detalle);        
-        $tratamientos = DB::select('call OP_obtenerTratamientos_PacienteId('. $hc .')');
-        $tratamientos = json_encode($tratamientos);
+        try{
+            $ingresos = DB::select('call OP_obtenerIngresos_Id('. $id .')')[0];
+            $hc = $ingresos->hc;
+            $ingresos = json_encode($ingresos);
+            $ingreso_detalle = DB::select('call OP_obtenerIngresoDetalle_Id('. $id .')');        
+            $ingreso_detalle = json_encode($ingreso_detalle);        
+            $tratamientos = DB::select('call OP_obtenerTratamientos_PacienteId('. $hc .')');
+            $tratamientos = json_encode($tratamientos);
+            $doctores = DB::select('call OP_obtenerDoctores()');
+            $doctores = json_encode($doctores);
 
-        return view('ingresos.line-item', compact('ingresos', 'ingreso_detalle', 'tratamientos'));
+            return view('ingresos.line-item', compact('ingresos', 'ingreso_detalle', 'tratamientos', 'doctores'));
+        }catch(Exception $e){
+            echo 'Ha ocurrido un error'; die();
+        }
     }
 
     public function lineItemSave(Request $request){
         $validator = Validator::make($request->all(), self::$validation_line_item_rules );
-
+        
         if ($validator->passes()) {
             try{
 
-                $ingreso = DB::select('call OP_agregarIngresoDetalle('. $request->ingresoId .', '. $request->precioId .', '. $request->cantidad .', '. $request->monto .')');
+                $ingreso = DB::select('call OP_agregarIngresoDetalle('. $request->ingresoId .', '. $request->precioId .', '. 
+                                                                        $request->cantidad .', '. $request->monto . ', "' . 
+                                                                        $request->fecha .'", ' . $request->doctor . ')');
                 /*
                 $ingreso = Ingreso::findOrFail($id);
                 $ingreso->idPaciente = $request->idPaciente;
@@ -102,12 +110,15 @@ class IngresoController extends Controller
                 $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Ingreso modificado correctamente']));
                 */  
                 $last_ingreso = DB::select('call OP_obtenerUltimoIngresoDetalle_Id('. $request->ingresoId .')')[0];
-                $ing_total = DB::select('call OP_obtenerIngresosTotal_Id('. $request->ingresoId .')')[0];
-                $total = $ing_total->total;
+
+                $total_ingreso = DB::select('call OP_obtenerAllTotalIngreso_Id('. $request->ingresoId .')')[0];
+                $Ingresototal = $total_ingreso->total;
+
+                $ing_total = DB::select('call OP_obtenerIngresosTotal_Id('. $last_ingreso->lastIngresoDetalle .')')[0];               
                 $mg = $ing_total->mg;
                 $mg_core = $ing_total->mg_core;
 
-                return response()->json(['success' => 'ok', 'last_ingreso' => $last_ingreso->lastIngresoDetalle, 'total' => $total, 'mg' => $mg, 'mg_core' => $mg_core]);
+                return response()->json(['success' => 'ok', 'last_ingreso' => $last_ingreso->lastIngresoDetalle, 'total' => $Ingresototal, 'mg' => $mg, 'mg_core' => $mg_core]);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -118,19 +129,22 @@ class IngresoController extends Controller
 
     public function lineItemUpdate(Request $request, $id){
         $validator = Validator::make($request->all(), self::$validation_line_item_rules );
-
+        //print_r($request->all()); die();
         if ($validator->passes()) {
             try{
 
-                $ingreso = DB::select('call OP_actualizarIngresoDetalle('. $request->ingresoId .', '. $request->precioId .', '. $request->cantidad .', '. $request->monto .', '. $id  .')');
-                 
-                $last_ingreso = DB::select('call OP_obtenerUltimoIngresoDetalle_Id('. $request->ingresoId .')')[0];
-                $ing_total = DB::select('call OP_obtenerIngresosTotal_Id('. $request->ingresoId .')')[0];
-                $total = $ing_total->total;
+                $ingreso = DB::select('call OP_actualizarIngresoDetalle('. $request->ingresoId .', '. $request->precioId .', '. 
+                                                                           $request->cantidad .', '. $request->monto .', '. $id  .', "'. 
+                                                                           $request->fecha .'", '. $request->doctor .')');
+                
+                $total_ingreso = DB::select('call OP_obtenerAllTotalIngreso_Id('. $request->ingresoId .')')[0];
+                $Ingresototal = $total_ingreso->total;
+
+                $ing_total = DB::select('call OP_obtenerIngresosTotal_Id('. $id .')')[0];                
                 $mg = $ing_total->mg;
                 $mg_core = $ing_total->mg_core;
 
-                return response()->json(['success' => 'ok', 'last_ingreso' => $last_ingreso->lastIngresoDetalle, 'total' => $total, 'mg' => $mg, 'mg_core' => $mg_core]);
+                return response()->json(['success' => 'ok', 'total' => $Ingresototal, 'mg' => $mg, 'mg_core' => $mg_core]);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -179,7 +193,6 @@ class IngresoController extends Controller
             try{
                 $ingreso = Ingreso::findOrFail($id);
                 $ingreso->idPaciente = $request->idPaciente;
-                $ingreso->idMedico = $request->doctor;
                 $ingreso->fecha = $request->fecha;                
                 $ingreso->save();
 
