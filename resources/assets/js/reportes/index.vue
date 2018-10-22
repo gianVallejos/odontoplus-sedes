@@ -186,8 +186,6 @@
 								<GChart class="pb-3" type="PieChart" :data="incomesCompanyData" :options="incomesCompanyChart" :resizeDebounce="480" />
 							</div>
 						</b-col>	
-
-
 						
 					</b-row>
 				</PanelCard>
@@ -223,9 +221,9 @@
           			{ text: 'Dashboard', href: this.url + '/' },
         			  { text: 'Reportes', active: true }
 			  	],
-			  	width: 480,
-			  	height: 480,
-		incomesData: [],
+				width: 480,
+				height: 480,
+				incomesData: [],
         incomesChart: {			        
           title: '',
           fontSize: 13,
@@ -234,53 +232,53 @@
           height: 285,          
           legend: 'none',
           range: { start: '', end: '' }
-		},
-		outputsData: [],
-        outputsChart: {			        
-          title: '',
-          fontSize: 13,
-          fontFamily: 'Open Sans',
-          height: 285,
-          legend: 'none',
-          range: { start: '', end: '' }
-		},
-		incomesPacienteData: [],
-        incomesPacienteChart: {			        
-          title: '',
-          fontSize: 13,
-          fontFamily: 'Open Sans',
-          height: 285,
-		  legend: 'none',
-          range: { start: '', end: '' }
-		},
-		incomesCompanyData: [],
-        incomesCompanyChart: {			        
-          title: '',
-          fontSize: 13,
-          fontFamily: 'Open Sans',
-          height: 285,
+				},
+				outputsData: [],
+					outputsChart: {			        
+					title: '',
+					fontSize: 13,
+					fontFamily: 'Open Sans',
+					height: 285,
+					legend: 'none',
+					range: { start: '', end: '' }
+				},
+				incomesPacienteData: [],
+					incomesPacienteChart: {			        
+					title: '',
+					fontSize: 13,
+					fontFamily: 'Open Sans',
+					height: 285,
+					legend: 'none',
+					range: { start: '', end: '' }
+				},
+				incomesCompanyData: [],
+				incomesCompanyChart: {			        
+					title: '',
+					fontSize: 13,
+					fontFamily: 'Open Sans',
+					height: 285,
 					legend: { position: 'bottom', alignment:'center' },
-          range: { start: '', end: '' }
+					range: { start: '', end: '' }
 				},
 				treatmentsData: [],
-        treatmentsChart: {			        
-          title: '',
-          fontSize: 13,
-          fontFamily: 'Open Sans',
-          height: 285,
-          pieHole: 0.5,
-		  legend: {position: 'bottom'},
-          range: { start: '', end: '' }
+				treatmentsChart: {			        
+					title: '',
+					fontSize: 12,
+					fontFamily: 'Open Sans',
+					height: 285,
+					width:480	,
+					pieHole: 0.5,
+					legend: {position: 'rigth'},
+					range: { start: '', end: '' }
 				},
-		 pieSliceText: 'none',
-		  balance: {			        
-	          incomes: '',
-	          outputs: '',
-						balance: '',
-						range: { start: '', end: '' }
-          }
-
-		}
+				pieSliceText: 'none',
+				balance: {			        
+					incomes: '',
+					outputs: '',
+					balance: '',
+					range: { start: '', end: '' }
+				}
+			}
     },
     methods:{
 			initCharts(){
@@ -423,8 +421,6 @@
 			},
 			validDateRage(start, end){
 				var valid_range = start <= end
-				console.log(start+ ' |  '+ end)
-				console.log(valid_range)
 				if(!valid_range) this.toastFunction('El rango de fechas Ingresado en invalido. La Fecha Inicial debe ser menor o igual a la Fecha Final','error')
 				return valid_range
 			},
