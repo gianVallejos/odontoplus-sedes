@@ -226,35 +226,30 @@
 		methods:{
 			initChats(){
 				var today = this.currentDate()
-				var sixsMonthsAgo = this.currentDate(-4)
-				this.incomesChart.range.start = sixsMonthsAgo
-				this.incomesChart.range.end = today
-				this.outputsChart.range.start = sixsMonthsAgo
-				this.outputsChart.range.end = today
+				this.incomesChart.range.date = today
+				this.outputsChart.range.date = today
 				this.fillIncomesChart()
 				this.fillOutputsChart()
 			},
 			fillIncomesChart(){
-				var start = this.incomesChart.range.start 
-				var end = this.incomesChart.range.end
-        var request = { method: 'GET', url: this.url + '/reportes/ingresos?start='+start+'&end='+end }
-        axios(request).then((response) => {
-					var incomes = response.data.incomes
-					this.incomesData = [['Mes', 'Ingresos']]
-					for(var i=0 ; i<incomes.length; i++){
-						this.incomesData.push([ incomes[i].mes.substring(0,3), parseInt(incomes[i].ingresos)])
-					}
-					if (outputs.length == 0) this.outputsData.push([ '', 0])
-        }).catch(function (error) {
-          console.log(error);
-        });
+				var date = this.incomesChart.range.date 				
+		        var request = { method: 'GET', url: this.url + '/reportes/ingresos/'+date }
+		        axios(request).then((response) => {
+							var incomes = response.data.ingresos
+							this.incomesData = [['Mes', 'Ingresos']]
+							for(var i=0 ; i<incomes.length; i++){
+								this.incomesData.push([ incomes[i].mes.substring(0,3), parseInt(incomes[i].ingresos)])
+							}
+							if (incomes.length == 0) this.incomesData.push([ '', 0])
+		        }).catch(function (error) {
+		          console.log(error);
+		        });
 			},
 			fillOutputsChart(){
-				var start = this.outputsChart.range.start 
-				var end = this.outputsChart.range.end
-        var request = { method: 'GET', url: this.url + '/reportes/egresos?start='+start+'&end='+end }
+				var date = this.outputsChart.range.date 				
+        var request = { method: 'GET', url: this.url + '/reportes/egresos/'+ date }
         axios(request).then((response) => {
-					var outputs = response.data.outputs
+					var outputs = response.data.egresos
 					this.outputsData = [['Mes', 'Egresos']]
 					for(var i=0 ; i<outputs.length; i++){
 						this.outputsData.push([ outputs[i].mes.substring(0,3), parseInt(outputs[i].egresos)])
