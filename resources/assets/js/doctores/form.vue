@@ -243,7 +243,7 @@
 		record_id: '',
 		all_errors: [],
         breadcrumb: [
-          { text: 'Dashboard', href: this.url },
+          { text: 'Inicio', href: this.url },
           { text: 'Doctores', href: this.url+'/doctores' },
           { text: this.title, active: true },
 		],

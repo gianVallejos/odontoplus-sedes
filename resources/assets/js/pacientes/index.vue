@@ -120,7 +120,7 @@
 			return{
 				mydata: [],
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url },
+			    	{ text: 'Inicio', href: this.url },
 			    	{ text: 'Pacientes', active: true}
 			    ],			    
 			    fields: [				    

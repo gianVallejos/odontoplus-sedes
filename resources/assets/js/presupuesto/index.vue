@@ -116,7 +116,7 @@
 		data(){
 			return{
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url },
+			    	{ text: 'Inicio', href: this.url },
 			    	{ text: 'Presupuestos', active: true}
 			    ],			    
 			    fields: [				    
