@@ -8,7 +8,7 @@
 		Odontoplus - Software Odontológico
 	</title>
 
-	<link rel="icon" href="{{ asset('/public/images/favicon.ico')}}">
+	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('/public/images/favicon.ico?v=1.0.1')}}">
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
@@ -24,6 +24,7 @@
 	@yield('styles')
 </head>
 <body>	
+
 	<div id="header">
 	@if( Auth::check() )		
 		<header-component 			
@@ -39,13 +40,6 @@
 		/>
 	@endif
 	</div>
-
-	<div id="alert">
-		@if(Session::has('alert'))
-			<flash ref="flash_alert" alert="{{ Session::get('alert') }}"/>
-		@endif
-	</div>
-
 	<div id="app">
 		<div class="contenido">
 			@yield('content')
