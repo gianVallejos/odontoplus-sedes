@@ -191,7 +191,7 @@
 		record_id: '',
 		all_errors: [],
         breadcrumb: [
-          { text: 'Home', href: '/' },
+          { text: 'Inicio', href: '/' },
           { text: 'Usuarios', href: this.url + '/users' },
           { text: this.title, active: true },
         ],

@@ -250,7 +250,7 @@
 		data(){
 			return {
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url },
+			    	{ text: 'Inicio', href: this.url },
 			    	{ text: 'Presupuestos', href: this.url + '/presupuestos' },
 			    	{ text: 'Crear Presupuesto', active: true }
 			    ],

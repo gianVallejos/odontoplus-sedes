@@ -4,7 +4,7 @@
 			<ul class="barra-list">
 		      <li class="item" v-bind:class="[(whoIsActive == 'dashboard') ? 'active' : '']">
 		      	<a :href="url">
-		      		<i class="fas fa-home"></i>Dashboard
+		      		<i class="fas fa-home"></i>Inicio
 		      	</a>
 		      </li>
 		      <li class="item" v-bind:class="[(whoIsActive == 'presupuestos') ? 'active' : '']">
@@ -47,10 +47,16 @@
 		          	</a>
 		          </li>
 		          <li class="li-dropdown" v-if="user.rolid == 1">
+		          	<a :href="url + '/pagos'">
+		          		<i class="fas fa-credit-card"></i>Pagos
+		          	</a>
+		          </li>
+		          <li class="li-dropdown" v-if="user.rolid == 1">
 		          	<a :href="url + '/reportes'">
 		          		<i class="fas fa-chart-line"></i>Reportes
 		          	</a>
 		          </li>
+		          
 		        </ul>
 		      </li>
 		      <li class="item dropdown"  v-bind:class="[(whoIsActive == 'otros') ? 'active' : '']">

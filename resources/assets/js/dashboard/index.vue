@@ -2,7 +2,7 @@
 	<b-container class="pb-4">
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Dashboard" :items="breadcrumb" />
+				<TitleComponent titulo="Inicio" :items="breadcrumb" />
 			</b-col>
 			<b-col cols="12" class="pt-3">
 				<div class="row">
@@ -108,7 +108,7 @@
 
 	export default{
 		mounted(){
-			console.log('Dashboard Mounted')
+			console.log('Inicio Mounted')
 			this.initChats()
 		},
 		props: [
@@ -128,7 +128,7 @@
 		data(){
 			return{
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url }
+			    	{ text: 'Inicio', href: this.url }
 			    ],
 			    items: [			    	
 				    	{ 

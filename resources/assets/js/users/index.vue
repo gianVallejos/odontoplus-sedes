@@ -122,7 +122,7 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Home', href: this.url + '/' },
+          { text: 'Inicio', href: this.url + '/' },
           { text: 'Usuarios', active: true }
         ]
 			}

@@ -61,7 +61,7 @@
 		data(){
 			return{
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url },
+			    	{ text: 'Inicio', href: this.url },
 			    	{ text: 'Ingresos', href: this.url + '/ingresos' },
 			    	{ text: 'Detalle de Ingresos', active: true}
 			    ],

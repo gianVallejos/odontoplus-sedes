@@ -149,7 +149,7 @@
 		record_id: '',
 		all_errors: [],
         breadcrumb: [
-          { text: 'Dashboard', href: this.url },
+          { text: 'Inicio', href: this.url },
           { text: 'Empresas', href: this.url + '/empresas' },
           { text: this.title, active: true }
 		]
