@@ -2,7 +2,7 @@
 	<b-container class="pb-4">
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Dashboard" :items="breadcrumb" />
+				<TitleComponent titulo="Inicio" :items="breadcrumb" />
 			</b-col>
 			<b-col cols="12" class="pt-3">
 				<div class="row">
@@ -78,13 +78,13 @@
 					<span slot="heading">Reporte de Finanzas</span>
 					<b-row slot="body">
 						<b-col cols="6" class="vertical-line">
-							<GChart class="pt-4" type="ColumnChart" :data="incomesData" :options="incomesChart" />
+							<GChart class="pt-4" type="ColumnChart" :data="incomesData" :options="incomesChart" :resizeDebounce="480" />
 							<div class="text-center pt-4 pb-4">
 								<b-button :href="url + '/ingresos'" variant="success">Ir a Ingresos</b-button>
 							</div>
 						</b-col>
 						<b-col cols="6">
-							<GChart class="pt-4" type="ColumnChart" :data="outputsData" :options="outputsChart" />
+							<GChart class="pt-4" type="ColumnChart" :data="outputsData" :options="outputsChart" :resizeDebounce="480" />
 							<div class="text-center pt-4 pb-4">
 								<b-button :href="url + '/egresos'" variant="success">Ir a Egresos</b-button>
 							</div>
@@ -108,13 +108,8 @@
 
 	export default{
 		mounted(){
-			console.log('Dashboard Mounted')
-			this.incomesChart.range.start = this.currentDate(-4)
-			this.incomesChart.range.end = this.currentDate()
-			this.outputsChart.range.start = this.currentDate(-4)
-			this.outputsChart.range.end = this.currentDate()
-			this.fillIncomesChart()
-			this.fillOutputsChart()
+			console.log('Inicio Mounted')
+			this.initChats()
 		},
 		props: [
 			'url',
@@ -133,7 +128,7 @@
 		data(){
 			return{
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url }
+			    	{ text: 'Inicio', href: this.url }
 			    ],
 			    items: [			    	
 				    	{ 
@@ -200,8 +195,6 @@
           fontSize: 14,
           fontFamily: 'Open Sans',
           subtitle: 'Sales, Expenses',
-          width: 500,
-          height: 285,
           legend: { position: 'bottom', alignment:'center' },
           range: { start: '', end: '' }
 				},
@@ -210,8 +203,6 @@
           title: 'Egresos de los Últimos Seis Meses',
           fontSize: 14,
           fontFamily: 'Open Sans',
-          width: 500,
-          height: 285,
 					legend: { position: 'bottom', alignment:'center' },
           range: { start: '', end: '' }
 				},
@@ -233,27 +224,32 @@
 			}
 		},
 		methods:{
+			initChats(){
+				var today = this.currentDate()
+				this.incomesChart.range.date = today
+				this.outputsChart.range.date = today
+				this.fillIncomesChart()
+				this.fillOutputsChart()
+			},
 			fillIncomesChart(){
-				var start = this.incomesChart.range.start 
-				var end = this.incomesChart.range.end
-        var request = { method: 'GET', url: this.url + '/reportes/ingresos?start='+start+'&end='+end }
-        axios(request).then((response) => {
-					var incomes = response.data.incomes
-					this.incomesData = [['Mes', 'Ingresos']]
-					for(var i=0 ; i<incomes.length; i++){
-						this.incomesData.push([ incomes[i].mes.substring(0,3), parseInt(incomes[i].ingresos)])
-					}
-					if (outputs.length == 0) this.outputsData.push([ '', 0])
-        }).catch(function (error) {
-          console.log(error);
-        });
+				var date = this.incomesChart.range.date 				
+		        var request = { method: 'GET', url: this.url + '/reportes/ingresos/'+date }
+		        axios(request).then((response) => {
+							var incomes = response.data.ingresos
+							this.incomesData = [['Mes', 'Ingresos']]
+							for(var i=0 ; i<incomes.length; i++){
+								this.incomesData.push([ incomes[i].mes.substring(0,3), parseInt(incomes[i].ingresos)])
+							}
+							if (incomes.length == 0) this.incomesData.push([ '', 0])
+		        }).catch(function (error) {
+		          console.log(error);
+		        });
 			},
 			fillOutputsChart(){
-				var start = this.outputsChart.range.start 
-				var end = this.outputsChart.range.end
-        var request = { method: 'GET', url: this.url + '/reportes/egresos?start='+start+'&end='+end }
+				var date = this.outputsChart.range.date 				
+        var request = { method: 'GET', url: this.url + '/reportes/egresos/'+ date }
         axios(request).then((response) => {
-					var outputs = response.data.outputs
+					var outputs = response.data.egresos
 					this.outputsData = [['Mes', 'Egresos']]
 					for(var i=0 ; i<outputs.length; i++){
 						this.outputsData.push([ outputs[i].mes.substring(0,3), parseInt(outputs[i].egresos)])

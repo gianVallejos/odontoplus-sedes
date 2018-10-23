@@ -56,7 +56,7 @@
 						        <div class="actions-table" style="color: #d1d1d1">						        	
 						        	<a :href="url+'/egresos/'+ row.item.id"  class="action">Detalle</a>
 						        	|
-						        	<a :href="url+'/egresos/'+ row.item.id +'/edit/'" class="action">Modificar</a>
+						        	<a :href="url+'/egresos/'+ row.item.id +'/edit'" class="action">Modificar</a>
 						        </div>
 						    </template>
 						    <template slot="fecha" slot-scope="row">
@@ -122,7 +122,7 @@
 			return{
 				mydata: [],
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url },
+			    	{ text: 'Inicio', href: this.url },
 			    	{ text: 'Egresos', active: true}
 			    ],			    
 			    fields: [		    

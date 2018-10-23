@@ -148,7 +148,7 @@
 		record_id: '',
 		all_errors: [],
         breadcrumb: [
-          { text: 'Dashboard', href: this.url },
+          { text: 'Inicio', href: this.url },
           { text: 'Tratamientos', href: this.url + '/tratamientos' },
           { text: this.title, active: true },
 		],

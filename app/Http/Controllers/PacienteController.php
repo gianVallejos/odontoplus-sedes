@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Paciente;
+use App\Ingreso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -15,24 +16,7 @@ class PacienteController extends Controller
         $this->middleware('auth');
     }
 
-    public static $validation_rules = [
-        'nombres' => 'required|string|max:90',
-        'apellidos' => 'required|string|max:90',
-        'dni' => 'required|unique:pacientes|digits:8',
-        'direccion' => 'required|string|max:90',
-        'fechanacimiento' => 'required|date|before:now',
-        'email' => 'nullable|email|max:90',
-        'genero' => 'nullable|string|max:25',
-        'estado' => 'nullable|string|max:25',
-        'telefono' => 'nullable|string|max:50',
-        'fax' => 'nullable|string|max:50',
-        'celular' => 'nullable|string|max:50',
-        'celular_aux' => 'nullable|string|max:50',
-        'empresa_id' => 'nullable',
-        'seguro_ind' => 'nullable',
-        'nombre_apoderado' => 'nullable|string|max:150',
-        'celular_apoderado' => 'nullable|string|max:150',
-    ];
+    //public static $validation_rules = ;
 
     private function getEighteenYearsFromNow(){
         $mytime = Carbon::now()->subYears(18);
@@ -73,7 +57,24 @@ class PacienteController extends Controller
 
     public function store(Request $request){
         //print_r($request->all()); die();
-        $validator = Validator::make($request->all(), self::$validation_rules );
+        $validator = Validator::make($request->all(), [
+                                    'nombres' => 'required|string|max:90',
+                                    'apellidos' => 'required|string|max:90',
+                                    'dni' => 'required|unique:pacientes|digits:8',
+                                    'direccion' => 'required|string|max:90',
+                                    'fechanacimiento' => 'required|date|before:now',
+                                    'email' => 'nullable|email|max:90',
+                                    'genero' => 'nullable|string|max:25',
+                                    'estado' => 'nullable|string|max:25',
+                                    'telefono' => 'nullable|string|max:50',
+                                    'fax' => 'nullable|string|max:50',
+                                    'celular' => 'nullable|string|max:50',
+                                    'celular_aux' => 'nullable|string|max:50',
+                                    'empresa_id' => 'nullable',
+                                    'seguro_ind' => 'nullable',
+                                    'nombre_apoderado' => 'nullable|string|max:150',
+                                    'celular_apoderado' => 'nullable|string|max:150',
+                                ] );
         $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){            
             return $input->fechanacimiento > self::getEighteenYearsFromNow();
         });
@@ -99,6 +100,11 @@ class PacienteController extends Controller
                 $paciente->nombre_apoderado = $request->nombre_apoderado;
                 $paciente->celular_apoderado = $request->celular_apoderado;
                 $paciente->save();
+
+                //Crear nuevo ingreso
+                $ingreso = new Ingreso();
+                $ingreso->idPaciente = $paciente->id;             
+                $ingreso->save();
                     
                 return response()->json(['success' => 'created']);
 
@@ -112,7 +118,24 @@ class PacienteController extends Controller
         
     public function update(Request $request, $id){
         
-        $validator = Validator::make($request->all(), self::$validation_rules );
+        $validator = Validator::make($request->all(), [
+                        'nombres' => 'required|string|max:90',
+                        'apellidos' => 'required|string|max:90',
+                        'dni' => 'required|digits:8',
+                        'direccion' => 'required|string|max:90',
+                        'fechanacimiento' => 'required|date|before:now',
+                        'email' => 'nullable|email|max:90',
+                        'genero' => 'nullable|string|max:25',
+                        'estado' => 'nullable|string|max:25',
+                        'telefono' => 'nullable|string|max:50',
+                        'fax' => 'nullable|string|max:50',
+                        'celular' => 'nullable|string|max:50',
+                        'celular_aux' => 'nullable|string|max:50',
+                        'empresa_id' => 'nullable',
+                        'seguro_ind' => 'nullable',
+                        'nombre_apoderado' => 'nullable|string|max:150',
+                        'celular_apoderado' => 'nullable|string|max:150',
+                    ] );
         $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){            
             return $input->fechanacimiento > self::getEighteenYearsFromNow();
         });
@@ -154,7 +177,7 @@ class PacienteController extends Controller
             $canDelete = DB::select('call OP_esPacienteBorrable_Id('. $id .')');
             if( $canDelete[0]->CAN_DELETE == '1' ){
                 $res = DB::select('call OP_eliminarPaciente_Id('. $id .')');
-
+                $res2 = DB::select('call OP_eliminarIngreso_Id('. $id .')');
                 return response()->json(['success' => 'deleted']);
             }else{
                 return response()->json(['error' => 'cantDeleted']);

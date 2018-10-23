@@ -114,8 +114,8 @@
 			return{
         all_errors: [],
         breadcrumb: [
-          { text: 'Dashboard', href: this.url },
-          { text: 'Lista de Precios', active: true }
+          { text: 'Inicio', href: this.url },
+          { text: 'Precios', active: true }
         ]
 			}
 		},

@@ -53,7 +53,7 @@
 												</b-col>
 												<b-col cols="4">
 													<b-form-group label="Tipo">
-														<b-form-select v-model="form.tipo"  :disabled=isDisabled class="required">
+														<b-form-select v-model="form.tipo" v-on:input="changeDoctorOption"  :disabled=isDisabled class="required">
 															<option v-for="(tipo, index) in tipos" :key="index" :value="tipo.nombre">
 																{{ tipo.nombre }}
 															</option>
@@ -63,7 +63,7 @@
 												</b-col>
 												<b-col cols="5">
 													<b-form-group label="Doctor">
-														<b-form-select v-model="form.doctor"  :disabled=isDisabled >
+														<b-form-select v-model="form.doctor"  :disabled=needDoctor >
 															<option :value="null">Ningun Doctor Seleccionado</option>
 															<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
 																{{ doctor.nombres }} {{ doctor.apellidos}}
@@ -108,6 +108,7 @@
 												</b-col>
 											</b-form-row>
 										</b-col>
+										{{ needDoctor }}
 									</b-row>
 							</div>
 
@@ -158,8 +159,9 @@
 	import axios from 'axios'
 
   export default{
-    mounted() { 
+    mounted() {       	
       	this.initActualView()
+		
 		console.log('Egresos Form Component')	
     },
     name: 'Egreso-Form',
@@ -193,7 +195,7 @@
 		record_id: '',
 		all_errors: [],
         breadcrumb: [
-          { text: 'Dashboard', href: this.url },
+          { text: 'Inicio', href: this.url },
           { text: 'Egresos', href: this.url + '/egresos' },
           { text: this.title, active: true },
 		],
@@ -201,19 +203,21 @@
 			{ nombre: 'Empresa' },
 			{ nombre: 'Pago a Personal' },
 			{ nombre: 'Otros' }
-		]
+		],
+		needDoctor: false
       }
     },
     methods:{
     		initActualView(){    		
-				this.displayStatus = this.view_mode				
+				this.displayStatus = this.view_mode						
 		    	if( this.displayStatus == 'new' ){
 		    		this.onDisplayNuevo()
-		    	}else if( this.displayStatus == 'show' ){
-		    		this.onDisplayDetalle()
-		    	}else if( this.displayStatus == 'edit' ){
-		    		this.onDisplayModificar()
+		    	}else if( this.displayStatus == 'show' ){		    		
 		    		this.setControllerDataToForms()
+		    		this.onDisplayDetalle()		    		
+		    	}else if( this.displayStatus == 'edit' ){
+		    		this.setControllerDataToForms()
+		    		this.onDisplayModificar()		    		
 		    	}     	   
 	    	},
 			setMyDateToToday() {
@@ -236,18 +240,18 @@
 	    	onDisplayDetalle(){
 	    		this.displayStatus = 'show'
 				this.setDisableForm()
-				this.setControllerDataToForms()
-
 	    	},	
 	    	onDisplayModificar(){
 	    		this.displayStatus = 'edit'
-	    		this.setEnableForm()			
+	    		this.setEnableForm()		    		
 	    	},
 	    	setEnableForm(){
 	    		this.isDisabled = false
+	    		this.setDoctorEnableIfExistDoctor()
 	    	},
 	    	setDisableForm(){
 	    		this.isDisabled = true
+	    		this.setDoctorEnableIfExistDoctor()
 	    	},
 	    	setControllerDataToForms(){	    		
 	    		this.record_id = this.record.id
@@ -389,6 +393,23 @@
 			},
 			calculateTotal(){				
 				this.form.total = parseFloat(this.form.cantidad) * parseFloat(this.form.monto)				
+			},
+			changeDoctorOption(){		
+				if( this.form.tipo == 'Pago a Personal' && this.displayStatus != 'show' ){
+					this.needDoctor = false
+				}else{
+					this.needDoctor = true
+					if( this.displayStatus != 'show' ){
+						this.form.doctor = null
+					}
+				}
+			},
+			setDoctorEnableIfExistDoctor(){
+				if( this.form.doctor != null && this.displayStatus != 'show'){
+					this.needDoctor = false
+				}else{
+					this.needDoctor = true
+				}
 			}
     }
   }

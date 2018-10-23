@@ -19,24 +19,18 @@
 							<tr>
 								<td class="pr-title">FECHA: </td>
 								<td colspan="3">{{ igeneral.fecha }}</td>
+							</tr>							
+							<tr>
+								<td class="pr-title">NRO HISTORIA: </td>
+								<td colspan="3">{{ igeneral.hc }}</td>
 							</tr>	
 							<tr>
 								<td class="pr-title">PACIENTE: </td>
 								<td colspan="3">{{ igeneral.nombrePaciente }}</td>
 							</tr>
 							<tr>
-								<td class="pr-title">DOCTOR: </td>
-								<td colspan="3">{{ igeneral.nombreDoctor }}</td>
-							</tr>
-							<tr>
 								<td class="pr-title" >TOTAL: </td>
 								<td colspan="3">S/ {{ igeneral.monto_total }}</td>								
-							</tr>
-							<tr v-if="this.curUser.rolid == 1">
-								<td class="pr-title" >MARGEN EMPRESA: </td>
-								<td>S/ {{ igeneral.mg_core }}</td>
-								<td class="pr-title">MARGEN DOCTOR: </td>
-								<td>S/ {{ igeneral.mg }}</td>
 							</tr>
 					</table>
 				</div>
@@ -45,7 +39,7 @@
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
-					<i class="fas fa-print"></i> &nbsp;Imprimir
+					<i class="fas fa-print"></i> Imprimir
 				</b-button>
 			</b-col>			
 		</b-row>
@@ -53,7 +47,7 @@
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
 					<div class="pr-seccion-title-text">
-						<i class="fas fa-tooth"></i> &nbsp;DETALLE DE INGRESO
+						<i class="fas fa-tooth"></i> DETALLE DE INGRESO
 					</div>
 				</div>
 			</b-col>			
@@ -85,7 +79,7 @@
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-1 pb-2 text-center">
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
-					<i class="fas fa-print"></i> &nbsp;Imprimir
+					<i class="fas fa-print"></i> Imprimir
 				</b-button>
 			</b-col>			
 		</b-row>		
@@ -110,11 +104,15 @@
 		data(){
 			return{
 				fields: [				    
-					'index',				    		    
+					{ key: 'index', label: '#' },				    		    
+				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
+				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
-				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc' },
-				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc' },
-				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc' }			        
+				    { key: 'cantidad', label: 'Cantidad', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
+				    { key: 'monto', label: 'Monto', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
+				    { key: 'total', label: 'Total', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
+				    { key: (this.curUser.rolid == 1) ? 'mg' : '', label: 'Doctor', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
+				    { key: (this.curUser.rolid == 1) ? 'mg_core' : '', label: 'CORE', 'class': 'text-center', sortable: true, sortDirection: 'desc' }
 			    ]
 			}
 		},
