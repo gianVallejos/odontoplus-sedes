@@ -271,9 +271,17 @@
 			haveDescuento(){
 				if( this.descuento > 0 ){
 					this.isDescuento = true
+					this.matchDescuento()					
 					return true
 				}
 				return false
+			},
+			matchDescuento(){
+				if( this.descuento == 1 ){
+					this.descuento = 5
+				}else if(this.descuento == 2){
+					this.descuento = 10
+				}
 			},
 			range(min,max){				
 				var array = [],
@@ -357,32 +365,33 @@
 	        	this.tratamientos_tabla = []	
 	        	this.sub_total = 0
 	        	this.tratamientos.sort(this.menorAMayor)
-	        	var monto = 0    	
+	        	var monto_total = 0  	
 	        	for( var i = 0; i < this.tratamientos.length; i++ ){
 	        		//console.log('!!!' + this.tratamientos[i].opcion)
 	                if( this.tratamientos[i].opcion == this.opcion ){
 	                    var pz = this.tratamientos[i].pieza
 	                    var sec = this.tratamientos[i].seccion
-	                    var ind_sec_tabla
+	                    var monto = this.tratamientos[i].monto
+	                    var ind_sec_tabla = null
 	                    //Puede ser Mejor
 	                    if( this.tratamientos[i].secUno == 0 && this.tratamientos[i].secDos == 0 ){
 	                    	ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
-	                    	monto += parseFloat(this.precios[ind_sec_tabla].monto)
-	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, this.precios[ind_sec_tabla].monto);	                        
+	                    	monto_total += parseFloat(monto)
+	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);		                        
 	                    }else if( this.tratamientos[i].secUno != 0 && this.tratamientos[i].secDos == 0 ){
 	                        sec = 29;
 	                        ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
-	                        monto += parseFloat(this.precios[ind_sec_tabla].monto)
-	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, this.precios[ind_sec_tabla].monto);
+	                        monto_total += parseFloat(monto)
+	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);
 	                    }else if( this.tratamientos[i].secUno != 0 && this.tratamientos[i].secDos != 0 ){
 	                        sec = 30;
 	                        ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
-	                        monto += parseFloat(this.precios[ind_sec_tabla].monto)
-	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, this.precios[ind_sec_tabla].monto);
+	                        monto_total += parseFloat(monto)
+	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);
 	                    }
 	                }
 	            }   
-	            this.sub_total = this.redondearADos(monto)	            
+	            this.sub_total = this.redondearADos(monto_total)	            
 	            this.total = this.calcularDescuento()
 	        },
 	        calcularDescuento(){

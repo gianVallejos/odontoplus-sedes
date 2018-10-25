@@ -60,13 +60,6 @@ const app = new Vue({
     }
 })
 
-const alert = new Vue({
-	el: '#alert',
-	components: {
-		Flash
-	}
-})
-
 const header = new Vue({
 	el: '#header',
 	components: {
