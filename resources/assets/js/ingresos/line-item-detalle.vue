@@ -192,8 +192,6 @@
 	export default{
 		mounted(){
 			console.log('Line item detalle Mounted')
-			console.log('!: ' + JSON.stringify(this.record))
-			console.log('!!: ' + JSON.stringify(this.doctores))
 		},
 		props:[
 			'url',

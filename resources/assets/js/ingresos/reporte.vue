@@ -13,17 +13,13 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5>INGRESO NRO {{ igeneral.id }}</h5>
+						<h5>Nro de Historia {{ igeneral.hc }}</h5>
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 							<tr>
 								<td class="pr-title">FECHA: </td>
 								<td colspan="3">{{ igeneral.fecha }}</td>
-							</tr>							
-							<tr>
-								<td class="pr-title">NRO HISTORIA: </td>
-								<td colspan="3">{{ igeneral.hc }}</td>
-							</tr>	
+							</tr>
 							<tr>
 								<td class="pr-title">PACIENTE: </td>
 								<td colspan="3">{{ igeneral.nombrePaciente }}</td>
@@ -110,9 +106,7 @@
 				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
 				    { key: 'cantidad', label: 'Cantidad', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
 				    { key: 'monto', label: 'Monto', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
-				    { key: 'total', label: 'Total', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
-				    { key: (this.curUser.rolid == 1) ? 'mg' : '', label: 'Doctor', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
-				    { key: (this.curUser.rolid == 1) ? 'mg_core' : '', label: 'CORE', 'class': 'text-center', sortable: true, sortDirection: 'desc' }
+				    { key: 'total', label: 'Total', 'class': 'text-center', sortable: true, sortDirection: 'desc' }
 			    ]
 			}
 		},

@@ -28,7 +28,7 @@
 								</div>
 							</div>
 							<div class="col-md-6">							
-								<div class="float-right d-inline-block">
+								<div class="float-right d-inline-block" v-if="curUser.rolid == 1">
 									<b-button-group>										
 										<b-button :href="url+'/tratamientos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
@@ -51,10 +51,10 @@
                     @filtered="onFiltered" 
                     empty-text="No existen campos para mostrar" >
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/tratamientos/'+ row.item.id" class="action" >Detalle</a>
-                  |
-                  <a :href="url+'/tratamientos/'+ row.item.id+'/edit'" class="action" >Modificar</a>
+                  <div class="actions-table text-center" style="color: #d1d1d1">						        	
+                    <a :href="url+'/tratamientos/'+ row.item.id" class="action" >Detalle</a>
+                    <span v-if="curUser.rolid == 1">|</span>
+                    <a :href="url+'/tratamientos/'+ row.item.id+'/edit'" class="action" v-if="curUser.rolid == 1" >Modificar</a>
                 </div>
               </template>
               <template slot="detalle" slot-scope="row">
@@ -96,14 +96,15 @@
 		},
     props:[
       'items',
-      'url'
+      'url',
+      'curUser'
     ],
     data(){
 			return{
         fields: [
           { key: 'actions', label: '', 'class': 'action-width' },
           { key: 'detalle', label: 'Nombre de Tratamiento', sortable: true, sortDirection: 'desc' }
-          ],
+        ],
         currentPage: 1,
         perPage: 10,
         totalRows: this.items.length,
