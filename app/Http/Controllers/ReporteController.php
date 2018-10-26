@@ -44,4 +44,18 @@ class reporteController extends Controller{
         $outputs = DB::select('call OP_ObtenerTotalEgresos_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
         return response()->json(['ingresos' => $incomes, 'egresos' => $outputs ]);
     }
+
+    public function ganancias(){
+        $ingresos = DB::select('call OP_ObtenerGanancias()');
+        $ingresos = json_encode($ingresos);
+        return view('reportes.ganancias', compact('ingresos'));    
+    }
+
+    public function reporteGanancias($fechaInicial, $fechaFinal){
+        $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("0","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("0","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $ingresos = json_encode($ingresos);
+        $igeneral = json_encode(['totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
+        return view('reportes.ganancias_reporte', compact('ingresos', 'igeneral'));    
+    }
 }

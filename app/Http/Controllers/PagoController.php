@@ -28,15 +28,6 @@ class PagoController extends Controller{
         return view('pagos.new', compact('ingresos', 'igeneral'));    
     }
 
-    // pagos de core son ganancias
-    public function reporteGanancias($fechaInicial, $fechaFinal){
-        $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("0","'. $fechaInicial .'","'. $fechaFinal .'")');
-        $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("0","'. $fechaInicial .'","'. $fechaFinal .'")');
-        $ingresos = json_encode($ingresos);
-        $igeneral = json_encode(['totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
-        return view('pagos.ganancias', compact('ingresos', 'igeneral'));    
-    }
-
     public function create(){
         $doctores = DB::select('call OP_ObtenerDoctores_DESC()'); 
         $doctores = json_encode($doctores);

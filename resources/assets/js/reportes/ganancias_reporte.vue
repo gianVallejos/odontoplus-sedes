@@ -13,7 +13,7 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5> PAGO </h5>
+						<h5> REPORTE DE GANANCIAS </h5>
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >					
 							<tr>
@@ -22,7 +22,7 @@
 							</tr>	
 							<tr>
 								<td class="pr-title">TOTAL: </td>
-								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>								
+								<td colspan="3">S/ {{ igeneral.totales.total }}</td>								
 							</tr>
 					</table>
 				</div>
@@ -30,11 +30,8 @@
 		</b-row>
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
-				<b-button v-if="displayStatus == 'new'" variant="success" v-on:click.prevent="imprimirPagina()">
+				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> &nbsp;Imprimir
-				</b-button>
-				<b-button v-if="displayStatus == 'new'" variant="primary" v-on:click.prevent="onGuardarNuevo()">
-					<i class="fas fa-save"></i>&nbsp; Guardar
 				</b-button>
 			</b-col>			
 		</b-row>
@@ -82,11 +79,8 @@
 		
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
-				<b-button v-if="displayStatus == 'show'" variant="success" v-on:click.prevent="imprimirPagina()">
+				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> &nbsp;Imprimir
-				</b-button>
-				<b-button v-if="displayStatus == 'new'" variant="primary" v-on:click.prevent="onGuardarNuevo()">
-					<i class="fas fa-save"></i>&nbsp; Guardar
 				</b-button>
 			</b-col>			
 		</b-row>		
@@ -123,27 +117,9 @@
 				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc'},			        
 				    { key: 'ganancia', label: 'Core', sortable: true, sortDirection: 'desc'}			        
 					],
-				displayStatus: ''
 			}
 		},
 		methods: {
-			initActualView(){    		
-				this.displayStatus = this.view_mode
-		    if( this.displayStatus == 'new' ){
-		    	this.onDisplayNuevo()
-		    }else if( this.displayStatus == 'show' ){
-		    	this.onDisplayDetalle()
-		    }	   
-			},
-			onDisplayNuevo(){    		
-    		this.displayStatus = 'new'
-			}, 
-			onDisplayDetalle(){
-				this.displayStatus = 'show'
-			},
-			onGuardarNuevo(){
-
-			},	
 			imprimirPagina(){
 				window.print()
 			},

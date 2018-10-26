@@ -25,7 +25,7 @@
 								<td colspan="3">Desde {{ igeneral.fechaInicial }} hasta {{igeneral.fechaFinal}} </td>
 							</tr>	
 							<tr>
-								<td class="pr-title">PAGO: </td>
+								<td class="pr-title">PAGO DR.: </td>
 								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>								
 							</tr>
 							<tr class="hide-print">
@@ -80,11 +80,11 @@
 					</template>
 				</b-table>
 			</b-col>
-			<b-col cols="12" class="text-right monto-class hide-print">
-				<span>Monto Total: </span>S/ {{ igeneral.totales.total }}
-			</b-col>
 			<b-col cols="12" class='text-right monto-class'>
 				<span>Doctor: </span>S/ {{ igeneral.totales.total_doctor }}
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<span>Monto Total: </span>S/ {{ igeneral.totales.total }}
 			</b-col>
 		</b-row>
 		

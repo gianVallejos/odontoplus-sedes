@@ -38,25 +38,15 @@
                       </b-form-group>
                     </b-col>
                   </b-form-row>						
-
-									<b-form-group label="Filtrar Ingresos" label-for="filtro_ingresos">
-										<b-form-radio-group id="filtro_ingresos" v-model="filtro_ingresos" name="filtroIngresos">
-											<b-form-radio value=por-doctor>Para un doctor</b-form-radio>
-											<b-form-radio value=todos>Incluir Ingresos de todos los doctores</b-form-radio>
-										</b-form-radio-group>
+									<b-form-group label="Seleccionar Doctor" label-for="apellidos">
+										<b-form-select v-model="form.doctorSelected">
+											<option :value="null">Ningun Doctor Seleccionado</option>
+											<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
+												{{ doctor.nombres }} {{ doctor.apellidos}}
+											</option>
+										</b-form-select>
+										<span v-if="all_errors.doctorSelected" :class="['label label-danger']">{{ all_errors.doctorSelected[0] }}</span>
 									</b-form-group>
-
-									<div v-if="filtro_ingresos=='por-doctor'">
-										<b-form-group label="Seleccionar Doctor" label-for="apellidos">
-											<b-form-select v-model="form.doctorSelected">
-												<option :value="null">Ningun Doctor Seleccionado</option>
-												<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
-													{{ doctor.nombres }} {{ doctor.apellidos}}
-												</option>
-											</b-form-select>
-											<span v-if="all_errors.doctorSelected" :class="['label label-danger']">{{ all_errors.doctorSelected[0] }}</span>
-										</b-form-group>
-									</div>
 								</b-form>								
 							</b-col>
 							<b-col cols="12">
@@ -107,7 +97,6 @@
             fechaInicio:'',
             fechaFin:''
 					},
-					filtro_ingresos: 'por-doctor',
 			    all_errors: [],
 			    fields: [				    				    
 				    { key: 'id', label: 'Nro Historia', class: 'text-center' }, 				    
@@ -127,15 +116,7 @@
 		methods: {
 			onSubmit () {
 				if( this.validForm() ){
-					var url = this.url + '/pagos/nuevo/'
-					if (this.filtro_ingresos == 'por-doctor'){
-						url += this.form.doctorSelected + '/' + this.form.fechaInicio + '/' + this.form.fechaFin
-						window.location.href = url
-					}
-					else if (this.filtro_ingresos == 'todos'){
-						url += this.form.fechaInicio + '/' + this.form.fechaFin
-						window.location.href = url
-					}
+					window.location.href = this.url + '/pagos/nuevo/' + this.form.doctorSelected + '/' + this.form.fechaInicio + '/' + this.form.fechaFin
 				}
 				else{
 					this.toastFunction('Existen campos inválidos. Verifícalos antes de guardar', 'error')
@@ -146,7 +127,7 @@
 			},
 			validForm(){
 				this.cleanErrors()
-				if( this.filtro_ingresos == 'por-doctor' && this.form.doctorSelected == null ){
+				if( this.form.doctorSelected == null ){
 					this.all_errors.doctorSelected = ['Para crear un Pago debe seleccionar un Doctor']
 				}
 				if( this.form.fechaInicio == '' ){

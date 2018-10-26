@@ -27,7 +27,6 @@ Route::resource('proveedorLineItems', 'ProveedorLineItemController');
 Route::resource('precios', 'PrecioController');
 Route::resource('pagos', 'PagoController');
 Route::get('pagos/nuevo/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoController@nuevoPago');
-Route::get('pagos/nuevo/{fechaInicial}/{fechaFinal}', 'PagoController@reporteGanancias');
 Route::get('consulta_precio', 'PrecioController@getPrice');
 
 //REPORTS
@@ -38,6 +37,8 @@ Route::get('reportes/ingresos/por_empresa', 'ReporteController@companyIncomes');
 Route::get('reportes/egresos', 'ReporteController@outputs');
 Route::get('reportes/balance', 'ReporteController@totalIncomesOutputs');
 Route::get('reportes/tratamientos/destacados', 'ReporteController@treatments');
+Route::get('reportes/ganancias', 'ReporteController@ganancias');
+Route::get('reportes/ganancias/{fechaInicial}/{fechaFinal}', 'ReporteController@reporteGanancias');
 
 //APIS 
 Route::resource('presupuestos', 'PresupuestoController');
