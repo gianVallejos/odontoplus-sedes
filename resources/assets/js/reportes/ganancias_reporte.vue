@@ -115,7 +115,7 @@
 				    { key: 'monto', label: 'Precio', sortable: true, sortDirection: 'desc' },
 				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc' },			        
 				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc'},			        
-				    { key: 'ganancia', label: 'Core', sortable: true, sortDirection: 'desc'}			        
+				    { key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc'}			        
 					],
 			}
 		},

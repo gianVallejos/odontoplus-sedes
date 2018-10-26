@@ -157,7 +157,7 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Home', href: this.url + '/' },
+          { text: 'Dashboard', href: this.url + '/' },
           { text: 'Ganancias', active: true }
         ]
 			}

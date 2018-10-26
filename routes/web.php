@@ -42,7 +42,7 @@ Route::get('reportes/obtener-balances/{start}/{end}', 'ReporteController@obtener
 Route::get('reportes/obtener-tratamientos', 'ReporteController@tratamientos');
 Route::get('reportes/obtener-tratamientos/{start}/{end}', 'ReporteController@tratamientosFechas');
 Route::get('reportes/ganancias', 'ReporteController@ganancias');
-Route::get('reportes/ganancias/{fechaInicial}/{fechaFinal}', 'ReporteController@reporteGanancias');
+Route::get('reportes/ganancias/{start}/{end}', 'ReporteController@reporteGanancias');
 
 //APIS 
 Route::resource('presupuestos', 'PresupuestoController');
