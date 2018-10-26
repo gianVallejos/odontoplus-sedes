@@ -28,7 +28,7 @@
 								</div>
 							</div>
 							<div class="col-md-6">							
-								<div class="float-right d-inline-block">
+								<div class="float-right d-inline-block" v-if="curUser.rolid == 1">
 									<b-button-group>										
 										<b-button :href="url+'/empresas/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nueva Empresa
@@ -52,11 +52,11 @@
                     empty-text="No existen campos para mostrar"
               >
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/empresas/'+ row.item.id" class="action" >Detalle</a>
-                  |
-                  <a :href="url+'/empresas/'+ row.item.id+'/edit'" class="action" >Modificar</a>
-                </div>
+                  <div class="actions-table text-center" style="color: #d1d1d1">						        	
+                    <a :href="url+'/empresas/'+ row.item.id" class="action" >Detalle</a>
+                    <span v-if="curUser.rolid == 1">|</span>
+                    <a :href="url+'/empresas/'+ row.item.id+'/edit'" class="action" v-if="curUser.rolid == 1">Modificar</a>
+                  </div>
               </template>
               <template slot="nombre" slot-scope="row">
                   <a :href="url + '/empresas/' + row.item.id ">
@@ -96,7 +96,8 @@
 		},
     props:[
       'items',
-      'url'
+      'url',
+      'curUser'
     ],
     data(){
 			return{
@@ -115,7 +116,7 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Dashboard', href: this.url },
+          { text: 'Inicio', href: this.url },
           { text: 'Empresas', active: true }
         ]
 			}

@@ -119,7 +119,11 @@
 						</b-row>
 						<b-row class="pt-4 pb-3">
 							<b-col cols="12">								
-								<b-table show-empty :items=tratamientos_tabla :fields="fields" empty-text="No existen campos para mostrar">
+								<b-table  show-empty 
+										  :items=tratamientos_tabla 
+										  :fields="fields" 
+										  empty-text="No existen campos para mostrar"
+								>
 									<template slot="pieza" slot-scope="row">								    	
 								    	{{ row.value }}
 								    </template>
@@ -195,10 +199,18 @@
 					</b-input-group>
 				</b-col>
 				<b-col cols="12" class="pt-3">
-					<b-table show-empty :items="precios_table" :fields="fieldsPrecios" 
-								:current-page="currentPage" :per-page="perPage" :filter="filter" 
-								:sort-by.sync="sortBy" :sort-desc.sync="sortDesc" 
-								:sort-direction="sortDirection" @filtered="onFiltered">						
+					<b-table  show-empty 
+							  :items="precios_table" 
+							  :fields="fieldsPrecios" 
+							  :current-page="currentPage" 
+							  :per-page="perPage" 
+							  :filter="filter" 								
+							  :sort-by.sync="sortBy" 
+							  :sort-desc.sync="sortDesc" 								
+							  :sort-direction="sortDirection" 
+							  @filtered="onFiltered"
+							  empty-text="No existen campos para mostrar"
+					>						
 						<template slot="index" slot-scope="row">
 					      {{ row.index + 1 }}
 					    </template>
@@ -250,7 +262,7 @@
 		data(){
 			return {
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url },
+			    	{ text: 'Inicio', href: this.url },
 			    	{ text: 'Presupuestos', href: this.url + '/presupuestos' },
 			    	{ text: 'Crear Presupuesto', active: true }
 			    ],
@@ -371,38 +383,6 @@
 							this.isSuccess = true
 							this.toastFunctionRedirect('<span style="#fff; font-size: 1em">Éxito</span>', 'Presupuesto guardado correctamente <br />Redireccionando...', 'success')
 						}
-							/*
-					if( request.data.success == 'success' ){
-						console.log(request.data)						
-						this.success = true						
-					}else{
-						console.log(request.data)						
-                        this.success = false						
-					}
-
-					if( !this.success ){
-						this.allerros = request.data.error
-						this.$toasted.show('Existen campos inválidos. Por favor verificalos.', 
-											{ 
-												position: 'top-center',
-												className: 'toast-danger',
-												duration: 3500,
-												containerClass: 'test'
-											})
-					}else{
-						this.allerros = []
-						this.$toasted.show('Campo agregado correctamente.', 
-											{ 
-												position: 'top-center',
-												className: 'toast-success',
-												duration: 3500,
-												containerClass: 'test'
-											})
-						this.isDisabled = true
-						setTimeout(function () {
-						    window.location.href = this.url + '/pacientes'
-						}.bind(this), 3500)
-					}*/
 				}).catch((error) => {
 					console.log('Error: ' + error)
 					this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
@@ -449,31 +429,32 @@
 	        	this.tratamientos_tabla = []	
 	        	this.sub_total = 0
 	        	this.tratamientos.sort(this.menorAMayor)
-	        	var monto = 0    	
+	        	var monto_total = 0    	
 	        	for( var i = 0; i < this.tratamientos.length; i++ ){
 	                if( this.tratamientos[i].opcion == this.opcion ){
 	                    var pz = this.tratamientos[i].pieza
 	                    var sec = this.tratamientos[i].seccion
-	                    var ind_sec_tabla
+	                    var monto = this.tratamientos[i].monto
+	                    var ind_sec_tabla = null
 	                    //Puede ser Mejor
 	                    if( this.tratamientos[i].secUno == null && this.tratamientos[i].secDos == null ){
 	                    	ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
-	                    	monto += parseFloat(this.precios[ind_sec_tabla].monto)
-	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, this.precios[ind_sec_tabla].monto);	                        
+	                    	monto_total += parseFloat(monto)
+	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);	                        
 	                    }else if( this.tratamientos[i].secUno != null && this.tratamientos[i].secDos == null ){
 	                        sec = 29;
 	                        ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
-	                        monto += parseFloat(this.precios[ind_sec_tabla].monto)
-	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, this.precios[ind_sec_tabla].monto);
+	                        monto_total += parseFloat(monto)
+	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);
 	                    }else if( this.tratamientos[i].secUno != null && this.tratamientos[i].secDos != null ){
 	                        sec = 30;
 	                        ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
-	                        monto += parseFloat(this.precios[ind_sec_tabla].monto)
-	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, this.precios[ind_sec_tabla].monto);
+	                        monto_total += parseFloat(monto)
+	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);
 	                    }
 	                }
 	            }   
-	            this.sub_total = this.redondearADos(monto)	            
+	            this.sub_total = this.redondearADos(monto_total)	            
 	            this.total = this.calcularDescuento()
 	        },
 	        calcularDescuento(){
@@ -516,16 +497,25 @@
 	        },
 	        agregarTratamiento(seccion, pieza){	        	
 	        	var addPieza = true
+	        	var ind_sec_tabla  = null
 	        	if( pieza != null ){
 					if( !this.existeTratamiento(seccion, pieza) ){
 					   if( this.esResina(seccion) ){
 					   		var ind = this.existeResina(pieza)
 							if( ind != -1 ){
-								if( this.tratamientos[ind].secUno == null && this.tratamientos[ind].secDos == null && this.tratamientos[ind].opcion == this.opcion){
-			                        this.tratamientos[ind].secUno = seccion;    addPieza = false
+								if( this.tratamientos[ind].secUno == null && this.tratamientos[ind].secDos == null 
+									&& this.tratamientos[ind].opcion == this.opcion){
+									ind_sec_tabla = this.getIndiceTratamientoPorSeccion(29) //Resina Compuesta
+			                        this.tratamientos[ind].secUno = seccion	
+			                        this.tratamientos[ind].monto = this.precios[ind_sec_tabla].monto                 
+			                        addPieza = false
 			                        this.mostrarTratamientosEnTabla()
-			                    }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos == null && this.tratamientos[ind].opcion == this.opcion){
-			                        this.tratamientos[ind].secDos = seccion;    addPieza = false
+			                    }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos == null 
+			                    		  && this.tratamientos[ind].opcion == this.opcion){
+			                    	ind_sec_tabla = this.getIndiceTratamientoPorSeccion(30) //Resina Compleja
+			                        this.tratamientos[ind].secDos = seccion
+			                        this.tratamientos[ind].monto = this.precios[ind_sec_tabla].monto
+			                        addPieza = false
 			                        this.mostrarTratamientosEnTabla()
 			                    }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos != null && this.tratamientos[ind].opcion == this.opcion){
 			                        this.toastFunction('No puede agregar más de tres resinas en una sola pieza.', 'error')			                        
@@ -539,10 +529,11 @@
 					}
 				}
 				if( addPieza ){
-					this.tratamientos.push({pieza, seccion, secUno: null, secDos: null, opcion: this.opcion})
+					ind_sec_tabla = this.getIndiceTratamientoPorSeccion(seccion)
+					this.tratamientos.push({pieza, seccion, secUno: null, secDos: null, opcion: this.opcion, monto: this.precios[ind_sec_tabla].monto})
 					this.mostrarTratamientosEnTabla()
-
 				}
+				console.log('tratamientos: ' + JSON.stringify(this.tratamientos))
 	        },
 	        despintarSeccionDiente(seccion, pieza){
 	        	var sec = 'pz' + pieza
@@ -569,14 +560,19 @@
 	        	}
 	        },
 	        eliminarTratamiento(id){
-	            var flag = 0;  
+	            var flag = 0
+	            var ind_sec_tabla = null
 	            if( this.esResina(this.tratamientos[id].seccion) ){ //Eliminar caries
 	                if( this.tratamientos[id].secUno != null && this.tratamientos[id].secDos != null ){	
 	                	this.despintarSeccionDiente(this.tratamientos[id].secDos, this.tratamientos[id].pieza)
 	                    this.tratamientos[id].secDos = null; flag = 1
+	                    ind_sec_tabla = this.getIndiceTratamientoPorSeccion(29) //Resina Compuesta
+						this.tratamientos[id].monto = this.precios[ind_sec_tabla].monto
 	                }else if( this.tratamientos[id].secUno != null && this.tratamientos[id].secDos == null ){
 	                    this.despintarSeccionDiente(this.tratamientos[id].secUno, this.tratamientos[id].pieza)
 	                    this.tratamientos[id].secUno = null; flag = 1
+	                    ind_sec_tabla = this.getIndiceTratamientoPorSeccion(this.tratamientos[id].seccion) //Resina Compuesta
+						this.tratamientos[id].monto = this.precios[ind_sec_tabla].monto
 	                }else{
 	                    flag = 0
 	                }
@@ -588,6 +584,7 @@
 	                this.tratamientos.splice(id, 1)
 	            }	            
 	            this.restartMainDientes()
+	            console.log('tratamientos: ' + JSON.stringify(this.tratamientos))
 	        },
 	        cambiarOpcion(opc){
 	        	this.opcion = opc

@@ -304,7 +304,7 @@
 		record_id: '',
 		all_errors: [],
         breadcrumb: [
-          { text: 'Dashboard', href: this.url },
+          { text: 'Inicio', href: this.url },
           { text: 'Pacientes', href: this.url + '/pacientes' },
           { text: this.title, active: true },
         ],

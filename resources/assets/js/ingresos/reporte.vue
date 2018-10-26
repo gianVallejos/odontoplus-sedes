@@ -13,17 +13,13 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5>INGRESO NRO {{ igeneral.id }}</h5>
+						<h5>Nro de Historia {{ igeneral.hc }}</h5>
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 							<tr>
 								<td class="pr-title">FECHA: </td>
 								<td colspan="3">{{ igeneral.fecha }}</td>
-							</tr>							
-							<tr>
-								<td class="pr-title">NRO HISTORIA: </td>
-								<td colspan="3">{{ igeneral.hc }}</td>
-							</tr>	
+							</tr>
 							<tr>
 								<td class="pr-title">PACIENTE: </td>
 								<td colspan="3">{{ igeneral.nombrePaciente }}</td>
@@ -39,7 +35,7 @@
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
-					<i class="fas fa-print"></i> &nbsp;Imprimir
+					<i class="fas fa-print"></i> Imprimir
 				</b-button>
 			</b-col>			
 		</b-row>
@@ -47,7 +43,7 @@
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
 					<div class="pr-seccion-title-text">
-						<i class="fas fa-tooth"></i> &nbsp;DETALLE DE INGRESO
+						<i class="fas fa-tooth"></i> DETALLE DE INGRESO
 					</div>
 				</div>
 			</b-col>			
@@ -79,7 +75,7 @@
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-1 pb-2 text-center">
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
-					<i class="fas fa-print"></i> &nbsp;Imprimir
+					<i class="fas fa-print"></i> Imprimir
 				</b-button>
 			</b-col>			
 		</b-row>		
@@ -104,11 +100,13 @@
 		data(){
 			return{
 				fields: [				    
-					'index',				    		    
+					{ key: 'index', label: '#' },				    		    
+				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
+				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
-				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc' },
-				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc' },
-				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc' }			        
+				    { key: 'cantidad', label: 'Cantidad', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
+				    { key: 'monto', label: 'Monto', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
+				    { key: 'total', label: 'Total', 'class': 'text-center', sortable: true, sortDirection: 'desc' }
 			    ]
 			}
 		},

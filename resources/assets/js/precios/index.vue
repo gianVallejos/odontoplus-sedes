@@ -18,12 +18,12 @@
                                     <i class="fas fa-search" aria-hidden="true"></i>
                                 </span>
                             </div>
-                            <input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
+                            <input v-model="search" placeholder="Buscar..." type="text" class="odInput buscar">   
                             <div class="input-group-append">
-                                <b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
-                                    <i class="fas fa-sync-alt"></i>
-                                </b-btn>
-                            </div>
+                              <b-btn class="pl-3 pr-3" variant="secondary" :disabled="!search" @click="search = ''">
+                                <i class="fas fa-sync-alt"></i>
+                              </b-btn>
+                            </div>                         
                         </b-input-group>
                     </div>
                 </div>
@@ -54,11 +54,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(item, index) in prices" :key="index" >
+                  <tr v-for="(item, index) in computedData" :key="index" >
                     <th scope="row">{{ index + 1}}</th>
                     <td>{{item.tratamiento}}</td>
                     <td>
-                      <b-form-select :ref="'emp-'+index" class="small" v-model="item.id_empresa" v-on:input="onSelectedCompany(index)">
+                      <b-form-select :ref="'emp-' + index" class="small" v-model="item.id_empresa" v-on:input="onSelectedCompany(index, item)">
                         <option v-for="(e,index) in companies" :key="index" :value="e.id">
                           {{ e.nombre }}
                         </option>
@@ -73,8 +73,8 @@
 
                       </div>
                     </td>
-                    <td>
-                      <b-button class="small" variant="success" v-on:click.prevent="onModificar(index)">
+                    <td v-if="curUser.rolid == 1">
+                      <b-button class="small" variant="success" v-on:click.prevent="onModificar(index, item)">
                         Guardar
                       </b-button>
                     </td>
@@ -108,35 +108,41 @@
     props:[
       'companies',
       'prices',
+      'curUser',
       'url',
     ],
     data(){
 			return{
         all_errors: [],
         breadcrumb: [
-          { text: 'Dashboard', href: this.url },
-          { text: 'Lista de Precios', active: true }
-        ]
+          { text: 'Inicio', href: this.url },
+          { text: 'Precios', active: true }
+        ],
+        search: '',
+        computedTodos:[]
 			}
 		},
-    computed: {
-      sortOptions () {
-        // Create an options list from our fields
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => { return { text: f.label, value: f.key } })
+    computed: {      
+      computedData: function() { 
+          this.computedTodos = this.prices;  
+          if (this.search) {
+            this.computedTodos = this.computedTodos.filter(item => item.tratamiento.toUpperCase().includes(this.search.toUpperCase()));   
+            return this.computedTodos;
+          }
+          return this.computedTodos;
       }
     },
     methods:{
-      onSelectedCompany(index){
+      onSelectedCompany(index, item){
         this.cleanErrosMessage()
+        var ind = this.buscarPosicion(item.tratamiento)
         var company_id = this.$refs['emp-'+index][0].$el.value
-        var treatment_id = this.prices[index].id_tratamiento
+        var treatment_id = this.prices[ind].id_tratamiento
         var request = { method: 'GET', url: this.url+'/consulta_precio?empresa_id='+ company_id + '&tratamiento_id=' + treatment_id}
 
         axios(request).then((response) => {
           if(response.data.price){
-            this.prices[index].id = response.data.price[0].id
+            this.prices[ind].id = response.data.price[0].id
             this.$refs['monto-'+index][0].$el.value = response.data.price[0].monto
           }
           else{
@@ -147,15 +153,15 @@
         });
 
       },
-      onModificar(index){
+      onModificar(index, item){
         this.cleanErrosMessage()
-        var id = this.prices[index].id
+        var id = this.prices[this.buscarPosicion(item.tratamiento)].id
         var amount = this.$refs['monto-'+index][0].$el.value
         var request = { method: 'PUT', url: this.url+'/precios/'+ id, data: { monto: amount } }
         
         axios(request).then((response) => {
           if(response.data.success){
-            this.toastFunction('Precio actualizado correctamente', 'success')
+              this.toastFunctionRedirect('Éxito', 'El precio ha sido actualizado correctamente. <br />Redireccionando...', 'success')
           }
           else if (response.data.error){
             this.all_errors = response.data.error
@@ -166,6 +172,12 @@
           console.log(error);
         });
         
+      },
+      buscarPosicion(tratamiento){
+          for( var i = 0; i < this.prices.length; i++ ){
+            if( this.prices[i].tratamiento == tratamiento ) 
+                return i
+          }
       },
       cleanErrosMessage(){
         this.all_errors = []
@@ -184,6 +196,20 @@
         var res = Math.round(this.totalRows / this.perPage)
         if( res == 0 ) return res + 1
         return Math.ceil(this.totalRows / this.perPage )
+      },
+      toastFunctionRedirect(title, msg, type){
+        this.$swal({
+            type: type,
+            title: title,
+            html: msg,
+            toast: false,
+            position: 'center',
+            showConfirmButton: false,
+              timer: 3000,
+              backdrop: `rgba(0, 0, 0, 0.6)`
+        }).then(() => {
+          window.location.href = this.url + '/precios'
+        })  
       }
 		}
   }

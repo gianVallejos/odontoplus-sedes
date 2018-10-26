@@ -14,35 +14,56 @@ class reporteController extends Controller{
         return view('reportes.index');
     }
 
-    public function incomes(Request $request){
-        $data = DB::select('call OP_ObtenerIngresos_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
-        return response()->json(['incomes' => $data ]);
+    public function ingresos($date){                
+        $data = DB::select('call OP_ObtenerIngresos_Fechas("'. $date .'")');                
+        return response()->json(['ingresos' => $data ]);
     }
 
-    public function outputs(Request $request){
-        $data = DB::select('call OP_ObtenerEgresos_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
-        return response()->json(['outputs' => $data ]);
+    public function egresos($date){
+        $data = DB::select('call OP_ObtenerEgresos_Fechas("'. $date . '")');
+        return response()->json(['egresos' => $data ]);
     }
     
-    public function pacienteIncomes(Request $request){
-        $data = DB::select('call OP_ObtenerIngresosPorPaciente_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
-        return response()->json(['incomes' => $data ]);
+    public function obtenerIngresosPaciente(){
+        $data = DB::select('call OP_ObtenerIngresosPorPaciente_Reportes()');
+        return response()->json(['ingresos' => $data ]);
     }
 
-    public function companyIncomes(Request $request){
-        $data = DB::select('call OP_ObtenerIngresosPorEmpresa_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
-        return response()->json(['incomes' => $data ]);
+    public function obtenerIngresosPacienteFechas($start, $end){
+        $data = DB::select('call OP_ObtenerIngresosPorPaciente_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['ingresos' => $data ]);
     }
 
-    public function treatments(Request $request){
-        $data = DB::select('call OP_ObtenerTratamientosDestacados_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
-        return response()->json(['treatments' => $data ]);
+    public function empresasIngresos(){
+        $data = DB::select('call OP_ObtenerIngresosPorEmpresa_Reportes()');
+        return response()->json(['ingresos' => $data ]);
     }
 
-    public function totalIncomesOutputs(Request $request){
-        $incomes = DB::select('call OP_ObtenerTotalIngresos_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
-        $outputs = DB::select('call OP_ObtenerTotalEgresos_Fechas(\''.$request->query('start').'\', \''.$request->query('end').'\')');
-        return response()->json(['ingresos' => $incomes, 'egresos' => $outputs ]);
+    public function empresasIngresosFechas($start, $end){
+        $data = DB::select('call OP_ObtenerIngresosPorEmpresa_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['ingresos' => $data ]);
+    }
+
+    public function tratamientos(){
+        $data = DB::select('call OP_ObtenerTratamientosDestacados_Reportes()');
+        return response()->json(['tratamientos' => $data ]);
+    }
+
+    public function tratamientosFechas($start, $end){
+        $data = DB::select('call OP_ObtenerTratamientosDestacados_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['tratamientos' => $data ]);
+    }
+
+    public function obtenerBalances(){
+        $ingresos = DB::select('call OP_ObtenerTotalIngresos_Reportes()');
+        $egresos = DB::select('call OP_ObtenerTotalEgresos_Reportes()');
+        return response()->json(['ingresos' => $ingresos, 'egresos' => $egresos ]);
+    }
+
+    public function obtenerBalancesFechas($start, $end){
+        $ingresos = DB::select('call OP_ObtenerTotalIngresos_Fechas("'. $start .'", "'. $end .'")');
+        $egresos = DB::select('call OP_ObtenerTotalEgresos_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['ingresos' => $ingresos, 'egresos' => $egresos ]);
     }
 
     public function ganancias(){

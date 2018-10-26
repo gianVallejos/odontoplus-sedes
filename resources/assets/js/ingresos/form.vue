@@ -202,7 +202,7 @@
 			record_id: '',
 			all_errors: [],
 	        breadcrumb: [
-	          { text: 'Dashboard', href: this.url },
+	          { text: 'Inicio', href: this.url },
 	          { text: 'Ingresos', href: this.url + '/ingresos' },
 	          (this.record != null ) ? { text: 'Ingresos por Items', href: this.url + '/ingresos/line-item/' + this.record.id }	 : { text: this.title, active: true },
 			],
