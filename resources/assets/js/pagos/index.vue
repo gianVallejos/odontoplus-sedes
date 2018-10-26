@@ -55,9 +55,9 @@
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/users/'+ row.item.id" class="action" >Detalle</a>
+                  <a :href="url+'/todo/'+ row.item.id" class="action" >Detalle</a>
                   |
-                  <a :href="url+'/users/'+ row.item.id+'/edit'" class="action" >Modifi  car</a>
+                  <a :href="url+'/todo/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
               </template>
               <template slot="doctor" slot-scope="row">                

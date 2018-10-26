@@ -27,6 +27,7 @@ Route::resource('proveedorLineItems', 'ProveedorLineItemController');
 Route::resource('precios', 'PrecioController');
 Route::resource('pagos', 'PagoController');
 Route::get('pagos/nuevo/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoController@nuevoPago');
+Route::get('pagos/nuevo/{fechaInicial}/{fechaFinal}', 'PagoController@reporteGanancias');
 Route::get('consulta_precio', 'PrecioController@getPrice');
 
 //REPORTS

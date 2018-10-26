@@ -15,22 +15,14 @@
 					<div class="text-center pb-2">
 						<h5> PAGO </h5>
 					</div>
-					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
-							<tr>
-								<td class="pr-title">DOCTOR: </td>
-								<td colspan="3">{{ igeneral.doctor.nombres }} {{ igeneral.doctor.apellidos }}</td>
-							</tr>							
+					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >					
 							<tr>
 								<td class="pr-title">PERIODO: </td>
 								<td colspan="3">Desde {{ igeneral.fechaInicial }} hasta {{igeneral.fechaFinal}} </td>
 							</tr>	
 							<tr>
-								<td class="pr-title">PAGO: </td>
-								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>								
-							</tr>
-							<tr class="hide-print">
 								<td class="pr-title">TOTAL: </td>
-								<td colspan="3">S/ {{ igeneral.totales.total }}</td>								
+								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>								
 							</tr>
 					</table>
 				</div>
@@ -38,7 +30,7 @@
 		</b-row>
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
-				<b-button v-if="displayStatus == 'show'" variant="success" v-on:click.prevent="imprimirPagina()">
+				<b-button v-if="displayStatus == 'new'" variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> &nbsp;Imprimir
 				</b-button>
 				<b-button v-if="displayStatus == 'new'" variant="primary" v-on:click.prevent="onGuardarNuevo()">
@@ -78,13 +70,13 @@
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
+          <template slot="ganancia" slot-scope="row">
+						S/. {{ row.item.total - row.item.doctor  }}
+					</template>
 				</b-table>
 			</b-col>
-			<b-col cols="12" class="text-right monto-class hide-print">
+			<b-col cols="12" class="text-right monto-class">
 				<span>Monto Total: </span>S/ {{ igeneral.totales.total }}
-			</b-col>
-			<b-col cols="12" class='text-right monto-class'>
-				<span>Doctor: </span>S/ {{ igeneral.totales.total_doctor }}
 			</b-col>
 		</b-row>
 		
@@ -126,9 +118,10 @@
 					  { key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
 				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc' },
-				    { key: 'monto', label: 'Precio', sortable: true, sortDirection: 'desc', class: 'hide-print'},
-				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print' },			        
-				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc'}			        
+				    { key: 'monto', label: 'Precio', sortable: true, sortDirection: 'desc' },
+				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc' },			        
+				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc'},			        
+				    { key: 'ganancia', label: 'Core', sortable: true, sortDirection: 'desc'}			        
 					],
 				displayStatus: ''
 			}
@@ -149,12 +142,7 @@
 				this.displayStatus = 'show'
 			},
 			onGuardarNuevo(){
-				var body = {	idDoctor: this.igeneral.doctor.id,
-											fecha_inicio: this.igeneral.fechaInicial,
-											fecha_fin: this.igeneral.fechaFinal }
-				var request = { method: 'POST', url: this.url + '/pagos', data: body }
-    		var mssgOnFail = 'EL pago no puede ser registrado, por favor, vuelva a generarlo nuvamente.'
-				this.onSubmit(request, mssgOnFail)   
+
 			},	
 			imprimirPagina(){
 				window.print()

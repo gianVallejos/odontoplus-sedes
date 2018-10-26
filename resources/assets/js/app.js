@@ -44,6 +44,7 @@ import Precios from './precios/index.vue'
 import Pagos from './pagos/index.vue'
 import PagosForm from './pagos/form.vue'
 import PagosNew from './pagos/new.vue'
+import PagosGanancias from './pagos/ganancias.vue'
 
 const app = new Vue({
     el: '#app',
@@ -60,7 +61,7 @@ const app = new Vue({
 			EgresosIndex, EgresoForm,
 			Precios,	
 			Reportes,
-			Pagos, PagosForm, PagosNew	
+			Pagos, PagosForm, PagosNew, PagosGanancias	
     }
 })
 
