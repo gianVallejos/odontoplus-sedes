@@ -122,9 +122,8 @@
 
   export default{
     mounted() {     	    	
-    	console.log(JSON.stringify(this.record))
     	this.initActualView()
-		console.log('Tratamiento Form Component')	
+			console.log('Tratamiento Form Component')	
 
     },
     name: 'Tratamiento-Form',

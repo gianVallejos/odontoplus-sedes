@@ -1,0 +1,247 @@
+<template>
+	<b-container>
+		<b-row class="pb-2 mt-4">
+			<b-col cols="4" class="text-left" >
+				<div class="pr-logo">
+					<img :src="this.url + '/images/empresa/logotipo_pdf.png'" alt="Logo Empresa" />
+					<span>Jr. Silva Santisteban #507, Cajamarca - Perú</span>
+					<span>citas@sonrisacore.com</span>
+					<span>(076) 284095 (Citas) </span>
+    				<span>991 981911 - 966 704974 (Emergencias)</span>
+				</div>
+			</b-col>
+			<b-col cols="8" class="text-right">
+				<div class="d-inline-block text-left">
+					<div class="text-center pb-2">
+						<h5> REPORTE DE GANANCIAS </h5>
+					</div>
+					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >					
+							<tr>
+								<td class="pr-title">PERIODO: </td>
+								<td colspan="3">Desde {{ igeneral.fechaInicial }} hasta {{igeneral.fechaFinal}} </td>
+							</tr>	
+							<tr>
+								<td class="pr-title">TOTAL: </td>
+								<td colspan="3">S/ {{ igeneral.totales.total }}</td>								
+							</tr>
+					</table>
+				</div>
+			</b-col>
+		</b-row>
+		<b-row class="d-print-none">
+			<b-col cols="12" class="pt-4 pb-0 text-center">
+				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
+					<i class="fas fa-print"></i> &nbsp;Imprimir
+				</b-button>
+			</b-col>			
+		</b-row>
+		<b-row>
+			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
+				<div class="pr-section-title">
+					<div class="pr-seccion-title-text">
+						<i class="fas fa-tooth"></i> &nbsp;DETALLE DE PAGO
+					</div>
+				</div>
+			</b-col>			
+		</b-row>
+		<b-row>
+			<b-col cols="12">
+				<b-table 	show-empty 
+							:items="ingresos" 
+							:fields="fields" 								 
+					        empty-text="No existen campos para mostrar"
+					        :foot-clone=false >							
+					<template slot="index" slot-scope="row">
+						{{ row.index + 1 }}
+					</template>
+					<template slot="doctor_nombre" slot-scope="row">
+						{{ row.item.nombres }} {{ row.item.apellidos }}
+					</template>
+					<template slot="monto" slot-scope="row" class="hide-print">
+						S/. {{ row.item.monto }}
+					</template>
+					<template slot="total" slot-scope="row">
+						S/. {{ row.item.total }}
+					</template>
+
+					<template slot="doctor" slot-scope="row">
+						S/. {{ row.item.doctor }}
+					</template>
+          <template slot="ganancia" slot-scope="row">
+						S/. {{ row.item.total - row.item.doctor  }}
+					</template>
+				</b-table>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class">
+				<span>Monto Total: </span>S/ {{ igeneral.totales.total }}
+			</b-col>
+		</b-row>
+		
+		<b-row class="d-print-none">
+			<b-col cols="12" class="pt-4 pb-0 text-center">
+				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
+					<i class="fas fa-print"></i> &nbsp;Imprimir
+				</b-button>
+			</b-col>			
+		</b-row>		
+		<div class="divFooter">
+			Odontoplus: Software de Gestión de Presupuestado Odontológico © 2018 | contacto@odontoplus.pe - www.odontoplus.pe
+		</div>
+		
+	</b-container>
+</template>
+<script>
+	import axios from 'axios'
+	export default{
+		mounted(){
+			console.log('Pagos Mounted')
+		},
+		name: 'Reporte-Ingreso',
+		props: [
+			'url',
+			'igeneral',
+			'ingresos',
+			'curUser',
+			'view_mode'
+		],
+		data(){
+			return{
+				fields: [				    
+					  { key: 'index', label: '#' },
+					  { key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
+				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc' },
+				    { key: 'monto', label: 'Precio', sortable: true, sortDirection: 'desc' },
+				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc' },			        
+				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc'},			        
+				    { key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc'}			        
+					],
+			}
+		},
+		methods: {
+			imprimirPagina(){
+				window.print()
+			},
+			onSubmit(request, error_msg) {
+				self = this
+				if(request){
+					axios(request).then((response) => {
+						if(response.data.success){
+							if( response.data.success == 'created' ){	
+								this.onDisplayDetalle()		
+								self.toastFunction('El pago a sido guradado correctamente', 'success')				
+							}
+						}else if (response.data.error){
+								console.log('Response:: FAIL');
+								self.all_errors = response.data.error
+								self.toastFunction(error_msg, 'error')
+						}
+					}).catch(function (error) {
+						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+					});
+				}
+			},
+			toastFunction(msg, type){
+				this.$swal({
+						type: type,
+						title: msg,
+						toast: true,
+						position: 'top',
+						showConfirmButton: false,
+							timer: 3000
+				})
+			},
+		}
+	}
+</script>
+<style>
+	table.data-general{
+		width: 520px;
+		font-size: 1.15em;
+		font-family: 'Rubik', sans-serif;	
+		border: 2px solid #f3f3f3;
+	}
+	table.data-general tr td{
+		height: 40px;
+		padding-left: 10px;
+	}
+	.pr-title{
+		width: 24%;
+		font-weight: bold;
+		font-family: 'Open Sans', sans-serif;
+		background: #f3f3f3;
+		-webkit-print-color-adjust: exact;
+	}
+	.pr-content{
+		width: 80%;
+	}
+	h1, h2, h3, h4, h5{
+		padding: 0px;
+		margin: 0px;
+	}
+
+	h5{
+		font-weight: bold;
+		font-family: 'Open Sans', sans-serif;
+	}
+
+	.pr-logo{
+		position: relative; 
+		height: 100%; 
+		padding-top: 20px;
+		width: 265px;
+	}
+
+	.pr-logo span{
+		display: block;
+		font-size: .8em;		
+		text-align: center;
+	}
+
+	.pr-logo img{
+		object-fit: cover;
+		width: 100%;
+	}
+
+	.pr-section-title{
+		background: #f3f3f3;
+		padding: 8px 14px;
+		-webkit-print-color-adjust: exact;		
+	}
+
+	.pr-seccion-title-text{
+		font-weight: bold;
+		font-family: 'Open Sans', sans-serif;
+		font-size: 1.3em;
+	}
+
+	.monto-class{
+		font-size: 1.4em;		
+	}
+
+	.monto-class span{
+		text-align: left;
+		font-weight: bold;
+		width: 140px;
+		display: inline-block;
+	}
+	@media screen {
+	  div.divFooter {
+	    display: none;
+	  }
+	}
+	@media print {
+	  div.divFooter {
+	    position: fixed;
+	    bottom: 0;
+	    left: 0;
+	    padding: 7px 0px 7px 0px;
+	    text-align: center;
+	    width: 100%;
+	    font-size: .85em;
+	  }
+		.hide-print{
+			display: none
+		}
+	}
+</style>

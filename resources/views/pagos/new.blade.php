@@ -1,5 +1,5 @@
-@extends('layout')
+@extends('reporte')
 
 @section('content')
-	<pagos-new :ingresos='{{ $ingresos }}' url='{{ route("home") }}' />
+	<pagos-reporte :ingresos='{{ $ingresos }}' :igeneral = '{{ $igeneral }}' url='{{ route("home") }}' view_mode = 'new' />
 @endsection
