@@ -54,7 +54,7 @@
 							<div class="col-md-6">							
 								<div class="float-right d-inline-block">
 									<b-button-group>										
-										<b-button variant="primary" v-on:click.prevent="goToPDFView()">
+										<b-button variant="primary" v-on:click.prevent="goToPDFView()" >
 											<i class="far fa-file-pdf"></i>&nbsp; PDF
 										</b-button>
 									</b-button-group>
@@ -186,7 +186,7 @@
 			},
 			goToPDFView(){
 				if( this.validForm() ){
-					window.location.href = this.url + '/reportes/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin
+					window.open(this.url + '/reportes/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin, '_blank')
 				}
 				else{
 					this.toastFunction('El periodo de fechas es inválido.', 'error')
