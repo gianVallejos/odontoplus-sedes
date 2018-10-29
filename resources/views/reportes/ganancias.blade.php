@@ -1,5 +1,5 @@
 @extends('layout')
 
 @section('content')
-	<ganancias :items='{{ $ingresos }}' url='{{ route("home") }}' />
+	<ganancias url='{{ route("home") }}' />
 @endsection

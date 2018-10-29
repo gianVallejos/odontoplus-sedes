@@ -95,7 +95,6 @@
 	export default{
 		mounted(){
 			console.log('Pagos Mounted')
-			this.initActualView()
 		},
 		name: 'Reporte-Ingreso',
 		props: [

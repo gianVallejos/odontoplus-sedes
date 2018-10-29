@@ -38,7 +38,7 @@
 											<b-input-group>
 												<b-form-input id="fechafin" type="date" v-model="form.fechaFin" />
 												<b-input-group-append>
-													<b-btn variant="primary" v-on:click.prevent="refreshIngresos()" >
+													<b-btn variant="primary" v-on:click.prevent="refreshIngresosTable()" >
 														<i class="fas fa-search"></i>
 													</b-btn>
 												</b-input-group-append>
@@ -65,7 +65,7 @@
             <!-- Main table element -->
             <b-table show-empty
                     stacked="md"
-                    :items="items"
+                    :items="this.gananciasRecords"
                     :fields="fields"
                     :current-page="currentPage"
                     :per-page="perPage"
@@ -116,10 +116,13 @@
   console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
+  import axios from 'axios'
 
   export default{
     mounted() { 
-      console.log('Ganancias mounted')
+			console.log('Ganancias mounted')
+			this.initDates()
+			this.initTable()
     },
     name: 'Ganancias',
     components:{
@@ -127,7 +130,6 @@
       TitleComponent
 		},
     props:[
-      'items',
       'url'
     ],
     data(){
@@ -142,6 +144,7 @@
 					{ key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc'},			        
 					{ key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc'}		
 				],
+				gananciasRecords: [ ],
 				form: {
 					fechaInicio:'',
 					fechaFin:''
@@ -149,7 +152,7 @@
 		    all_errors: [],
         currentPage: 1,
         perPage: 10,
-        totalRows: this.items.length,
+        totalRows: 0,
         pageOptions: [ 5, 10, 15 ],
         sortBy: null,
         sortDesc: false,
@@ -171,6 +174,16 @@
       }
     },
 		methods:{
+			initTable(){
+				//this.gananciasRecords = this.items
+				this.refreshIngresosTable()
+			},
+			initDates(){
+				var today = new Date()
+				today = today.toISOString().split('T')[0]
+				this.form.fechaInicio = today
+				this.form.fechaFin = today
+			},
 			goToPDFView(){
 				if( this.validForm() ){
 					window.location.href = this.url + '/reportes/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin
@@ -181,6 +194,20 @@
 			},
 			refreshIngresos(){
 				alert(this.form)
+			},
+			refreshIngresosTable(){
+				
+				if( this.validForm() ){
+					var request = { method: 'GET', url: this.url + '/reportes/gananciasJSON/'+this.form.fechaInicio+'/'+this.form.fechaFin }
+					axios(request).then((response) => {									
+						this.gananciasRecords = JSON.parse(response.data.ingresos)
+						this.totalRows = this.gananciasRecords.length
+					});
+				}
+				else{
+					this.toastFunction('El periodo de fechas es inválido.', 'error')
+				}
+
 			},
 			cleanErrors(){
 				this.all_errors = []
