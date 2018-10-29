@@ -18,6 +18,9 @@
 									Para crear un Pago debe seleccionar el doctor y las fechas del periodo a pagar. 
 									<br /><br />Al seleccionar "nuevo pago", aparecerá la lista de ingresos del doctor seleccionado en el periodo ingresado. 
 								</p>
+								<p class="form-description fz-3 pt-3 pr-4">
+									<span class="help-required"> &nbsp; Campos obligatorios. </span>												
+								</p>
 							</b-col>
 							<b-col cols="6" class="pt-1 pb-4">	
 								<b-form>			
@@ -42,6 +45,7 @@
 												{{ doctor.nombres }} {{ doctor.apellidos}}
 											</option>
 										</b-form-select>
+										<span v-if="all_errors.doctorSelected" :class="['label label-danger']">{{ all_errors.doctorSelected[0] }}</span>
 									</b-form-group>
 								</b-form>								
 							</b-col>
@@ -84,15 +88,15 @@
 			return {
 				breadcrumb: [
 			    	{ text: 'Dashboard', href: this.url },
-			    	{ text: 'Pagos', href: this.url + '/presupuestos' },
+			    	{ text: 'Pagos', href: this.url + '/pagos' },
 			    	{ text: 'Crear Pago', active: true }
 			    ],		
 			    isDisabled: false,
 			    form: {
-            doctorSelected: null,
+						doctorSelected: null,
             fechaInicio:'',
             fechaFin:''
-			    },
+					},
 			    all_errors: [],
 			    fields: [				    				    
 				    { key: 'id', label: 'Nro Historia', class: 'text-center' }, 				    
@@ -111,13 +115,32 @@
 		},
 		methods: {
 			onSubmit () {
-				if( this.form.doctorSelected == null ){
-					this.toastFunction('Para crear un Pago debe seleccionar un Doctor', 'error')
-				}else if( this.form.doctorSelected == null ){
-					this.toastFunction('Para crear un Pago debe ingresar rango de fechas', 'error')
-				}else{
-					window.location.href = this.url + '/presupuestos/nuevo/' + this.form.idPacienteSelected + '/' + this.form.doctorSelected
+				if( this.validForm() ){
+					window.location.href = this.url + '/pagos/nuevo/' + this.form.doctorSelected + '/' + this.form.fechaInicio + '/' + this.form.fechaFin
 				}
+				else{
+					this.toastFunction('Existen campos inválidos. Verifícalos antes de guardar', 'error')
+				}
+			},
+			cleanErrors(){
+				this.all_errors = []
+			},
+			validForm(){
+				this.cleanErrors()
+				if( this.form.doctorSelected == null ){
+					this.all_errors.doctorSelected = ['Para crear un Pago debe seleccionar un Doctor']
+				}
+				if( this.form.fechaInicio == '' ){
+					this.all_errors.fechaInicio = ['Fecha inválida']
+				}
+				if( this.form.fechaFin == '' ){
+					this.all_errors.fechaFin = ['Fecha inválida']
+				}
+				if( this.form.fechaInicio != '' && this.form.fechaFin != '' && this.form.fechaInicio > this.form.fechaFin){
+					this.all_errors.fechaFin = ['Rango de fechas inválido']
+					this.all_errors.fechaInicio = ['Rango de fechas inválido']
+				}
+				return Object.keys(this.all_errors).length === 0
 			},
 			onFiltered (filteredItems) {
 		      this.totalRows = filteredItems.length

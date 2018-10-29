@@ -46,11 +46,16 @@
 		          		<i class="fas fa-money-bill"></i>Egresos
 		          	</a>
 		          </li>
-		          <!--li class="li-dropdown" v-if="user.rolid == 1">
+		          <li class="li-dropdown" v-if="user.rolid == 1">
 		          	<a :href="url + '/pagos'">
 		          		<i class="fas fa-credit-card"></i>Pagos
 		          	</a>
-		          </li-->
+		          </li>
+							<li class="li-dropdown" v-if="user.rolid == 1">
+		          	<a :href="url + '/reportes/ganancias'">
+		          		<i class="fas fa-credit-card"></i>Ganancias
+		          	</a>
+		          </li>
 		          <li class="li-dropdown" v-if="user.rolid == 1">
 		          	<a :href="url + '/reportes'">
 		          		<i class="fas fa-chart-line"></i>Reportes

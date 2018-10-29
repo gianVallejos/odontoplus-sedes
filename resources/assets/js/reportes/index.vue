@@ -182,7 +182,6 @@
 	import PanelCard from '../widgets/panel/panel-component.vue'
   import { GChart } from 'vue-google-charts'
   import axios from 'axios'
-  
 
 	export default{
 		mounted(){
