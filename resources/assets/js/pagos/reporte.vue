@@ -111,7 +111,7 @@
 			console.log('Pagos Mounted')
 			this.initActualView()
 		},
-		name: 'Reporte-Ingreso',
+		name: 'Reporte-Pago',
 		props: [
 			'url',
 			'igeneral',
@@ -187,7 +187,7 @@
 						showConfirmButton: false,
 							timer: 3000
 				})
-			},
+			}
 		}
 	}
 </script>

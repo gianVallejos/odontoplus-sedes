@@ -19,19 +19,28 @@ class PagoController extends Controller{
         return view('pagos.index', compact('pagos'));
     }
 
-    public function nuevoPago($idDoctor, $fechaInicial, $fechaFinal){
+    public function show($idDoctor, $fechaInicial, $fechaFinal){        
         $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
         $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
         $doctor = DB::select('call OP_ObtenerDoctores_Id('.$idDoctor.')')[0];
         $ingresos = json_encode($ingresos);
         $igeneral = json_encode(['doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
-        return view('pagos.new', compact('ingresos', 'igeneral'));    
+        return view('pagos.show', compact('ingresos', 'igeneral'));     
     }
 
     public function create(){
         $doctores = DB::select('call OP_ObtenerDoctores_DESC()'); 
         $doctores = json_encode($doctores);
         return view('pagos.create', compact('doctores'));    
+    }
+
+    public function nuevoPagoReporte($idDoctor, $fechaInicial, $fechaFinal){
+        $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $doctor = DB::select('call OP_ObtenerDoctores_Id('.$idDoctor.')')[0];
+        $ingresos = json_encode($ingresos);
+        $igeneral = json_encode(['doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
+        return view('pagos.new', compact('ingresos', 'igeneral'));    
     }
 
     public function store(Request $request){
@@ -43,11 +52,11 @@ class PagoController extends Controller{
 
     	if ($validator->passes()) {
             try{
-                $user = new Pago();
-                $user->idDoctor = $request->idDoctor;
-                $user->fecha_inicio = $request->fecha_inicio;
-                $user->fecha_fin = $request->fecha_fin;
-                $user->save();
+                $pago = new Pago();
+                $pago->idDoctor = $request->idDoctor;
+                $pago->fecha_inicio = $request->fecha_inicio;
+                $pago->fecha_fin = $request->fecha_fin;
+                $pago->save();
                     
                 return response()->json(['success' => 'created']);
 
@@ -56,5 +65,18 @@ class PagoController extends Controller{
             }
         }
         return response()->json(['error'=>$validator->errors()]);
+    }
+
+    public function destroy($id){
+        try{
+            $pago = Pago::findOrFail($id);
+            $pago->is_deleted = 1;
+            $pago->save();
+
+            return response()->json(['success' => 'deleted']);
+
+        }catch(Exception $e){
+            return response()->json(['error'=>$e->getMessage()]);
+        }
     }
 }

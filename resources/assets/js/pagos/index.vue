@@ -55,9 +55,9 @@
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/todo/'+ row.item.id" class="action" >Detalle</a>
+                  <a :href="url+'/pagos/detalle/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" >Detalle</a>
                   |
-                  <a :href="url+'/todo/'+ row.item.id+'/edit'" class="action" >Modificar</a>
+                  <a v-on:click.prevent="onEliminar( row.item.id )" class="action" >Eliminar</a>
                 </div>
               </template>
               <template slot="doctor" slot-scope="row">                
@@ -85,7 +85,8 @@
 <script>
   console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
-	import TitleComponent from '../widgets/titulo/index.vue'
+  import TitleComponent from '../widgets/titulo/index.vue'
+	import axios from 'axios'  
 
   export default{
     mounted() { 
@@ -133,6 +134,55 @@
       }
     },
 		methods:{
+      onEliminar(pagoId){
+				this.$swal({ 
+						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+						html:  '<span style="font-size: 1em"> ¿ Está seguro de eliminar este Pago ?' +
+									'</span>',	
+						animation: false, 
+						showConfirmButton: true, 
+						showCancelButton: true,
+						confirmButtonText: 'Aceptar',
+						confirmButtonClass: ['my-alert', 'confirm-alert'],
+						cancelButtonText: 'Cancelar',
+						cancelButtonClass: ['my-alert', 'cancel-alert'],
+						showCloseButton: true
+				}).then((result) => {
+					if( result.value ){
+						var request = { method: 'DELETE', url: this.url + '/pagos/' + pagoId }
+            var mssgOnFail = 'Ha ocurrido un error al eliminar este registro.'
+            this.onSubmit(request, mssgOnFail, pagoId)  
+					}	
+				})
+			},
+			onSubmit(request, error_msg, record_id) {
+				self = this
+				if(request){
+					axios(request).then((response) => {
+						if(response.data.success){
+							console.log('Response:: OK')
+							if (response.data.success = 'deleted' ){
+                this.removeRecordFromTable(record_id)				
+                self.toastFunctionRedirect('Éxito', 'El Pago ha sido eliminado correctamente...', 'success')			
+							}
+						}else if (response.data.error){
+							console.log('Response:: FAIL');
+							self.toastFunction(error_msg, 'error')
+            }
+					}).catch(function (error) {
+						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+					});
+				}
+      },
+      removeRecordFromTable(record_id){
+        for(var i = 0 ; i < this.items.length; i++){
+          console.log(this.items[i].id + '  -  '+record_id)
+          if (this.items[i].id == record_id){
+            this.items.splice(i,1) 
+            break
+          }
+        }
+      },
       onFiltered (filteredItems) {
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
@@ -142,7 +192,34 @@
         var res = Math.round(this.totalRows / this.perPage)
         if( res == 0 ) return res + 1
         return Math.ceil(this.totalRows / this.perPage )
-      }
+      },
+      toastFunctionRedirect(title, msg, type){
+				this.$swal({
+						type: type,
+						title: title,
+						html: msg,
+						toast: false,
+						position: 'center',
+						showConfirmButton: false,
+	  					timer: 3000,
+	  					backdrop: `rgba(0, 0, 0, 0.6)`
+				}).then(() => {
+					this.redireccionarToIndex()
+				})	
+			},
+      toastFunction(msg, type){
+				this.$swal({
+						type: type,
+						title: msg,
+						toast: true,
+						position: 'top',
+						showConfirmButton: false,
+							timer: 3000
+				})
+      },
+      redireccionarToIndex(){ //Btn Regresar
+				window.location.href = this.url + '/pagos'
+			}
 		}
   }
 </script>

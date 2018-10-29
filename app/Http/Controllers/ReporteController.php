@@ -72,7 +72,7 @@ class reporteController extends Controller{
         return view('reportes.ganancias', compact('ingresos'));    
     }
 
-    public function reporteGanancias($start, $end){
+    public function gananciasFechas($start, $end){
         $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("0","'. $start .'","'. $end .'")');
         $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("0","'. $start .'","'. $end .'")');
         $ingresos = json_encode($ingresos);

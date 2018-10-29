@@ -43,7 +43,7 @@ import EgresoForm from './egresos/form.vue'
 import Precios from './precios/index.vue'
 import Pagos from './pagos/index.vue'
 import PagosForm from './pagos/form.vue'
-import PagosNew from './pagos/new.vue'
+import PagosReporte from './pagos/reporte.vue'
 import Ganancias from './reportes/ganancias.vue'
 import GananciasReporte from './reportes/ganancias_reporte.vue'
 
@@ -62,7 +62,7 @@ const app = new Vue({
 			EgresosIndex, EgresoForm,
 			Precios,	
 			Reportes,
-			Pagos, PagosForm, PagosNew,
+			Pagos, PagosForm, PagosReporte,
 			Ganancias, GananciasReporte	
     }
 })
