@@ -120,7 +120,7 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Dashboard', href: this.url + '/' },
+          { text: 'Inicio', href: this.url + '/' },
           { text: 'Pagos', active: true }
         ]
 			}

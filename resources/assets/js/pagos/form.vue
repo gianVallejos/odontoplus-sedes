@@ -6,13 +6,13 @@
 			</b-col>
 			<b-col cols="12" class="pt-3">				
 				<PanelCard>
-					<span slot="heading">Crear Pago </span>
+					<span slot="heading">Nuevo Pago </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">						
 						<b-row>
 							<b-col cols="6" class="pt-1 pb-4">
 								<div class="form-title">
 									<i class="fas fa-file-invoice-dollar"></i> 
-									<div class="d-inline"> Crear Pago </div>
+									<div class="d-inline"> Nuevo Pago </div>
 								</div>
 								<p class="form-description fz-3 pt-3 pr-4">
 									Para crear un Pago debe seleccionar el doctor y las fechas del periodo a pagar. 
@@ -86,6 +86,7 @@
 		],
 		data(){
 			return {
+				myDate: new Date(),
 				breadcrumb: [
 			    	{ text: 'Dashboard', href: this.url },
 			    	{ text: 'Pagos', href: this.url + '/pagos' },
@@ -114,6 +115,19 @@
 			}
 		},
 		methods: {
+			setMyDateToToday() {
+				this.myDate = new Date();		      
+			},
+			addADayToMyDate() {
+				if (this.myDate){ // as myDate can be null		        
+					this.myDate = new Date(this.myDate.setDate(this.myDate.getDate()));
+				}
+			},
+			getMyDate(){
+				this.setMyDateToToday()
+				this.addADayToMyDate()
+				return this.myDate && this.myDate.toISOString().split('T')[0]			    	
+			},
 			onSubmit () {
 				if( this.validForm() ){
 					window.location.href = this.url + '/pagos/nuevo/' + this.form.doctorSelected + '/' + this.form.fechaInicio + '/' + this.form.fechaFin

@@ -29,7 +29,7 @@ class PagoController extends Controller{
     }
 
     public function create(){
-        $doctores = DB::select('call OP_ObtenerDoctores_DESC()'); 
+        $doctores = DB::select('call OP_ObtenerDoctores()'); 
         $doctores = json_encode($doctores);
         return view('pagos.create', compact('doctores'));    
     }
