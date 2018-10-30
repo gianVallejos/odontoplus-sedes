@@ -8,6 +8,14 @@ import VueSweetalert2 from 'vue-sweetalert2'
 Vue.use(BootstrapVue)
 Vue.use(Toasted)
 Vue.use(VueSweetalert2)
+/*
+var WebFont = require('webfontloader');
+	  WebFont.load({
+	    google: {
+	      families: ['Open Sans', 'Rubik']
+	    }
+	  });
+*/
 
 import HeaderComponent from './header/headerComponent.vue'
 import NavComponent from './header/navComponent.vue'
