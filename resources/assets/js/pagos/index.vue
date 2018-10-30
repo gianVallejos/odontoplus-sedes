@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container v-if="curUser.rolid == 1">
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Pagos" :items="breadcrumb" />
@@ -60,10 +60,8 @@
                   <a v-on:click.prevent="onEliminar( row.item.id )" class="action" >Eliminar</a>
                 </div>
               </template>
-              <template slot="doctor" slot-scope="row">                
-                  <a :href="url + '/doctores/' + row.item.idDoctor">
-                    {{ row.item.nombres }} {{ row.item.apellidos }}
-                  </a>
+              <template slot="doctor" slot-scope="row">                                  
+                    {{ row.item.nombres }} {{ row.item.apellidos }}                  
               </template>
             </b-table>
 
@@ -99,7 +97,8 @@
 		},
     props:[
       'items',
-      'url'
+      'url',
+      'curUser'
     ],
     data(){
 			return{

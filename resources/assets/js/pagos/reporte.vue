@@ -1,5 +1,5 @@
 <template>
-	<b-container>
+	<b-container v-if="curUser.rolid == 1">
 		<b-row class="pb-2 mt-0">
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
@@ -55,7 +55,7 @@
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
 					<div class="pr-seccion-title-text">
-						<i class="fas fa-tooth"></i> &nbsp;DETALLE DE PAGO
+						<i class="fas fa-file-invoice-dollar"></i> &nbsp;Detalle de Pago
 					</div>
 				</div>
 			</b-col>			
@@ -212,6 +212,7 @@
 			onCerrar(){
 				window.close()
 				window.opener.location.reload()
+				window.opener.external.comeback()
 			}
 		}
 	}

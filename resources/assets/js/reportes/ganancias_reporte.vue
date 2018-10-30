@@ -1,5 +1,5 @@
 <template>
-	<b-container>
+	<b-container v-if="curUser.rolid == 1" style="margin-top: -30px">
 		<b-row>
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
@@ -35,13 +35,16 @@
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> &nbsp;Imprimir
 				</b-button>
+				<b-button variant="warning" v-on:click.prevent="onCerrar()">
+					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
+				</b-button>
 			</b-col>			
 		</b-row>
 		<b-row>
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
 					<div class="pr-seccion-title-text">
-						<i class="fas fa-tooth"></i> &nbsp;DETALLE DE GANANCIAS
+						<i class="fas fa-file-invoice-dollar"></i> &nbsp;Detalle de Ganancias
 					</div>
 				</div>
 			</b-col>			
@@ -88,6 +91,9 @@
 			<b-col cols="12" class="pt-4 pb-0 text-center">
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> &nbsp;Imprimir
+				</b-button>
+				<b-button variant="warning" v-on:click.prevent="onCerrar()">
+					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
 				</b-button>
 			</b-col>			
 		</b-row>
@@ -158,6 +164,10 @@
 							timer: 3000
 				})
 			},
+			onCerrar(){
+				window.close()
+				window.opener.external.comeback()
+			}
 		}
 	}
 </script>
@@ -232,21 +242,7 @@
 		width: 140px;
 		display: inline-block;
 	}
-	@media screen {
-	  div.divFooter {
-	    display: none;
-	  }
-	}
 	@media print {
-	  div.divFooter {
-	    position: fixed;
-	    bottom: 0;
-	    left: 0;
-	    padding: 7px 0px 7px 0px;
-	    text-align: center;
-	    width: 100%;
-	    font-size: .85em;
-	  }
 		.hide-print{
 			display: none
 		}

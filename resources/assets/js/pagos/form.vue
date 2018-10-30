@@ -1,5 +1,5 @@
 <template>
-	<b-container class="pb-4">				
+	<b-container v-if="curUser.rolid == 1" class="pb-4">				
 		<b-row>
 			<b-col cols="12">
 				<TitleComponent titulo="Pagos" :items="breadcrumb" />				
@@ -15,8 +15,8 @@
 									<div class="d-inline"> Nuevo Pago </div>
 								</div>
 								<p class="form-description fz-3 pt-3 pr-4">
-									Para crear un Pago debe seleccionar el doctor y las fechas del periodo a pagar. 
-									<br /><br />Al seleccionar "nuevo pago", aparecerá la lista de ingresos del doctor seleccionado en el periodo ingresado. 
+									Para crear un nuevo pago debe seleccionar un rango de fechas y el doctor al que se le realizará el pago.
+									<br /><br />Al seleccionar "Ver Nuevo Pago" aparecerá la lista de ingresos del doctor seleccionado en el periodo ingresado y podrá ser guardado. 
 								</p>
 								<p class="form-description fz-3 pt-3 pr-4">
 									<span class="help-required"> &nbsp; Campos obligatorios. </span>												
@@ -52,7 +52,7 @@
 							<b-col cols="12">
 								<div class="text-center">
 									<b-button type="submit" variant="warning" v-on:click="onSubmit">
-										<i class="fas fa-plus"></i>&nbsp; Nuevo Pago
+										<i class="fas fa-plus"></i>&nbsp; Ver Nuevo Pago
 									</b-button>
 									<b-button :href="url + '/pagos'" variant="danger">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
@@ -82,7 +82,8 @@
 		props: [
 			'url',
 			'pacientes',
-			'doctores'
+			'doctores',
+			'curUser'
 		],
 		data(){
 			return {

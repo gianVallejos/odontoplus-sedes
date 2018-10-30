@@ -1,12 +1,12 @@
 <template>
-  <b-container>
+  <b-container v-if="curUser.rolid == 1">
 		<b-row>
 			<div class="col-md-12">
-				<TitleComponent titulo="Ganancias" :items="breadcrumb" />
+				<TitleComponent titulo="Reporte de Ganancias" :items="breadcrumb" />
 			</div>
       <div class="col-md-12">
         <PanelCard>
-          <span slot="heading">Reporte Detallado de Ganancias</span>
+          <span slot="heading">Detalle de Ganancias</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
             <!-- User Interface controls -->
             <b-row class="pb-3">
@@ -38,8 +38,8 @@
 							<div class="col-md-6 pt-4 mt-1">							
 								<div class="float-right d-inline-block">
 									<b-button-group>										
-										<b-button variant="success" v-on:click.prevent="goToPDFView()" >
-											<i class="far fa-file-pdf"></i>&nbsp; PDF
+										<b-button variant="primary" v-on:click.prevent="goToPDFView()" >
+											<i class="fas fa-file-alt"></i>&nbsp; Reporte
 										</b-button>
 									</b-button-group>
 								</div>
@@ -114,7 +114,8 @@
       TitleComponent
 		},
     props:[
-      'url'
+      'url',
+      'curUser'
     ],
     data(){
 			return{
@@ -133,7 +134,7 @@
 					fechaInicio:'',
 					fechaFin:''
 				},
-		    all_errors: [],
+		all_errors: [],
         currentPage: 1,
         perPage: 10,
         totalRows: 0,
@@ -145,7 +146,7 @@
         modalInfo: { title: '', content: '' },
         breadcrumb: [
           { text: 'Inicio', href: this.url + '/' },
-          { text: 'Ganancias', active: true }
+          { text: 'Reporte de Ganancias', active: true }
         ]
 			}
 		},

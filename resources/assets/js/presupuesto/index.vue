@@ -66,15 +66,11 @@
 						    <template slot="idPaciente" slot-scope="row">
 								{{ row.value }}						      	
 						    </template>						    	
-						    <template slot="nombrePaciente" slot-scope="row">
-						    	<a :href="url + '/pacientes/' + row.item.idPaciente">
-						      		{{ row.value }}
-						      	</a>
+						    <template slot="nombrePaciente" slot-scope="row">						    	
+						      		{{ row.value }}						      	
 						    </template>
-						    <template slot="nombreDoctor" slot-scope="row">
-						    	<a :href="url + '/doctores/' + row.item.idDoctor">
-						      		{{row.value }}
-						      	</a>
+						    <template slot="nombreDoctor" slot-scope="row">						    	
+						      		{{row.value }}						      	
 						    </template>		
 						    <template slot="fecha" slot-scope="row">
 						      		{{row.value }}

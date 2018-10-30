@@ -37,13 +37,16 @@
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> Imprimir
 				</b-button>
+				<b-button variant="warning" v-on:click.prevent="onCerrar()">
+					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
+				</b-button>
 			</b-col>			
 		</b-row>
 		<b-row>
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
 					<div class="pr-seccion-title-text">
-						<i class="fas fa-tooth"></i> DETALLE DE INGRESO
+						<i class="fas fa-file-invoice-dollar"></i>&nbsp; Detalle de Ingreso
 					</div>
 				</div>
 			</b-col>			
@@ -76,6 +79,9 @@
 			<b-col cols="12" class="pt-1 pb-2 text-center">
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> Imprimir
+				</b-button>
+				<b-button variant="warning" v-on:click.prevent="onCerrar()">
+					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
 				</b-button>
 			</b-col>			
 		</b-row>	
@@ -110,6 +116,10 @@
 		methods: {
 			imprimirPagina(){
 				window.print()
+			},
+			onCerrar(){
+				window.close()
+				window.opener.external.comeback()
 			}
 		}
 	}

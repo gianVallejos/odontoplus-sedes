@@ -185,8 +185,26 @@
 
 	export default{
 		mounted(){
-			console.log('Reports Mounted')
-			this.initCharts()
+			var xhr = new XMLHttpRequest();
+			var file = "https://httpbin.org/get";
+			var randomNum = Math.round(Math.random() * 10000);
+			var self = this 
+			
+			xhr.open('HEAD', file + "?rand=" + randomNum, true);
+			xhr.send();
+			     
+			xhr.addEventListener("readystatechange", processRequest, false);
+			 
+			function processRequest(e) {
+			    if (xhr.readyState == 4) {
+			        if (xhr.status >= 200 && xhr.status < 304) {
+			        	console.log('Reports Mounted')
+						self.initCharts()	
+			        } else {
+			    		self.toastFunctionRedirect('<span style="#fff; font-size: 1em">Error</span>', 'Para ver las estadísticas del sistema debe contar con Internet <br />Redireccionando...', 'error')    	
+			        }
+				}
+			}			
 		},
 		props: [
 			'url'
@@ -444,6 +462,20 @@
 						showConfirmButton: false,
 						timer: 3000
 				})
+			},
+			toastFunctionRedirect(title, msg, type){
+				this.$swal({
+						type: type,
+						title: title,
+						html: msg,
+						toast: false,
+						position: 'center',
+						showConfirmButton: false,
+	  					timer: 3000,
+	  					backdrop: `rgba(0, 0, 0, 0.6)`
+				}).then(() => {
+					window.location.href = this.url + '/presupuestos'
+				})	
 			}
     }
 	}
