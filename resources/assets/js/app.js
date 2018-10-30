@@ -8,6 +8,14 @@ import VueSweetalert2 from 'vue-sweetalert2'
 Vue.use(BootstrapVue)
 Vue.use(Toasted)
 Vue.use(VueSweetalert2)
+/*
+var WebFont = require('webfontloader');
+	  WebFont.load({
+	    google: {
+	      families: ['Open Sans', 'Rubik']
+	    }
+	  });
+*/
 
 import HeaderComponent from './header/headerComponent.vue'
 import NavComponent from './header/navComponent.vue'
@@ -41,6 +49,11 @@ import Reportes from './reportes/index.vue'
 import EgresosIndex from './egresos/index.vue'
 import EgresoForm from './egresos/form.vue'
 import Precios from './precios/index.vue'
+import Pagos from './pagos/index.vue'
+import PagosForm from './pagos/form.vue'
+import PagosReporte from './pagos/reporte.vue'
+import Ganancias from './reportes/ganancias.vue'
+import GananciasReporte from './reportes/ganancias_reporte.vue'
 
 const app = new Vue({
     el: '#app',
@@ -56,15 +69,10 @@ const app = new Vue({
 			Proveedores, ProveedorForm, ProveedorLineItems,
 			EgresosIndex, EgresoForm,
 			Precios,	
-			Reportes	
+			Reportes,
+			Pagos, PagosForm, PagosReporte,
+			Ganancias, GananciasReporte	
     }
-})
-
-const alert = new Vue({
-	el: '#alert',
-	components: {
-		Flash
-	}
 })
 
 const header = new Vue({

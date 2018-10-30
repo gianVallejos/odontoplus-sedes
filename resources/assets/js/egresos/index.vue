@@ -53,10 +53,12 @@
 					             @filtered="onFiltered"
 					             empty-text="No existen campos para mostrar" >
 							<template slot="actions" slot-scope="row" class="md-2">
-						        <div class="actions-table" style="color: #d1d1d1">						        	
+						        <div class="actions-table text-center" style="color: #d1d1d1">						        	
 						        	<a :href="url+'/egresos/'+ row.item.id"  class="action">Detalle</a>
-						        	|
-						        	<a :href="url+'/egresos/'+ row.item.id +'/edit'" class="action">Modificar</a>
+						        	<span v-if="curUser.rolid == 1">
+							        	|
+							        	<a :href="url+'/egresos/'+ row.item.id +'/edit'" class="action">Modificar</a>
+						        	</span>
 						        </div>
 						    </template>
 						    <template slot="fecha" slot-scope="row">
@@ -67,10 +69,8 @@
 						      		{{ row.value }}
 						      	</a>
 						    </template>						    	
-						    <template slot="doctor" slot-scope="row">
-						    	<a :href="url + '/doctores/' + row.item.doctorId">
-						      		{{ row.value }}
-						      	</a>
+						    <template slot="doctor" slot-scope="row">						    	
+						      		{{ row.value }}						      	
 						    </template>
 						    <template slot="tipo" slot-scope="row">
 						      	{{ row.value }}
@@ -112,7 +112,8 @@
 		},
 		props: [
 			'url',
-			'egresos'
+			'egresos',
+			'curUser'
 		],
 		components:{
 			TitleComponent,

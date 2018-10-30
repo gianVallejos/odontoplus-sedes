@@ -1,5 +1,5 @@
 @extends('layout')
 
 @section('content')
-<tratamientos :items = "{{ $tratamientos }}" url='{{ route("home") }}'/>
+<tratamientos :items = "{{ $tratamientos }}" :cur-user='{{ Auth::user() }}' url='{{ route("home") }}'/>
 @endsection

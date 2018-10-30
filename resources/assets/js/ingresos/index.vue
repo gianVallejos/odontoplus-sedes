@@ -44,29 +44,18 @@
 						        <div class="actions-table" style="color: #d1d1d1">						        	
 						        	<a :href="url+'/ingresos/line-item/'+ row.item.id"  class="action">Detalle</a>
 						        </div>
-						    </template>
-						    <template slot="fecha" slot-scope="row">
-						    	{{ row.value }}
-						    </template>
+						    </template>						    
 						    <template slot="hc" slot-scope="row">
 						      		{{ row.value }}
 						    </template>						    	
 						    <template slot="nombrePaciente" slot-scope="row">						    	
 						      		{{ row.value }}						      	
-						    </template>
-						    <template slot="nombreDoctor" slot-scope="row">
-						    	<a :href="url + '/doctores/' + row.item.idDoctor ">
-						      		{{row.value }}
-						      	</a>
-						    </template>		
+						    </template>	
 						    <template slot="monto_total" slot-scope="row">
 						      		S/ {{row.value }}
-						    </template>	
-						    <template slot="mg" slot-scope="row">
-						      		S/ {{row.value }}
-						    </template>		
-						    <template slot="mg_core" slot-scope="row">
-						      		S/ {{row.value }}
+						    </template>
+						    <template slot="fecha" slot-scope="row">
+						    	{{ row.value }}
 						    </template>		
 					    </b-table>
 					    <b-row>

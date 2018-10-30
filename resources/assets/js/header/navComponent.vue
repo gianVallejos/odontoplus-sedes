@@ -6,12 +6,7 @@
 		      	<a :href="url">
 		      		<i class="fas fa-home"></i>Inicio
 		      	</a>
-		      </li>
-		      <li class="item" v-bind:class="[(whoIsActive == 'presupuestos') ? 'active' : '']">
-		      	<a :href="url + '/presupuestos'">
-		      		<i class="fas fa-calculator"></i>Presupuestos
-		      	</a>
-		      </li>
+		      </li>		      
 		      <li class="item dropdown" v-bind:class="[(whoIsActive == 'personas') ? 'active' : '']">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 		        	<i class="fas fa-people-carry"></i>Personas
@@ -29,45 +24,21 @@
 		          	</a>
 		          </li>
 		        </ul>
-		      </li>		      		      
-		      <li class="item dropdown" v-bind:class="[(whoIsActive == 'finanzas') ? 'active' : '']">
+		      </li>	
+		      <li class="item" v-bind:class="[(whoIsActive == 'presupuestos') ? 'active' : '']">
+		      	<a :href="url + '/presupuestos'">
+		      		<i class="fas fa-calculator"></i>Presupuestos
+		      	</a>
+		      </li>	   
+		      <li class="item dropdown"  v-bind:class="[(whoIsActive == 'tratamientos') ? 'active' : '']">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-		        	<i class="fas fa-file-invoice-dollar"></i>Finanzas
-		        	<i class="fa fa-angle-down lnr"></i>
-		    	</a>
-		        <ul class="dropdown-menu">
-		          <li class="li-dropdown">
-		          	<a :href="url + '/ingresos'">
-		          		<i class="fas fa-money-check-alt"></i>Ingresos
-		          	</a>
-		          </li>
-		          <li class="li-dropdown">
-		          	<a :href="url + '/egresos'">
-		          		<i class="fas fa-money-bill"></i>Egresos
-		          	</a>
-		          </li>
-		          <!--li class="li-dropdown" v-if="user.rolid == 1">
-		          	<a :href="url + '/pagos'">
-		          		<i class="fas fa-credit-card"></i>Pagos
-		          	</a>
-		          </li-->
-		          <li class="li-dropdown" v-if="user.rolid == 1">
-		          	<a :href="url + '/reportes'">
-		          		<i class="fas fa-chart-line"></i>Reportes
-		          	</a>
-		          </li>
-		          
-		        </ul>
-		      </li>
-		      <li class="item dropdown"  v-bind:class="[(whoIsActive == 'otros') ? 'active' : '']">
-		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-		        	<i class="fas fa-plus"></i>Otros
+		        	<i class="fas fa-tooth"></i>Tratamientos
 		        	<i class="fa fa-angle-down lnr"></i>
 		    	</a>
 		        <ul class="dropdown-menu">
 		          	<li class="li-dropdown">
 		          		<a :href="url + '/tratamientos'">
-		          			<i class="fas fa-tooth"></i>Tratamientos
+		          			<i class="fas fa-list-ul"></i>Tratamientos
 		          		</a>
 		          	</li>
 		          	<li class="li-dropdown">
@@ -85,12 +56,46 @@
 			          		<i class="fas fa-flask"></i>Proveedores
 			          	</a>
 		        	</li-->
-					<li class="li-dropdown" v-if="user.rolid == 1">
-		        	  	<a :href="url + '/users'">
-		          			<i class="fas fa-users"></i>Usuarios
-		          		</a>
-		          	</li>
 		        </ul>
+		      </li>   		      
+		      <li class="item dropdown" v-bind:class="[(whoIsActive == 'finanzas') ? 'active' : '']">
+		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+		        	<i class="fas fa-file-invoice-dollar"></i>Finanzas
+		        	<i class="fa fa-angle-down lnr"></i>
+		    	</a>
+		        <ul class="dropdown-menu">
+		          <li class="li-dropdown">
+		          	<a :href="url + '/ingresos'">
+		          		<i class="fas fa-money-check-alt"></i>Ingresos
+		          	</a>
+		          </li>
+		          <li class="li-dropdown">
+		          	<a :href="url + '/egresos'">
+		          		<i class="fas fa-money-bill"></i>Egresos
+		          	</a>
+		          </li>
+		          <li class="li-dropdown" v-if="user.rolid == 1">
+		          	<a :href="url + '/pagos'">
+		          		<i class="fas fa-credit-card"></i>Pagos
+		          	</a>
+		          </li>
+							<li class="li-dropdown" v-if="user.rolid == 1">
+		          	<a :href="url + '/reportes/ganancias'">
+		          		<i class="fas fa-hand-holding-usd"></i>Ganancias
+		          	</a>
+		          </li>
+		          <li class="li-dropdown" v-if="user.rolid == 1">
+		          	<a :href="url + '/reportes'">
+		          		<i class="fas fa-chart-line"></i>Estadísticas
+		          	</a>
+		          </li>
+		          
+		        </ul>
+		      </li>		      
+		      <li class="item" v-bind:class="[(whoIsActive == 'users') ? 'active' : '']" v-if="user.rolid == 1">
+		      		<a :href="url + '/users'">
+		          		<i class="fas fa-users"></i>Usuarios
+		          	</a>
 		      </li>
 		    </ul>
 		</div>
@@ -120,12 +125,16 @@
 				}else if( this.curUrl.includes('pacientes') || this.curUrl.includes('doctores') ){
 					this.whoIsActive = 'personas'
 				}else if( this.curUrl.includes('ingresos') || this.curUrl.includes('egresos') || 
-						  this.curUrl.includes('reportes') ){
+						  this.curUrl.includes('reportes') || this.curUrl.includes('pagos') || 
+						  this.curUrl.includes('ganancias') ){
 					this.whoIsActive = 'finanzas'
 				}else if( this.curUrl.includes('tratamientos') || this.curUrl.includes('precios') || 
 						  this.curUrl.includes('empresas') ){
-					this.whoIsActive = 'otros'
-				}else{
+					this.whoIsActive = 'tratamientos'
+				}else if( this.curUrl.includes('users') ){
+					this.whoIsActive = 'users'
+				}
+				else{
 					this.whoIsActive = 'dashboard'
 				}
 			}

@@ -43,7 +43,7 @@ class PresupuestoController extends Controller{
             $sec1 = ( isset($rt['secUno']) ) ? $rt['secUno'] : '0';
             $sec2 = ( isset($rt['secDos']) ) ? $rt['secDos'] : '0';
             $pza = ( isset($rt['pieza']) ? $rt['pieza'] : '0' );            
-            $res_detalle = DB::select('call OP_agregarPresupuestosDetalles('. $nroPresupuesto .', ' . $pza . ', ' . $rt['seccion'] . ', ' . $sec1 . ', ' . $sec2 .', '. $rt['opcion'] .')');
+            $res_detalle = DB::select('call OP_agregarPresupuestosDetalles('. $nroPresupuesto .', ' . $pza . ', ' . $rt['seccion'] . ', ' . $sec1 . ', ' . $sec2 .', '. $rt['opcion'] .', '. $rt['monto'] .')');
         }
 
         $resg = $res_general[0]->ESTADO;

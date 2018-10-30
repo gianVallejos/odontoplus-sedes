@@ -26,7 +26,7 @@
 									</b-button>
 								</div>
 								<div v-if="displayStatus == 'show'">									
-									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
+									<b-button variant="primary" v-on:click.prevent="onDisplayModificar" v-if="curUser.rolid == 1">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
 									<b-button variant="danger" v-on:click.prevent="onEliminar(
@@ -108,13 +108,12 @@
 												</b-col>
 											</b-form-row>
 										</b-col>
-										{{ needDoctor }}
 									</b-row>
 							</div>
 
 							<div class="text-center">								
 								<div v-if="displayStatus == 'show'">									
-									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
+									<b-button variant="primary" v-on:click.prevent="onDisplayModificar" v-if="curUser.rolid == 1">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
 									<b-button variant="danger" v-on:click.prevent="onEliminar(
