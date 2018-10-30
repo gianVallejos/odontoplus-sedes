@@ -53,7 +53,7 @@
 		          </li>
 							<li class="li-dropdown" v-if="user.rolid == 1">
 		          	<a :href="url + '/reportes/ganancias'">
-		          		<i class="fas fa-credit-card"></i>Ganancias
+		          		<i class="fas fa-hand-holding-usd"></i>Ganancias
 		          	</a>
 		          </li>
 		          <li class="li-dropdown" v-if="user.rolid == 1">
@@ -125,7 +125,8 @@
 				}else if( this.curUrl.includes('pacientes') || this.curUrl.includes('doctores') ){
 					this.whoIsActive = 'personas'
 				}else if( this.curUrl.includes('ingresos') || this.curUrl.includes('egresos') || 
-						  this.curUrl.includes('reportes') ){
+						  this.curUrl.includes('reportes') || this.curUrl.includes('pagos') || 
+						  this.curUrl.includes('ganancias') ){
 					this.whoIsActive = 'finanzas'
 				}else if( this.curUrl.includes('tratamientos') || this.curUrl.includes('precios') || 
 						  this.curUrl.includes('empresas') ){

@@ -182,9 +182,6 @@
 				</b-button>
 				</b-col>			
 			</b-row>
-			<div class="divFooter">
-				Odontoplus: Software de Gestión de Presupuestado Odontológico © 2018 | contacto@odontoplus.pe - www.odontoplus.pe
-			</div>
 		</section>
 		
 	</b-container>
@@ -508,7 +505,7 @@
 						if(response.data.success){
 							console.log('Response:: OK')
 							if (response.data.success = 'deleted' ){	
-								self.toastFunctionRedirect('Éxito', 'El presupuesto ha sido eliminado correctamente. <br />Redireccionando...', 'success')
+								self.toastFunctionRedirect('Éxito', 'El presupuesto ha sido eliminado correctamente. <br />Redireccionando...', 'success')				
 							}
 						}else if (response.data.error){							
 								console.log('Response:: FAIL');

@@ -55,7 +55,7 @@
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/pagos/detalle/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" >Detalle</a>
+                  <a :href="url+'/pagos/detalle/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" target="_blank" >Detalle</a>
                   |
                   <a v-on:click.prevent="onEliminar( row.item.id )" class="action" >Eliminar</a>
                 </div>
@@ -108,7 +108,7 @@
           { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
           { key: 'fecha_inicio', label: 'Fecha de Inicio', sortable: true },
           { key: 'fecha_fin', label: 'Fecha Fin', sortable: true },
-          { key: 'created_at', label: 'Creado', sortable: true, 'class': 'text-center' }
+          { key: 'created_at', label: 'Fecha de Creación', sortable: true  }
         ],
         currentPage: 1,
         perPage: 10,
@@ -137,7 +137,7 @@
       onEliminar(pagoId){
 				this.$swal({ 
 						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
-						html:  '<span style="font-size: 1em"> ¿ Está seguro de eliminar este Pago ?' +
+						html:  '<span style="font-size: 1em"> ¿Está seguro de eliminar este Pago?' +
 									'</span>',	
 						animation: false, 
 						showConfirmButton: true, 

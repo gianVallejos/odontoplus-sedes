@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Pagos" :items="breadcrumb" />				
 			</b-col>
-			<b-col cols="12" class="pt-3">				
+			<b-col cols="12">				
 				<PanelCard>
 					<span slot="heading">Nuevo Pago </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">						
@@ -54,7 +54,7 @@
 									<b-button type="submit" variant="warning" v-on:click="onSubmit">
 										<i class="fas fa-plus"></i>&nbsp; Nuevo Pago
 									</b-button>
-									<b-button :href="url + '/presupuestos'" variant="danger">
+									<b-button :href="url + '/pagos'" variant="danger">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
@@ -88,15 +88,15 @@
 			return {
 				myDate: new Date(),
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url },
+			    	{ text: 'Inicio', href: this.url + '/' },
 			    	{ text: 'Pagos', href: this.url + '/pagos' },
-			    	{ text: 'Crear Pago', active: true }
+			    	{ text: 'Nuevo Pago', active: true }
 			    ],		
 			    isDisabled: false,
 			    form: {
 						doctorSelected: null,
-            fechaInicio:'',
-            fechaFin:''
+            fechaInicio: this.getMyDate(),
+            fechaFin: this.getMyDate()
 					},
 			    all_errors: [],
 			    fields: [				    				    
@@ -130,7 +130,8 @@
 			},
 			onSubmit () {
 				if( this.validForm() ){
-					window.location.href = this.url + '/pagos/nuevo/' + this.form.doctorSelected + '/' + this.form.fechaInicio + '/' + this.form.fechaFin
+					window.open(this.url + '/pagos/nuevo/' + this.form.doctorSelected + '/' + this.form.fechaInicio + '/' + this.form.fechaFin, '_blank')
+					window.location.href = this.url + '/pagos'
 				}
 				else{
 					this.toastFunction('Existen campos inválidos. Verifícalos antes de guardar', 'error')

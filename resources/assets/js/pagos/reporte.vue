@@ -1,6 +1,6 @@
 <template>
 	<b-container>
-		<b-row class="pb-2 mt-4">
+		<b-row class="pb-2 mt-0">
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
 					<img :src="this.url + '/images/empresa/logotipo_pdf.png'" alt="Logo Empresa" />
@@ -13,19 +13,21 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5> PAGO </h5>
+						<h5>RECIBO DE PAGO NRO {{ igeneral.ultimoPago.pagos }} </h5>
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 							<tr>
 								<td class="pr-title">DOCTOR: </td>
 								<td colspan="3">{{ igeneral.doctor.nombres }} {{ igeneral.doctor.apellidos }}</td>
-							</tr>							
+							</tr>
 							<tr>
-								<td class="pr-title">PERIODO: </td>
-								<td colspan="3">Desde {{ igeneral.fechaInicial }} hasta {{igeneral.fechaFinal}} </td>
+								<td class="pr-title">DESDE:</td>
+								<td>{{ igeneral.fechaInicial }} </td>
+								<td class="pr-title">HASTA:</td>
+								<td>{{igeneral.fechaFinal}}</td>
 							</tr>	
 							<tr>
-								<td class="pr-title">PAGO DR.: </td>
+								<td class="pr-title">TOTAL DR: </td>
 								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>								
 							</tr>
 							<tr class="hide-print">
@@ -38,11 +40,14 @@
 		</b-row>
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
-				<b-button v-if="displayStatus == 'show'" variant="success" v-on:click.prevent="imprimirPagina()">
+				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> &nbsp;Imprimir
 				</b-button>
 				<b-button v-if="displayStatus == 'new'" variant="primary" v-on:click.prevent="onGuardarNuevo()">
 					<i class="fas fa-save"></i>&nbsp; Guardar
+				</b-button>
+				<b-button variant="warning" v-on:click.prevent="onCerrar()">
+					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
 				</b-button>
 			</b-col>			
 		</b-row>
@@ -81,26 +86,36 @@
 				</b-table>
 			</b-col>
 			<b-col cols="12" class='text-right monto-class'>
-				<span>Doctor: </span>S/ {{ igeneral.totales.total_doctor }}
+				<div class="d-inline-block" >
+					<span>Total Dr: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_doctor }}
+				</div>
 			</b-col>
 			<b-col cols="12" class="text-right monto-class hide-print">
-				<span>Monto Total: </span>S/ {{ igeneral.totales.total }}
+				<div class="d-inline-block" >
+					<span>Monto Total: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total }}
+				</div>
 			</b-col>
 		</b-row>
 		
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
-				<b-button v-if="displayStatus == 'show'" variant="success" v-on:click.prevent="imprimirPagina()">
+				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> &nbsp;Imprimir
 				</b-button>
 				<b-button v-if="displayStatus == 'new'" variant="primary" v-on:click.prevent="onGuardarNuevo()">
 					<i class="fas fa-save"></i>&nbsp; Guardar
 				</b-button>
+				<b-button variant="warning" v-on:click.prevent="onCerrar()">
+					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
+				</b-button>
 			</b-col>			
-		</b-row>		
-		<div class="divFooter">
-			Odontoplus: Software de Gestión de Presupuestado Odontológico © 2018 | contacto@odontoplus.pe - www.odontoplus.pe
-		</div>
+		</b-row>
 		
 	</b-container>
 </template>
@@ -122,13 +137,14 @@
 		data(){
 			return{
 				fields: [				    
-					  { key: 'index', label: '#' },
-					  { key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+					{ key: 'index', label: '#' },
+					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
+					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },					
 				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
-				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc' },
-				    { key: 'monto', label: 'Precio', sortable: true, sortDirection: 'desc', class: 'hide-print'},
-				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print' },			        
-				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc'}			        
+				    { key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
+				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
+				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },			        
+				    { key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'}			        
 					],
 				displayStatus: ''
 			}
@@ -149,12 +165,17 @@
 				this.displayStatus = 'show'
 			},
 			onGuardarNuevo(){
-				var body = {	idDoctor: this.igeneral.doctor.id,
-											fecha_inicio: this.igeneral.fechaInicial,
-											fecha_fin: this.igeneral.fechaFinal }
-				var request = { method: 'POST', url: this.url + '/pagos', data: body }
-    		var mssgOnFail = 'EL pago no puede ser registrado, por favor, vuelva a generarlo nuvamente.'
-				this.onSubmit(request, mssgOnFail)   
+				if( this.igeneral.totales.total != '0.00' ){
+					var body = {	idDoctor: this.igeneral.doctor.id,
+									fecha_inicio: this.igeneral.fechaInicial,
+									fecha_fin: this.igeneral.fechaFinal }
+					var request = { method: 'POST', url: this.url + '/pagos', data: body }
+	    			var mssgOnFail = 'EL pago no puede ser registrado, por favor, vuelva a generarlo nuvamente.'
+
+					this.onSubmit(request, mssgOnFail)   
+				}else{
+					this.toastFunction('El pago no puede ser registrado por que el total es cero', 'error')	
+				}
 			},	
 			imprimirPagina(){
 				window.print()
@@ -187,6 +208,10 @@
 						showConfirmButton: false,
 							timer: 3000
 				})
+			},
+			onCerrar(){
+				window.close()
+				window.opener.location.reload()
 			}
 		}
 	}
@@ -280,5 +305,10 @@
 		.hide-print{
 			display: none
 		}
+	}
+
+	@page{ 
+	    size: auto;
+	    margin: auto;  
 	}
 </style>
