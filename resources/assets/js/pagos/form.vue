@@ -1,22 +1,22 @@
 <template>
-	<b-container class="pb-4">				
+	<b-container v-if="curUser.rolid == 1" class="pb-4">				
 		<b-row>
 			<b-col cols="12">
 				<TitleComponent titulo="Pagos" :items="breadcrumb" />				
 			</b-col>
-			<b-col cols="12" class="pt-3">				
+			<b-col cols="12">				
 				<PanelCard>
-					<span slot="heading">Crear Pago </span>
+					<span slot="heading">Nuevo Pago </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">						
 						<b-row>
 							<b-col cols="6" class="pt-1 pb-4">
 								<div class="form-title">
 									<i class="fas fa-file-invoice-dollar"></i> 
-									<div class="d-inline"> Crear Pago </div>
+									<div class="d-inline"> Nuevo Pago </div>
 								</div>
 								<p class="form-description fz-3 pt-3 pr-4">
-									Para crear un Pago debe seleccionar el doctor y las fechas del periodo a pagar. 
-									<br /><br />Al seleccionar "nuevo pago", aparecerá la lista de ingresos del doctor seleccionado en el periodo ingresado. 
+									Para crear un nuevo pago debe seleccionar un rango de fechas y el doctor al que se le realizará el pago.
+									<br /><br />Al seleccionar "Ver Nuevo Pago" aparecerá la lista de ingresos del doctor seleccionado en el periodo ingresado y podrá ser guardado. 
 								</p>
 								<p class="form-description fz-3 pt-3 pr-4">
 									<span class="help-required"> &nbsp; Campos obligatorios. </span>												
@@ -52,9 +52,9 @@
 							<b-col cols="12">
 								<div class="text-center">
 									<b-button type="submit" variant="warning" v-on:click="onSubmit">
-										<i class="fas fa-plus"></i>&nbsp; Nuevo Pago
+										<i class="fas fa-plus"></i>&nbsp; Ver Nuevo Pago
 									</b-button>
-									<b-button :href="url + '/presupuestos'" variant="danger">
+									<b-button :href="url + '/pagos'" variant="danger">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
@@ -82,20 +82,22 @@
 		props: [
 			'url',
 			'pacientes',
-			'doctores'
+			'doctores',
+			'curUser'
 		],
 		data(){
 			return {
+				myDate: new Date(),
 				breadcrumb: [
-			    	{ text: 'Dashboard', href: this.url },
+			    	{ text: 'Inicio', href: this.url + '/' },
 			    	{ text: 'Pagos', href: this.url + '/pagos' },
-			    	{ text: 'Crear Pago', active: true }
+			    	{ text: 'Nuevo Pago', active: true }
 			    ],		
 			    isDisabled: false,
 			    form: {
 						doctorSelected: null,
-            fechaInicio:'',
-            fechaFin:''
+            fechaInicio: this.getMyDate(),
+            fechaFin: this.getMyDate()
 					},
 			    all_errors: [],
 			    fields: [				    				    
@@ -114,9 +116,23 @@
 			}
 		},
 		methods: {
+			setMyDateToToday() {
+				this.myDate = new Date();		      
+			},
+			addADayToMyDate() {
+				if (this.myDate){ // as myDate can be null		        
+					this.myDate = new Date(this.myDate.setDate(this.myDate.getDate()));
+				}
+			},
+			getMyDate(){
+				this.setMyDateToToday()
+				this.addADayToMyDate()
+				return this.myDate && this.myDate.toISOString().split('T')[0]			    	
+			},
 			onSubmit () {
 				if( this.validForm() ){
-					window.location.href = this.url + '/pagos/nuevo/' + this.form.doctorSelected + '/' + this.form.fechaInicio + '/' + this.form.fechaFin
+					window.open(this.url + '/pagos/nuevo/' + this.form.doctorSelected + '/' + this.form.fechaInicio + '/' + this.form.fechaFin, '_blank')
+					window.location.href = this.url + '/pagos'
 				}
 				else{
 					this.toastFunction('Existen campos inválidos. Verifícalos antes de guardar', 'error')

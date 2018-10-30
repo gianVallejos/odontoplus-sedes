@@ -1,61 +1,45 @@
 <template>
-  <b-container>
+  <b-container v-if="curUser.rolid == 1">
 		<b-row>
 			<div class="col-md-12">
-				<TitleComponent titulo="Ganancias" :items="breadcrumb" />
+				<TitleComponent titulo="Reporte de Ganancias" :items="breadcrumb" />
 			</div>
       <div class="col-md-12">
         <PanelCard>
-          <span slot="heading">Ganancias Detalle</span>
+          <span slot="heading">Detalle de Ganancias</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
             <!-- User Interface controls -->
             <b-row class="pb-3">
 							<div class="col-md-6">
 								<div class="input-group d-inline-block">
-									<!--b-input-group>
-										<div class="input-group-append">
-											<span class="icon-input">
-				    							<i class="fas fa-search" aria-hidden="true"></i>
-				    						</span>
-				    					</div>
-			    						<input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
-								      	<div class="input-group-append">
-									    	<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
-									    		<i class="fas fa-sync-alt"></i>
-									    	</b-btn>
-									    </div>
-								    </b-input-group-->
-
 								<b-form-row>
-									<b-col cols="6">
+									<b-col cols="4">
 										<b-form-group label="Desde:" label-for="fechainicio" class="mb-0">
 											<b-input id="fechainicio" type="date" v-model="form.fechaInicio" />
 											<span v-if="all_errors.fechaInicio" :class="['label label-danger']">{{ all_errors.fechaInicio[0] }}</span>
 										</b-form-group>
 									</b-col>
-									<b-col cols="6">
+									<b-col cols="4">
 										<b-form-group label="Hasta:" label-for="fechafin" class="mb-0">
-											<b-input-group>
-												<b-form-input id="fechafin" type="date" v-model="form.fechaFin" />
-												<b-input-group-append>
-													<b-btn variant="primary" v-on:click.prevent="refreshIngresosTable()" >
-														<i class="fas fa-search"></i>
-													</b-btn>
-												</b-input-group-append>
-											</b-input-group>	
+											<b-input id="fechafin" type="date" v-model="form.fechaFin" />											
 											<span v-if="all_errors.fechaFin" :class="['label label-danger']">{{ all_errors.fechaFin[0] }}</span>
 									  </b-form-group>											
+									</b-col>
+									<b-col cols="4" class="pt-4 mt-1">										
+											<b-btn variant="primary" v-on:click.prevent="refreshIngresosTable()" >
+												<i class="fas fa-search"></i>&nbsp;&nbsp;Buscar
+											</b-btn>
 									</b-col>
 								</b-form-row>
 
 
 								</div>
 							</div>
-							<div class="col-md-6">							
+							<div class="col-md-6 pt-4 mt-1">							
 								<div class="float-right d-inline-block">
 									<b-button-group>										
-										<b-button variant="primary" v-on:click.prevent="goToPDFView()">
-											<i class="far fa-file-pdf"></i>&nbsp; PDF
+										<b-button variant="primary" v-on:click.prevent="goToPDFView()" >
+											<i class="fas fa-file-alt"></i>&nbsp; Reporte
 										</b-button>
 									</b-button-group>
 								</div>
@@ -93,7 +77,7 @@
 								S/. {{ row.item.doctor }}
 							</template>
 							<template slot="ganancia" slot-scope="row">
-								S/. {{ row.item.total - row.item.doctor  }}
+								S/. {{ redondearADos(row.item.total - row.item.doctor) }}
 							</template>
             </b-table>
 
@@ -130,26 +114,27 @@
       TitleComponent
 		},
     props:[
-      'url'
+      'url',
+      'curUser'
     ],
     data(){
 			return{
         fields: [
 					{ key: 'index', label: '#' },
+					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
-					{ key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc' },
-					{ key: 'monto', label: 'Precio', sortable: true, sortDirection: 'desc' },
-					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc' },			        
-					{ key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc'},			        
-					{ key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc'}		
+					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
+					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
+					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-center', sortDirection: 'desc' },			        
+					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-center', sortDirection: 'desc'}		
 				],
 				gananciasRecords: [ ],
 				form: {
 					fechaInicio:'',
 					fechaFin:''
 				},
-		    all_errors: [],
+		all_errors: [],
         currentPage: 1,
         perPage: 10,
         totalRows: 0,
@@ -160,8 +145,8 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Dashboard', href: this.url + '/' },
-          { text: 'Ganancias', active: true }
+          { text: 'Inicio', href: this.url + '/' },
+          { text: 'Reporte de Ganancias', active: true }
         ]
 			}
 		},
@@ -186,7 +171,7 @@
 			},
 			goToPDFView(){
 				if( this.validForm() ){
-					window.location.href = this.url + '/reportes/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin
+					window.open(this.url + '/reportes/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin, '_blank')
 				}
 				else{
 					this.toastFunction('El periodo de fechas es inválido.', 'error')
@@ -231,6 +216,9 @@
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
+	  redondearADos(total){
+	   	return parseFloat(Math.round(total * 100) / 100).toFixed(2)
+	  },
       totalCurrentPages(){
         var res = Math.round(this.totalRows / this.perPage)
         if( res == 0 ) return res + 1

@@ -22,14 +22,15 @@ class PagoController extends Controller{
     public function show($idDoctor, $fechaInicial, $fechaFinal){        
         $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
         $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
-        $doctor = DB::select('call OP_ObtenerDoctores_Id('.$idDoctor.')')[0];
+        $doctor = DB::select('call OP_ObtenerDoctores_Id('. $idDoctor .')')[0];
+        $last_pago = DB::select('call OP_obtenerUltimoPago()')[0];
         $ingresos = json_encode($ingresos);
-        $igeneral = json_encode(['doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
+        $igeneral = json_encode(['ultimoPago' => $last_pago, 'doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
         return view('pagos.show', compact('ingresos', 'igeneral'));     
     }
 
     public function create(){
-        $doctores = DB::select('call OP_ObtenerDoctores_DESC()'); 
+        $doctores = DB::select('call OP_ObtenerDoctores()'); 
         $doctores = json_encode($doctores);
         return view('pagos.create', compact('doctores'));    
     }
@@ -38,8 +39,9 @@ class PagoController extends Controller{
         $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
         $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
         $doctor = DB::select('call OP_ObtenerDoctores_Id('.$idDoctor.')')[0];
+        $last_pago = DB::select('call OP_obtenerUltimoPago()')[0];
         $ingresos = json_encode($ingresos);
-        $igeneral = json_encode(['doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
+        $igeneral = json_encode(['ultimoPago' => $last_pago, 'doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
         return view('pagos.new', compact('ingresos', 'igeneral'));    
     }
 

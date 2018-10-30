@@ -9,7 +9,7 @@
 							<i class="fas fa-plus"></i>&nbsp; Agregar Tratamiento
 						</b-btn>
 						<b-btn variant="primary" :href="this.url + '/ingresos/reporte/' + this.id" target="_blank">
-							<i class="fas fa-file-pdf"></i>&nbsp; PDF
+							<i class="fas fa-file-alt"></i>&nbsp; Reporte
 						</b-btn>
 						<b-btn :href="url + '/ingresos'" variant="warning">
 							<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar

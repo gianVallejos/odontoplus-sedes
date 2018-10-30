@@ -7,7 +7,7 @@
 			<b-col cols="12" class="pt-3">
 				<div class="row">
 					<div class="col-lg-3 col-md-4 col-sm-6 col-12" v-for="item in items">
-						<Dashbox :iconUrl="item.iconUrl" :name="item.name" :color="item.color" :url="item.url" />						
+						<Dashbox :iconUrl="item.iconUrl" :name="item.name" :color="item.color" :url="item.url" :for_admin="item.for_admin" :user="user" />						
 					</div>					
 				</div>
 			</b-col>
@@ -72,8 +72,8 @@
 					</div>
 					<b-button slot="footer" :href="url + '/presupuestos'" variant="primary">Ver Presupuestos</b-button>
 				</PanelCard>
-			</b-col>
-			<b-col class="pt-5" cols="12" v-if="user.rolid == 1">
+			</b-col>			
+			<b-col class="pt-5" cols="12" v-if="user.rolid == 1">				
 				<PanelCard>
 					<span slot="heading">Reporte de Finanzas</span>
 					<b-row slot="body">
@@ -135,50 +135,86 @@
 				    		iconUrl: 'fas fa-calculator',
 				    		name: 'Presupuesto',
 				    		color: 'info',
-				    		url: this.url + '/presupuestos'
+				    		url: this.url + '/presupuestos',
+				    		for_admin: false
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-child',
 				    		name: 'Pacientes',
 				    		color: 'nuevo',
-				    		url: this.url + '/pacientes'
+				    		url: this.url + '/pacientes',
+				    		for_admin: false
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-user-md',
 				    		name: 'Doctores',
 				    		color: 'modificar',
-				    		url: this.url + '/doctores'
+				    		url: this.url + '/doctores',
+				    		for_admin: false
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-tooth',
 				    		name: 'Tratamientos',
 				    		color: 'guardar',
-				    		url: this.url + '/tratamientos'
+				    		url: this.url + '/tratamientos',
+				    		for_admin: false
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-dollar-sign',
 				    		name: 'Precios',
 				    		color: 'modificar',
-				    		url: this.url + '/precios'
+				    		url: this.url + '/precios',
+				    		for_admin: false
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-building',
 				    		name: 'Empresas',
 				    		color: 'guardar',
-				    		url: this.url + '/empresas'
+				    		url: this.url + '/empresas',
+				    		for_admin: false
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-money-check-alt',
 				    		name: 'Ingresos',
 				    		color: 'info',
-				    		url: this.url + '/ingresos'
+				    		url: this.url + '/ingresos',
+				    		for_admin: false
 				    	},
 				    	{ 
 				    		iconUrl: 'fas fa-money-bill',
 				    		name: 'Egresos',
 				    		color: 'nuevo',
-				    		url: this.url + '/egresos'
-				    	}			    	
+				    		url: this.url + '/egresos',
+				    		for_admin: false
+				    	},
+				    	{ 
+				    		iconUrl: 'fas fa-credit-card',
+				    		name: 'Pagos',
+				    		color: 'nuevo',
+				    		url: this.url + '/pagos',
+				    		for_admin: true
+				    	},
+				    	{ 
+				    		iconUrl: 'fas fa-hand-holding-usd',
+				    		name: 'Ganancias',
+				    		color: 'info',
+				    		url: this.url + '/reportes/ganancias',
+				    		for_admin: true
+				    	},
+				    	{ 
+				    		iconUrl: 'fas fa-chart-line',
+				    		name: 'Estadísticas',
+				    		color: 'guardar',
+				    		url: this.url + '/reportes',
+				    		for_admin: true
+				    	},
+				    	{ 
+				    		iconUrl: 'fas fa-users',
+				    		name: 'Usuarios',
+				    		color: 'modificar',
+				    		url: this.url + '/users',
+				    		for_admin: true
+				    	}		    	
 			    ],
 				chartData: [
 			        ['Year', 'Sales', 'Expenses'],

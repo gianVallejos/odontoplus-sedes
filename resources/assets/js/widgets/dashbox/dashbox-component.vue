@@ -1,5 +1,5 @@
 <template>
-	<div class="dashbox" :class="color" v-on:click="say" >
+	<div class="dashbox" :class="color" v-on:click="say" v-if="for_admin == false || user.rolid == 1" >
 		<div>
 			<div class="icono">
 				<i :class="iconUrl"></i>
@@ -21,7 +21,8 @@
 			'name',
 			'color',
 			'url',
-			'user'
+			'user',
+			'for_admin'
 		],
 		methods: {
 			say: function () {

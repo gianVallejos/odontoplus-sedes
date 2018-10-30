@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container v-if="curUser.rolid == 1">
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Pagos" :items="breadcrumb" />
@@ -55,15 +55,13 @@
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/pagos/detalle/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" >Detalle</a>
+                  <a :href="url+'/pagos/detalle/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" target="_blank" >Detalle</a>
                   |
                   <a v-on:click.prevent="onEliminar( row.item.id )" class="action" >Eliminar</a>
                 </div>
               </template>
-              <template slot="doctor" slot-scope="row">                
-                  <a :href="url + '/doctores/' + row.item.idDoctor">
-                    {{ row.item.nombres }} {{ row.item.apellidos }}
-                  </a>
+              <template slot="doctor" slot-scope="row">                                  
+                    {{ row.item.nombres }} {{ row.item.apellidos }}                  
               </template>
             </b-table>
 
@@ -99,7 +97,8 @@
 		},
     props:[
       'items',
-      'url'
+      'url',
+      'curUser'
     ],
     data(){
 			return{
@@ -108,7 +107,7 @@
           { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
           { key: 'fecha_inicio', label: 'Fecha de Inicio', sortable: true },
           { key: 'fecha_fin', label: 'Fecha Fin', sortable: true },
-          { key: 'created_at', label: 'Creado', sortable: true, 'class': 'text-center' }
+          { key: 'created_at', label: 'Fecha de Creación', sortable: true  }
         ],
         currentPage: 1,
         perPage: 10,
@@ -120,7 +119,7 @@
         filter: null,
         modalInfo: { title: '', content: '' },
         breadcrumb: [
-          { text: 'Dashboard', href: this.url + '/' },
+          { text: 'Inicio', href: this.url + '/' },
           { text: 'Pagos', active: true }
         ]
 			}
@@ -137,7 +136,7 @@
       onEliminar(pagoId){
 				this.$swal({ 
 						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
-						html:  '<span style="font-size: 1em"> ¿ Está seguro de eliminar este Pago ?' +
+						html:  '<span style="font-size: 1em"> ¿Está seguro de eliminar este Pago?' +
 									'</span>',	
 						animation: false, 
 						showConfirmButton: true, 
