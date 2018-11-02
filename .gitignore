@@ -17,3 +17,9 @@ yarn-error.log
 public/css/odontoplus\.css
 
 public/css/header\.css
+
+public/css/auth\.css
+
+public/css/dashboard\.css
+
+public/css/diente\.css
