@@ -79,7 +79,9 @@
 					<template slot="total" slot-scope="row">
 						S/. {{ row.item.total }}
 					</template>
-
+					<template slot="empresa" slot-scope="row">
+						S/. {{ calculateEmpresaAmount(row.item.total, row.item.doctor)}}
+					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
@@ -139,13 +141,15 @@
 				fields: [				    
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
+					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc' },
 					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },					
-				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
-				    { key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
-				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
-				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },			        
-				    { key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'}			        
-					],
+					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
+					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
+					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
+					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },			        
+					{ key: 'empresa', label: 'Total Emp.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },			        
+					{ key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'}			        
+				],
 				displayStatus: ''
 			}
 		},
@@ -213,6 +217,9 @@
 				window.close()
 				window.opener.location.reload()
 				window.opener.external.comeback()
+			},
+			calculateEmpresaAmount(total, monto_doctor){
+				return (total -monto_doctor).toFixed(2)
 			}
 		}
 	}
