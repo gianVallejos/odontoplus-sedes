@@ -17,6 +17,9 @@
 											<b-input id="inc_paciente_start" type="date" v-model="balance.range.start" />
 										</b-form-group>
 									</b-col>
+									<b-col cols="12">
+										<line-chart :data="ingresosData"></line-chart>
+									</b-col>
 									<b-col cols="6">
 										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
 											<b-input-group>
@@ -182,29 +185,34 @@
 	import PanelCard from '../widgets/panel/panel-component.vue'
   import { GChart } from 'vue-google-charts'
   import axios from 'axios'
+  import Vue from 'vue'
+
+  Vue.component('line-chart', {
+	  extends: VueChartJs.Line,
+	  props: [
+	  	'data'
+	  ],
+	  mounted () {
+	  	alert(this.data)
+	    this.renderChart({
+	      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+	      datasets: [
+	        {
+	          label: 'Data One',
+	          backgroundColor: '#f87979',
+	          data: this.data
+	        }
+	      ]
+	    }, {responsive: true, maintainAspectRatio: false})
+	  }
+	  
+	})
 
 	export default{
 		mounted(){
-			var xhr = new XMLHttpRequest();
-			var file = "https://httpbin.org/get";
-			var randomNum = Math.round(Math.random() * 10000);
-			var self = this 
+			console.log('Reports Mounted')
+			this.initCharts()	
 			
-			xhr.open('HEAD', file + "?rand=" + randomNum, true);
-			xhr.send();
-			     
-			xhr.addEventListener("readystatechange", processRequest, false);
-			 
-			function processRequest(e) {
-			    if (xhr.readyState == 4) {
-			        if (xhr.status >= 200 && xhr.status < 304) {
-			        	console.log('Reports Mounted')
-						self.initCharts()	
-			        } else {
-			    		self.toastFunctionRedirect('<span style="#fff; font-size: 1em">Error</span>', 'Para ver las estadísticas del sistema debe contar con Internet <br />Redireccionando...', 'error')    	
-			        }
-				}
-			}			
 		},
 		props: [
 			'url'
