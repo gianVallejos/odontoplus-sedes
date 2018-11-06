@@ -273,7 +273,7 @@ CREATE TABLE `users` (
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_actualizarIngresoDetalle`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_actualizarIngresoDetalle`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT, IN XMONTO DECIMAL(11, 2), IN XID INT, IN XFECHA DATE, IN XDOCTOR INT)
+CREATE PROCEDURE `OP_actualizarIngresoDetalle`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT, IN XMONTO DECIMAL(11, 2), IN XID INT, IN XFECHA DATE, IN XDOCTOR INT)
 BEGIN
 	DECLARE MONTO_TOTAL DECIMAL(11, 2);
 
@@ -289,7 +289,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_agregarIngresoDetalle`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_agregarIngresoDetalle`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT, IN XMONTO DECIMAL(11, 2), IN XFECHA DATE, IN XDOCTOR INT)
+CREATE PROCEDURE `OP_agregarIngresoDetalle`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT, IN XMONTO DECIMAL(11, 2), IN XFECHA DATE, IN XDOCTOR INT)
 BEGIN
 		DECLARE MONTO_TOTAL DECIMAL(11, 2);
 
@@ -305,7 +305,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_AgregarPrecios_EmpresaId_TratamientoId`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_AgregarPrecios_EmpresaId_TratamientoId`(IN empresaId int, IN tratamientoId int, IN precio decimal)
+CREATE PROCEDURE `OP_AgregarPrecios_EmpresaId_TratamientoId`(IN empresaId int, IN tratamientoId int, IN precio decimal)
 BEGIN
   INSERT INTO precios (idEmpresa, idTratamiento, monto) values (empresaId, tratamientoId, precio);
   SELECT ROW_COUNT() AS ESTADO;
@@ -318,7 +318,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_agregarPresupuestoGeneral`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_agregarPresupuestoGeneral`(IN ID_PRESUPUESTO INT, IN XID_PACIENTE INT, IN XID_DOCTOR INT, IN XDESCUENTO INT)
+CREATE PROCEDURE `OP_agregarPresupuestoGeneral`(IN ID_PRESUPUESTO INT, IN XID_PACIENTE INT, IN XID_DOCTOR INT, IN XDESCUENTO INT)
 BEGIN
 		INSERT INTO presupuestos(id, fechahora, idPaciente, idDoctor, descuento)
 			VALUES (ID_PRESUPUESTO, NOW(), XID_PACIENTE, XID_DOCTOR, XDESCUENTO);
@@ -333,7 +333,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_agregarPresupuestosDetalles`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_agregarPresupuestosDetalles`(IN XID_PRESUPUESTO INT, IN XPIEZA INT, XSECCION INT, IN XSECUNO INT, IN XSECDOS INT, IN XOPCION INT, IN XMONTO DECIMAL(10, 2))
+CREATE PROCEDURE `OP_agregarPresupuestosDetalles`(IN XID_PRESUPUESTO INT, IN XPIEZA INT, XSECCION INT, IN XSECUNO INT, IN XSECDOS INT, IN XOPCION INT, IN XMONTO DECIMAL(10, 2))
 BEGIN
 		INSERT INTO presupuesto_detalles(idPresupuesto, pieza, seccion, secUno, secDos, opcion, monto)
 		VALUES(XID_PRESUPUESTO, XPIEZA, XSECCION, XSECUNO, XSECDOS, XOPCION, XMONTO);
@@ -348,7 +348,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_eliminarDoctor_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_eliminarDoctor_Id`(IN XID_DOCTOR INT)
+CREATE PROCEDURE `OP_eliminarDoctor_Id`(IN XID_DOCTOR INT)
 BEGIN
 	DELETE FROM doctors WHERE id = XID_DOCTOR;
 	ALTER TABLE `doctors` AUTO_INCREMENT = 1;
@@ -361,7 +361,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_eliminarIngresoDetalle`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_eliminarIngresoDetalle`(IN XID INT)
+CREATE PROCEDURE `OP_eliminarIngresoDetalle`(IN XID INT)
 BEGIN
 	DELETE FROM ingresos_detalle WHERE ingresos_detalle.id = XID;
 END
@@ -373,7 +373,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_eliminarIngreso_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_eliminarIngreso_Id`(IN XID_PACIENTE INT)
+CREATE PROCEDURE `OP_eliminarIngreso_Id`(IN XID_PACIENTE INT)
 BEGIN
 	DELETE FROM ingresos WHERE idPaciente = XID_PACIENTE;
 	ALTER TABLE `ingresos` AUTO_INCREMENT = 1;
@@ -386,7 +386,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_eliminarPaciente_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_eliminarPaciente_Id`(IN XID_PACIENTE INT)
+CREATE PROCEDURE `OP_eliminarPaciente_Id`(IN XID_PACIENTE INT)
 BEGIN
 	DELETE FROM pacientes WHERE id = XID_PACIENTE;
 	ALTER TABLE `pacientes` AUTO_INCREMENT = 1;
@@ -399,7 +399,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_eliminarPresupuesto_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_eliminarPresupuesto_Id`(IN XID_PRESUPUESTO INT)
+CREATE PROCEDURE `OP_eliminarPresupuesto_Id`(IN XID_PRESUPUESTO INT)
 BEGIN
 	START TRANSACTION;
 		DELETE FROM presupuestos WHERE id = XID_PRESUPUESTO;
@@ -414,7 +414,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_eliminarTratamiento_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_eliminarTratamiento_Id`(IN XID_TRATAMIENTO INT)
+CREATE PROCEDURE `OP_eliminarTratamiento_Id`(IN XID_TRATAMIENTO INT)
 BEGIN
 	START TRANSACTION;
 		DELETE FROM tratamientos WHERE id = XID_TRATAMIENTO;
@@ -429,7 +429,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_esDoctorBorrable_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_esDoctorBorrable_Id`(IN XID_DOCTOR INT)
+CREATE PROCEDURE `OP_esDoctorBorrable_Id`(IN XID_DOCTOR INT)
 BEGIN
 DECLARE myvar INT;
 
@@ -450,7 +450,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_esIngresoBorrable_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_esIngresoBorrable_Id`(IN XID_INGRESO INT)
+CREATE PROCEDURE `OP_esIngresoBorrable_Id`(IN XID_INGRESO INT)
 BEGIN
 
 	DECLARE myvar INT;
@@ -472,7 +472,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_esPacienteBorrable_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_esPacienteBorrable_Id`(IN XID_PACIENTE INT)
+CREATE PROCEDURE `OP_esPacienteBorrable_Id`(IN XID_PACIENTE INT)
 BEGIN
 DECLARE myvar INT;
 DECLARE ingreso_status INT;
@@ -498,7 +498,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_esTratamientoBorrable_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_esTratamientoBorrable_Id`(IN XID_TRATAMIENTO INT)
+CREATE PROCEDURE `OP_esTratamientoBorrable_Id`(IN XID_TRATAMIENTO INT)
 BEGIN
 DECLARE myvar INT;
 
@@ -519,7 +519,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerAllTotalIngreso_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerAllTotalIngreso_Id`(IN XID_INGRESO INT)
+CREATE PROCEDURE `OP_obtenerAllTotalIngreso_Id`(IN XID_INGRESO INT)
 BEGIN
 	
 	SELECT SUM(idt.cantidad * idt.monto) as total FROM ingresos
@@ -535,7 +535,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerDoctores`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerDoctores`()
+CREATE PROCEDURE `OP_ObtenerDoctores`()
 BEGIN
   SELECT d.id, d.nombres, d.apellidos, d.dni, d.email, d.direccion, d.telefono, d.celular, d.margen_ganancia
   FROM doctors d
@@ -549,7 +549,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerDoctores_DESC`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerDoctores_DESC`()
+CREATE PROCEDURE `OP_ObtenerDoctores_DESC`()
 BEGIN
   SELECT d.id, d.nombres, d.apellidos, d.dni, d.email, d.direccion, d.telefono, d.celular, d.margen_ganancia
   FROM doctors d
@@ -563,7 +563,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerDoctores_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerDoctores_Id`(IN XID INT)
+CREATE PROCEDURE `OP_ObtenerDoctores_Id`(IN XID INT)
 BEGIN
   SELECT d.id, d.nombres, d.apellidos, d.dni, d.email, d.direccion, d.telefono, d.celular, d.margen_ganancia,
          d.genero, d.estado, d.celular_aux, d.fechanacimiento
@@ -578,7 +578,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerDoctores_presupuesto`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerDoctores_presupuesto`(IN XID_DOCTOR INT)
+CREATE PROCEDURE `OP_obtenerDoctores_presupuesto`(IN XID_DOCTOR INT)
 BEGIN
 	SELECT id as id, nombres as nombres, apellidos as apellidos, margen_ganancia
 		FROM doctors WHERE id = XID_DOCTOR;
@@ -591,7 +591,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerEgresos`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerEgresos`()
+CREATE PROCEDURE `OP_obtenerEgresos`()
 BEGIN
 		SELECT egresos.id, fecha, concepto, cantidad, precio_unitario as monto, SUM(cantidad * precio_unitario) as total, 
 					 tipo, doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota
@@ -608,7 +608,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerEgresos_Fechas`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerEgresos_Fechas`(IN XDATE DATE)
+CREATE PROCEDURE `OP_ObtenerEgresos_Fechas`(IN XDATE DATE)
 BEGIN
 	SET lc_time_names = 'es_ES';
 	SELECT MONTHNAME(e.fecha) as mes, SUM(e.cantidad * e.precio_unitario) as egresos
@@ -624,7 +624,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerEgresos_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerEgresos_Id`(IN XID INT)
+CREATE PROCEDURE `OP_obtenerEgresos_Id`(IN XID INT)
 BEGIN
 	SELECT egresos.id, fecha, concepto, cantidad, precio_unitario as monto, SUM(cantidad * precio_unitario) as total, tipo, 
 				 doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota
@@ -641,7 +641,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerEmpresaActual_paciente`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerEmpresaActual_paciente`(IN XID_PACIENTE INT)
+CREATE PROCEDURE `OP_obtenerEmpresaActual_paciente`(IN XID_PACIENTE INT)
 BEGIN
 	SELECT empresa_id FROM pacientes WHERE pacientes.id = XID_PACIENTE;
 END
@@ -653,7 +653,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerEmpresas`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerEmpresas`()
+CREATE PROCEDURE `OP_ObtenerEmpresas`()
 BEGIN
   SELECT e.id, e.nombre, e.ruc
   FROM empresas e
@@ -667,7 +667,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerEmpresas_DESC`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerEmpresas_DESC`()
+CREATE PROCEDURE `OP_ObtenerEmpresas_DESC`()
 BEGIN
   SELECT e.id, e.nombre, e.ruc
   FROM empresas e
@@ -681,7 +681,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerEmpresas_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerEmpresas_Id`(IN XID INT)
+CREATE PROCEDURE `OP_ObtenerEmpresas_Id`(IN XID INT)
 BEGIN
   SELECT e.id, e.nombre, e.ruc
   FROM empresas e
@@ -695,7 +695,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerGanancias`;
 DELIMITER ;;
-CREATE DEFINER=`odontoguess`@`%` PROCEDURE `OP_ObtenerGanancias`()
+CREATE PROCEDURE `OP_ObtenerGanancias`()
 BEGIN
     SELECT idt.id, dr.nombres,dr.apellidos, tr.detalle as tratamiento, idt.cantidad, idt.monto, (idt.cantidad * idt.monto) as total,
            FORMAT((dr.margen_ganancia/100 * idt.cantidad * idt.monto),2) as doctor
@@ -712,7 +712,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerIngresoDetalle_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerIngresoDetalle_Id`(IN XID_INGRESO INT)
+CREATE PROCEDURE `OP_obtenerIngresoDetalle_Id`(IN XID_INGRESO INT)
 BEGIN
 	SELECT idt.id, trat.id as idTratamiento, trat.detalle as tratamiento,
 				 doc.id as idDoctor, CONCAT(doc.nombres, ' ', doc.apellidos) as nombreDoctor,				 
@@ -737,7 +737,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerIngresos`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerIngresos`()
+CREATE PROCEDURE `OP_obtenerIngresos`()
 BEGIN 
 	SELECT ingresos.id as id, pacientes.id as hc, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) as nombrePaciente, 
 			 ingresos.created_at as fecha,			
@@ -756,7 +756,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerIngresosPorEmpresa_Fechas`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerIngresosPorEmpresa_Fechas`(IN start_date DATE, IN end_date date)
+CREATE PROCEDURE `OP_ObtenerIngresosPorEmpresa_Fechas`(IN start_date DATE, IN end_date date)
 BEGIN
 	SELECT empresas.nombre as nombre, SUM(idt.cantidad * idt.monto) as ingresos
 		FROM pacientes
@@ -774,7 +774,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerIngresosPorEmpresa_Reportes`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerIngresosPorEmpresa_Reportes`()
+CREATE PROCEDURE `OP_ObtenerIngresosPorEmpresa_Reportes`()
 BEGIN
 	SELECT empresas.nombre as nombre, SUM(idt.cantidad * idt.monto) as ingresos
 		FROM pacientes
@@ -791,7 +791,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerIngresosPorPaciente_Fechas`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerIngresosPorPaciente_Fechas`(IN XINI DATE, IN XFIN DATE)
+CREATE PROCEDURE `OP_ObtenerIngresosPorPaciente_Fechas`(IN XINI DATE, IN XFIN DATE)
 BEGIN
 	SELECT SUBSTRING(CONCAT(pacientes.nombres, " ", pacientes.apellidos), 1, 25) as nombre, SUM(idt.cantidad * idt.monto) as monto
 		FROM ingresos INNER JOIN pacientes on pacientes.id = ingresos.idPaciente
@@ -807,7 +807,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerIngresosPorPaciente_Reportes`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerIngresosPorPaciente_Reportes`()
+CREATE PROCEDURE `OP_ObtenerIngresosPorPaciente_Reportes`()
 BEGIN
 	SELECT SUBSTRING(CONCAT(pacientes.nombres, " ", pacientes.apellidos), 1, 25) as nombre, SUM(idt.cantidad * idt.monto) as monto
 		FROM ingresos INNER JOIN pacientes on pacientes.id = ingresos.idPaciente
@@ -822,7 +822,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerIngresosTotales_DoctorId_RangoFechas`;
 DELIMITER ;;
-CREATE DEFINER=`odontoguess`@`%` PROCEDURE `OP_ObtenerIngresosTotales_DoctorId_RangoFechas`(IN doctor_id int, IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_ObtenerIngresosTotales_DoctorId_RangoFechas`(IN doctor_id int, IN start_date date, IN end_date date)
 BEGIN
 	IF doctor_id = 0 THEN
 
@@ -852,7 +852,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerIngresosTotal_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerIngresosTotal_Id`(IN XID_INGRESO_DETALLE INT)
+CREATE PROCEDURE `OP_obtenerIngresosTotal_Id`(IN XID_INGRESO_DETALLE INT)
 BEGIN
 	SELECT ROUND(IFNULL(SUM(ingresos_detalle.monto * ingresos_detalle.cantidad), 0), 2) as total, 
 			   ROUND(IFNULL(SUM(ingresos_detalle.monto * ingresos_detalle.cantidad) * doctors.margen_ganancia/100, 0), 2) as mg,
@@ -870,7 +870,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerIngresos_DoctorId_RangoFechas`;
 DELIMITER ;;
-CREATE DEFINER=`odontoguess`@`%` PROCEDURE `OP_ObtenerIngresos_DoctorId_RangoFechas`(IN doctor_id int, IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_ObtenerIngresos_DoctorId_RangoFechas`(IN doctor_id int, IN start_date date, IN end_date date)
 BEGIN
 	IF doctor_id = 0 THEN
 
@@ -904,7 +904,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerIngresos_Fechas`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerIngresos_Fechas`(IN XDATE DATE)
+CREATE PROCEDURE `OP_ObtenerIngresos_Fechas`(IN XDATE DATE)
 BEGIN
 	SET lc_time_names = 'es_ES';
 
@@ -921,7 +921,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerIngresos_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerIngresos_Id`(IN XID INT)
+CREATE PROCEDURE `OP_obtenerIngresos_Id`(IN XID INT)
 BEGIN
 	SELECT LPAD(ingresos.id, 5, '0') as id, LPAD(pacientes.id, 5, '0') as hc, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) as nombrePaciente, 
 				 ingresos.created_at as fecha,					 
@@ -940,7 +940,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerPacientes`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPacientes`()
+CREATE PROCEDURE `OP_obtenerPacientes`()
 BEGIN
 	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero, 
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, 
@@ -957,7 +957,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerPacientes_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPacientes_Id`(IN XID INT)
+CREATE PROCEDURE `OP_obtenerPacientes_Id`(IN XID INT)
 BEGIN
 	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero, 
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, 
@@ -974,7 +974,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerPacientes_presupuesto`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPacientes_presupuesto`(IN XID_PACIENTES INT)
+CREATE PROCEDURE `OP_obtenerPacientes_presupuesto`(IN XID_PACIENTES INT)
 BEGIN
 	SELECT LPAD(pacientes.id, 5, '0') as id, pacientes.nombres, pacientes.apellidos, empresas.nombre as empresa, pacientes.empresa_id 
 		FROM pacientes
@@ -989,7 +989,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerPagos`;
 DELIMITER ;;
-CREATE DEFINER=`odontoguess`@`%` PROCEDURE `OP_ObtenerPagos`()
+CREATE PROCEDURE `OP_ObtenerPagos`()
 BEGIN
   SELECT p.id, p.idDoctor, dr.nombres, dr.apellidos, p.fecha_inicio, p.fecha_fin, p.created_at, p.updated_at
   FROM pagos p
@@ -1004,7 +1004,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerPreciosEstandard`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerPreciosEstandard`()
+CREATE PROCEDURE `OP_ObtenerPreciosEstandard`()
 BEGIN
 	SELECT precios.id, precios.idTratamiento AS id_tratamiento, tratamientos.detalle AS tratamiento,
          precios.idEmpresa AS id_empresa, precios.monto AS monto
@@ -1022,7 +1022,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerPreciosParaTabla_EmpresaId`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPreciosParaTabla_EmpresaId`(IN XID_EMPRESA INT)
+CREATE PROCEDURE `OP_obtenerPreciosParaTabla_EmpresaId`(IN XID_EMPRESA INT)
 BEGIN
 	select trat.id, trat.detalle, emprc.monto from precios as emprc
 		inner join empresas as emp on emp.id = emprc.idEmpresa
@@ -1037,7 +1037,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerPrecios_EmpresaId`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPrecios_EmpresaId`(IN XID_EMPRESA INT)
+CREATE PROCEDURE `OP_obtenerPrecios_EmpresaId`(IN XID_EMPRESA INT)
 BEGIN
 	select trat.id, trat.detalle, emprc.monto from precios as emprc
 		inner join empresas as emp on emp.id = emprc.idEmpresa
@@ -1052,7 +1052,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerPrecios_EmpresaId_TratamientoId`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerPrecios_EmpresaId_TratamientoId`(IN empresaId INT, IN tratamientoId INT)
+CREATE PROCEDURE `OP_ObtenerPrecios_EmpresaId_TratamientoId`(IN empresaId INT, IN tratamientoId INT)
 BEGIN
 	SELECT precios.id, precios.idTratamiento AS id_tratamiento, precios.idEmpresa AS id_empresa, precios.monto AS monto
   FROM precios
@@ -1066,7 +1066,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerPresupuestoDetalle_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPresupuestoDetalle_Id`(IN XID INT)
+CREATE PROCEDURE `OP_obtenerPresupuestoDetalle_Id`(IN XID INT)
 BEGIN
 	SELECT id, pieza, seccion, secUno, secDos, opcion, monto FROM presupuesto_detalles
 		WHERE idPresupuesto = XID;
@@ -1079,7 +1079,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerPresupuestos`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPresupuestos`()
+CREATE PROCEDURE `OP_obtenerPresupuestos`()
 BEGIN
 	SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pre.idDoctor, pre.descuento, 
 				 CONCAT(pc.nombres, ' ', pc.apellidos) AS nombrePaciente, 
@@ -1097,7 +1097,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerPresupuesto_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerPresupuesto_Id`(IN XID INT)
+CREATE PROCEDURE `OP_obtenerPresupuesto_Id`(IN XID INT)
 BEGIN
 	SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pre.idDoctor, pre.descuento, 
 				 CONCAT(pc.nombres, ' ', pc.apellidos) AS nombrePaciente, 
@@ -1117,7 +1117,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerProveedores`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerProveedores`()
+CREATE PROCEDURE `OP_ObtenerProveedores`()
 BEGIN
   SELECT 	e.id, e.nombres, e.email, e.direccion, e.dni, e.telefono, e.celular, e.empresa,	e.ciudad,	e.ruc,
 	e.banco,	e.nrocuenta,	e.insumo_id,	e.tipo_id
@@ -1132,7 +1132,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerProveedores_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerProveedores_Id`(IN XID INT)
+CREATE PROCEDURE `OP_ObtenerProveedores_Id`(IN XID INT)
 BEGIN
   SELECT e.id, e.nombres, e.email, e.direccion, e.dni, e.telefono, e.celular, e.empresa,	e.ciudad,	e.ruc,
 	e.banco,	e.nrocuenta,	e.insumo_id,	e.tipo_id
@@ -1147,7 +1147,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerTotalEgresos_Fechas`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerTotalEgresos_Fechas`(IN XINI DATE, IN XFIN DATE)
+CREATE PROCEDURE `OP_ObtenerTotalEgresos_Fechas`(IN XINI DATE, IN XFIN DATE)
 BEGIN
 	SELECT SUM(cantidad * precio_unitario) as egresos
 		FROM egresos
@@ -1161,7 +1161,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerTotalEgresos_Reportes`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerTotalEgresos_Reportes`()
+CREATE PROCEDURE `OP_ObtenerTotalEgresos_Reportes`()
 BEGIN
 	SELECT SUM(cantidad * precio_unitario) as egresos
 		FROM egresos;
@@ -1174,7 +1174,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerTotalIngresos_Fechas`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerTotalIngresos_Fechas`(IN XINI DATE, IN XFIN DATE)
+CREATE PROCEDURE `OP_ObtenerTotalIngresos_Fechas`(IN XINI DATE, IN XFIN DATE)
 BEGIN
 	SELECT SUM(cantidad * monto) AS ingresos 
 		FROM ingresos_detalle
@@ -1188,7 +1188,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerTotalIngresos_Reportes`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerTotalIngresos_Reportes`()
+CREATE PROCEDURE `OP_ObtenerTotalIngresos_Reportes`()
 BEGIN
 	SELECT SUM(cantidad * monto) AS ingresos 
 		FROM ingresos_detalle;
@@ -1201,7 +1201,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerTratamientos`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerTratamientos`()
+CREATE PROCEDURE `OP_ObtenerTratamientos`()
 BEGIN
   SELECT t.id, t.detalle, t.is_active
   FROM tratamientos t
@@ -1215,7 +1215,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerTratamientosDestacados_Fechas`;
 DELIMITER ;;
-CREATE DEFINER=`odontoguess`@`%` PROCEDURE `OP_ObtenerTratamientosDestacados_Fechas`(IN XINI DATE, IN XEND DATE)
+CREATE PROCEDURE `OP_ObtenerTratamientosDestacados_Fechas`(IN XINI DATE, IN XEND DATE)
 BEGIN
 	SELECT CONCAT(SUBSTRING(tratamientos.detalle, 1, 25),"... - S/.", sum(ingresos_detalle.cantidad * ingresos_detalle.monto)) as tratamiento,
 				 count(tratamientos.detalle) as numero
@@ -1234,7 +1234,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerTratamientosDestacados_Reportes`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerTratamientosDestacados_Reportes`()
+CREATE PROCEDURE `OP_ObtenerTratamientosDestacados_Reportes`()
 BEGIN
 	SELECT CONCAT(SUBSTRING(tratamientos.detalle, 1, 25)," - S/.", sum(ingresos_detalle.cantidad * ingresos_detalle.monto)) as tratamiento,
 				 count(tratamientos.detalle) as numero
@@ -1252,7 +1252,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerTratamientos_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerTratamientos_Id`(IN XID INT)
+CREATE PROCEDURE `OP_ObtenerTratamientos_Id`(IN XID INT)
 BEGIN
   SELECT t.id, t.detalle, t.is_active
   FROM tratamientos t
@@ -1266,7 +1266,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerTratamientos_PacienteId`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerTratamientos_PacienteId`(IN XID_PACIENTE INT)
+CREATE PROCEDURE `OP_obtenerTratamientos_PacienteId`(IN XID_PACIENTE INT)
 BEGIN
 	DECLARE XID_EMPRESA INT;
 
@@ -1284,7 +1284,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerUltimoIngresoDetalle_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimoIngresoDetalle_Id`(IN XID_INGRESO INT)
+CREATE PROCEDURE `OP_obtenerUltimoIngresoDetalle_Id`(IN XID_INGRESO INT)
 BEGIN
 	SELECT idt.id as lastIngresoDetalle FROM ingresos_detalle as idt ORDER BY idt.id DESC LIMIT 1;
 END
@@ -1296,7 +1296,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerUltimoPago`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimoPago`()
+CREATE PROCEDURE `OP_obtenerUltimoPago`()
 BEGIN
 	DECLARE NRO_PAGO INT;
 	
@@ -1317,7 +1317,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerUltimoPresupuesto`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimoPresupuesto`()
+CREATE PROCEDURE `OP_obtenerUltimoPresupuesto`()
 BEGIN
 	DECLARE NRO_PRESUPUESTO INT;
 	
@@ -1338,7 +1338,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerUltimosDiezPacientes`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimosDiezPacientes`()
+CREATE PROCEDURE `OP_obtenerUltimosDiezPacientes`()
 SELECT id as hc, CONCAT(nombres, ' ', apellidos) as nombres 
 		FROM pacientes 
 	WHERE pacientes.is_deleted = 0
@@ -1352,7 +1352,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerUltimosDiezPresupuestos`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUltimosDiezPresupuestos`()
+CREATE PROCEDURE `OP_obtenerUltimosDiezPresupuestos`()
 BEGIN
   SELECT presupuestos.id, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) AS pacientes, doctors.nombres as doctores 
 		FROM presupuestos
@@ -1369,7 +1369,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_obtenerUserByEmail`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_obtenerUserByEmail`(IN XEMAIL VARCHAR(255))
+CREATE PROCEDURE `OP_obtenerUserByEmail`(IN XEMAIL VARCHAR(255))
 BEGIN
 	SELECT name, email, is_active, is_deleted 
 		FROM users WHERE email = XEMAIL;
@@ -1382,7 +1382,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerUsuarios`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerUsuarios`()
+CREATE PROCEDURE `OP_ObtenerUsuarios`()
 BEGIN
   SELECT u.id, u.name, u.email, u.is_active, u.created_at, r.nombre AS rol
   FROM users u
@@ -1397,7 +1397,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_ObtenerUsuarios_Id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_ObtenerUsuarios_Id`(IN XID INT)
+CREATE PROCEDURE `OP_ObtenerUsuarios_Id`(IN XID INT)
 BEGIN
   SELECT u.id, u.name, u.email, u.is_active, u.created_at, u.rolid, u.is_active
   FROM users u
@@ -1411,7 +1411,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_pagos`;
 DELIMITER ;;
-CREATE DEFINER=`odontoguess`@`%` PROCEDURE `OP_pagos`()
+CREATE PROCEDURE `OP_pagos`()
 BEGIN
   SELECT p.id, p.idDoctor, dr.nombres, dr.apellidos, p.fecha_inicio, p.fecha_fin, p.created_at, p.updated_at
   FROM pagos p
