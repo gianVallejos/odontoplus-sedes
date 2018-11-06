@@ -59,20 +59,22 @@
 					<template slot="index" slot-scope="row">
 						{{ row.index + 1 }}
 					</template>
+					<template slot="historia" slot-scope="row">
+						{{ row.value }}
+					</template>
 					<template slot="doctor_nombre" slot-scope="row">
 						{{ row.item.nombres }} {{ row.item.apellidos }}
 					</template>
 					<template slot="monto" slot-scope="row" class="hide-print">
-						S/. {{ row.item.monto }}
+						S/. {{ row.value }}
 					</template>
 					<template slot="total" slot-scope="row">
-						S/. {{ row.item.total }}
+						S/. {{ row.value }}
 					</template>
-
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
-          <template slot="ganancia" slot-scope="row">
+          			<template slot="ganancia" slot-scope="row">
 						S/. {{ redondearADos(row.item.total - row.item.doctor)  }}
 					</template>
 				</b-table>
@@ -119,6 +121,7 @@
 				fields: [				    
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
+					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc' },
 					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
 				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', class: 'text-center' },
