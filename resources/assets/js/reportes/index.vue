@@ -62,13 +62,13 @@
 								<b-form-row>
 									<b-col cols="6">
 										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
-											<b-input id="inc_paciente_start" type="date" v-model="tratamientosChart.range.start" />
+											<b-input id="inc_paciente_start" type="date" v-model="tratamientosChart.start_date" />
 										</b-form-group>
 									</b-col>
 									<b-col cols="6">
 										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
 											<b-input-group>
-												<b-form-input id="inc_paciente_end" type="date" v-model="tratamientosChart.range.end" />
+												<b-form-input id="inc_paciente_end" type="date" v-model="tratamientosChart.end_date" />
 											   	<b-input-group-append>
 											    	<b-btn variant="primary" v-on:click.prevent="fillTratamientosChart()" >
 											    		<i class="fas fa-search"></i>
@@ -78,7 +78,9 @@
 									    </b-form-group>											
 									</b-col>
 								</b-form-row>
-								<GChart class="pb-3" type="PieChart" :data="tratamientosData" :options="tratamientosChart" :resizeDebounce="480" />								
+								<b-col cols="12">
+									<pie-chart :chart-data="tratamientosChart.data" :height = "300"></pie-chart>			
+								</b-col>								
 							</div>
 						</b-col>	
 						<b-col xl="6" cols="12">	
@@ -87,7 +89,7 @@
 								<b-form-row>
 									<b-col cols="8" offset="2">										
 										<b-input-group>
-											<b-form-input id="inc_ingreso_date" type="date" v-model="ingresosChart.range.date" />
+											<b-form-input id="inc_ingreso_date" type="date" v-model="ingresosChart.end_date" />
 											   <b-input-group-append>
 											    <b-btn variant="primary" v-on:click.prevent="fillIngresosChart()" >
 											    	<i class="fas fa-search"></i>
@@ -96,7 +98,9 @@
 										   </b-input-group>
 									</b-col>
 								</b-form-row>											
-								<GChart class="pb-3" type="ColumnChart" :data="ingresosData" :options="ingresosChart" :resizeDebounce="480" />							
+								<b-col cols="12">
+									<bar-chart :chart-data="ingresosChart.data" :height = "300"></bar-chart>			
+								</b-col>	
 							</div>													
 						</b-col>
 						<b-col xl="6" cols="12">
@@ -105,7 +109,7 @@
 								<b-form-row>
 									<b-col cols="8" offset="2">										
 										<b-input-group>
-											<b-form-input id="inc_egreso_date" type="date" v-model="egresosChart.range.date" />
+											<b-form-input id="inc_egreso_date" type="date" v-model="egresosChart.end_date" />
 											   <b-input-group-append>
 											    <b-btn variant="primary" v-on:click.prevent="fillEgresosChart()" >
 											    	<i class="fas fa-search"></i>
@@ -114,7 +118,9 @@
 										   </b-input-group>
 									</b-col>
 								</b-form-row>
-								<GChart class="pb-3" type="ColumnChart" :data="egresosData" :options="egresosChart" :resizeDebounce="480" />
+								<b-col cols="12">
+									<bar-chart :chart-data="egresosChart.data" :height = "300"></bar-chart>			
+								</b-col>	
 							</div>
 						</b-col>
 
@@ -124,13 +130,13 @@
 								<b-form-row>
 									<b-col cols="6">
 										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
-											<b-input id="inc_paciente_start" type="date" v-model="incomesPacienteChart.range.start" />
+											<b-input id="inc_paciente_start" type="date" v-model="ingresosPacienteChart.start_date" />
 										</b-form-group>
 									</b-col>
 									<b-col cols="6">
 										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
 											<b-input-group>
-												<b-form-input id="inc_paciente_end" type="date" v-model="incomesPacienteChart.range.end" />
+												<b-form-input id="inc_paciente_end" type="date" v-model="ingresosPacienteChart.end_date" />
 											   	<b-input-group-append>
 											    	<b-btn variant="primary" v-on:click.prevent="fillIngresosPorPacientesChart()" >
 											    		<i class="fas fa-search"></i>
@@ -140,7 +146,9 @@
 									    </b-form-group>											
 									</b-col>
 								</b-form-row>
-								<GChart class="pb-3" type="BarChart" :data="incomesPacienteData" :options="incomesPacienteChart" :resizeDebounce="480" />				
+								<b-col cols="12">
+									<horizontal-bar-chart :chart-data="ingresosPacienteChart.data" :height = "300"></horizontal-bar-chart>			
+								</b-col>			
 							</div>
 						</b-col>
 						<b-col xl="6" cols="12">
@@ -149,13 +157,13 @@
 								<b-form-row>
 									<b-col cols="6">
 										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
-											<b-input id="inc_paciente_start" type="date" v-model="ingresosEmpresasChart.range.start" />
+											<b-input id="inc_paciente_start" type="date" v-model="ingresosEmpresaChart.start_date" />
 										</b-form-group>
 									</b-col>
 									<b-col cols="6">
 										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
 											<b-input-group>
-												<b-form-input id="inc_paciente_end" type="date" v-model="ingresosEmpresasChart.range.end" />
+												<b-form-input id="inc_paciente_end" type="date" v-model="ingresosEmpresaChart.end_date" />
 											   	<b-input-group-append>
 											    	<b-btn variant="primary" v-on:click.prevent="fillIncomesEmpresaChart()" >
 											    		<i class="fas fa-search"></i>
@@ -165,7 +173,9 @@
 									    </b-form-group>											
 									</b-col>
 								</b-form-row>
-								<GChart class="pb-3" type="PieChart" :data="ingresosEmpresasData" :options="ingresosEmpresasChart" :resizeDebounce="480" />
+								<b-col cols="12">
+									<pie-chart :chart-data="ingresosEmpresaChart.data" :height = "300"></pie-chart>			
+								</b-col>
 							</div>
 						</b-col>	
 						
@@ -180,31 +190,18 @@
 <script>
 	import TitleComponent from '../widgets/titulo/index.vue'
 	import PanelCard from '../widgets/panel/panel-component.vue'
-  import { GChart } from 'vue-google-charts'
+	import { GChart } from 'vue-google-charts'
+	import BarChart from '../widgets/charts/bar-chart.vue'
+	import HorizontalBarChart from '../widgets/charts/horizontal-bar-chart.vue'
+	import PieChart from '../widgets/charts/pie-chart.vue'
   import axios from 'axios'
-
+	import Vue from 'vue'
+	
 	export default{
 		mounted(){
-			var xhr = new XMLHttpRequest();
-			var file = "https://httpbin.org/get";
-			var randomNum = Math.round(Math.random() * 10000);
-			var self = this 
+			console.log('Reports Mounted')
+			this.initCharts()	
 			
-			xhr.open('HEAD', file + "?rand=" + randomNum, true);
-			xhr.send();
-			     
-			xhr.addEventListener("readystatechange", processRequest, false);
-			 
-			function processRequest(e) {
-			    if (xhr.readyState == 4) {
-			        if (xhr.status >= 200 && xhr.status < 304) {
-			        	console.log('Reports Mounted')
-						self.initCharts()	
-			        } else {
-			    		self.toastFunctionRedirect('<span style="#fff; font-size: 1em">Error</span>', 'Para ver las estadísticas del sistema debe contar con Internet <br />Redireccionando...', 'error')    	
-			        }
-				}
-			}			
 		},
 		props: [
 			'url'
@@ -212,7 +209,10 @@
 		components:{
 			TitleComponent,
 			PanelCard,
-			GChart
+			GChart,
+			BarChart,
+			HorizontalBarChart,
+			PieChart,
 		},
 		data(){
 			return{
@@ -222,51 +222,28 @@
 			  	],
 				width: 480,
 				height: 480,
-				ingresosData: [],
-		        ingresosChart: {			        
-		          title: '',
-		          fontSize: 13,
-		          fontFamily: 'Open Sans',
-		          subtitle: 'Sales, Expenses',          
-		          height: 285,          
-		          legend: 'none',
-		          range: { date: '' }
+				ingresosChart: {
+					data: null,
+					end_date: ''
 				},
-				egresosData: [],
-				egresosChart: {			        
-					title: '',
-					fontSize: 13,
-					fontFamily: 'Open Sans',
-					height: 285,
-					legend: 'none',
-					range: { date: '' }
+				egresosChart: {
+					data: null,
+					end_date: ''
 				},
-				incomesPacienteData: [],
-				incomesPacienteChart: {			        
-					title: '',
-					fontSize: 13,
-					fontFamily: 'Open Sans',
-					height: 285,
-					legend: 'none',
-					range: { start: '', end: '' }
+				ingresosPacienteChart: {			        
+					data: null,
+					start_date: '',
+					end_date: '',
 				},
-				ingresosEmpresasData: [],
-				ingresosEmpresasChart: {			        
-					title: '',
-					fontSize: 13,
-					fontFamily: 'Open Sans',
-					height: 285,
-					legend: { position: 'bottom', alignment:'center' },
-					range: { start: '', end: '' }
+				ingresosEmpresaChart:{
+					data: null,
+					start_date: '',
+					end_date: '',
 				},
-				tratamientosData: [],
-				tratamientosChart: {			        
-					title: '',
-					fontSize: 12,
-					fontFamily: 'Open Sans',
-					height: 285,
-					legend: 'none',
-					range: { start: '', end: '' }
+				tratamientosChart:{
+					data: null,
+					start_date: '',
+					end_date: '',
 				},
 				pieSliceText: 'none',
 				balance: {			        
@@ -280,14 +257,12 @@
     methods:{
 			initCharts(){	
 				var sixMonthsAgo = this.getMyDate()			
-				
 				this.setDatesToChart(this.getMyDate())				
-				
 				this.fillDataCharts()
 			},
 			setDatesToChart(today){
-				this.ingresosChart.range.date = today
-				this.egresosChart.range.date = today
+				this.ingresosChart.end_date = today
+				this.egresosChart.end_date = today
 			},
 			fillDataCharts(){
 				this.fillIngresosChart()
@@ -310,20 +285,26 @@
 				this.addADayToMyDate()
 				return this.myDate && this.myDate.toISOString().split('T')[0]			    	
 			},
-      		fillIngresosChart(){
-				var date = this.ingresosChart.range.date 
+      fillIngresosChart(){
+				var date = this.ingresosChart.end_date
 				var request = { method: 'GET', url: this.url + '/reportes/ingresos/'+date }
 				
 				if( date != '' ){
 					axios(request).then((response) => {										
-						var ingresos = response.data.ingresos
+						let ingresos = response.data.ingresos
+            let meses = ingresos.map(i => i.mes.substring(0,3))
+            let ingresos_montos = ingresos.map(i => parseInt(i.ingresos))
 
-						this.ingresosData = [['Mes', 'Ingresos']]
-
-						for(var i=0 ; i < ingresos.length; i++){
-							this.ingresosData.push([ ingresos[i].mes.substring(0,3), parseInt(ingresos[i].ingresos)])
+						this.ingresosChart.data = {
+							labels: meses,
+							datasets: [
+								{
+									label: 'Ingresos',
+									backgroundColor: '#305f94',
+									data: ingresos_montos
+								}
+							]
 						}
-						if (ingresos.length == 0) this.ingresosData.push([ '', 0])
 					}).catch(function (error) {
 						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 					});
@@ -333,17 +314,26 @@
 				
 			},
 			fillEgresosChart(){
-				var date = this.egresosChart.range.date 
+				var date = this.egresosChart.end_date
 				var request = { method: 'GET', url: this.url + '/reportes/egresos/' + date }
 				
 				if( date != '' ){
 					axios(request).then((response) => {
-						var egresos = response.data.egresos
-						this.egresosData = [['Mes', 'Egresos']]					
-						for(var i=0 ; i < egresos.length; i++){
-							this.egresosData.push([ egresos[i].mes.substring(0,3), parseInt(egresos[i].egresos)])
-						}					
-						if (egresos.length == 0) this.egresosData.push([ '', 0])
+						let egresos = response.data.egresos
+            let meses = egresos.map(i => i.mes.substring(0,3))
+            let egresos_montos = egresos.map(i => parseInt(i.egresos))
+
+						this.egresosChart.data = {
+							labels: meses,
+							datasets: [
+								{
+									label: 'Egresos',
+									backgroundColor: '#305f94',
+									data: egresos_montos
+								}
+							]
+						}
+
 					}).catch(function (error) {
 						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 					});
@@ -358,17 +348,26 @@
 				return { method: 'GET', url: this.url + '/reportes/obtener-ingresos-paciente/'+start+'/'+end }
 			},
 			fillIngresosPorPacientesChart(){
-				var start = this.incomesPacienteChart.range.start 
-				var end = this.incomesPacienteChart.range.end				
+				var start = this.ingresosPacienteChart.start_date
+				var end = this.ingresosPacienteChart.end_date			
 				if(this.validDateRage(start, end)){
 					var request = this.getRequestPacientes(start, end)
 					axios(request).then((response) => {
-						var ingresos = response.data.ingresos
-						this.incomesPacienteData = [['Nombre', 'Monto']]
-						for(var i=0 ; i<ingresos.length; i++){
-							this.incomesPacienteData.push([ ingresos[i].nombre, parseInt(ingresos[i].monto)])
+						let ingresos = response.data.ingresos
+						let pacientes_nombres = ingresos.map(i => i.nombre)
+            let ingresos_montos = ingresos.map(i => parseInt(i.monto))
+
+						this.ingresosPacienteChart.data = {
+							labels: pacientes_nombres,
+							datasets: [
+								{
+									label: 'Ingresos',
+									backgroundColor: "#305f94",
+									data: ingresos_montos
+								}
+							]
 						}
-						if (ingresos.length == 0) this.incomesPacienteData.push([ '', 0])
+
 					}).catch(function (error) {
 						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 					});
@@ -383,16 +382,25 @@
 				return { method: 'GET', url: this.url + '/reportes/obtener-ingresos-empresa/'+start+'/'+end }
 			},
 			fillIncomesEmpresaChart(){
-				var start = this.ingresosEmpresasChart.range.start 
-				var end = this.ingresosEmpresasChart.range.end
+				var start = this.ingresosEmpresaChart.start_date
+				var end = this.ingresosEmpresaChart.end_date
 
 				if(this.validDateRage(start, end)){					
 					var request = this.getRequestEmpresas(start, end)
 					axios(request).then((response) => {
-						var ingresos = response.data.ingresos
-						this.ingresosEmpresasData = [['Nombre', 'Monto']]
-						for(var i=0 ; i < ingresos.length; i++){
-							this.ingresosEmpresasData.push([ ingresos[i].nombre, parseInt(ingresos[i].ingresos)])
+						let ingresos = response.data.ingresos
+            let empresas_nombres = ingresos.map(i => i.nombre)
+            let ingresos_montos = ingresos.map(i => parseInt(i.ingresos))
+
+						this.ingresosEmpresaChart.data = {
+							labels: empresas_nombres,
+							datasets: [
+								{
+									label: 'Ingresos',
+									backgroundColor: ["#FF6384","#36A2EB","#FFCE56", "#4db6ac","#7e57c2"],
+									data: ingresos_montos
+								}
+							]
 						}
 					}).catch(function (error) {
 						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
@@ -408,16 +416,24 @@
 				return { method: 'GET', url: this.url + '/reportes/obtener-tratamientos/'+ start+ '/'+ end }
 			},
 			fillTratamientosChart(){
-				var start = this.tratamientosChart.range.start 
-				var end = this.tratamientosChart.range.end
+				var start = this.tratamientosChart.start_date
+				var end = this.tratamientosChart.end_date
 				
 				if(this.validDateRage(start, end)){
 					var request = this.getRequestTratamientos(start, end)
 					axios(request).then((response) => {
-						var treatments = response.data.tratamientos
-						this.tratamientosData = [['Tratamiento', 'Ventas']]
-						for(var i=0 ; i < treatments.length; i++){
-							this.tratamientosData.push([ treatments[i].tratamiento, parseInt(treatments[i].numero)])
+						let tratamientos = response.data.tratamientos
+						let nombre_tratamientos = tratamientos.map(i => i.tratamiento)
+            let numero_tratamientos = tratamientos.map(i => parseInt(i.numero))
+						this.tratamientosChart.data = {
+							labels: nombre_tratamientos,
+							datasets: [
+								{
+									label: 'Tratamientos',
+									backgroundColor: ["#FF6384","#36A2EB","#FFCE56", "#4db6ac","#7e57c2"],
+									data: numero_tratamientos									
+								}
+							]
 						}
 					}).catch(function (error) {
 						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
@@ -462,20 +478,6 @@
 						showConfirmButton: false,
 						timer: 3000
 				})
-			},
-			toastFunctionRedirect(title, msg, type){
-				this.$swal({
-						type: type,
-						title: title,
-						html: msg,
-						toast: false,
-						position: 'center',
-						showConfirmButton: false,
-	  					timer: 3000,
-	  					backdrop: `rgba(0, 0, 0, 0.6)`
-				}).then(() => {
-					window.location.href = this.url + '/presupuestos'
-				})	
 			}
     }
 	}
