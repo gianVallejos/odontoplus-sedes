@@ -9,14 +9,14 @@
 	</title>
 
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('/public/images/favicon.ico?v=1.0.1')}}">
-	
+
 	<!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Rubik" rel="stylesheet"-->
 	<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css?v=1.0.1') }}">
 	<link rel="stylesheet" href="{{ asset('css/all.min.css?v=1.0.2') }}">
 	<link rel="stylesheet" href="{{ asset('css/fonts.css?v=1.0.2') }}">
-	
+
 	<link rel="stylesheet" href="{{ asset('css/odontoplus.css?v=1.0.29') }}">
 	<link rel="stylesheet" href="{{ asset('css/header.css?v=1.0.1') }}">
 	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
@@ -26,19 +26,19 @@
 	<!--Dynamic StyleSheets added from a view would be pasted here-->
 	@yield('styles')
 </head>
-<body>	
+<body>
 
 	<div id="header">
-	@if( Auth::check() )		
-		<header-component 			
-			:user='{{ Auth::user() }}' 
+	@if( Auth::check() )
+		<header-component
+			:user='{{ Auth::user() }}'
 			logout-route='{{ route("logout") }}'
-			url='{{ route("home") }}'						
+			url='{{ route("home") }}'
 		>
 		</header-component>
-		<nav-component 
+		<nav-component
 			:user='{{ Auth::user() }}'
-			url='{{ route("home") }}' 
+			url='{{ route("home") }}'
 			cur-url='{{ Request::url() }}'
 		/>
 	@endif
@@ -48,22 +48,22 @@
 			@yield('content')
 		</div>
 	</div>
-	
+
 	<div id="footer">
-	@if( Auth::check() )	
-		<footer-component></footer-component>			
+	@if( Auth::check() )
+		<footer-component></footer-component>
 	@endif
 	</div>
-	
+
 	<!--script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script-->	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script-->
 	<script src="{{ asset('js/chartjs.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/vue-chartjs.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/jquery.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/app.js?v=1.2.40') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.2.42') }}"></script>
 
 
 </body>

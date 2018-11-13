@@ -26,8 +26,8 @@
 											    		<i class="fas fa-search"></i>
 											    	</b-btn>
 											    </b-input-group-append>
-										    </b-input-group>								
-									    </b-form-group>											
+										    </b-input-group>
+									    </b-form-group>
 									</b-col>
 								</b-form-row>
 								<div class="balanceLayout">
@@ -52,11 +52,11 @@
 											</b-row>
 										</div>
 									</div>
-								</div>								
+								</div>
 							</div>
 						</b-col>
-						
-						<b-col xl="6" cols="12">							
+
+						<b-col xl="6" cols="12">
 							<div class="square-reportes">
 								<h5 class="text-center reportes-text">Tratamientos Destacados</h5>
 								<b-form-row>
@@ -74,20 +74,20 @@
 											    		<i class="fas fa-search"></i>
 											    	</b-btn>
 											    </b-input-group-append>
-										    </b-input-group>								
-									    </b-form-group>											
+										    </b-input-group>
+									    </b-form-group>
 									</b-col>
 								</b-form-row>
 								<b-col cols="12">
-									<pie-chart :chart-data="tratamientosChart.data" :height = "300"></pie-chart>			
-								</b-col>								
+									<pie-chart :chart-data="tratamientosChart.data" :height = "300"></pie-chart>
+								</b-col>
 							</div>
-						</b-col>	
-						<b-col xl="6" cols="12">	
+						</b-col>
+						<b-col xl="6" cols="12">
 							<div class="square-reportes">
-								<h5 class="text-center reportes-text">Ingresos de los últimos seis meses</h5>	
+								<h5 class="text-center reportes-text">Ingresos de los últimos seis meses</h5>
 								<b-form-row>
-									<b-col cols="8" offset="2">										
+									<b-col cols="8" offset="2">
 										<b-input-group>
 											<b-form-input id="inc_ingreso_date" type="date" v-model="ingresosChart.end_date" />
 											   <b-input-group-append>
@@ -97,17 +97,17 @@
 											   </b-input-group-append>
 										   </b-input-group>
 									</b-col>
-								</b-form-row>											
+								</b-form-row>
 								<b-col cols="12">
-									<bar-chart :chart-data="ingresosChart.data" :height = "300"></bar-chart>			
-								</b-col>	
-							</div>													
+									<bar-chart :chart-data="ingresosChart.data" :height = "300"></bar-chart>
+								</b-col>
+							</div>
 						</b-col>
 						<b-col xl="6" cols="12">
 							<div class="square-reportes">
 								<h5 class="text-center reportes-text">Egresos de los últimos seis meses</h5>
 								<b-form-row>
-									<b-col cols="8" offset="2">										
+									<b-col cols="8" offset="2">
 										<b-input-group>
 											<b-form-input id="inc_egreso_date" type="date" v-model="egresosChart.end_date" />
 											   <b-input-group-append>
@@ -119,8 +119,8 @@
 									</b-col>
 								</b-form-row>
 								<b-col cols="12">
-									<bar-chart :chart-data="egresosChart.data" :height = "300"></bar-chart>			
-								</b-col>	
+									<bar-chart :chart-data="egresosChart.data" :height = "300"></bar-chart>
+								</b-col>
 							</div>
 						</b-col>
 
@@ -142,13 +142,13 @@
 											    		<i class="fas fa-search"></i>
 											    	</b-btn>
 											    </b-input-group-append>
-										    </b-input-group>								
-									    </b-form-group>											
+										    </b-input-group>
+									    </b-form-group>
 									</b-col>
 								</b-form-row>
 								<b-col cols="12">
-									<horizontal-bar-chart :chart-data="ingresosPacienteChart.data" :height = "300"></horizontal-bar-chart>			
-								</b-col>			
+									<horizontal-bar-chart :chart-data="ingresosPacienteChart.data" :height = "300"></horizontal-bar-chart>
+								</b-col>
 							</div>
 						</b-col>
 						<b-col xl="6" cols="12">
@@ -169,16 +169,16 @@
 											    		<i class="fas fa-search"></i>
 											    	</b-btn>
 											    </b-input-group-append>
-										    </b-input-group>								
-									    </b-form-group>											
+										    </b-input-group>
+									    </b-form-group>
 									</b-col>
 								</b-form-row>
 								<b-col cols="12">
-									<pie-chart :chart-data="ingresosEmpresaChart.data" :height = "300"></pie-chart>			
+									<pie-chart :chart-data="ingresosEmpresaChart.data" :height = "300"></pie-chart>
 								</b-col>
 							</div>
-						</b-col>	
-						
+						</b-col>
+
 					</b-row>
 				</PanelCard>
 			</b-col>
@@ -196,12 +196,12 @@
 	import PieChart from '../widgets/charts/pie-chart.vue'
   import axios from 'axios'
 	import Vue from 'vue'
-	
+
 	export default{
 		mounted(){
 			console.log('Reports Mounted')
-			this.initCharts()	
-			
+			this.initCharts()
+
 		},
 		props: [
 			'url'
@@ -230,7 +230,7 @@
 					data: null,
 					end_date: ''
 				},
-				ingresosPacienteChart: {			        
+				ingresosPacienteChart: {
 					data: null,
 					start_date: '',
 					end_date: '',
@@ -246,7 +246,7 @@
 					end_date: '',
 				},
 				pieSliceText: 'none',
-				balance: {			        
+				balance: {
 					incomes: '',
 					outputs: '',
 					balance: '',
@@ -255,9 +255,9 @@
 			}
     },
     methods:{
-			initCharts(){	
-				var sixMonthsAgo = this.getMyDate()			
-				this.setDatesToChart(this.getMyDate())				
+			initCharts(){
+				var sixMonthsAgo = this.getMyDate()
+				this.setDatesToChart(this.getMyDate())
 				this.fillDataCharts()
 			},
 			setDatesToChart(today){
@@ -273,24 +273,24 @@
 				this.fillBalanceChart()
 			},
 			setMyDateToToday() {
-				this.myDate = new Date();		      
+				this.myDate = new Date();
 			},
 			addADayToMyDate() {
-				if (this.myDate){ // as myDate can be null		        
+				if (this.myDate){ // as myDate can be null
 					this.myDate = new Date(this.myDate.setDate(this.myDate.getDate()));
 				}
 			},
 			getMyDate(){
 				this.setMyDateToToday()
 				this.addADayToMyDate()
-				return this.myDate && this.myDate.toISOString().split('T')[0]			    	
+				return this.myDate && this.myDate.toISOString().split('T')[0]
 			},
       fillIngresosChart(){
 				var date = this.ingresosChart.end_date
 				var request = { method: 'GET', url: this.url + '/reportes/ingresos/'+date }
-				
+
 				if( date != '' ){
-					axios(request).then((response) => {										
+					axios(request).then((response) => {
 						let ingresos = response.data.ingresos
             let meses = ingresos.map(i => i.mes.substring(0,3))
             let ingresos_montos = ingresos.map(i => parseInt(i.ingresos))
@@ -311,12 +311,12 @@
 				}else{
 					this.toastFunction('Debe seleccionar una fecha antes de buscar', 'error')
 				}
-				
+
 			},
 			fillEgresosChart(){
 				var date = this.egresosChart.end_date
 				var request = { method: 'GET', url: this.url + '/reportes/egresos/' + date }
-				
+
 				if( date != '' ){
 					axios(request).then((response) => {
 						let egresos = response.data.egresos
@@ -349,7 +349,7 @@
 			},
 			fillIngresosPorPacientesChart(){
 				var start = this.ingresosPacienteChart.start_date
-				var end = this.ingresosPacienteChart.end_date			
+				var end = this.ingresosPacienteChart.end_date
 				if(this.validDateRage(start, end)){
 					var request = this.getRequestPacientes(start, end)
 					axios(request).then((response) => {
@@ -362,7 +362,7 @@
 							datasets: [
 								{
 									label: 'Ingresos',
-									backgroundColor: "#305f94",
+									backgroundColor: "#0aab8a",
 									data: ingresos_montos
 								}
 							]
@@ -385,7 +385,7 @@
 				var start = this.ingresosEmpresaChart.start_date
 				var end = this.ingresosEmpresaChart.end_date
 
-				if(this.validDateRage(start, end)){					
+				if(this.validDateRage(start, end)){
 					var request = this.getRequestEmpresas(start, end)
 					axios(request).then((response) => {
 						let ingresos = response.data.ingresos
@@ -418,7 +418,7 @@
 			fillTratamientosChart(){
 				var start = this.tratamientosChart.start_date
 				var end = this.tratamientosChart.end_date
-				
+
 				if(this.validDateRage(start, end)){
 					var request = this.getRequestTratamientos(start, end)
 					axios(request).then((response) => {
@@ -431,7 +431,7 @@
 								{
 									label: 'Tratamientos',
 									backgroundColor: ["#FF6384","#36A2EB","#FFCE56", "#4db6ac","#7e57c2"],
-									data: numero_tratamientos									
+									data: numero_tratamientos
 								}
 							]
 						}
