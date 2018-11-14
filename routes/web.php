@@ -37,6 +37,8 @@ Route::get('reportes/obtener-ingresos-paciente', 'ReporteController@obtenerIngre
 Route::get('reportes/obtener-ingresos-paciente/{start}/{end}', 'ReporteController@obtenerIngresosPacienteFechas');
 Route::get('reportes/obtener-ingresos-empresa', 'ReporteController@empresasIngresos');
 Route::get('reportes/obtener-ingresos-empresa/{start}/{end}', 'ReporteController@empresasIngresosFechas');
+Route::get('reportes/obtener-ingresos-doctor', 'ReporteController@ingresosPorDoctor');
+Route::get('reportes/obtener-ingresos-doctor/{start}/{end}', 'ReporteController@ingresosPorDoctorFechas');
 Route::get('reportes/egresos/{date}', 'ReporteController@egresos');
 Route::get('reportes/obtener-balances', 'ReporteController@obtenerBalances');
 Route::get('reportes/obtener-balances/{start}/{end}', 'ReporteController@obtenerBalancesFechas');
@@ -46,7 +48,7 @@ Route::get('reportes/ganancias', 'ReporteController@ganancias');
 Route::get('reportes/ganancias/{start}/{end}', 'ReporteController@gananciasFechas');
 Route::get('reportes/gananciasJSON/{start}/{end}', 'ReporteController@gananciasFechasJSON');
 
-//APIS 
+//APIS
 Route::resource('presupuestos', 'PresupuestoController');
 Route::get('presupuestos/nuevo/{idPaciente}/{idDoctor}', 'PresupuestoController@nuevo');
 Route::get('presupuestos/reporte/{id}', 'PresupuestoController@reporte');
@@ -60,7 +62,7 @@ Route::get('ingresos/reporte/{id}', 'IngresoController@reporte');
 
 Route::resource('egresos', 'EgresoController');
 
-//APIS 
+//APIS
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
 Route::get('api-v1/op-obtener-pacientes', 'WsOdontoplusController@OP_obtenerPacientes')->name('pacientes.obtener');
 Route::post('api-v1/op-crear-paciente', 'WsOdontoplusController@OP_crearPaciente')->name('paientes.crear');
