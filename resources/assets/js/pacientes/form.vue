@@ -460,13 +460,13 @@
   						console.log('Response:: OK')
   						if( response.data.success == 'created' ){
   							self.setDisableForm()
-  							self.toastFunctionRedirect('Éxito', 'El paciente ha sido creado correctamente. <br />Redireccionando...', 'success')
+  							self.toastFunctionRedirect('Éxito', 'El paciente ha sido creado correctamente.', 'success')
   						}else if( response.data.success == 'updated' ){
   							self.toastFunction('El paciente ha sido modificado correctamente.', 'success')
   							self.afterSuccessGuardar()
   						}else if (response.data.success = 'deleted' ){
   							self.form.is_active = !self.form.is_active
-  							self.toastFunctionRedirect('Éxito', 'El paciente ha sido eliminado correctamente. <br />Redireccionando...', 'success')
+  							self.toastFunctionRedirect('Éxito', 'El paciente ha sido eliminado correctamente.', 'success')
   						}
   					}else if (response.data.error){
   						if( response.data.error == 'cantDeleted'){
@@ -541,20 +541,19 @@
     					timer: 3000
   			})
   		},
-  		toastFunctionRedirect(title, msg, type){
-  			this.$swal({
-  					type: type,
-  					title: title,
-  					html: msg,
-  					toast: false,
-  					position: 'center',
-  					showConfirmButton: false,
-    					timer: 3000,
-    					backdrop: `rgba(0, 0, 0, 0.6)`
-  			}).then(() => {
-  				this.redireccionarToIndex()
-  			})
-  		}
+      toastFunctionRedirect(title, msg, type){
+				this.$swal({
+						type: type,
+						title: title,
+						html: msg,
+						toast: false,
+						position: 'center',
+						confirmButtonClass: ['my-alert', 'confirm-alert'],
+		  			backdrop: `rgba(0, 0, 0, 0.6)`
+				}).then(() => {
+					window.location.href = this.url + '/pacientes'
+				})
+			}
     }
   }
 
