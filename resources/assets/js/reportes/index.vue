@@ -10,7 +10,7 @@
 					<b-row slot="body">
 						<b-col xl="6" cols="12">
 							<div class="square-reportes">
-								<h5 class="text-center reportes-text">Balance Financiero</h5>
+								<h5 class="text-center reportes-text">Estado Financiero</h5>
 								<b-form-row>
 									<b-col cols="6">
 										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
@@ -46,7 +46,7 @@
 													<div class="line-balance"></div>
 												</b-col>
 												<b-col cols="12">
-													<span class="title-balance">Balance: </span>
+													<span class="title-balance">Utilidad: </span>
 													<span class="float-right pt-1 pb-1">S/ {{balance.balance}}</span>
 												</b-col>
 											</b-row>

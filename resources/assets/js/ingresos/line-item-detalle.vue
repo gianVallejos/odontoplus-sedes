@@ -82,7 +82,7 @@
 								</b-col>
 								<b-col cols="9">
 									<b-form-group label="Doctor">
-										<b-form-select v-model="form.doctor" :disabled=isDisabled class="required" >
+										<b-form-select v-model="form.doctor" :disabled=isModificarIngreso class="required" >
 											<option :value="null">Ningun Doctor Seleccionado</option>
 											<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
 												{{ doctor.nombres }} {{ doctor.apellidos}}
