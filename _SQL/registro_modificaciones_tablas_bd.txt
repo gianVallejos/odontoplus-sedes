@@ -1,0 +1,4 @@
+15 de Noviembre del 2018:
+- En Ingresos_detalle se agregó el campo "margen_ganancia"
+- En Pacientes se agregó el campo "referencia_id"
+- Se agregó la tabla "referencias"

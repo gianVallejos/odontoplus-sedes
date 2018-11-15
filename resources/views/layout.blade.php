@@ -21,7 +21,7 @@
 	<link rel="stylesheet" href="{{ asset('css/header.css?v=1.0.1') }}">
 	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 	<link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
-	<link rel="stylesheet" href="{{ asset('css/diente.css?v=1.0.6') }}" />
+	<link rel="stylesheet" href="{{ asset('css/diente.css?v=1.0.7') }}" />
 
 	<!--Dynamic StyleSheets added from a view would be pasted here-->
 	@yield('styles')
@@ -63,7 +63,7 @@
 	<script src="{{ asset('js/jquery.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/app.js?v=1.2.59') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.2.61') }}"></script>
 
 
 </body>
