@@ -83,6 +83,7 @@
 								</b-col>
 							</div>
 						</b-col>
+
 						<b-col xl="6" cols="12">
 							<div class="square-reportes">
 								<h5 class="text-center reportes-text">Ingresos de los últimos seis meses</h5>
@@ -103,6 +104,7 @@
 								</b-col>
 							</div>
 						</b-col>
+
 						<b-col xl="6" cols="12">
 							<div class="square-reportes">
 								<h5 class="text-center reportes-text">Egresos de los últimos seis meses</h5>
@@ -151,7 +153,36 @@
 								</b-col>
 							</div>
 						</b-col>
+
 						<b-col xl="6" cols="12">
+							<div class="square-reportes">
+								<h5 class="text-center reportes-text" >Ingresos por Doctor</h5>
+								<b-form-row>
+									<b-col cols="6">
+										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
+											<b-input id="ing_doctor_start" type="date" v-model="ingresosDoctorChart.start_date" />
+										</b-form-group>
+									</b-col>
+									<b-col cols="6">
+										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
+											<b-input-group>
+												<b-form-input id="ing_doctor_end" type="date" v-model="ingresosDoctorChart.end_date" />
+													<b-input-group-append>
+														<b-btn variant="primary" v-on:click.prevent="fillIngresosDoctorChart()" >
+															<i class="fas fa-search"></i>
+														</b-btn>
+													</b-input-group-append>
+												</b-input-group>
+											</b-form-group>
+									</b-col>
+								</b-form-row>
+								<b-col cols="12">
+									<pie-chart :chart-data="ingresosDoctorChart.data" :height = "300"></pie-chart>
+								</b-col>
+							</div>
+						</b-col>
+
+						<!--b-col xl="6" cols="12">
 							<div class="square-reportes">
 								<h5 class="text-center reportes-text" >Ingresos por Empresa</h5>
 								<b-form-row>
@@ -177,7 +208,7 @@
 									<pie-chart :chart-data="ingresosEmpresaChart.data" :height = "300"></pie-chart>
 								</b-col>
 							</div>
-						</b-col>
+						</b-col-->
 
 					</b-row>
 				</PanelCard>
@@ -240,6 +271,11 @@
 					start_date: '',
 					end_date: '',
 				},
+				ingresosDoctorChart:{
+					data: null,
+					start_date: '',
+					end_date: '',
+				},
 				tratamientosChart:{
 					data: null,
 					start_date: '',
@@ -268,9 +304,10 @@
 				this.fillIngresosChart()
 				this.fillEgresosChart()
 				this.fillIngresosPorPacientesChart()
-				this.fillIncomesEmpresaChart()
+				//this.fillIncomesEmpresaChart()
 				this.fillTratamientosChart()
 				this.fillBalanceChart()
+				this.fillIngresosDoctorChart()
 			},
 			setMyDateToToday() {
 				this.myDate = new Date();
@@ -394,6 +431,40 @@
 
 						this.ingresosEmpresaChart.data = {
 							labels: empresas_nombres,
+							datasets: [
+								{
+									label: 'Ingresos',
+									backgroundColor: ["#FF6384","#36A2EB","#FFCE56", "#4db6ac","#7e57c2"],
+									data: ingresos_montos
+								}
+							]
+						}
+					}).catch(function (error) {
+						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					});
+				}else{
+					this.toastFunction('El rango de fechas ingresado en invalido. La Fecha Inicial debe ser menor o igual a la Fecha Final','error')
+				}
+			},
+			getRequestIngresosDoctor(start, end){
+				if( start == '' && end == '' ){
+					return { method: 'GET', url: this.url + '/reportes/obtener-ingresos-doctor'}
+				}
+				return { method: 'GET', url: this.url + '/reportes/obtener-ingresos-doctor/'+start+'/'+end }
+			},
+			fillIngresosDoctorChart(){
+				var start = this.ingresosDoctorChart.start_date
+				var end = this.ingresosDoctorChart.end_date
+
+				if(this.validDateRage(start, end)){
+					var request = this.getRequestIngresosDoctor(start, end)
+					axios(request).then((response) => {
+						let ingresos = response.data.ingresos
+						let doctor_nombres = ingresos.map(i => (i.nombres +' '+ i.apellidos))
+						let ingresos_montos = ingresos.map(i => (parseFloat(i.total_doctor.replace(/,/g, ''))))
+
+						this.ingresosDoctorChart.data = {
+							labels: doctor_nombres,
 							datasets: [
 								{
 									label: 'Ingresos',
