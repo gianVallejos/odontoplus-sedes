@@ -27,9 +27,9 @@
 								    </b-input-group>
 								</div>
 							</div>
-							<div class="col-md-6">							
+							<div class="col-md-6">
 								<div class="float-right d-inline-block">
-									<b-button-group>										
+									<b-button-group>
 										<b-button :href="url+'/pagos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Pago
 										</b-button>
@@ -54,14 +54,14 @@
 
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table" style="color: #d1d1d1">						        	
+                  <div class="actions-table" style="color: #d1d1d1">
                   <a :href="url+'/pagos/detalle/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" target="_blank" >Detalle</a>
                   |
                   <a v-on:click.prevent="onEliminar( row.item.id )" class="action" >Eliminar</a>
                 </div>
               </template>
-              <template slot="doctor" slot-scope="row">                                  
-                    {{ row.item.nombres }} {{ row.item.apellidos }}                  
+              <template slot="doctor" slot-scope="row">
+                    {{ row.item.nombres }} {{ row.item.apellidos }}
               </template>
             </b-table>
 
@@ -84,10 +84,10 @@
   console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
   import TitleComponent from '../widgets/titulo/index.vue'
-	import axios from 'axios'  
+	import axios from 'axios'
 
   export default{
-    mounted() { 
+    mounted() {
       console.log('Pagos mounted')
     },
     name: 'Pagos',
@@ -134,12 +134,12 @@
     },
 		methods:{
       onEliminar(pagoId){
-				this.$swal({ 
-						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+				this.$swal({
+						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>',
 						html:  '<span style="font-size: 1em"> ¿Está seguro de eliminar este Pago?' +
-									'</span>',	
-						animation: false, 
-						showConfirmButton: true, 
+									'</span>',
+						animation: false,
+						showConfirmButton: true,
 						showCancelButton: true,
 						confirmButtonText: 'Aceptar',
 						confirmButtonClass: ['my-alert', 'confirm-alert'],
@@ -150,8 +150,8 @@
 					if( result.value ){
 						var request = { method: 'DELETE', url: this.url + '/pagos/' + pagoId }
             var mssgOnFail = 'Ha ocurrido un error al eliminar este registro.'
-            this.onSubmit(request, mssgOnFail, pagoId)  
-					}	
+            this.onSubmit(request, mssgOnFail, pagoId)
+					}
 				})
 			},
 			onSubmit(request, error_msg, record_id) {
@@ -161,8 +161,8 @@
 						if(response.data.success){
 							console.log('Response:: OK')
 							if (response.data.success = 'deleted' ){
-                this.removeRecordFromTable(record_id)				
-                self.toastFunctionRedirect('Éxito', 'El Pago ha sido eliminado correctamente...', 'success')			
+                this.removeRecordFromTable(record_id)
+                self.toastFunctionRedirect('Éxito', 'El Pago ha sido eliminado correctamente.', 'success')
 							}
 						}else if (response.data.error){
 							console.log('Response:: FAIL');
@@ -177,7 +177,7 @@
         for(var i = 0 ; i < this.items.length; i++){
           console.log(this.items[i].id + '  -  '+record_id)
           if (this.items[i].id == record_id){
-            this.items.splice(i,1) 
+            this.items.splice(i,1)
             break
           }
         }
@@ -199,12 +199,11 @@
 						html: msg,
 						toast: false,
 						position: 'center',
-						showConfirmButton: false,
-	  					timer: 3000,
-	  					backdrop: `rgba(0, 0, 0, 0.6)`
+						confirmButtonClass: ['my-alert', 'confirm-alert'],
+		  			backdrop: `rgba(0, 0, 0, 0.6)`
 				}).then(() => {
-					this.redireccionarToIndex()
-				})	
+					window.location.href = this.url + '/pagos'
+				})
 			},
       toastFunction(msg, type){
 				this.$swal({

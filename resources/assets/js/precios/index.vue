@@ -18,18 +18,18 @@
                                     <i class="fas fa-search" aria-hidden="true"></i>
                                 </span>
                             </div>
-                            <input v-model="search" placeholder="Buscar..." type="text" class="odInput buscar">   
+                            <input v-model="search" placeholder="Buscar..." type="text" class="odInput buscar">
                             <div class="input-group-append">
                               <b-btn class="pl-3 pr-3" variant="secondary" :disabled="!search" @click="search = ''">
                                 <i class="fas fa-sync-alt"></i>
                               </b-btn>
-                            </div>                         
+                            </div>
                         </b-input-group>
                     </div>
                 </div>
-                <div class="col-md-6">							
+                <div class="col-md-6">
                   <div class="float-right d-inline-block">
-                    <b-button-group>										
+                    <b-button-group>
                       <b-button :href="this.url+'/tratamientos'" variant="secondary">
                         <i class="fas fa-tooth"></i>&nbsp; Ir a Tratamientos
                       </b-button>
@@ -93,10 +93,10 @@
 <script>
 	import PanelCard from '../widgets/panel/panel-component.vue'
   import TitleComponent from '../widgets/titulo/index.vue'
-	import axios from 'axios'  
+	import axios from 'axios'
 
   export default{
-    mounted() { 
+    mounted() {
       console.log('Precios mounted')
       this.data = this.prices
     },
@@ -122,11 +122,11 @@
         computedTodos:[]
 			}
 		},
-    computed: {      
-      computedData: function() { 
-          this.computedTodos = this.prices;  
+    computed: {
+      computedData: function() {
+          this.computedTodos = this.prices;
           if (this.search) {
-            this.computedTodos = this.computedTodos.filter(item => item.tratamiento.toUpperCase().includes(this.search.toUpperCase()));   
+            this.computedTodos = this.computedTodos.filter(item => item.tratamiento.toUpperCase().includes(this.search.toUpperCase()));
             return this.computedTodos;
           }
           return this.computedTodos;
@@ -158,10 +158,10 @@
         var id = this.prices[this.buscarPosicion(item.tratamiento)].id
         var amount = this.$refs['monto-'+index][0].$el.value
         var request = { method: 'PUT', url: this.url+'/precios/'+ id, data: { monto: amount } }
-        
+
         axios(request).then((response) => {
           if(response.data.success){
-              this.toastFunctionRedirect('Éxito', 'El precio ha sido actualizado correctamente. <br />Redireccionando...', 'success')
+              this.toastFunctionRedirect('Éxito', 'El precio ha sido actualizado correctamente.', 'success')
           }
           else if (response.data.error){
             this.all_errors = response.data.error
@@ -171,11 +171,11 @@
         }).catch(function (error) {
           console.log(error);
         });
-        
+
       },
       buscarPosicion(tratamiento){
           for( var i = 0; i < this.prices.length; i++ ){
-            if( this.prices[i].tratamiento == tratamiento ) 
+            if( this.prices[i].tratamiento == tratamiento )
                 return i
           }
       },
@@ -198,19 +198,18 @@
         return Math.ceil(this.totalRows / this.perPage )
       },
       toastFunctionRedirect(title, msg, type){
-        this.$swal({
-            type: type,
-            title: title,
-            html: msg,
-            toast: false,
-            position: 'center',
-            showConfirmButton: false,
-              timer: 3000,
-              backdrop: `rgba(0, 0, 0, 0.6)`
-        }).then(() => {
-          window.location.href = this.url + '/precios'
-        })  
-      }
+				this.$swal({
+						type: type,
+						title: title,
+						html: msg,
+						toast: false,
+						position: 'center',
+						confirmButtonClass: ['my-alert', 'confirm-alert'],
+		  			backdrop: `rgba(0, 0, 0, 0.6)`
+				}).then(() => {
+					window.location.href = this.url + '/precios'
+				})
+			}
 		}
   }
 </script>

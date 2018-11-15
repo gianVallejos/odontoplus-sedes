@@ -8,19 +8,15 @@ use Illuminate\Support\Facades\DB;
 use Validator;
 
 class IngresoController extends Controller
-{    
+{
     public static $validation_rules = [
         'fecha' => 'required|date',
         'paciente' => 'required'
     ];
 
-    public static $validation_line_item_rules = [        
+    public static $validation_line_item_rules = [
         'fecha' => 'required|date',
-        'doctor' => 'required',
-        'tratamiento' => 'required',
-        'cantidad' => 'required|integer',
-        'monto' => 'required|numeric',
-        'total' => 'numeric'
+        'doctor' => 'required'
     ];
 
     private $path = 'ingresos';
@@ -53,7 +49,7 @@ class IngresoController extends Controller
             try{
                 $ingreso = new Ingreso();
                 $ingreso->idPaciente = $request->idPaciente;
-                $ingreso->fecha = $request->fecha;                
+                $ingreso->fecha = $request->fecha;
                 $ingreso->save();
 
                 return response()->json(['success' => 'created']);
@@ -67,10 +63,10 @@ class IngresoController extends Controller
 
     public function reporte($id){
         $igeneral = DB::select('call OP_obtenerIngresos_Id('. $id .')')[0];
-        $igeneral = json_encode($igeneral);        
+        $igeneral = json_encode($igeneral);
         $idetalle = DB::select('call OP_obtenerIngresoDetalle_Id('. $id .')');
         $idetalle = json_encode($idetalle);
-        return view($this->path . '.reporte', compact('igeneral', 'idetalle'));        
+        return view($this->path . '.reporte', compact('igeneral', 'idetalle'));
     }
 
     public function lineItem($id){
@@ -78,8 +74,8 @@ class IngresoController extends Controller
             $ingresos = DB::select('call OP_obtenerIngresos_Id('. $id .')')[0];
             $hc = $ingresos->hc;
             $ingresos = json_encode($ingresos);
-            $ingreso_detalle = DB::select('call OP_obtenerIngresoDetalle_Id('. $id .')');        
-            $ingreso_detalle = json_encode($ingreso_detalle);        
+            $ingreso_detalle = DB::select('call OP_obtenerIngresoDetalle_Id('. $id .')');
+            $ingreso_detalle = json_encode($ingreso_detalle);
             $tratamientos = DB::select('call OP_obtenerTratamientos_PacienteId('. $hc .')');
             $tratamientos = json_encode($tratamientos);
             $doctores = DB::select('call OP_obtenerDoctores()');
@@ -92,29 +88,30 @@ class IngresoController extends Controller
     }
 
     public function lineItemSave(Request $request){
-        $validator = Validator::make($request->all(), self::$validation_line_item_rules );
-        
-        if ($validator->passes()) {
-            try{
+        //$validator = Validator::make($request->all(), self::$validation_line_item_rules );
 
-                $ingreso = DB::select('call OP_agregarIngresoDetalle('. $request->ingresoId .', '. $request->precioId .', '. 
-                                                                        $request->cantidad .', '. $request->monto . ', "' . 
-                                                                        $request->fecha .'", ' . $request->doctor . ')');
+        // if ($validator->passes()) {
+            try{
+                foreach( $request->trats as $trat ){
+                    $ingreso = DB::select('call OP_agregarIngresoDetalle('. $request->ingresoId .', '. $trat['precioId'] .', '.
+                                                                            $trat['cantidad'] .', '. $trat['monto'] . ', "' .
+                                                                            $request->fecha .'", ' . $request->doctor . ')');
+                }
                 /*
                 $ingreso = Ingreso::findOrFail($id);
                 $ingreso->idPaciente = $request->idPaciente;
                 $ingreso->idMedico = $request->doctor;
-                $ingreso->fecha = $request->fecha;                
+                $ingreso->fecha = $request->fecha;
                 $ingreso->save();
 
                 $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Ingreso modificado correctamente']));
-                */  
+                */
                 $last_ingreso = DB::select('call OP_obtenerUltimoIngresoDetalle_Id('. $request->ingresoId .')')[0];
 
                 $total_ingreso = DB::select('call OP_obtenerAllTotalIngreso_Id('. $request->ingresoId .')')[0];
                 $Ingresototal = $total_ingreso->total;
 
-                $ing_total = DB::select('call OP_obtenerIngresosTotal_Id('. $last_ingreso->lastIngresoDetalle .')')[0];               
+                $ing_total = DB::select('call OP_obtenerIngresosTotal_Id('. $last_ingreso->lastIngresoDetalle .')')[0];
                 $mg = $ing_total->mg;
                 $mg_core = $ing_total->mg_core;
 
@@ -123,24 +120,25 @@ class IngresoController extends Controller
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
             }
-        }
+        //}
         return response()->json(['error'=>$validator->errors()]);
     }
 
     public function lineItemUpdate(Request $request, $id){
-        $validator = Validator::make($request->all(), self::$validation_line_item_rules );
+        //$validator = Validator::make($request->all(), self::$validation_line_item_rules );
         //print_r($request->all()); die();
-        if ($validator->passes()) {
+        //if ($validator->passes()) {
             try{
+                foreach( $request->trats as $trat ){
+                    $ingreso = DB::select('call OP_actualizarIngresoDetalle('. $request->ingresoId .', '. $trat['precioId'] .', '.
+                                                                               $trat['cantidad'] .', '. $trat['monto'] .', '. $id  .', "'.
+                                                                               $request->fecha .'", '. $request->doctor .')');
+                }
 
-                $ingreso = DB::select('call OP_actualizarIngresoDetalle('. $request->ingresoId .', '. $request->precioId .', '. 
-                                                                           $request->cantidad .', '. $request->monto .', '. $id  .', "'. 
-                                                                           $request->fecha .'", '. $request->doctor .')');
-                
                 $total_ingreso = DB::select('call OP_obtenerAllTotalIngreso_Id('. $request->ingresoId .')')[0];
                 $Ingresototal = $total_ingreso->total;
 
-                $ing_total = DB::select('call OP_obtenerIngresosTotal_Id('. $id .')')[0];                
+                $ing_total = DB::select('call OP_obtenerIngresosTotal_Id('. $id .')')[0];
                 $mg = $ing_total->mg;
                 $mg_core = $ing_total->mg_core;
 
@@ -149,14 +147,14 @@ class IngresoController extends Controller
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
             }
-        }
+        //}
         return response()->json(['error'=>$validator->errors()]);
     }
 
     public function lineItemDelete($id){
         try{
             $ingreso = DB::select('call OP_eliminarIngresoDetalle('. $id .')');
-            
+
             return response()->json(['success' => 'ok']);
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);
@@ -193,7 +191,7 @@ class IngresoController extends Controller
             try{
                 $ingreso = Ingreso::findOrFail($id);
                 $ingreso->idPaciente = $request->idPaciente;
-                $ingreso->fecha = $request->fecha;                
+                $ingreso->fecha = $request->fecha;
                 $ingreso->save();
 
                 return response()->json(['success' => 'updated']);
@@ -207,9 +205,9 @@ class IngresoController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        
+
         try{
-            $canDelete = DB::select('call OP_esIngresoBorrable_Id('. $id .')');            
+            $canDelete = DB::select('call OP_esIngresoBorrable_Id('. $id .')');
             if( $canDelete[0]->CAN_DELETE == '1' ){
                 $ingreso = Ingreso::findOrFail($id);
                 $ingreso->is_deleted = true;
