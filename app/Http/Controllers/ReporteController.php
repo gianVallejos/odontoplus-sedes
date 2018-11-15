@@ -14,8 +14,8 @@ class reporteController extends Controller{
         return view('reportes.index');
     }
 
-    public function ingresos($date){                
-        $data = DB::select('call OP_ObtenerIngresos_Fechas("'. $date .'")');                
+    public function ingresos($date){
+        $data = DB::select('call OP_ObtenerIngresos_Fechas("'. $date .'")');
         return response()->json(['ingresos' => $data ]);
     }
 
@@ -23,7 +23,7 @@ class reporteController extends Controller{
         $data = DB::select('call OP_ObtenerEgresos_Fechas("'. $date . '")');
         return response()->json(['egresos' => $data ]);
     }
-    
+
     public function obtenerIngresosPaciente(){
         $data = DB::select('call OP_ObtenerIngresosPorPaciente_Reportes()');
         return response()->json(['ingresos' => $data ]);
@@ -66,8 +66,18 @@ class reporteController extends Controller{
         return response()->json(['ingresos' => $ingresos, 'egresos' => $egresos ]);
     }
 
+    public function ingresosPorDoctor(){
+        $ingresos = DB::select('call OP_ObtenerIngresosPorDoctor()');
+        return response()->json(['ingresos' => $ingresos ]);
+    }
+
+    public function ingresosPorDoctorFechas($start, $end){
+        $ingresos = DB::select('call OP_ObtenerIngresosPorDoctor_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['ingresos' => $ingresos ]);
+    }
+
     public function ganancias(){
-        return view('reportes.ganancias');    
+        return view('reportes.ganancias');
     }
 
     // gananciasFechas se usa en ganancias reporte como PDF
@@ -77,7 +87,7 @@ class reporteController extends Controller{
         $ingresos = json_encode($ingresos);
         $igeneral = json_encode(['totales' => $totales[0], 'fechaInicial' => $start, 'fechaFinal' => $end]);
         print_r($ingresos); die();
-        return view('reportes.ganancias_reporte', compact('ingresos', 'igeneral'));    
+        return view('reportes.ganancias_reporte', compact('ingresos', 'igeneral'));
     }
 
     public function gananciasFechasJSON($start, $end){
