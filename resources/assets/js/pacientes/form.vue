@@ -181,22 +181,30 @@
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
-											<b-form-group label="Empresa:" label-for="empresa_id">
+											  <b-form-group label="Empresa:" label-for="empresa_id">
 										     	<b-form-select v-model="form.empresa_id" :disabled=isDisabled>
-													<option v-for="(empresa, index) in empresas" :key="index" :value="empresa.id">
-														{{ empresa.nombre }}
-													</option>
-												</b-form-select>
+  													<option v-for="(empresa, index) in empresas" :key="index" :value="empresa.id">
+  														{{ empresa.nombre }}
+  													</option>
+												  </b-form-select>
 										     	<span v-if="all_errors.empresa_id" :class="['label label-danger']">{{ all_errors.empresa_id[0] }}</span>
 										    </b-form-group>
 										    <b-form-group label="Vínculo:" label-for="seguro_ind">
 										    	<b-form-select v-model="form.seguro_ind" :disabled=isDisabled>
-													<option :value="0">Ningún vínculo seleccionado</option>
-													<option v-for="(vnc, index) in vinculo.options" :key="index" :value="vnc.id">
-														{{ vnc.text }}
-													</option>
-												</b-form-select>
+  													<option :value="0">Ningún vínculo seleccionado</option>
+  													<option v-for="(vnc, index) in vinculo.options" :key="index" :value="vnc.id">
+  														{{ vnc.text }}
+  													</option>
+  												</b-form-select>
 										     	<span v-if="all_errors.seguro_ind" :class="['label label-danger']">{{ all_errors.seguro_ind[0] }}</span>
+										    </b-form-group>
+                        <b-form-group label="Referencia:" label-for="referencia_id">
+										     	<b-form-select v-model="form.referencia_id" :disabled=isDisabled>
+    													<option v-for="(referencia, index) in referencias" :key="index" :value="referencia.id">
+    														{{ referencia.nombre }}
+    													</option>
+												  </b-form-select>
+										     	<span v-if="all_errors.referencia_id" :class="['label label-danger']">{{ all_errors.referencia_id[0] }}</span>
 										    </b-form-group>
 										</b-col>
 
@@ -285,6 +293,7 @@
       	'title',
       	'url',
       	'empresas',
+        'referencias',
     		'paciente',
     		'curUser',
     		'view_mode'
@@ -312,6 +321,7 @@
   				celular_aux: '',
   				empresa_id: '1',
   				seguro_ind: 0,
+          referencia_id: '1',
   				nombre_apoderado: '',
   				celular_apoderado: ''
     		},
@@ -418,6 +428,7 @@
   			this.form.celular_aux  = this.paciente.celular_aux
   			this.form.empresa_id = this.paciente.empresa_id
   			this.form.seguro_ind = this.paciente.seguro_ind
+        this.form.referencia_id = this.paciente.referencia_id
   			this.form.nombre_apoderado  = this.paciente.nombre_apoderado
   			this.form.celular_apoderado = this.paciente.celular_apoderado
     	},
@@ -505,6 +516,7 @@
   			this.paciente.celular_aux = this.form.celular_aux
   			this.paciente.empresa_id = this.form.empresa_id
   			this.paciente.seguro_ind = this.form.seguro_ind
+        this.paciente.referencia_id = this.form.referencia_id
   			this.paciente.nombre_apoderado = this.form.nombre_apoderado
   			this.paciente.celular_apoderado	 = this.form.celular_apoderado
     	},

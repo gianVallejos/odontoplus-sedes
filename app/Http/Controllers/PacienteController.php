@@ -24,35 +24,41 @@ class PacienteController extends Controller
     }
 
     public function index(){
-        $pacientes = DB::select('call OP_obtenerPacientes()'); 
+        $pacientes = DB::select('call OP_obtenerPacientes()');
         $pacientes = json_encode($pacientes);
-                
+
         return view($this->path.'.index', compact('pacientes'));
     }
 
     public function create(){
         $empresas = DB::select('call OP_ObtenerEmpresas()');
-        $empresas = json_encode($empresas);        
+        $empresas = json_encode($empresas);
+        $referencias = DB::select('call OP_ObtenerReferencias()');
+        $referencias = json_encode($referencias);
 
-        return view($this->path . '.create', compact('empresas'));    
+        return view($this->path . '.create', compact('empresas', 'referencias'));
     }
 
-    public function show($id){        
-        $paciente = DB::select('call OP_obtenerPacientes_Id('. $id .')')[0]; 
-        $paciente = json_encode($paciente);        
+    public function show($id){
+        $paciente = DB::select('call OP_obtenerPacientes_Id('. $id .')')[0];
+        $paciente = json_encode($paciente);
         $empresas = DB::select('call OP_ObtenerEmpresas()');
         $empresas = json_encode($empresas);
+        $referencias = DB::select('call OP_ObtenerReferencias()');
+        $referencias = json_encode($referencias);
 
-        return view($this->path . '.show', compact('empresas', 'paciente'));
+        return view($this->path . '.show', compact('empresas', 'paciente', 'referencias'));
     }
 
     public function edit($id){
-        $paciente = DB::select('call OP_obtenerPacientes_Id('. $id .')')[0]; 
-        $paciente = json_encode($paciente);        
+        $paciente = DB::select('call OP_obtenerPacientes_Id('. $id .')')[0];
+        $paciente = json_encode($paciente);
         $empresas = DB::select('call OP_ObtenerEmpresas()');
         $empresas = json_encode($empresas);
-        
-        return view($this->path . '.edit', compact('empresas', 'paciente'));
+        $referencias = DB::select('call OP_ObtenerReferencias()');
+        $referencias = json_encode($referencias);
+
+        return view($this->path . '.edit', compact('empresas', 'paciente', 'referencias'));
     }
 
     public function store(Request $request){
@@ -72,10 +78,11 @@ class PacienteController extends Controller
                                     'celular_aux' => 'nullable|string|max:50',
                                     'empresa_id' => 'nullable',
                                     'seguro_ind' => 'nullable',
+                                    'referencia_id' => 'nullable',
                                     'nombre_apoderado' => 'nullable|string|max:150',
                                     'celular_apoderado' => 'nullable|string|max:150',
                                 ] );
-        $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){            
+        $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){
             return $input->fechanacimiento > self::getEighteenYearsFromNow();
         });
 
@@ -97,15 +104,16 @@ class PacienteController extends Controller
                 $paciente->celular_aux = $request->celular_aux;
                 $paciente->empresa_id = $request->empresa_id;
                 $paciente->seguro_ind = $request->seguro_ind;
+                $paciente->referencia_id = $request->referencia_id;
                 $paciente->nombre_apoderado = $request->nombre_apoderado;
                 $paciente->celular_apoderado = $request->celular_apoderado;
                 $paciente->save();
 
                 //Crear nuevo ingreso
                 $ingreso = new Ingreso();
-                $ingreso->idPaciente = $paciente->id;             
+                $ingreso->idPaciente = $paciente->id;
                 $ingreso->save();
-                    
+
                 return response()->json(['success' => 'created']);
 
             }catch(Exception $e){
@@ -115,9 +123,9 @@ class PacienteController extends Controller
 
         return response()->json(['error'=>$validator->errors()]);
     }
-        
+
     public function update(Request $request, $id){
-        
+
         $validator = Validator::make($request->all(), [
                         'nombres' => 'required|string|max:90',
                         'apellidos' => 'required|string|max:90',
@@ -133,10 +141,11 @@ class PacienteController extends Controller
                         'celular_aux' => 'nullable|string|max:50',
                         'empresa_id' => 'nullable',
                         'seguro_ind' => 'nullable',
+                        'referencia_id' => 'nullable',
                         'nombre_apoderado' => 'nullable|string|max:150',
                         'celular_apoderado' => 'nullable|string|max:150',
                     ] );
-        $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){            
+        $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){
             return $input->fechanacimiento > self::getEighteenYearsFromNow();
         });
 
@@ -158,17 +167,18 @@ class PacienteController extends Controller
                 $paciente->celular_aux = $request->celular_aux;
                 $paciente->empresa_id = $request->empresa_id;
                 $paciente->seguro_ind = $request->seguro_ind;
+                $paciente->referencia_id = $request->referencia_id;
                 $paciente->nombre_apoderado = $request->nombre_apoderado;
                 $paciente->celular_apoderado = $request->celular_apoderado;
                 $paciente->save();
-                    
+
                 return response()->json(['success' => 'updated']);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
             }
         }
-        
+
         return response()->json(['error'=>$validator->errors()]);
     }
 
