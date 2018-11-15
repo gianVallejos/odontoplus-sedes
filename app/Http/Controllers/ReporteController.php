@@ -85,8 +85,7 @@ class reporteController extends Controller{
         $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("0","'. $start .'","'. $end .'")');
         $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("0","'. $start .'","'. $end .'")');
         $ingresos = json_encode($ingresos);
-        $igeneral = json_encode(['totales' => $totales[0], 'fechaInicial' => $start, 'fechaFinal' => $end]);
-        print_r($ingresos); die();
+        $igeneral = json_encode(['totales' => $totales[0], 'fechaInicial' => $start, 'fechaFinal' => $end]);        
         return view('reportes.ganancias_reporte', compact('ingresos', 'igeneral'));
     }
 
