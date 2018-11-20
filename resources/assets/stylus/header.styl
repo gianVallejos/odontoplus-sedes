@@ -56,6 +56,8 @@
             a
                 font-size .8em
                 color #858ea7
+                &.active
+                  color: #0aab8a
                 i
                     font-size .85em
                     margin-right 10px
@@ -67,19 +69,18 @@
     .barra-list
         & > li
             display inline-block
-            text-transform uppercase
             margin-right -4px
             &.item
-                i 
+                i
                     display: inline
                     margin-right 8px
                     font-size: 1.1em
                 a
-                    color #858ea7
-                    font-weight 700
+                    color #6c757d /*#858ea7*/
                     line-height 60px
                     height 60px
                     display block
+                    font-family: 'Rubik', sans-serif
                     padding 0px 20px 0px 20px
                     &:hover
                         text-decoration none
@@ -93,7 +94,7 @@
                         background #0AAB8A
                         a
                             color #fff
-                &.active                    
+                &.active
                     background #0AAB8A
                     a
                         color #f3f3f3
@@ -107,7 +108,9 @@
                                 padding 5px 0px 5px 0px
                                 height 30px
                                 line-height 20px
-                                color #858EA7
+                                color #6c757d /*#858EA7*/
                                 &:hover
                                     background transparent
-                                    color #0AAB8A	
+                                    color #0AAB8A
+                                &.active
+                                  color: #0aab8a
