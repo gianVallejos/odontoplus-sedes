@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEgresosTable extends Migration
+class CreateIngresosDetallesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,15 @@ class CreateEgresosTable extends Migration
      */
     public function up()
     {
-        Schema::create('egresos', function (Blueprint $table) {
+        Schema::create('ingresos_detalles', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('fecha')->nullable();
+            $table->integer('ingresoId')->nullable();
+            $table->integer('precioId')->nullable();
             $table->integer('cantidad')->nullable();
-            $table->string('concepto', 125)->nullable();
-            $table->string('tipo', 125)->nullable();
-            $table->string('observacion', 125)->nullable();
-            $table->decimal('precio_unitario', 10, 2)->nullable();
+            $table->decimal('monto', 11, 2)->nullable();
+            $table->date('fecha')->nullable();
             $table->integer('doctorId')->nullable();
-
-            $table->boolean('is_deleted')->default(false);
+            $table->decimal('margen_ganancia', 10, 0)->nullable();
             
             $table->timestamps();
         });
@@ -36,6 +34,6 @@ class CreateEgresosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('egresos');
+        Schema::dropIfExists('ingresos_detalles');
     }
 }

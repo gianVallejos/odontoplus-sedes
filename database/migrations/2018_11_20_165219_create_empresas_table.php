@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePresupuestosTable extends Migration
+class CreateEmpresasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreatePresupuestosTable extends Migration
      */
     public function up()
     {
-        Schema::create('presupuestos', function (Blueprint $table) {
+        Schema::create('empresas', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('fechahora');
-            $table->integer('idPaciente');
-            $table->integer('idDoctor');
-            $table->integer('descuento');
+            $table->string('nombre', 120);
+            $table->string('ruc', 12)->nullable();
 
             $table->boolean('is_deleted')->default(false);
-
+            
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ class CreatePresupuestosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('presupuestos');
+        Schema::dropIfExists('empresas');
     }
 }
