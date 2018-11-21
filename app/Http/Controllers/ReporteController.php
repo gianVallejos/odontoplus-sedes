@@ -14,13 +14,13 @@ class reporteController extends Controller{
         return view('reportes.index');
     }
 
-    public function ingresos($date){
-        $data = DB::select('call OP_ObtenerIngresos_Fechas("'. $date .'")');
+    public function obtenerIngresosMensuales($year){
+        $data = DB::select('call OP_ObtenerIngresosMensuales_Anio("'. $year .'")');
         return response()->json(['ingresos' => $data ]);
     }
 
-    public function egresos($date){
-        $data = DB::select('call OP_ObtenerEgresos_Fechas("'. $date . '")');
+    public function obtenerEgresosMensuales($year){
+        $data = DB::select('call OP_ObtenerEgresosMensuales_Anio("'. $year . '")');
         return response()->json(['egresos' => $data ]);
     }
 
@@ -85,7 +85,7 @@ class reporteController extends Controller{
         $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("0","'. $start .'","'. $end .'")');
         $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("0","'. $start .'","'. $end .'")');
         $ingresos = json_encode($ingresos);
-        $igeneral = json_encode(['totales' => $totales[0], 'fechaInicial' => $start, 'fechaFinal' => $end]);        
+        $igeneral = json_encode(['totales' => $totales[0], 'fechaInicial' => $start, 'fechaFinal' => $end]);
         return view('reportes.ganancias_reporte', compact('ingresos', 'igeneral'));
     }
 

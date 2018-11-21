@@ -2,9 +2,33 @@
 	<b-container>
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Reportes" :items="breadcrumb" />
+				<TitleComponent titulo="Estadísticas" :items="breadcrumb" />
 			</b-col>
 			<b-col cols="12">
+				<PanelCard>
+					<span slot="heading">Reporte de Ingrseos VS Egresos</span>
+					<b-row slot="body">
+						<b-col xl="12" cols="12">
+							<div class="square-reportes">
+								<b-form-row>
+									<b-col cols="8" offset="2">
+										<b-input-group>
+											<b-form-input id="inc_ingreso_date" type="date" v-model="ingresosChart.year" />
+												 <b-input-group-append>
+													<b-btn variant="primary" v-on:click.prevent="fillIngresosVSegresosChart()" >
+														<i class="fas fa-search"></i>
+													</b-btn>
+												 </b-input-group-append>
+											 </b-input-group>
+									</b-col>
+								</b-form-row>
+								<b-col cols="12">
+									<bar-chart :chart-data="ingresosVSegresosChart.data" :height = "300"></bar-chart>
+								</b-col>
+							</div>
+						</b-col>
+					</b-row>
+				</PanelCard>
 				<PanelCard>
 					<span slot="heading">Reporte Estadístico</span>
 					<b-row slot="body">
@@ -249,10 +273,14 @@
 			return{
 				breadcrumb: [
           			{ text: 'Inicio', href: this.url + '/' },
-        			  { text: 'Reportes', active: true }
+        			  { text: 'Estadísticas', active: true }
 			  	],
 				width: 480,
 				height: 480,
+				ingresosVSegresosChart: {
+					data: null,
+					year: '2018'
+				},
 				ingresosChart: {
 					data: null,
 					end_date: ''
@@ -301,6 +329,7 @@
 				this.egresosChart.end_date = today
 			},
 			fillDataCharts(){
+				this.fillIngresosVSegresosChart()
 				this.fillIngresosChart()
 				this.fillEgresosChart()
 				this.fillIngresosPorPacientesChart()
@@ -321,6 +350,46 @@
 				this.setMyDateToToday()
 				this.addADayToMyDate()
 				return this.myDate && this.myDate.toISOString().split('T')[0]
+			},
+			fillIngresosVSegresosChart(){
+				var year = this.ingresosVSegresosChart.year
+				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/'+year }
+				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/'+year }
+				if( year != '' ){
+					axios(request_ingresos).then((response) => {
+						let ingresos = response.data.ingresos
+            let ingresos_montos = ingresos.map(i => parseInt(i.monto))
+
+						axios(request_egresos).then((response) => {
+							let egresos = response.data.egresos
+	            let egresos_montos = egresos.map(i => parseInt(i.monto))
+
+							this.ingresosVSegresosChart.data = {
+								labels: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
+								datasets: [
+									{
+										label: 'Ingresos',
+										backgroundColor: '#305f94',
+										data: ingresos_montos
+									},
+									{
+										label: 'Egresos',
+										backgroundColor: '#30FF94',
+										data: egresos_montos
+									}
+								]
+							}
+
+						}).catch(function (error) {
+							this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+						});
+					}).catch(function (error) {
+						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					});
+				}else{
+					this.toastFunction('Debe seleccionar año antes de buscar', 'error')
+				}
+
 			},
       fillIngresosChart(){
 				var date = this.ingresosChart.end_date
