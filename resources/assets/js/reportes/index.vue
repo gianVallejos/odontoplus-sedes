@@ -221,7 +221,6 @@
 <script>
 	import TitleComponent from '../widgets/titulo/index.vue'
 	import PanelCard from '../widgets/panel/panel-component.vue'
-	import { GChart } from 'vue-google-charts'
 	import BarChart from '../widgets/charts/bar-chart.vue'
 	import HorizontalBarChart from '../widgets/charts/horizontal-bar-chart.vue'
 	import PieChart from '../widgets/charts/pie-chart.vue'
@@ -240,7 +239,6 @@
 		components:{
 			TitleComponent,
 			PanelCard,
-			GChart,
 			BarChart,
 			HorizontalBarChart,
 			PieChart,

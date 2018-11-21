@@ -1,26 +1,26 @@
 <template>
-	<b-container class="pb-4">				
+	<b-container class="pb-4">
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Presupuestos" :items="breadcrumb" />				
+				<TitleComponent titulo="Presupuestos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12" class="pt-3">				
+			<b-col cols="12" class="pt-3">
 				<PanelCard>
 					<span slot="heading">Crear Presupuestos </span>
-					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">						
+					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						<b-row>
 							<b-col cols="6" class="pt-1 pb-4">
 								<div class="form-title">
-									<i class="fas fa-file-invoice-dollar"></i> 
+									<i class="fas fa-file-invoice-dollar"></i>
 									<div class="d-inline"> Crear Presupuesto </div>
 								</div>
 								<p class="form-description fz-3 pt-3 pr-4">
-									Para crear un presupuesto debe seleccionar el paciente a tratar y el doctor responsable. 
-									<br /><br />Al seleccionar "nuevo presupuesto", le aparecerá un odontograma interactivo, en donde podrá agregar los tratamientos de la historia clínica a cotizar. 
+									Para crear un presupuesto debe seleccionar el paciente a tratar y el doctor responsable.
+									<br /><br />Al seleccionar "nuevo presupuesto", le aparecerá un odontograma interactivo, en donde podrá agregar los tratamientos de la historia clínica a cotizar.
 								</p>
 							</b-col>
-							<b-col cols="6" class="pt-1 pb-4">	
-								<b-form>									
+							<b-col cols="6" class="pt-1 pb-4">
+								<b-form>
 									<b-form-group label="Seleccionar Paciente" label-for="pacientes">
 										<b-input-group>
 									      	<b-form-input id="pacientes" type="text" v-model="form.pacienteSelected" placeholder="Ningun Paciente Seleccionado" disabled />
@@ -39,7 +39,7 @@
 											</option>
 										</b-form-select>
 									</b-form-group>
-								</b-form>								
+								</b-form>
 							</b-col>
 							<b-col cols="12">
 								<div class="text-center">
@@ -65,14 +65,22 @@
 								    </b-input-group>
 								</b-col>
 								<b-col cols="12" class="pt-3 pb-2">
-									<b-table show-empty :items="pacientes" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" 
-										:sort-direction="sortDirection"
-							             @filtered="onFiltered">
-										<template slot="nombres" slot-scope="row">							    	
-									    		{{ row.value }} {{ row.item.apellidos }}							    	
+									<b-table 	show-empty
+														:items="pacientes"
+														:fields="fields"
+														:current-page="currentPage"
+														:per-page="perPage"
+														:filter="filter"
+														:sort-by.sync="sortBy"
+														:sort-desc.sync="sortDesc"
+														:sort-direction="sortDirection"
+							             	@filtered="onFiltered"
+														empty-text="No existen campos para mostrar">
+										<template slot="nombres" slot-scope="row">
+									    		{{ row.value }} {{ row.item.apellidos }}
 									    </template>
 									    <template slot="actions" slot-scope="row" class="md-2">
-									        <div class="actions-table" style="color: #d1d1d1">						        	
+									        <div class="actions-table" style="color: #d1d1d1">
 									        	<a v-on:click="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="action">Seleccionar</a>
 									        </div>
 									    </template>
@@ -114,7 +122,7 @@
 			    	{ text: 'Inicio', href: this.url },
 			    	{ text: 'Presupuestos', href: this.url + '/presupuestos' },
 			    	{ text: 'Crear Presupuesto', active: true }
-			    ],		
+			    ],
 			    isDisabled: false,
 			    form: {
 			    	idPacienteSelected: null,
@@ -122,10 +130,10 @@
 			    	doctorSelected: null
 			    },
 			    allerros: [],
-			    fields: [				    				    
-				    { key: 'id', label: 'Nro Historia', class: 'text-center' }, 				    
+			    fields: [
+				    { key: 'id', label: 'Nro Historia', class: 'text-center' },
 				    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
-				    { key: 'actions', label: '', sortable: false },				    
+				    { key: 'actions', label: '', sortable: false },
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,

@@ -10,7 +10,7 @@
 				<b-alert show variant="danger">Error Alert</b-alert>
 			</div>
 			<div class="col-md-6 pt-3">
-				<h5>Botones: </h5>		
+				<h5>Botones: </h5>
 				<div class="botonesLayout pt-3">
 					<b-button href="#" variant="primary">General</b-button>
 					<b-button href="#" variant="success">Guardar</b-button>
@@ -18,7 +18,7 @@
 					<b-button href="#" variant="warning">Modificar</b-button>
 					<b-button href="#" variant="danger">Cancelar</b-button>
 				</div>
-				
+
 				<div class="panelLayout pt-4">
 					<h5>Panel: </h5>
 					<PanelCard>
@@ -34,9 +34,9 @@
 				<div class="panelLayout pt-4">
 					<h5>Charts</h5>
 					<PanelCard>
-						<GChart type="LineChart" :data="chartData" :options="chartOptions" slot="body" />
+						<!-- <GChart type="LineChart" :data="chartData" :options="chartOptions" slot="body" />
 
-						<GChart type="PieChart" :data="donutData" :options="donutOptions" :width="600" slot="body" />
+						<GChart type="PieChart" :data="donutData" :options="donutOptions" :width="600" slot="body" /> -->
 					</PanelCard>
 				</div>
 			</div>
@@ -55,14 +55,14 @@
 
 				<div class="panelLayout pt-4">
 					<h5>Tabla: </h5>
-					<PanelCard>						
+					<PanelCard>
 						<TableComponent :fields="items" slot="body" />
 					</PanelCard>
 				</div>
 
 				<div class="panelLayout pt-4">
-					<h5>Forms: </h5>					
-					<PanelCard>	
+					<h5>Forms: </h5>
+					<PanelCard>
 						<b-form @submit="onSubmit" slot="body">
 							<b-form-group label="Nombre de Campo:">
 				        		<b-form-input
@@ -85,7 +85,7 @@
 				      			<b-button variant="danger">Cancel</b-button>
 				      		</div>
 				      	</b-form>
-			      	</PanelCard>			      
+			      	</PanelCard>
 				</div>
 
 				<div class="panelLayout pt-3">
@@ -100,7 +100,7 @@
   					</div>
 				</div>
 			</div>
-		</div>		
+		</div>
 	</div>
 
 </template>
@@ -111,7 +111,6 @@
 	import FormBuscar from '../widgets/form/form-buscar-component.vue'
 	import TableComponent from '../widgets/table/table-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
-	import { GChart } from 'vue-google-charts'
 
 	export default{
 		name: 'Container-General',
@@ -120,8 +119,7 @@
 			PanelCard,
 			FormBuscar,
 			TableComponent,
-			TitleComponent,
-			GChart
+			TitleComponent
 		},
 		data(){
 			return{
@@ -166,7 +164,7 @@
 		        },
 		        form: {
 			        name: '',
-			        other: ''			        
+			        other: ''
 			    },
 			    breadcrumb: [
 			    	{ text: 'Home', href: '/' },

@@ -46,7 +46,7 @@
     cursor: pointer;
     margin-bottom: 25px;
   }
-  .dashbox-med::hover{
+  .dashbox-med:hover{
     opacity: .9;
   }
   .dashbox-med.info{

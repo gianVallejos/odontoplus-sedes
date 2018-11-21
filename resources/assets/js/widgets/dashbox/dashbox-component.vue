@@ -5,7 +5,7 @@
 				<b-col cols="3" class="icono pr-0 pl-0">
 					<i :class="iconUrl"></i>
 				</b-col>
-				<b-col cols="9" class="text-left pl-2 pr-0">
+				<b-col cols="9" class="text-left pt-1 pl-2 pr-0">
 					<div class="subtitle-dashbox">{{ subname }}</div>
 					<div class="title-dashbox">
 						{{ name }}
@@ -47,11 +47,13 @@
 		font-size: .9em
 
 	.title-dashbox
-		font-size: 20px
+		font-size: 1.2em
 		font-family: 'Open Sans', sans-serif
+		text-transform: uppercase
 
 	.icono
 		line-height: 50px
 		vertical-align: middle
+		margin-top: 2px
 
 </style>

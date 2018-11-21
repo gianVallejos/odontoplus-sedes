@@ -272,7 +272,7 @@
 				    { key: (this.curUser.rolid == 1) ? 'mg_core' : ''	, label: 'CORE', sortable: true, sortDirection: 'desc', 'class': 'text-center' }
 			    ],
 			    currentPage: 1,
-			   	perPage: 10,
+			   	perPage: 7,
 			    totalRows: 0,
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,
@@ -290,7 +290,7 @@
 				    { key: 'actions', label: '', sortable: false }
 			    ],
 			    currentPagePac: 1,
-			   	perPagePac: 10,
+			   	perPagePac: 7,
 			    totalRowsPac: 0,
 			    pageOptionsPac: [ 5, 10, 15 ],
 			    sortByPac: null,

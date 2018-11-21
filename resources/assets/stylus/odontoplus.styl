@@ -27,14 +27,14 @@ body
 	margin: 0
 	padding: 0
 	height: 100%
-	
+
 #app
-	min-height: 100%
+	min-height: calc(100vh - 210px)
 	position: relative
 
 h1, h2, h3, h4, h5
 	font-family: 'Rubik', sans-serif
-	
+
 a
 	color: #0aab8a
 	transition: all .4s
@@ -45,8 +45,8 @@ ul
 	list-style-type: none
 	margin: 0
 	padding: 0
-	
-p 
+
+p
 	margin: 0
 
 .footer
@@ -59,12 +59,13 @@ p
 	font-size: 14px
 	font-family: 'Rubik', sans-serif
 	color: #d1d1d1
+	font-size: .9em
 
 .card
 	border: none
 	border-top: 4px solid $btnInfoBc
 	border-radius: 0px
-	width: 100%	
+	width: 100%
 	.card-heading
 		font-family: 'Rubik', sans-serif
 		padding: 18px 26px 14px 26px
@@ -74,13 +75,13 @@ p
 	.card-footer
 		background: #fff
 		text-align: right
-	
+
 .icon-input
 	position: absolute
 	top: 10px
 	left: 15px
 	z-index: 999
-	i 
+	i
 		color: #7f7f7f
 
 .form-control
@@ -91,8 +92,8 @@ p
 	border-radius: 0px
 	&:focus
 		outline: none
-		box-shadow: none   
-		border: 1px solid #d1d1d1 	
+		box-shadow: none
+		border: 1px solid #d1d1d1
 	&:disabled
 		color: #7f7f7f
 	&.required
@@ -117,7 +118,7 @@ p
 	border-radius: 0px
 .help-required
 	border-left: 4px solid $btnCancelarBc
-		
+
 .col-form-label
 	font-family: 'Rubik', sans-serif
 
@@ -129,7 +130,7 @@ p
 	color: #7f7f7f
 	font-size: 1em
 	&:focus
-		outline: none   	
+		outline: none
 	&.buscar
 		width: auto!important
 
@@ -147,18 +148,19 @@ p
 		background: #f3f3f3
 
 .odBtn,
-.btn	
+.btn
 	display: inline-block
 	color: $btnInfoC!important
 	border: none
 	vertical-align: middle
 	padding: 0.6rem 1.4rem
 	cursor: pointer
-	font-size: 1em
+	font-size: .95em
 	line-height: 1.5
 	border-radius: 0px
+	//font-family: 'Open Sans', sans-serif
 	font-family: 'Rubik', sans-serif
-	transition: all .5s ease-out	
+	transition: all .5s ease-out
 	&:focus
 		outline: none!important
 		background: #f3f3f3!important
@@ -173,12 +175,12 @@ p
 			color: $btnInfoBc!important
 			box-shadow: inset 0 -4px 0 $btnInfoBc
 			background: transparent
-			text-decoration: none					
+			text-decoration: none
 		&:focus
 			outline: 0
 			background: $btnInfoBc!important
 			color: $btnInfoC!important
-			box-shadow: inset 0 -4px 0 $btnInfoBcVariant	
+			box-shadow: inset 0 -4px 0 $btnInfoBcVariant
 	&.guardar,
 	&.btn-success
 		background: $btnGuardarBc
@@ -245,13 +247,13 @@ p
 .contenido
 	padding-top: 30px
 	padding-bottom: 35px
-	
-.table 
-	thead 
+
+.table
+	thead
 		th
 			border-top: none
 	tbody
-		tr 
+		tr
 			border-bottom: 1px solid #dee2e6
 			td
 				a
@@ -268,13 +270,19 @@ p
 	border-radius: 0px
 	background: #f3f3f3
 	padding: .45rem 1rem
-	
-//Modal		
+	li
+		a
+			font-size: .9em
+		&.active
+			font-size: .9em
+			padding-top: 3px
+
+//Modal
 .modal-content
 	border-radius: 0px
 	border: none
 	border-top: 4px solid $btnInfoBc
-	
+
 .modal-header
 	padding: 1.1em 1.4em .7em 1.4em
 	.close
@@ -294,13 +302,13 @@ p
 		background-color: #ab4240
 	&.badge-success
 		background-color: #0aab8a
-	
+
 .actions-table
 	font-size: .85em
-	a 
+	a
 		margin-right: 2px
 
-.table		
+.table
 	font-size: .9em
 
 .fz-1
@@ -311,8 +319,8 @@ p
 	font-size: .9em
 .fz-4
 	font-size: 1em
-	
-.page-item.active 
+
+.page-item.active
 	.page-link
 		background-color: $btnNuevoBc!important
 		border-color: $btnNuevoBc
@@ -324,55 +332,55 @@ p
 	color: $btnNuevoBc
 	font-size: .9em
 
-table.b-table 
-	> thead 
-		> tr 
-			> th.sorting, table.b-table 
+table.b-table
+	> thead
+		> tr
+			> th.sorting, table.b-table
 				&:focus
 					outline: none
-					
+
 .form-title
 	font-size: 1.3em
 	font-weight: 600
 	font-family: 'Rubik', sans-serif
 	i
 		font-size: 1.1em
-	
+
 .form-description
 	color: #868da7
 	font-family: 'Open Sans', sans-serif
-	
+
 .col-form-label
 	font-family: 'Open Sans', sans-serif
-	
+
 .required-red,
 .label-danger
 	color: #ab4240
 
 .label-danger
 	font-size: .9em
-	
+
 .alert
 	border: 0px
 	margin: 0px
-	padding: 12px 0px 12px 0px 
+	padding: 12px 0px 12px 0px
 
 .toast-danger
 	background: $btnCancelarBc!important
-	
+
 .toast-success
 	background: $btnGuardarBc
-	
+
 .presupuesto-top
 	span
 		width: 100px
-		margin-right: 10px		
+		margin-right: 10px
 		display: inline-block
 		font-weight: 600
 	.texto
 		border-bottom: 1px solid #f3f3f3
 		width: 72%
-			
+
 .opcion-btn
 	width: 100%
 	background: $btnModificarBc!important
@@ -381,14 +389,14 @@ table.b-table
 		outline: none
 		box-shadow: none
 	&:hover
-		opacity: .9	
+		opacity: .9
 
 .subtotal-layout
 	line-height: 40px
 	vertical-align: bottom
 	font-size: 16px
 	.sub
-		font-family: 'Rubik', sans-serif		
+		font-family: 'Rubik', sans-serif
 		font-weight: 600
 		padding-right: 20px
 
@@ -397,23 +405,23 @@ table.b-table
 	&:hover
 		font-weight: 700
 		color: #3f3f3f
-		
+
 .presupuesto-form,
 .presupuesto-sub
 	width: 90px
-	
+
 .swal2-popup
 	&.swal2-modal
 		border-radius: 0px
 		font-family: 'Rubik', sans-serif
 	.swal2-styled
 		border-radius: 0px!important
-		
+
 .my-alert
 	border: none!important
 	background-color: $btnInfoBc!important
 	font-weight: bold
-	font-family: 'Open Sans', sans-serif!important	
+	font-family: 'Open Sans', sans-serif!important
 	&:focus, :active
 		border: none!important
 		box-shadow: none!important
@@ -423,14 +431,14 @@ table.b-table
 		background: $btnGuardarBc!important
 		font-size: .9em!important
 	&.cancel-alert
-		background: $btnCancelarBc!important		
+		background: $btnCancelarBc!important
 		font-size: .9em!important
 
 .swal2-container
 	&.swal2-shown
 		background: #000
 		color: #ff0!important
-		
+
 span
 	&.title-sec
 		display: inline-block
@@ -458,30 +466,30 @@ span
 			.amount
 				font-size: 18px
 
-		
-.custom-radio 
+
+.custom-radio
 	.custom-control-input:checked~
 		&.custom-control-label::before
 			background-color: #305f94!important
-			
-.custom-checkbox 
+
+.custom-checkbox
 	.custom-control-input:checked~
 		&.custom-control-label::before
 			background-color: #305f94!important
-			
+
 .action-width
 	width: 150px!important
-	
+
 .input-table-width
 	width: 180px!important
 .input-empresa-table-width
 	width: 250px!important
-	
+
 .square-reportes
-	border: 1px solid rgba(0, 0, 0, 0.1); 
-	margin: .5em; 
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	margin: .5em;
 	padding: 1.5em
-	
+
 .balanceLayout
 	font-size: 1.25em
 	.title-balance
@@ -493,7 +501,7 @@ span
 	.text-balance
 		text-align: right
 		display: inline-block
-	.line-balance		
+	.line-balance
 		width: 100%
 		margin: 15px 0px 5px 0px
 		height: 3px
@@ -501,7 +509,7 @@ span
 	.balanceLayout-general
 		display: flex
 		justify-content: center
-		align-items: center 
+		align-items: center
 		width: 100%
 		height: 301px;
 		.content
@@ -513,7 +521,7 @@ span
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1)
 	margin-bottom: 20px
 	font-size: 1.6em
-	
+
 
 .scrollable
 	overflow-y:auto

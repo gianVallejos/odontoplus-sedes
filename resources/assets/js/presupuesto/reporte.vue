@@ -47,6 +47,9 @@
 							   				  v-if="curUser.rolid == 1" >
 					<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 				</b-button>
+				<b-button variant="warning" v-on:click.prevent="cerrarVenta()">
+					<i class="fas fa-times"></i> &nbsp;Cerrar
+				</b-button>
 			</b-col>
 		</b-row>
 		<b-row class="d-print-none" v-if="isMultipleOption">
@@ -178,8 +181,11 @@
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
 							   				  v-if="curUser.rolid == 1" >
-					<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
-				</b-button>
+						<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
+					</b-button>
+					<b-button variant="warning" v-on:click.prevent="cerrarVenta()">
+						<i class="fas fa-times"></i> &nbsp;Cerrar
+					</b-button>
 				</b-col>
 			</b-row>
 		</section>
@@ -541,6 +547,9 @@
 						window.opener.external.comeback()
 						//window.location.href = this.url + '/presupuestos'
 				})
+			},
+			cerrarVenta(){
+					window.close()
 			}
 
 		}

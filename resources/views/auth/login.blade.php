@@ -76,7 +76,7 @@
         <a href="http://www.odontoplus.pe" target="_blank">
             <img src="{{ asset('images/sistema/logo_odontoplus_login.png')}}" alt="Odontoplus Logotipo">
         </a>
-        <p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.0.6</p>
+        <p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.1.0</p>
     </div>
 
 </div>
