@@ -11,15 +11,10 @@
 						<b-col xl="12" cols="12">
 							<div class="square-reportes">
 								<b-form-row>
-									<b-col cols="8" offset="2">
-										<b-input-group>
-											<b-form-input id="inc_ingreso_date" type="date" v-model="ingresosChart.year" />
-												 <b-input-group-append>
-													<b-btn variant="primary" v-on:click.prevent="fillIngresosVSegresosChart()" >
-														<i class="fas fa-search"></i>
-													</b-btn>
-												 </b-input-group-append>
-											 </b-input-group>
+									<b-col cols="2">
+										<b-input-group prepend="Año">
+											<b-form-select id="estado" v-model="ingresosVSegresosChart.year" :options="years" v-on:input="fillIngresosVSegresosChart()" />
+										</b-input-group>
 									</b-col>
 								</b-form-row>
 								<b-col cols="12">
@@ -29,6 +24,7 @@
 						</b-col>
 					</b-row>
 				</PanelCard>
+				<br/>
 				<PanelCard>
 					<span slot="heading">Reporte Estadístico</span>
 					<b-row slot="body">
@@ -277,9 +273,14 @@
 			  	],
 				width: 480,
 				height: 480,
+				years: [
+					{ value: "2017", text: "2017" },
+					{ value: "2018", text: "2018" },
+					{ value: "2019", text: "2019" }
+				],
 				ingresosVSegresosChart: {
 					data: null,
-					year: '2018'
+					year: null
 				},
 				ingresosChart: {
 					data: null,
@@ -320,11 +321,11 @@
     },
     methods:{
 			initCharts(){
-				var sixMonthsAgo = this.getMyDate()
 				this.setDatesToChart(this.getMyDate())
 				this.fillDataCharts()
 			},
 			setDatesToChart(today){
+				this.ingresosVSegresosChart.year = today.substring(0,4)
 				this.ingresosChart.end_date = today
 				this.egresosChart.end_date = today
 			},
@@ -374,7 +375,7 @@
 									},
 									{
 										label: 'Egresos',
-										backgroundColor: '#30FF94',
+										backgroundColor: '#ff6384',
 										data: egresos_montos
 									}
 								]
