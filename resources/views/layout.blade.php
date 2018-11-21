@@ -19,7 +19,7 @@
 
 	<link rel="stylesheet" href="{{ asset('css/odontoplus.css?v=1.0.29') }}">
 	<link rel="stylesheet" href="{{ asset('css/header.css?v=1.0.2') }}">
-	<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/dashboard.css?v=1.0.1') }}">
 	<link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
 	<link rel="stylesheet" href="{{ asset('css/diente.css?v=1.0.7') }}" />
 
@@ -64,7 +64,7 @@
 	<script src="{{ asset('js/jquery.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/app.js?v=1.2.63') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.2.64') }}"></script>
 
 
 </body>
