@@ -1,23 +1,23 @@
 <template>
-	<b-container class="pb-4">				
+	<b-container class="pb-4">
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Ingresos" :items="breadcrumb" />				
+				<TitleComponent titulo="Ingresos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12" class="pt-3">				
+			<b-col cols="12" class="pt-3">
 				<PanelCard>
 					<span slot="heading">Detalle de Ingreso</span>
-					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">	
+					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 
 						<b-row>
 							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
 								<span class="title-sec">Nro Historia:</span>
 								<div class="d-inline-block texto"> {{ record.hc }}</div>
 							</b-col>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">								
+							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
 								<span class="title-sec">Creado en:</span>
 								<div class="d-inline-block texto"> {{ record.fecha }}</div>
-							</b-col>							
+							</b-col>
 							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
 								<span class="title-sec">Paciente:</span>
 								<div class="d-inline-block texto"> {{ record.nombrePaciente }}</div>
@@ -25,13 +25,23 @@
 							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
 								<span class="title-sec">Total:</span>
 								<div class="d-inline-block texto"> S/ {{ mydata.monto_total }}</div>
-							</b-col>							
+							</b-col>
+						</b-row>
+						<b-row>
+							<b-col cols="12" class="pt-3 text-center">
+								<div v-for="(item, i) in presupuestosByIngreso" class="d-inline presupesto-btn-padding">
+									<b-btn :href="url + '/presupuestos/reporte/' + item.id" target="_blank" variant="secondary">
+										<i class="fas fa-calculator"></i>&nbsp;&nbsp;Ver Presupuesto {{ (presupuestosByIngreso.length > 1 ) ? i + 1 : '' }}
+									</b-btn>
+								</div>
+							</b-col>
 						</b-row>
 					</div>
 				</PanelCard>
 			</b-col>
-			<line-item-detalle :record="recordDetail" :tratamientos="tratamientos" :id="ingreso_id" :url="url" :cur-user="curUser" :doctores="doctores" v-on:calcular-total="actualizarTotal" />
+			<line-item-detalle :record="recordDetail" :tratamientos="tratamientos" :presupuesto_id="record.presupuestoId" :id="ingreso_id" :url="url" :cur-user="curUser" :doctores="doctores" v-on:calcular-total="actualizarTotal" />
 		</b-row>
+
 	</b-container>
 </template>
 <script>
@@ -42,7 +52,7 @@
 
 	export default{
 		mounted(){
-			console.log('Ingreso Line Item Mounted')	
+			console.log('Ingreso Line Item Mounted')
 		},
 		props: [
 			'url',
@@ -51,7 +61,8 @@
 			'curUser',
 			'record-detail',
 			'tratamientos',
-			'doctores'
+			'doctores',
+			'presupuestosByIngreso'
 		],
 		components:{
 			TitleComponent,
@@ -79,3 +90,9 @@
 
 	}
 </script>
+<style lang="stylus">
+	.presupesto-btn-padding
+		padding-right: 10px
+		&:last-of-type
+			padding-right: 0px
+</style>

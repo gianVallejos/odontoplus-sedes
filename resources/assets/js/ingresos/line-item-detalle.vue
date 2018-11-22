@@ -5,7 +5,7 @@
 			<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 				<b-row  v-if="!isAddTratamiento" >
 					<b-col cols="12" class="text-center pt-0 pb-1">
-						<b-btn variant="secondary" v-on:click.prevent="agregarTratamiento()" >
+						<b-btn variant="success" v-on:click.prevent="agregarTratamiento()" >
 							<i class="fas fa-plus"></i>&nbsp; Agregar Tratamiento
 						</b-btn>
 						<b-btn variant="primary" :href="this.url + '/ingresos/reporte/' + this.id" target="_blank">
@@ -13,7 +13,7 @@
 						</b-btn>
 						<b-btn :href="url + '/ingresos'" variant="warning">
 							<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
-						</b-btn>
+						</b-btn>						
 					</b-col>
 				</b-row>
 				<b-row class="pt-4" v-if="!isAddTratamiento" >
@@ -92,41 +92,6 @@
 									</b-form-group>
 								</b-col>
 							</b-form-row>
-
-							<!-- <b-form-row>
-								<b-col>
-									<b-form-group label="Seleccionar Tratamiento" label-for="pacientes">
-										<b-input-group>
-									      	<b-form-input id="tratamientos" type="text" v-model="form.tratamiento"
-									      				  placeholder="Ningun Tratamiento Seleccionado" class="required" disabled />
-									      	<b-input-group-append>
-										    	<b-btn class="pl-3 pr-3" variant="success" v-b-modal.tratamientosModal >
-										    		<i class="fas fa-search"></i>
-										    	</b-btn>
-										    </b-input-group-append>
-									   	</b-input-group>
-									   	<span v-if="allerros.tratamiento" :class="['label label-danger']">{{ allerros.tratamiento[0] }}</span>
-									</b-form-group>
-								</b-col>
-								<b-col cols="2">
-								    <b-form-group label="Cantidad" label-for="cantidad">
-										<b-form-input v-on:input="calculateTotal" id="cantidad" type="text" v-model="form.cantidad" placeholder="Cantidad" autocomplete="off" class="required" :disabled=isDisabled required  />
-										<span v-if="allerros.cantidad" :class="['label label-danger']">{{ allerros.cantidad[0] }}</span>
-									</b-form-group>
-								</b-col>
-								<b-col cols="2">
-									<b-form-group label="Monto" label-for="monto">
-										<b-form-input v-on:input="calculateTotal" id="monto" type="text" v-model="form.monto" placeholder="Monto" autocomplete="off" class="required" :disabled=isDisabled required />
-										<span v-if="allerros.monto" :class="['label label-danger']">{{ allerros.monto[0] }}</span>
-									</b-form-group>
-								</b-col>
-								<b-col cols="2">
-									<b-form-group label="Total" label-for="total">
-										<b-form-input id="total" type="text" v-model="form.total" placeholder="Total" autocomplete="off" disabled />
-										<span v-if="allerros.total" :class="['label label-danger']">{{ allerros.total[0] }}</span>
-									</b-form-group>
-								</b-col>
-							</b-form-row> -->
 
 							<div v-for="trat in form.trats">
 								<b-form-row>
@@ -253,7 +218,8 @@
 			'tratamientos',
 			'doctores',
 			'id',
-			'curUser'
+			'curUser',
+			'presupuesto_id'
 		],
 		components: {
 			PanelCard

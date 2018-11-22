@@ -49,6 +49,9 @@
 				<b-button variant="warning" v-on:click.prevent="onCerrar()">
 					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
 				</b-button>
+				<b-button variant="secondary" :href="url + '/egresos/create'">
+					<i class="fas fa-money-bill"></i>&nbsp; Nuevo Egreso
+				</b-button>
 			</b-col>
 		</b-row>
 		<b-row>
@@ -115,6 +118,9 @@
 				</b-button>
 				<b-button variant="warning" v-on:click.prevent="onCerrar()">
 					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
+				</b-button>
+				<b-button variant="secondary" :href="url + '/egresos/create'">
+					<i class="fas fa-money-bill"></i>&nbsp; Nuevo Egreso
 				</b-button>
 			</b-col>
 		</b-row>
@@ -191,7 +197,7 @@
 						if(response.data.success){
 							if( response.data.success == 'created' ){
 								this.onDisplayDetalle()
-								self.toastFunction('El pago a sido guradado correctamente', 'success')
+								self.toastFunctionRedirect('Éxito', 'El pago ha sido guardado correctamente pero debe registrarlo como egreso manualmente.<br /> ¿Desea agregar un nuevo egreso?', 'success')
 							}
 						}else if (response.data.error){
 								console.log('Response:: FAIL');
@@ -210,7 +216,25 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-							timer: 3000
+						timer: 3000
+				})
+			},
+			toastFunctionRedirect(title, msg, type){
+				this.$swal({
+						title: title,
+						html:  msg,
+						type: type,
+						showConfirmButton: true,
+						showCancelButton: true,
+						confirmButtonText: '<i class="fas fa-money-bill"></i> Nuevo Egreso',
+						confirmButtonClass: ['my-alert', 'nuevo-alert'],
+						cancelButtonText: '<i class="fas fa-times-circle"></i> Cerrar',
+						cancelButtonClass: ['my-alert', 'cerrar-alert'],
+						showCloseButton: true
+				}).then((result) => {
+					if( result.value ){
+						window.location = this.url + '/egresos/create'
+					}
 				})
 			},
 			onCerrar(){

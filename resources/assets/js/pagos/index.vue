@@ -30,6 +30,9 @@
 							<div class="col-md-6">
 								<div class="float-right d-inline-block">
 									<b-button-group>
+                    <b-button variant="secondary" :href="url + '/egresos/create'">
+            					<i class="fas fa-money-bill"></i>&nbsp; Nuevo Egreso
+            				</b-button>
 										<b-button :href="url+'/pagos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Pago
 										</b-button>
