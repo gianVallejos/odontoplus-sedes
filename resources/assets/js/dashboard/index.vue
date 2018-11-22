@@ -129,7 +129,7 @@
 					<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="d-inline-flex" />
 				</b-col>
 			</b-row>
-			<div width="100%" slot="modal-footer">
+			<div slot="modal-footer">
 				<b-button  variant="success" size="sm" :href="url + '/pacientes/create'">
 					<i class="fas fa-plus"></i>&nbsp; Nuevo Paciente
 				</b-button>

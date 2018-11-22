@@ -50,6 +50,9 @@
 				<b-button variant="warning" v-on:click.prevent="cerrarVenta()">
 					<i class="fas fa-times"></i> &nbsp;Cerrar
 				</b-button>
+				<b-button variant="secondary" :href="url + '/ingresos/line-item/' + pgeneral.ingresosId">
+					<i class="fas fa-money-check-alt"></i> &nbsp;Ver Ingresos
+				</b-button>
 			</b-col>
 		</b-row>
 		<b-row class="d-print-none" v-if="isMultipleOption">
@@ -185,6 +188,9 @@
 					</b-button>
 					<b-button variant="warning" v-on:click.prevent="cerrarVenta()">
 						<i class="fas fa-times"></i> &nbsp;Cerrar
+					</b-button>
+					<b-button variant="secondary" :href="url + '/ingresos/line-item/' + pgeneral.ingresosId">
+						<i class="fas fa-money-check-alt"></i> &nbsp;Ver Ingresos
 					</b-button>
 				</b-col>
 			</b-row>

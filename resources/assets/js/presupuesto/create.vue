@@ -90,7 +90,14 @@
 									<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="d-inline-flex" />
 								</b-col>
 							</b-row>
-							<b-button slot="modal-footer" variant="primary" size="sm" @click="hideModal">Cerrar</b-button>
+							<div slot="modal-footer">
+								<b-button  variant="success" size="sm" :href="url + '/pacientes/create'">
+									<i class="fas fa-plus"></i>&nbsp; Nuevo Paciente
+								</b-button>
+								<b-button variant="primary" size="sm" @click="hideModal">
+									Cerrar
+								</b-button>
+							</div>
 						</b-modal>
 					</div>
 				</PanelCard>
@@ -136,7 +143,7 @@
 				    { key: 'actions', label: '', sortable: false },
 			    ],
 			    currentPage: 1,
-			   	perPage: 10,
+			   	perPage: 7,
 			    totalRows: 0,
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,

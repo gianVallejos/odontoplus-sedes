@@ -39,6 +39,9 @@
 									<b-button variant="warning" v-on:click.prevent="onRegresar">
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
+                  <b-button type="submit" variant="secondary" :href="url + '/presupuestos/create'">
+										<i class="fas fa-plus"></i>&nbsp; Nuevo presupuesto
+									</b-button>
 								</div>
 							</div>
 
@@ -246,6 +249,9 @@
 									</b-button>
 									<b-button variant="warning" v-on:click.prevent="onRegresar" >
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
+									</b-button>
+                  <b-button type="submit" variant="secondary" :href="url + '/presupuestos/create'">
+										<i class="fas fa-plus"></i>&nbsp; Nuevo presupuesto
 									</b-button>
 								</div>
 								<div v-if="displayStatus != 'show'">
@@ -471,7 +477,18 @@
   						console.log('Response:: OK')
   						if( response.data.success == 'created' ){
   							self.setDisableForm()
-  							self.toastFunctionRedirect('Éxito', 'El paciente ha sido creado correctamente.', 'success')
+                self.$swal({
+        						type: 'success',
+        						title: 'Éxito',
+        						html: 'El paciente ha sido creado correctamente.',
+        						toast: false,
+        						position: 'center',
+        						confirmButtonClass: ['my-alert', 'confirm-alert'],
+        		  			backdrop: `rgba(0, 0, 0, 0.6)`
+        				}).then(() => {
+        					window.location.href = self.url + '/pacientes/' + response.data.id_created
+        				})
+
   						}else if( response.data.success == 'updated' ){
   							self.toastFunction('El paciente ha sido modificado correctamente.', 'success')
   							self.afterSuccessGuardar()

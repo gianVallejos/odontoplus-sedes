@@ -114,7 +114,7 @@ class PacienteController extends Controller
                 $ingreso->idPaciente = $paciente->id;
                 $ingreso->save();
 
-                return response()->json(['success' => 'created']);
+                return response()->json(['success' => 'created', 'id_created' => $paciente->id]);
 
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
