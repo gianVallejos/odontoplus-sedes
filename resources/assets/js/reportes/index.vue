@@ -26,54 +26,22 @@
 				</PanelCard>
 				<br/>
 				<PanelCard>
-					<span slot="heading">Reporte Estadístico</span>
+					<span slot="heading">Reportes Generales</span>
 					<b-row slot="body">
-						<b-col xl="6" cols="12">
-							<div class="square-reportes">
-								<h5 class="text-center reportes-text">Estado Financiero</h5>
-								<b-form-row>
-									<b-col cols="6">
-										<b-form-group label="Desde:" label-for="inc_start" class="mb-0">
-											<b-input id="inc_paciente_start" type="date" v-model="balance.range.start" />
-										</b-form-group>
-									</b-col>
-									<b-col cols="6">
-										<b-form-group label="Hasta:" label-for="inc_end" class="mb-0">
-											<b-input-group>
-												<b-form-input id="inc_paciente_end" type="date" v-model="balance.range.end" />
-											   	<b-input-group-append>
-											    	<b-btn variant="primary" v-on:click.prevent="fillBalanceChart()" >
-											    		<i class="fas fa-search"></i>
-											    	</b-btn>
-											    </b-input-group-append>
-										    </b-input-group>
-									    </b-form-group>
-									</b-col>
-								</b-form-row>
-								<div class="balanceLayout">
-									<div class="balanceLayout-general">
-										<div class="content">
-											<b-row>
-												<b-col cols="12">
-													<span class="title-balance">Ingresos: </span>
-													<span class="float-right pt-1 pb-1">S/ {{balance.incomes}}</span>
-												</b-col>
-												<b-col cols="12">
-													<span class="title-balance">Egresos: </span>
-													<span class="float-right pt-1 pb-1">S/ {{balance.outputs}}</span>
-												</b-col>
-												<b-col cols="12">
-													<div class="line-balance"></div>
-												</b-col>
-												<b-col cols="12">
-													<span class="title-balance">Utilidad: </span>
-													<span class="float-right pt-1 pb-1">S/ {{balance.balance}}</span>
-												</b-col>
-											</b-row>
-										</div>
-									</div>
-								</div>
-							</div>
+
+						<b-col xl="4" cols="12">
+							<horizontal-bar-chart :chart-data="ingresosPacienteChart.data" :height = "300"></horizontal-bar-chart>
+							<h5 class="text-center">Ganancias por Paciente</h5>
+						</b-col>
+
+						<b-col xl="4" cols="12">
+							<bar-chart :chart-data="nuevosPacientesChart.data" :height = "300"></bar-chart>
+							<h5 class="text-center">Nuevos Pacientes</h5>
+						</b-col>
+
+						<b-col xl="4" cols="12">
+							<pie-chart :chart-data="pacientesCanalChart.data" :height = "300"></pie-chart>
+							<h5 class="text-center">Pacientes por Canal</h5>
 						</b-col>
 
 						<b-col xl="6" cols="12">
@@ -100,48 +68,6 @@
 								</b-form-row>
 								<b-col cols="12">
 									<pie-chart :chart-data="tratamientosChart.data" :height = "300"></pie-chart>
-								</b-col>
-							</div>
-						</b-col>
-
-						<b-col xl="6" cols="12">
-							<div class="square-reportes">
-								<h5 class="text-center reportes-text">Ingresos de los últimos seis meses</h5>
-								<b-form-row>
-									<b-col cols="8" offset="2">
-										<b-input-group>
-											<b-form-input id="inc_ingreso_date" type="date" v-model="ingresosChart.end_date" />
-											   <b-input-group-append>
-											    <b-btn variant="primary" v-on:click.prevent="fillIngresosChart()" >
-											    	<i class="fas fa-search"></i>
-											    </b-btn>
-											   </b-input-group-append>
-										   </b-input-group>
-									</b-col>
-								</b-form-row>
-								<b-col cols="12">
-									<bar-chart :chart-data="ingresosChart.data" :height = "300"></bar-chart>
-								</b-col>
-							</div>
-						</b-col>
-
-						<b-col xl="6" cols="12">
-							<div class="square-reportes">
-								<h5 class="text-center reportes-text">Egresos de los últimos seis meses</h5>
-								<b-form-row>
-									<b-col cols="8" offset="2">
-										<b-input-group>
-											<b-form-input id="inc_egreso_date" type="date" v-model="egresosChart.end_date" />
-											   <b-input-group-append>
-											    <b-btn variant="primary" v-on:click.prevent="fillEgresosChart()" >
-											    	<i class="fas fa-search"></i>
-											    </b-btn>
-											   </b-input-group-append>
-										   </b-input-group>
-									</b-col>
-								</b-form-row>
-								<b-col cols="12">
-									<bar-chart :chart-data="egresosChart.data" :height = "300"></bar-chart>
 								</b-col>
 							</div>
 						</b-col>
@@ -273,6 +199,10 @@
 			  	],
 				width: 480,
 				height: 480,
+				reportesGenerales:{
+					start_date: '2018-01-01',
+					end_date: '2018-12-01',
+				},
 				years: [
 					{ value: "2017", text: "2017" },
 					{ value: "2018", text: "2018" },
@@ -282,18 +212,16 @@
 					data: null,
 					year: null
 				},
-				ingresosChart: {
-					data: null,
-					end_date: ''
-				},
-				egresosChart: {
-					data: null,
-					end_date: ''
-				},
 				ingresosPacienteChart: {
 					data: null,
 					start_date: '',
 					end_date: '',
+				},
+				nuevosPacientesChart: {
+					data: null
+				},
+				pacientesCanalChart: {
+					data: null
 				},
 				ingresosEmpresaChart:{
 					data: null,
@@ -326,14 +254,14 @@
 			},
 			setDatesToChart(today){
 				this.ingresosVSegresosChart.year = today.substring(0,4)
-				this.ingresosChart.end_date = today
-				this.egresosChart.end_date = today
+				//this.ingresosChart.end_date = today
+				//this.egresosChart.end_date = today
 			},
 			fillDataCharts(){
 				this.fillIngresosVSegresosChart()
-				this.fillIngresosChart()
-				this.fillEgresosChart()
 				this.fillIngresosPorPacientesChart()
+				this.fillNuevosPacientesChart()
+				this.fillPacientesCanalChart()
 				//this.fillIncomesEmpresaChart()
 				this.fillTratamientosChart()
 				this.fillBalanceChart()
@@ -392,62 +320,7 @@
 				}
 
 			},
-      fillIngresosChart(){
-				var date = this.ingresosChart.end_date
-				var request = { method: 'GET', url: this.url + '/reportes/ingresos/'+date }
 
-				if( date != '' ){
-					axios(request).then((response) => {
-						let ingresos = response.data.ingresos
-            let meses = ingresos.map(i => i.mes.substring(0,3))
-            let ingresos_montos = ingresos.map(i => parseInt(i.ingresos))
-
-						this.ingresosChart.data = {
-							labels: meses,
-							datasets: [
-								{
-									label: 'Ingresos',
-									backgroundColor: '#305f94',
-									data: ingresos_montos
-								}
-							]
-						}
-					}).catch(function (error) {
-						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
-					});
-				}else{
-					this.toastFunction('Debe seleccionar una fecha antes de buscar', 'error')
-				}
-
-			},
-			fillEgresosChart(){
-				var date = this.egresosChart.end_date
-				var request = { method: 'GET', url: this.url + '/reportes/egresos/' + date }
-
-				if( date != '' ){
-					axios(request).then((response) => {
-						let egresos = response.data.egresos
-            let meses = egresos.map(i => i.mes.substring(0,3))
-            let egresos_montos = egresos.map(i => parseInt(i.egresos))
-
-						this.egresosChart.data = {
-							labels: meses,
-							datasets: [
-								{
-									label: 'Egresos',
-									backgroundColor: '#305f94',
-									data: egresos_montos
-								}
-							]
-						}
-
-					}).catch(function (error) {
-						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
-					});
-				}else{
-					this.toastFunction('Debe seleccionar una fecha antes de buscar', 'error')
-				}
-			},
 			getRequestPacientes(start, end){
 				if( start == '' && end == '' ){
 					return { method: 'GET', url: this.url + '/reportes/obtener-ingresos-paciente'}
@@ -482,6 +355,55 @@
 					this.toastFunction('El rango de fechas ingresado en invalido. La Fecha Inicial debe ser menor o igual a la Fecha Final','error')
 				}
 			},
+
+			fillNuevosPacientesChart(){
+				var request = {
+					method: 'GET',
+					url: this.url + '/reportes/obtener-nuevos-pacientes/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date }
+				axios(request).then((response) => {
+					let nuevos_pacientes = response.data.nuevos_pacientes
+          let meses = nuevos_pacientes.map(i => i.mes.substring(0,3))
+          let cantidades = nuevos_pacientes.map(i => parseInt(i.cantidad))
+
+					this.nuevosPacientesChart.data = {
+						labels: meses,
+						datasets: [
+							{
+								label: 'Nro. Pacientes Nuevos',
+								backgroundColor: "#305f94",
+								data: cantidades
+							}
+						]
+					}
+				}).catch(function (error) {
+					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+				});
+			},
+
+			fillPacientesCanalChart(){
+				var request = {
+					method: 'GET',
+					url: this.url + '/reportes/obtener-pacientes-canal/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date }
+				axios(request).then((response) => {
+					let nuevos_pacientes = response.data.pacientes_canal
+          let canales = nuevos_pacientes.map(i => i.canal)
+          let cantidades = nuevos_pacientes.map(i => parseInt(i.cantidad))
+
+					this.pacientesCanalChart.data = {
+						labels: canales,
+						datasets: [
+							{
+								label: 'Nro. Pacientes',
+								backgroundColor: ["#FF6384","#36A2EB","#FFCE56", "#4db6ac","#7e57c2"],
+								data: cantidades
+							}
+						]
+					}
+				}).catch(function (error) {
+					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+				});
+			},
+
 			getRequestEmpresas(start, end){
 				if( start == '' && end == '' ){
 					return { method: 'GET', url: this.url + '/reportes/obtener-ingresos-empresa'}

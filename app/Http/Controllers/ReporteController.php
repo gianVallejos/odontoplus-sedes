@@ -18,7 +18,6 @@ class reporteController extends Controller{
         $data = DB::select('call OP_ObtenerIngresosMensuales_Anio("'. $year .'")');
         return response()->json(['ingresos' => $data ]);
     }
-
     public function obtenerEgresosMensuales($year){
         $data = DB::select('call OP_ObtenerEgresosMensuales_Anio("'. $year . '")');
         return response()->json(['egresos' => $data ]);
@@ -28,12 +27,22 @@ class reporteController extends Controller{
         $data = DB::select('call OP_ObtenerIngresosPorPaciente_Reportes()');
         return response()->json(['ingresos' => $data ]);
     }
-
     public function obtenerIngresosPacienteFechas($start, $end){
         $data = DB::select('call OP_ObtenerIngresosPorPaciente_Fechas("'. $start .'", "'. $end .'")');
         return response()->json(['ingresos' => $data ]);
     }
 
+    public function obtenerNuevosPacientesFechas($start, $end){
+        $data = DB::select('call OP_ObtenerNuevosPacientesPorMes_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['nuevos_pacientes' => $data ]);
+    }
+
+    public function obtenerPacientesPorCanalFechas($start, $end){
+        $data = DB::select('call OP_ObtenerPacientesPorCanal_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['pacientes_canal' => $data ]);
+    }
+
+    //--------------------------------------------------------------------------------------------------------
     public function empresasIngresos(){
         $data = DB::select('call OP_ObtenerIngresosPorEmpresa_Reportes()');
         return response()->json(['ingresos' => $data ]);

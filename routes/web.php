@@ -36,6 +36,9 @@ Route::get('reportes/obtener-ingresos-mensuales/{year}', 'ReporteController@obte
 Route::get('reportes/obtener-egresos-mensuales/{year}', 'ReporteController@obtenerEgresosMensuales');
 Route::get('reportes/obtener-ingresos-paciente', 'ReporteController@obtenerIngresosPaciente');
 Route::get('reportes/obtener-ingresos-paciente/{start}/{end}', 'ReporteController@obtenerIngresosPacienteFechas');
+Route::get('reportes/obtener-nuevos-pacientes/{start}/{end}', 'ReporteController@obtenerNuevosPacientesFechas');
+Route::get('reportes/obtener-pacientes-canal/{start}/{end}', 'ReporteController@obtenerPacientesPorCanalFechas');
+
 Route::get('reportes/obtener-ingresos-empresa', 'ReporteController@empresasIngresos');
 Route::get('reportes/obtener-ingresos-empresa/{start}/{end}', 'ReporteController@empresasIngresosFechas');
 Route::get('reportes/obtener-ingresos-doctor', 'ReporteController@ingresosPorDoctor');
