@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Ingresos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12" class="pt-3">
+			<b-col cols="12" class="pt-1">
 				<PanelCard>
 					<span slot="heading">Detalle de Ingreso</span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -74,7 +74,7 @@
 				breadcrumb: [
 			    	{ text: 'Inicio', href: this.url },
 			    	{ text: 'Ingresos', href: this.url + '/ingresos' },
-			    	{ text: 'Detalle de Ingresos', active: true}
+			    	{ text: 'Detalle de Ingreso', active: true}
 			    ],
 			    ingreso_id: this.record.id,
 			    mydata: {

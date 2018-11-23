@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Precios" :items="breadcrumb" />
 			</b-col>
-      <b-col cols="12">
+      <b-col cols="12" class="pt-1">
         <PanelCard>
           <span slot="heading">Lista de Precios</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -21,7 +21,7 @@
                             <input v-model="search" placeholder="Buscar..." type="text" class="odInput buscar">
                             <div class="input-group-append">
                               <b-btn class="pl-3 pr-3" variant="secondary" :disabled="!search" @click="search = ''">
-                                <i class="fas fa-sync-alt"></i>
+                                <i class="fas fa-times"></i>
                               </b-btn>
                             </div>
                         </b-input-group>

@@ -114,7 +114,8 @@
 										:sort-desc.sync="sortDesc"
 										:sort-direction="sortDirection"
 									 	@filtered="onFilteredPacientes"
-										:empty-text="emptyMessage">
+										:empty-text="emptyMessage"
+										empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 							<template slot="nombres" slot-scope="row">
 									{{ row.value }} {{ row.item.apellidos }}
 							</template>
@@ -130,11 +131,11 @@
 				</b-col>
 			</b-row>
 			<div slot="modal-footer">
-				<b-button  variant="success" size="sm" :href="url + '/pacientes/create'">
+				<b-button  variant="secondary" size="sm" :href="url + '/pacientes/create'">
 					<i class="fas fa-plus"></i>&nbsp; Nuevo Paciente
 				</b-button>
 				<b-button variant="primary" size="sm" @click="hideModal">
-					Cerrar
+					<i class="fas fa-times"></i>&nbsp; Cerrar
 				</b-button>
 			</div>
 		</b-modal>

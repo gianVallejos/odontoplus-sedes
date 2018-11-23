@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Presupuestos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12" class="pt-3">
+			<b-col cols="12" class="pt-1">
 				<PanelCard>
 					<span slot="heading">Presupuesto Nro {{ nro }} </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -123,6 +123,7 @@
 										  :items=tratamientos_tabla
 										  :fields="fields"
 										  empty-text="No existen campos para mostrar"
+											empty-filtered-text="No existen pacientes que coincidan con la búsqueda"
 								>
 									<template slot="pieza" slot-scope="row">
 								    	{{ row.value }}
@@ -186,7 +187,7 @@
 				</PanelCard>
 			</b-col>
 		</b-row>
-		<b-modal ref="tratamientosModalRef" id="modal1" title="Lista de Tratamientos" size="lg" no-fade hide-footer>
+		<b-modal ref="tratamientosModalRef" id="modal1" title="Lista de Tratamientos" size="md" no-fade>
 			<b-row>
 				<b-col cols="12">
 					<b-input-group>
@@ -210,6 +211,7 @@
 							  :sort-direction="sortDirection"
 							  @filtered="onFiltered"
 							  empty-text="No existen campos para mostrar"
+								empty-filtered-text="No existen pacientes que coincidan con la búsqueda"
 					>
 						<template slot="index" slot-scope="row">
 					      {{ row.index + 1 }}
@@ -231,6 +233,14 @@
 					<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="d-inline-flex" />
 				</b-col>
 			</b-row>
+			<div slot="modal-footer">
+				<b-button  variant="secondary" size="sm" :href="url + '/tratamientos/create'">
+					<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
+				</b-button>
+				<b-button variant="primary" size="sm" @click="hideModal">
+					<i class="fas fa-times"></i>&nbsp; Cerrar
+				</b-button>
+			</div>
   		</b-modal>
 	</b-container>
 </template>
@@ -281,14 +291,14 @@
 				    { key: 'action', label: '', class: 'text-center'}
 			    ],
 			    fieldsPrecios: [
-			    	'index',
+			    	{ key: 'index', label: '#'},
 			    	{ key: 'detalle', label: 'Tratamiento', sortable: true, sortDirection: 'desc'},
 			    	{ key: 'monto', label: 'Precio (S/)', class: 'text-center'},
 			    	{ key: 'action', label: '' }
 			    ],
 			    modalTratamientos: false,
 			    currentPage: 1,
-			   	perPage: 10,
+			   	perPage: 6,
 			    totalRows: 0,
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,
@@ -312,6 +322,9 @@
 			}
 		},
 		methods: {
+			hideModal(){
+				this.$refs.tratamientosModalRef.hide()
+			},
 			onFiltered (filteredItems) {
 		      this.totalRows = filteredItems.length
 		      this.currentPage = 1

@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Ingresos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12" class="pt-3">
+			<b-col cols="12" class="pt-1">
 				<PanelCard>
 					<span slot="heading">Lista de Ingresos </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -21,7 +21,7 @@
 			    						<input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
 								      	<div class="input-group-append">
 									    	<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
-									    		<i class="fas fa-sync-alt"></i>
+									    		<i class="fas fa-times"></i>
 									    	</b-btn>
 									    </div>
 								    </b-input-group>
@@ -39,10 +39,11 @@
 					             :sort-desc.sync="sortDesc"
 					             :sort-direction="sortDirection"
 					             @filtered="onFiltered"
-					             empty-text="No existen campos para mostrar" >
+					             empty-text="No existen campos para mostrar"
+											 empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 							<template slot="actions" slot-scope="row" class="md-2">
-						        <div class="actions-table" style="color: #d1d1d1">						        	
-						        	<a :href="url+'/ingresos/line-item/'+ row.item.id"  class="action">Detalle</a>
+						        <div class="actions-table" style="color: #d1d1d1">
+						        	<a :href="url+'/ingresos/line-item/'+ row.item.id"  class="action">Ver Ingreso</a>
 						        </div>
 						    </template>
 						    <template slot="hc" slot-scope="row">

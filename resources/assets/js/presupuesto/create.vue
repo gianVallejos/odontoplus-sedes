@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Presupuestos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12" class="pt-3">
+			<b-col cols="12" class="pt-1">
 				<PanelCard>
 					<span slot="heading">Crear Presupuestos </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -75,13 +75,14 @@
 														:sort-desc.sync="sortDesc"
 														:sort-direction="sortDirection"
 							             	@filtered="onFiltered"
-														empty-text="No existen campos para mostrar">
+														empty-text="No existen campos para mostrar"
+														empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 										<template slot="nombres" slot-scope="row">
 									    		{{ row.value }} {{ row.item.apellidos }}
 									    </template>
 									    <template slot="actions" slot-scope="row" class="md-2">
 									        <div class="actions-table" style="color: #d1d1d1">
-									        	<a v-on:click="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="action">Seleccionar</a>
+									        	<a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="action">Seleccionar</a>
 									        </div>
 									    </template>
 									</b-table>
@@ -91,11 +92,11 @@
 								</b-col>
 							</b-row>
 							<div slot="modal-footer">
-								<b-button  variant="success" size="sm" :href="url + '/pacientes/create'">
+								<b-button  variant="secondary" size="sm" :href="url + '/pacientes/create'">
 									<i class="fas fa-plus"></i>&nbsp; Nuevo Paciente
 								</b-button>
 								<b-button variant="primary" size="sm" @click="hideModal">
-									Cerrar
+									<i class="fas fa-times"></i>&nbsp; Cerrar
 								</b-button>
 							</div>
 						</b-modal>

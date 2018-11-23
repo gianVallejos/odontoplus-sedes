@@ -13,7 +13,7 @@
 						</b-btn>
 						<b-btn :href="url + '/ingresos'" variant="warning">
 							<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
-						</b-btn>						
+						</b-btn>
 					</b-col>
 				</b-row>
 				<b-row class="pt-4" v-if="!isAddTratamiento" >
@@ -27,7 +27,8 @@
 					            :sort-desc.sync="sortDesc"
 					            :sort-direction="sortDirection"
 					            @filtered="onFiltered"
-					            empty-text="No existen campos para mostrar" >
+					            empty-text="No existen campos para mostrar"
+											empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 							<template slot="actions" slot-scope="row">
 						        <div class="actions-table" v-if="curUser.rolid == 1">
 						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento, row.item.cantidad, row.item.monto )" class="action">Modificar</a>
@@ -156,7 +157,7 @@
 					</b-col>
 				</b-row>
 
-				<b-modal ref="tratamientosModal" id="tratamientosModal" size="md" title="Lista de Tratamientos">
+				<b-modal ref="tratamientosModal" id="tratamientosModal" size="md" title="Lista de Tratamientos" no-fade>
 					<b-row>
 						<b-col cols="12">
 							<b-input-group>
@@ -178,8 +179,9 @@
 									 :sort-by.sync="sortByPac"
 									 :sort-desc.sync="sortDescPac"
 									 :sort-direction="sortDirectionPac"
-							         @filtered="onFilteredPac"
-							         empty-text="No existen campos para mostrar" >
+							      @filtered="onFilteredPac"
+							      empty-text="No existen campos para mostrar"
+										empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 									<template slot="detalle" slot-scope="row">
 									    {{ row.value }}
 									</template>
@@ -197,7 +199,14 @@
 							<b-pagination :total-rows="totalRowsPac" :per-page="perPagePac" v-model="currentPagePac" class="d-inline-flex" />
 						</b-col>
 					</b-row>
-					<b-button slot="modal-footer" variant="primary" size="sm" @click="hideModal">Cerrar</b-button>
+					<div slot="modal-footer">
+						<b-button  variant="secondary" size="sm" :href="url + '/tratamientos/create'">
+							<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
+						</b-button>
+						<b-button variant="primary" size="sm" @click="hideModal">
+							<i class="fas fa-times"></i>&nbsp; Cerrar
+						</b-button>
+					</div>
 				</b-modal>
 
 			</div>

@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Reportes" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12">
+			<b-col cols="12" class="pt-1">
 				<PanelCard>
 					<span slot="heading">Reporte Estadístico</span>
 					<b-row slot="body">

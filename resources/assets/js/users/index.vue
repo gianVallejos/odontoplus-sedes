@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<TitleComponent titulo="Usuarios" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">Lista de Usuarios</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -21,15 +21,15 @@
 			    						<input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
 								      	<div class="input-group-append">
 									    	<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
-									    		<i class="fas fa-sync-alt"></i>
+									    		<i class="fas fa-times"></i>
 									    	</b-btn>
 									    </div>
 								    </b-input-group>
 								</div>
 							</div>
-							<div class="col-md-6">							
+							<div class="col-md-6">
 								<div class="float-right d-inline-block">
-									<b-button-group>										
+									<b-button-group>
 										<b-button :href="url+'/users/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Usuario
 										</b-button>
@@ -50,17 +50,18 @@
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
                     @filtered="onFiltered"
-                    empty-text="No existen campos para mostrar" >
+                    empty-text="No existen campos para mostrar"
+                    empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/users/'+ row.item.id" class="action" >Detalle</a>
+                  <div class="actions-table" style="color: #d1d1d1">
+                  <a :href="url+'/users/'+ row.item.id" class="action" >Ver Usuario</a>
                   |
                   <a :href="url+'/users/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                 </div>
               </template>
-              <template slot="name" slot-scope="row">                
+              <template slot="name" slot-scope="row">
                   <a :href="url + '/users/' + row.item.id">
                     {{ row.value }}
                   </a>
@@ -91,7 +92,7 @@
 	import TitleComponent from '../widgets/titulo/index.vue'
 
   export default{
-    mounted() { 
+    mounted() {
       console.log('Users mounted')
     },
     name: 'Users',

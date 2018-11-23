@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Tratamientos" :items="breadcrumb" />
 			</b-col>
-      <b-col cols="12">
+      <b-col cols="12" class="pt-1">
         <PanelCard>
           <span slot="heading">Lista de Tratamientos</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -21,15 +21,21 @@
 			    						<input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
 								      	<div class="input-group-append">
 									    	<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
-									    		<i class="fas fa-sync-alt"></i>
+									    		<i class="fas fa-times"></i>
 									    	</b-btn>
 									    </div>
 								    </b-input-group>
 								</div>
 							</div>
-							<div class="col-md-6">							
+							<div class="col-md-6">
 								<div class="float-right d-inline-block" v-if="curUser.rolid == 1">
-									<b-button-group>										
+									<b-button-group>
+                    <b-button  variant="secondary" size="sm" :href="url + '/presupuestos/create'">
+        							<i class="fas fa-calculator"></i>&nbsp; Nuevo Presupuesto
+        						</b-button>
+                    <b-button  variant="warning" size="sm" @click.prevent="openModalPacientes">
+        							<i class="fas fa-money-check-alt"></i>&nbsp; Nuevo Ingreso
+        						</b-button>
 										<b-button :href="url+'/tratamientos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
 										</b-button>
@@ -48,11 +54,12 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
-                    @filtered="onFiltered" 
-                    empty-text="No existen campos para mostrar" >
+                    @filtered="onFiltered"
+                    empty-text="No existen campos para mostrar"
+                    empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table text-center" style="color: #d1d1d1">						        	
-                    <a :href="url+'/tratamientos/'+ row.item.id" class="action" >Detalle</a>
+                  <div class="actions-table text-center" style="color: #d1d1d1">
+                    <a :href="url+'/tratamientos/'+ row.item.id" class="action" >Ver Tratamiento</a>
                     <span v-if="curUser.rolid == 1">|</span>
                     <a :href="url+'/tratamientos/'+ row.item.id+'/edit'" class="action" v-if="curUser.rolid == 1" >Modificar</a>
                 </div>
@@ -66,7 +73,7 @@
 
             <b-row>
                   <b-col md="6" class="pt-3 fz-3">
-                    Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas                  
+                    Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas
                   </b-col>
                   <b-col md="6" class="my-1 text-right">
                     <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
@@ -77,6 +84,56 @@
         </PanelCard>
 			</b-col>
 		</b-row>
+
+    <b-modal ref="pacientesModalRef" id="pacientesModal" size="md" title="Seleccionar Paciente de Nuevo Ingreso">
+			<b-row>
+				<b-col cols="12">
+					<b-input-group>
+						<div class="input-group-append">
+							<span class="icon-input">
+									<i class="fas fa-search" aria-hidden="true"></i>
+								</span>
+							</div>
+							<input v-model="filterPac" placeholder="Buscar..." type="text" class="odInput">
+						</b-input-group>
+				</b-col>
+				<b-col cols="12" class="pt-3 pb-2">
+					<b-table 	show-empty
+										:items="pacientes"
+										:fields="pacienteFields"
+                    :current-page="currentPagePac"
+  									:per-page="perPagePac"
+										:filter="filterPac"
+                    :sort-by.sync="sortByPac"
+  									 :sort-desc.sync="sortDescPac"
+  									 :sort-direction="sortDirectionPac"
+									 	@filtered="onFilteredPac"
+										empty-text="No existen campos para mostrar"
+										empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
+							<template slot="nombres" slot-scope="row">
+									{{ row.value }} {{ row.item.apellidos }}
+							</template>
+							<template slot="actions" slot-scope="row" class="md-2">
+									<div class="actions-table" style="color: #d1d1d1">
+										<a v-on:click.prevent="nuevoIngresoByIdPaciente(row.item.ingresoId)" href="#" class="action">Nuevo Ingreso</a>
+									</div>
+							</template>
+					</b-table>
+				</b-col>
+				<b-col cols="12" class="text-center">
+					<b-pagination :total-rows="totalRowsPac" :per-page="perPagePac" v-model="currentPagePac" class="d-inline-flex" />
+				</b-col>
+			</b-row>
+			<div slot="modal-footer">
+				<b-button  variant="secondary" size="sm" :href="url + '/pacientes/create'">
+					<i class="fas fa-plus"></i>&nbsp; Nuevo Paciente
+				</b-button>
+				<b-button variant="primary" size="sm" @click="hideModal">
+					<i class="fas fa-times"></i>&nbsp; Cerrar
+				</b-button>
+			</div>
+		</b-modal>
+
   </b-container>
 </template>
 
@@ -86,8 +143,8 @@
 	import TitleComponent from '../widgets/titulo/index.vue'
 
   export default{
-    mounted() { 
-      console.log('Tratamiento Mounted') 
+    mounted() {
+      console.log('Tratamiento Mounted')
     },
     name: 'Tratamientos',
     components:{
@@ -97,16 +154,22 @@
     props:[
       'items',
       'url',
-      'curUser'
+      'curUser',
+      'pacientes'
     ],
     data(){
 			return{
         fields: [
-          { key: 'actions', label: '', 'class': 'action-width' },
+          { key: 'actions', label: '', 'class': 'td-tratamiento-table' },
           { key: 'detalle', label: 'Nombre de Tratamiento', sortable: true, sortDirection: 'desc' }
         ],
+        pacienteFields: [
+          { key: 'id', label: 'Historia', class: 'text-center' },
+          { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
+          { key: 'actions', label: '', sortable: false }
+        ],
         currentPage: 1,
-        perPage: 10,
+        perPage: 7,
         totalRows: this.items.length,
         pageOptions: [ 5, 10, 15 ],
         sortBy: null,
@@ -117,7 +180,15 @@
         breadcrumb: [
           { text: 'Inicio', href: this.url + '/' },
           { text: 'Tratamientos', active: true }
-        ]
+        ],
+        currentPagePac: 1,
+        perPagePac: 7,
+        totalRowsPac: this.pacientes.length,
+        pageOptionsPac: [ 5, 10, 15 ],
+        sortByPac: null,
+        sortDescPac: false,
+        sortDirectionPac: 'asc',
+        filterPac: ''
 			}
 		},
     computed: {
@@ -138,11 +209,28 @@
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
+		  onFilteredPac (filteredItems) {
+		   this.totalRowsPac = filteredItems.length
+		   this.currentPagePac = 1
+		  },
       totalCurrentPages(){
           var res = Math.round(this.totalRows / this.perPage)
           if( res == 0 ) return res + 1
           return Math.ceil(this.totalRows / this.perPage )
-      }
+      },
+      openModalPacientes(){
+        this.$refs.pacientesModalRef.show()
+      },
+      hideModal(){
+				this.$refs.pacientesModalRef.hide()
+			},
+			nuevoIngresoByIdPaciente(id){
+					window.location = this.url + '/ingresos/line-item/' + id
+			}
 		}
   }
 </script>
+<style lang="stylus">
+  .td-tratamiento-table
+    width: 190px
+</style>
