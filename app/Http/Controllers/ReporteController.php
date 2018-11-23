@@ -42,6 +42,26 @@ class reporteController extends Controller{
         return response()->json(['pacientes_canal' => $data ]);
     }
 
+    public function obtenerIngresosPorDoctorFechas($start, $end){
+        $data = DB::select('call OP_ObtenerIngresosPorDoctor_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['records' => $data ]);
+    }
+
+    public function obtenerPagosPorDoctorFechas($start, $end){
+        $data = DB::select('call OP_ObtenerPagosPorDoctor_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['records' => $data ]);
+    }
+
+    public function obtenerTratamientosFechas($start, $end){
+        $data = DB::select('call OP_ObtenerTratamientosDestacados_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['tratamientos' => $data ]);
+    }
+
+    public function obtenerTratamientosPorDoctorFechas($start, $end){
+        $data = DB::select('call OP_ObtenerTratamientosPorDoctor_Fechas("'. $start .'", "'. $end .'")');
+        return response()->json(['records' => $data ]);
+    }
+
     //--------------------------------------------------------------------------------------------------------
     public function empresasIngresos(){
         $data = DB::select('call OP_ObtenerIngresosPorEmpresa_Reportes()');
@@ -55,11 +75,6 @@ class reporteController extends Controller{
 
     public function tratamientos(){
         $data = DB::select('call OP_ObtenerTratamientosDestacados_Reportes()');
-        return response()->json(['tratamientos' => $data ]);
-    }
-
-    public function tratamientosFechas($start, $end){
-        $data = DB::select('call OP_ObtenerTratamientosDestacados_Fechas("'. $start .'", "'. $end .'")');
         return response()->json(['tratamientos' => $data ]);
     }
 
@@ -77,11 +92,6 @@ class reporteController extends Controller{
 
     public function ingresosPorDoctor(){
         $ingresos = DB::select('call OP_ObtenerIngresosPorDoctor()');
-        return response()->json(['ingresos' => $ingresos ]);
-    }
-
-    public function ingresosPorDoctorFechas($start, $end){
-        $ingresos = DB::select('call OP_ObtenerIngresosPorDoctor_Fechas("'. $start .'", "'. $end .'")');
         return response()->json(['ingresos' => $ingresos ]);
     }
 
