@@ -1,5 +1,5 @@
 <template lang="html">
-	<b-container class="pb-4">			
+	<b-container class="pb-4">
 		<b-row>
 			<b-col cols="12">
 				<PanelCard>
@@ -197,7 +197,7 @@
 			PanelCard,
 			FormBuscar,
 			TableComponent,
-			BarChart
+			BarChart,
 			SpinnerSmall,
 			SpinnerContainer
 		},
