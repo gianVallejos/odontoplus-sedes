@@ -64,10 +64,33 @@
 				</div>
 			</b-col>
 			<b-col class="pt-3" :cols="isAdmin() ? '9' : '12'">
-				<PanelCard>
-					<span slot="heading">Ingresos vs. Egresos</span>
-					<!-- <GChart class="pt-4" type="ColumnChart" :data="incomesData" :options="incomesChart" :resizeDebounce="480" slot="body" /> -->
+				<PanelCard v-if="isAdmin()">
+						<span slot="heading">Ingresos vs. Egresos</span>
+						<b-row slot="body" class="px-3 pb-3">
+							<b-col xl="12" cols="12">
+								<b-form-row>
+									<b-col xl="3" cols="12">
+										<b-input-group prepend="Año">
+											<b-form-select id="yead" v-model="ingresosVSegresosChart.year" :options="years" v-on:input="fillIngresosVSegresosChart()" />
+										</b-input-group>
+									</b-col>
+								</b-form-row>
+							</b-col>
+							<b-col xl="12" cols="12">
+								<bar-chart :chart-data="ingresosVSegresosChart.data" :height = "350"></bar-chart>
+							</b-col>
+						</b-row>
 				</PanelCard>
+
+				<PanelCard v-if="!isAdmin()">
+						<span slot="heading">  Nuevos Pacientes - {{this.getCurrentYear()}}</span>
+						<b-row slot="body" class="px-3 pb-3">
+							<b-col xl="12" cols="12">
+								<bar-chart :chart-data="nuevosPacientesChart.data" :height = "320"></bar-chart>
+							</b-col>
+						</b-row>
+				</PanelCard>
+
 			</b-col>
 			<b-col class="pt-3" cols="3" v-if="isAdmin()">
 				<div v-for="item in itemsMedium" class="mb-2">
@@ -151,11 +174,13 @@
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import FormBuscar from '../widgets/form/form-buscar-component.vue'
 	import TableComponent from '../widgets/table/table-component.vue'
+	import BarChart from '../widgets/charts/bar-chart.vue'
 	import axios from 'axios'
 
 	export default{
 		mounted(){
 			console.log('Inicio Mounted')
+			this.initCharts()
 		},
 		props: [
 			'url',
@@ -168,112 +193,135 @@
 			DashboxMed,
 			PanelCard,
 			FormBuscar,
-			TableComponent
+			TableComponent,
+			BarChart
 		},
 		data(){
 			return{
 				breadcrumb: [
 			    	{ text: 'Inicio', href: this.url }
 			    ],
-			    items: [
-				    	{
-				    		iconUrl: 'fas fa-child',
-								subname: 'Nuevo',
-				    		name: 'Paciente',
-				    		color: 'info',
-								show_modal: 0,
-				    		url: this.url + '/pacientes/create',
-				    		for_admin: false
-				    	},
-				    	{
-				    		iconUrl: 'fas fa-calculator',
-								subname: 'Nuevo',
-				    		name: 'Presupuesto',
-				    		color: 'nuevo',
-								show_modal: 0,
-				    		url: this.url + '/presupuestos/create',
-				    		for_admin: false
-				    	},
-				    	{
-				    		iconUrl: 'fas fa-money-check-alt',
-								subname: 'Nuevo',
-				    		name: 'Ingreso',
-				    		color: 'guardar',
-								show_modal: 1,
-				    		url: this.url + '/',
-				    		for_admin: false
-				    	},
-				    	{
-				    		iconUrl: 'fas fa-money-bill',
-								subname: 'Nuevo',
-				    		name: 'Egreso',
-				    		color: 'modificar',
-								show_modal: 0,
-				    		url: this.url + '/egresos/create',
-				    		for_admin: false
-				    	}
-			    ],
-					itemsMedium: [
-							{
-								iconUrl: 'fas fa-credit-card',
-								subname: 'Nuevo',
-								name: 'Pago a Doctor',
-								color: 'info',
-								url: this.url + '/pagos/create',
-								for_admin: true
-							},
-							{
-								iconUrl: 'fas fa-chart-line',
-								subname: 'Ver ',
-								name: 'Estadísticas',
-								color: 'nuevo',
-								url: this.url + '/reportes',
-								for_admin: true
-							},
-							{
-								iconUrl: 'fas fa-hand-holding-usd',
-								subname: 'Ver ',
-								name: 'Ganancias Totales',
-								color: 'guardar',
-								url: this.url + '/reportes/ganancias',
-								for_admin: true
-							},
-							{
-								iconUrl: 'fas fa-users',
-								subname: 'Ver ',
-								name: 'Usuarios',
-								color: 'modificar',
-								url: this.url + '/users',
-								for_admin: true
-							}
-					],
-					pacienteFields: [
-				    { key: 'id', label: 'Historia', class: 'text-center' },
-				    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
-				    { key: 'actions', label: '', sortable: false }
-			    ],
-					pacienteFieldsOP: [
-						{ key: 'actions', label: '', class: 'at-width', sortable: false },
-						{ key: 'nombres', label: 'Nombres de Paciente' },
-						{ key: 'id', label: 'Historia' },
-						{ key: 'dni', label: 'DNI' },
-						{ key: 'celular', label: 'Celular' },
-						{ key: 'telefono', label: 'Teléfono' }
-					],
-					showTablePacientesOP: false,
-					currentPage: 1,
-					filterPacientesOdontoplus: '',
-			   	perPage: 7,
-			    totalRows: 0,
-			    pageOptions: [ 5, 10, 15 ],
-			    sortBy: null,
-			    sortDesc: false,
-			    sortDirection: 'asc',
-			    filterPaciente: '',
-			    emptyMessage: 'No existen campos para mostrar'
+		    items: [
+			    	{
+			    		iconUrl: 'fas fa-child',
+							subname: 'Nuevo',
+			    		name: 'Paciente',
+			    		color: 'info',
+							show_modal: 0,
+			    		url: this.url + '/pacientes/create',
+			    		for_admin: false
+			    	},
+			    	{
+			    		iconUrl: 'fas fa-calculator',
+							subname: 'Nuevo',
+			    		name: 'Presupuesto',
+			    		color: 'nuevo',
+							show_modal: 0,
+			    		url: this.url + '/presupuestos/create',
+			    		for_admin: false
+			    	},
+			    	{
+			    		iconUrl: 'fas fa-money-check-alt',
+							subname: 'Nuevo',
+			    		name: 'Ingreso',
+			    		color: 'guardar',
+							show_modal: 1,
+			    		url: this.url + '/',
+			    		for_admin: false
+			    	},
+			    	{
+			    		iconUrl: 'fas fa-money-bill',
+							subname: 'Nuevo',
+			    		name: 'Egreso',
+			    		color: 'modificar',
+							show_modal: 0,
+			    		url: this.url + '/egresos/create',
+			    		for_admin: false
+			    	}
+		    ],
+				itemsMedium: [
+						{
+							iconUrl: 'fas fa-credit-card',
+							subname: 'Nuevo',
+							name: 'Pago a Doctor',
+							color: 'info',
+							url: this.url + '/pagos/create',
+							for_admin: true
+						},
+						{
+							iconUrl: 'fas fa-chart-line',
+							subname: 'Ver ',
+							name: 'Estadísticas',
+							color: 'nuevo',
+							url: this.url + '/reportes',
+							for_admin: true
+						},
+						{
+							iconUrl: 'fas fa-hand-holding-usd',
+							subname: 'Ver ',
+							name: 'Ganancias Totales',
+							color: 'guardar',
+							url: this.url + '/reportes/ganancias',
+							for_admin: true
+						},
+						{
+							iconUrl: 'fas fa-users',
+							subname: 'Ver ',
+							name: 'Usuarios',
+							color: 'modificar',
+							url: this.url + '/users',
+							for_admin: true
+						}
+				],
+				pacienteFields: [
+			    { key: 'id', label: 'Historia', class: 'text-center' },
+			    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
+			    { key: 'actions', label: '', sortable: false }
+		    ],
+				pacienteFieldsOP: [
+					{ key: 'actions', label: '', class: 'at-width', sortable: false },
+					{ key: 'nombres', label: 'Nombres de Paciente' },
+					{ key: 'id', label: 'Historia' },
+					{ key: 'dni', label: 'DNI' },
+					{ key: 'celular', label: 'Celular' },
+					{ key: 'telefono', label: 'Teléfono' }
+				],
+				ingresosVSegresosChart: {
+					data: null,
+					year: null
+				},
+				nuevosPacientesChart: {
+					data: null
+				},
+				years: [
+					{ value: "2017", text: "2017" },
+					{ value: "2018", text: "2018" },
+					{ value: "2019", text: "2019" },
+					{ value: "2020", text: "2020" }
+				],
+				showTablePacientesOP: false,
+				currentPage: 1,
+				filterPacientesOdontoplus: '',
+		   	perPage: 7,
+		    totalRows: 0,
+		    pageOptions: [ 5, 10, 15 ],
+		    sortBy: null,
+		    sortDesc: false,
+		    sortDirection: 'asc',
+		    filterPaciente: '',
+		    emptyMessage: 'No existen campos para mostrar'
 			}
 		},
 		methods:{
+			initCharts(){
+				if ( this.isAdmin() ){
+					this.ingresosVSegresosChart.year = this.getCurrentYear()
+					this.fillIngresosVSegresosChart()
+				}
+				else{
+					this.fillNuevosPacientesChart()
+				}
+			},
 			hideModal(){
 				this.$refs.pacientesModalRef.hide()
 			},
@@ -305,6 +353,73 @@
 			cleanSearchTableAction(){
 					this.filterPacientesOdontoplus = ''
 					this.showTablePacientesOP = false
+			},
+			fillIngresosVSegresosChart(){
+				var year = this.ingresosVSegresosChart.year
+				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/' + year }
+				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/' + year }
+				if( year != ''){
+					axios(request_ingresos).then((response) => {
+						let ingresos = response.data.ingresos
+						let ingresos_montos = ingresos.map(i => parseInt(i.monto))
+
+						axios(request_egresos).then((response) => {
+							let egresos = response.data.egresos
+							let egresos_montos = egresos.map(i => parseInt(i.monto))
+
+							this.ingresosVSegresosChart.data = {
+								labels: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
+								datasets: [
+									{
+										label: 'Ingresos',
+										backgroundColor: '#305f94',
+										data: ingresos_montos
+									},
+									{
+										label: 'Egresos',
+										backgroundColor: '#ff6384',
+										data: egresos_montos
+									}
+								]
+							}
+
+						}).catch(function (error) {
+							this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+						});
+					}).catch(function (error) {
+						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					});
+				}else{
+					this.toastFunction('Debe seleccionar año antes de buscar', 'error')
+				}
+
+			},
+			fillNuevosPacientesChart(){
+				var request = { method: 'GET', url: this.url + '/reportes/obtener-nuevos-pacientes-anio-actual' }
+
+				axios(request).then((response) => {
+					let records = response.data.records
+					let cantidades = records.map(r => parseInt(r.cantidad))
+
+					this.nuevosPacientesChart.data = {
+						labels: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
+						datasets: [
+							{
+								label: 'Nro. Nuevos Pacientes',
+								backgroundColor: '#305f94',
+								data: cantidades
+							}
+						]
+					}
+
+				}).catch(function (error) {
+					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+				});
+
+			},
+			getCurrentYear(){
+				var todaydate = new Date()
+				return 1900+todaydate.getYear()
 			}
 		}
 	}
