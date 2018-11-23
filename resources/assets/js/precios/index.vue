@@ -207,7 +207,7 @@
 						confirmButtonClass: ['my-alert', 'confirm-alert'],
 		  			backdrop: `rgba(0, 0, 0, 0.6)`
 				}).then(() => {
-					window.location.href = this.url + '/precios'
+					window.location.reload(true)
 				})
 			}
 		}

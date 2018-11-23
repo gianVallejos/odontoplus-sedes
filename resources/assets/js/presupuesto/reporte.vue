@@ -550,7 +550,8 @@
 		  			backdrop: `rgba(0, 0, 0, 0.6)`
 				}).then(() => {
 						window.close()
-						window.opener.external.comeback()
+						window.opener.location.reload()
+						window.opener.external.comeback()						
 						//window.location.href = this.url + '/presupuestos'
 				})
 			},
