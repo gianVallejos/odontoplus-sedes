@@ -32,18 +32,23 @@ Route::get('consulta_precio', 'PrecioController@getPrice');
 
 //REPORTS
 Route::get('reportes', 'ReporteController@index');
-Route::get('reportes/ingresos/{date}', 'ReporteController@ingresos');
+Route::get('reportes/obtener-ingresos-mensuales/{year}', 'ReporteController@obtenerIngresosMensuales');
+Route::get('reportes/obtener-egresos-mensuales/{year}', 'ReporteController@obtenerEgresosMensuales');
 Route::get('reportes/obtener-ingresos-paciente', 'ReporteController@obtenerIngresosPaciente');
 Route::get('reportes/obtener-ingresos-paciente/{start}/{end}', 'ReporteController@obtenerIngresosPacienteFechas');
+Route::get('reportes/obtener-nuevos-pacientes/{start}/{end}', 'ReporteController@obtenerNuevosPacientesFechas');
+Route::get('reportes/obtener-pacientes-canal/{start}/{end}', 'ReporteController@obtenerPacientesPorCanalFechas');
+Route::get('reportes/obtener-ingresos-doctor/{start}/{end}', 'ReporteController@obtenerIngresosPorDoctorFechas');
+Route::get('reportes/obtener-pagos-doctor/{start}/{end}', 'ReporteController@obtenerPagosPorDoctorFechas');
+Route::get('reportes/obtener-tratamientos/{start}/{end}', 'ReporteController@obtenerTratamientosFechas');
+Route::get('reportes/obtener-tratamientos-doctor/{start}/{end}', 'ReporteController@obtenerTratamientosPorDoctorFechas');
+
 Route::get('reportes/obtener-ingresos-empresa', 'ReporteController@empresasIngresos');
 Route::get('reportes/obtener-ingresos-empresa/{start}/{end}', 'ReporteController@empresasIngresosFechas');
 Route::get('reportes/obtener-ingresos-doctor', 'ReporteController@ingresosPorDoctor');
-Route::get('reportes/obtener-ingresos-doctor/{start}/{end}', 'ReporteController@ingresosPorDoctorFechas');
-Route::get('reportes/egresos/{date}', 'ReporteController@egresos');
 Route::get('reportes/obtener-balances', 'ReporteController@obtenerBalances');
 Route::get('reportes/obtener-balances/{start}/{end}', 'ReporteController@obtenerBalancesFechas');
 Route::get('reportes/obtener-tratamientos', 'ReporteController@tratamientos');
-Route::get('reportes/obtener-tratamientos/{start}/{end}', 'ReporteController@tratamientosFechas');
 Route::get('reportes/ganancias', 'ReporteController@ganancias');
 Route::get('reportes/ganancias/{start}/{end}', 'ReporteController@gananciasFechas');
 Route::get('reportes/gananciasJSON/{start}/{end}', 'ReporteController@gananciasFechasJSON');

@@ -9,7 +9,7 @@
         options: {
 
           legend: {
-            display: true
+            display: false
           },
           pieceLabel: {
             mode: 'percentage',
