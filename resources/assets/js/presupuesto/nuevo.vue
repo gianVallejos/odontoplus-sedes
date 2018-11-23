@@ -1,5 +1,6 @@
 <template>
 	<b-container class="pb-4">
+		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<b-col cols="12">
 				<TitleComponent titulo="Presupuestos" :items="breadcrumb" />
@@ -248,16 +249,18 @@
 	import TitleComponent from '../widgets/titulo/index.vue'
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import Diente from './diente/diente.vue'
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
 	export default{
-		created(){
+		mounted(){
 			console.log('Nuevo presupuesto mounted')
 		},
 		components:{
 			TitleComponent,
 			PanelCard,
-			Diente
+			Diente,
+			SpinnerContainer
 		},
 		props: [
 			'url',
@@ -386,6 +389,7 @@
 				}
 			},
 			guardarTratamiento(){
+				this.$refs.spinnerContainerRef.showSpinner()
 				axios.post(this.url + '/presupuestos', {
 					pacienteId: this.paciente.id,
 					doctorId: this.doctor.id,
@@ -394,13 +398,15 @@
 					tratamientos: this.tratamientos
 				}).then( (request) => {
 						if( request.data == "ok" ){
+							this.$refs.spinnerContainerRef.hideSpinner()
 							this.isSuccess = true
 							this.toastFunctionRedirect('<span style="#fff; font-size: 1em">Éxito</span>', 'Presupuesto guardado correctamente', 'success')
-						}
+						}						
 				}).catch((error) => {
-					console.log('Error: ' + error)
-					this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
-                })
+						console.log('Error: ' + error)
+						this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
+						this.$refs.spinnerContainerRef.hideSpinner()
+          })					
 			},
 			esResina(value){
 	            if( value <= 5 ) return true;

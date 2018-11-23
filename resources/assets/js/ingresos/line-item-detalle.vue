@@ -1,5 +1,6 @@
 <template>
 	<b-col cols="12" class="pt-3">
+		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<PanelCard>
 			<span slot="heading">Agregar Tratamientos</span>
 			<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -215,6 +216,7 @@
 </template>
 <script>
 	import PanelCard from '../widgets/panel/panel-component.vue'
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
 	export default{
@@ -231,7 +233,8 @@
 			'presupuesto_id'
 		],
 		components: {
-			PanelCard
+			PanelCard,
+			SpinnerContainer
 		},
 		data(){
 			return{
@@ -365,18 +368,22 @@
 				if( this.validarTratamientos() ){
 					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
 					var request = { method: 'POST', url: this.url + '/ingresos/line-item', data: this.form }
+					this.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
 						if(response.data.success){
 							console.log('Response:: OK')
 							this.toastFunctionRedirect('Éxito', 'Los tratamientos han sido agregado correctamente.', 'success')
+							this.$refs.spinnerContainerRef.hideSpinner()
 						}
 						else if (response.data.error){
 							console.log('Response:: FAIL');
 							this.allerros = response.data.error
 							this.toastFunction(mssgOnFail, 'error')
+							this.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
 						console.log(error);
+						this.$refs.spinnerContainerRef.hideSpinner()
 					})
 				}
 			},
@@ -407,6 +414,7 @@
 				if( this.validarTratamientos() ){
 					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
 					var request = { method: 'PUT', url: this.url + '/ingresos/line-item/' + this.ingresoDetalleId, data: this.form }
+					this.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
 						if(response.data.success){
 							console.log('Response:: OK')
@@ -427,14 +435,17 @@
 							this.cerrarAddTratamiento()
 							this.toastFunction('Ingreso modificado correctamente.', 'success')
 							this.ingresoDetalleId = ''
+							this.$refs.spinnerContainerRef.hideSpinner()
 						}
 						else if (response.data.error){
 							console.log('Response:: FAIL');
 							this.allerros = response.data.error
 							this.toastFunction(mssgOnFail, 'error')
+							this.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
 						console.log(error);
+						this.$refs.spinnerContainerRef.hideSpinner()
 					})
 				}
 			},
@@ -456,19 +467,23 @@
 				}).then((result) => {
 					if( result.value ){
 						var request = { method: 'DELETE', url: this.url + '/ingresos/line-item/' + $id }
+						this.$refs.spinnerContainerRef.showSpinner()
 						axios(request).then((response) => {
 							if(response.data.success){
 								console.log('Response:: OK')
 								this.toastFunctionRedirect('Éxito', 'El registro ha sido eliminado correctamente.', 'success')
 								this.ingresoDetalleId = ''
+								this.$refs.spinnerContainerRef.hideSpinner()
 							}
 							else if (response.data.error){
 								console.log('Response:: FAIL');
 								this.allerros = response.data.error
 								this.toastFunction(mssgOnFail, 'error')
+								this.$refs.spinnerContainerRef.hideSpinner()
 							}
 						}).catch(function (error) {
 							console.log(error);
+							this.$refs.spinnerContainerRef.hideSpinner()
 						})
 					}
 				})

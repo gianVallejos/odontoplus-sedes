@@ -1,5 +1,6 @@
 <template>
   <b-container id="container-template">
+    <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Usuarios" :items="breadcrumb" />
@@ -158,6 +159,7 @@
 <script>
   import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
+  import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
   export default{
@@ -169,7 +171,8 @@
     name: 'User-Form',
     components: {
       PanelCard,
-      TitleComponent
+      TitleComponent,
+      SpinnerContainer
     },
     props:[
       	'title',
@@ -271,9 +274,11 @@
 		onSubmit(request, error_msg) {
 			self = this
 			if(request){
+        self.$refs.spinnerContainerRef.showSpinner()
 				axios(request).then((response) => {
 					if(response.data.success){
-						console.log('Response:: OK')
+            self.$refs.spinnerContainerRef.hideSpinner()
+						console.log('Response:: OK')            
 						if( response.data.success == 'created' ){
 							self.setDisableForm()
 							self.toastFunctionRedirect('Éxito', 'El usuario ha sido creado correctamente.', 'success')
@@ -288,9 +293,11 @@
 						console.log('Response:: FAIL');
 						self.all_errors = response.data.error
 						self.toastFunction(error_msg, 'error')
+            self.$refs.spinnerContainerRef.hideSpinner()
 					}
 				}).catch(function (error) {
 					self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+          self.$refs.spinnerContainerRef.hideSpinner()
 				});
 			}
 		},

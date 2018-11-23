@@ -1,5 +1,6 @@
 <template>
   <b-container id="container-template">
+    <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Tratamientos" :items="breadcrumb" />
@@ -116,8 +117,9 @@
 </template>
 
 <script>
-  	import PanelCard from '../widgets/panel/panel-component.vue'
+  import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
+  import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
   export default{
@@ -129,7 +131,8 @@
     name: 'Tratamiento-Form',
     components: {
       	PanelCard,
-      	TitleComponent
+      	TitleComponent,
+        SpinnerContainer
     },
     props:[
 		'title',
@@ -238,9 +241,11 @@
 			onSubmit(request, error_msg) {
 				self = this
 				if(request){
+          self.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
 						if(response.data.success){
 							console.log('Response:: OK')
+              self.$refs.spinnerContainerRef.hideSpinner()
 							if( response.data.success == 'created' ){
 								self.setDisableForm()
 								self.toastFunctionRedirect('Éxito', 'El tratamiento ha sido creado correctamente.', 'success')
@@ -261,9 +266,11 @@
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
 							}
+              self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
 						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+            self.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 			},

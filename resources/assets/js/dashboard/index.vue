@@ -1,5 +1,5 @@
-<template>
-	<b-container class="pb-4">
+<template lang="html">
+	<b-container class="pb-4">			
 		<b-row>
 			<b-col cols="12">
 				<PanelCard>
@@ -175,12 +175,15 @@
 	import FormBuscar from '../widgets/form/form-buscar-component.vue'
 	import TableComponent from '../widgets/table/table-component.vue'
 	import BarChart from '../widgets/charts/bar-chart.vue'
+	import SpinnerSmall from '../widgets/spinner/spinner-small.vue'
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
 	export default{
 		mounted(){
 			console.log('Inicio Mounted')
 			this.initCharts()
+			this.$refs.spinnerSmallRef.showSpinner()
 		},
 		props: [
 			'url',
@@ -195,6 +198,8 @@
 			FormBuscar,
 			TableComponent,
 			BarChart
+			SpinnerSmall,
+			SpinnerContainer
 		},
 		data(){
 			return{
@@ -454,5 +459,4 @@
 		padding-right: 52px
 		&:last-of-type
 			padding-right: 0px
-
 </style>

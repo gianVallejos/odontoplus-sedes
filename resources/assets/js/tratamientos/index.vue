@@ -29,13 +29,7 @@
 							</div>
 							<div class="col-md-6">
 								<div class="float-right d-inline-block" v-if="curUser.rolid == 1">
-									<b-button-group>
-                    <b-button  variant="secondary" size="sm" :href="url + '/presupuestos/create'">
-        							<i class="fas fa-calculator"></i>&nbsp; Nuevo Presupuesto
-        						</b-button>
-                    <b-button  variant="warning" size="sm" @click.prevent="openModalPacientes">
-        							<i class="fas fa-money-check-alt"></i>&nbsp; Nuevo Ingreso
-        						</b-button>
+									<b-button-group>                    
 										<b-button :href="url+'/tratamientos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
 										</b-button>
@@ -80,6 +74,14 @@
                   </b-col>
             </b-row>
 
+          </div>
+          <div class="text-right" slot="footer">
+            <b-button  variant="secondary" size="sm" :href="url + '/presupuestos/create'">
+              <i class="fas fa-calculator"></i>&nbsp; Nuevo Presupuesto
+            </b-button>
+            <b-button  variant="warning" size="sm" @click.prevent="openModalPacientes">
+              <i class="fas fa-money-check-alt"></i>&nbsp; Nuevo Ingreso
+            </b-button>
           </div>
         </PanelCard>
 			</b-col>
