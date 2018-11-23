@@ -1,5 +1,6 @@
 <template>
 	<b-container>
+		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2" style="margin-top: -20px;">
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
@@ -200,6 +201,7 @@
 </template>
 <script>
 	import Diente from './diente/diente.vue'
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
 	export default{
@@ -212,7 +214,8 @@
 			this.restartMainDientes()
 		},
 		components: {
-			Diente
+			Diente,
+			SpinnerContainer
 		},
 		props: [
 			'url',
@@ -513,9 +516,11 @@
 			onSubmit(request, error_msg) {
 				self = this
 				if(request){
+					self.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
 						if(response.data.success){
 							console.log('Response:: OK')
+							self.$refs.spinnerContainerRef.hideSpinner()
 							if (response.data.success = 'deleted' ){
 								self.toastFunctionRedirect('Éxito', 'El presupuesto ha sido eliminado correctamente.', 'success')
 							}
@@ -523,9 +528,11 @@
 								console.log('Response:: FAIL');
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
+								self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
 						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+						self.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 			},

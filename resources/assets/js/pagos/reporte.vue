@@ -1,5 +1,6 @@
 <template>
 	<b-container v-if="curUser.rolid == 1">
+		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2 mt-0">
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
@@ -128,11 +129,15 @@
 	</b-container>
 </template>
 <script>
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 	export default{
 		mounted(){
 			console.log('Pagos Mounted')
 			this.initActualView()
+		},
+		components: {
+			SpinnerContainer
 		},
 		name: 'Reporte-Pago',
 		props: [
@@ -193,19 +198,23 @@
 			onSubmit(request, error_msg) {
 				self = this
 				if(request){
+					self.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
 						if(response.data.success){
 							if( response.data.success == 'created' ){
 								this.onDisplayDetalle()
 								self.toastFunctionRedirect('Éxito', 'El pago ha sido guardado correctamente pero debe registrarlo como egreso manualmente.<br /> ¿Desea agregar un nuevo egreso?', 'success')
 							}
+							self.$refs.spinnerContainerRef.hideSpinner()
 						}else if (response.data.error){
 								console.log('Response:: FAIL');
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
+								self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
 						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+						self.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 			},

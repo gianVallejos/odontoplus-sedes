@@ -1,5 +1,6 @@
 <template>
   <b-container>
+    <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<b-col cols="12">
 				<TitleComponent titulo="Precios" :items="breadcrumb" />
@@ -28,16 +29,6 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                  <div class="float-right d-inline-block">
-                    <b-button-group>
-                      <b-button :href="this.url+'/tratamientos'" variant="secondary">
-                        <i class="fas fa-tooth"></i>&nbsp; Ir a Tratamientos
-                      </b-button>
-                      <b-button :href="this.url+'/empresas'" variant="warning">
-                        <i class="fas fa-building"></i>&nbsp; Ir a Empresas
-                      </b-button>
-                    </b-button-group>
-                  </div>
 							  </div>
             </b-row>
 
@@ -82,8 +73,15 @@
                 </tbody>
               </table>
             </div>
-
           </div>
+          <div class="text-right" slot="footer">
+              <b-button :href="this.url+'/tratamientos'" variant="secondary">
+                <i class="fas fa-tooth"></i>&nbsp; Ir a Tratamientos
+              </b-button>
+              <b-button :href="this.url+'/empresas'" variant="warning">
+                <i class="fas fa-building"></i>&nbsp; Ir a Empresas
+              </b-button>
+          </div>          
         </PanelCard>
 			</b-col>
 		</b-row>
@@ -93,6 +91,7 @@
 <script>
 	import PanelCard from '../widgets/panel/panel-component.vue'
   import TitleComponent from '../widgets/titulo/index.vue'
+  import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
   export default{
@@ -103,7 +102,8 @@
     name: 'precios',
     components:{
 			PanelCard,
-      TitleComponent
+      TitleComponent,
+      SpinnerContainer
 		},
     props:[
       'companies',
@@ -139,14 +139,15 @@
         var company_id = this.$refs['emp-'+index][0].$el.value
         var treatment_id = this.prices[ind].id_tratamiento
         var request = { method: 'GET', url: this.url+'/consulta_precio?empresa_id='+ company_id + '&tratamiento_id=' + treatment_id}
-
+        this.$refs.spinnerContainerRef.showSpinner()
         axios(request).then((response) => {
           if(response.data.price){
             this.prices[ind].id = response.data.price[0].id
             this.$refs['monto-'+index][0].$el.value = response.data.price[0].monto
-          }
-          else{
+            this.$refs.spinnerContainerRef.hideSpinner()
+          }else{
             console.log('price not found!')
+            this.$refs.spinnerContainerRef.hideSpinner()
           }
         }).catch(function (error) {
           console.log(error);
@@ -158,18 +159,20 @@
         var id = this.prices[this.buscarPosicion(item.tratamiento)].id
         var amount = this.$refs['monto-'+index][0].$el.value
         var request = { method: 'PUT', url: this.url+'/precios/'+ id, data: { monto: amount } }
-
+        this.$refs.spinnerContainerRef.showSpinner()
         axios(request).then((response) => {
           if(response.data.success){
               this.toastFunctionRedirect('Éxito', 'El precio ha sido actualizado correctamente.', 'success')
-          }
-          else if (response.data.error){
+              this.$refs.spinnerContainerRef.hideSpinner()
+          }else if (response.data.error){
             this.all_errors = response.data.error
             this.all_errors.index = index
             console.log(response.data.error)
+            this.$refs.spinnerContainerRef.hideSpinner()
           }
         }).catch(function (error) {
           console.log(error);
+          this.$refs.spinnerContainerRef.hideSpinner()
         });
 
       },
