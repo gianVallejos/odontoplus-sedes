@@ -40,10 +40,8 @@
 								</div>
 							</div>
             </b-row>
-
             <!-- Main table element -->
             <b-table show-empty
-                    stacked="md"
                     :items="items"
                     :fields="fields"
                     :current-page="currentPage"
@@ -64,8 +62,8 @@
                   <a v-on:click.prevent="onEliminar( row.item.id )" class="action" >Eliminar</a>
                 </div>
               </template>
-              <template slot="doctor" slot-scope="row">
-                    {{ row.item.nombres }} {{ row.item.apellidos }}
+              <template slot="nombres" slot-scope="row">
+                    {{ row.value }} {{ row.item.apellidos }}
               </template>
             </b-table>
 
@@ -108,10 +106,10 @@
 			return{
         fields: [
           { key: 'actions', label: '', 'class': 'action-width' },
-          { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
-          { key: 'fecha_inicio', label: 'Fecha de Inicio', sortable: true },
-          { key: 'fecha_fin', label: 'Fecha Fin', sortable: true },
-          { key: 'created_at', label: 'Fecha de Creación', sortable: true  }
+          { key: 'nombres', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+          { key: 'fecha_inicio', label: 'Fecha de Inicio', sortable: true, sortDirection: 'desc' },
+          { key: 'fecha_fin', label: 'Fecha Fin', sortable: true, sortDirection: 'desc' },
+          { key: 'created_at', label: 'Fecha de Creación', sortable: true, sortDirection: 'desc'  }
         ],
         currentPage: 1,
         perPage: 10,
@@ -128,14 +126,6 @@
         ]
 			}
 		},
-    computed: {
-      sortOptions () {
-        // Create an options list from our fields
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => { return { text: f.label, value: f.key } })
-      }
-    },
 		methods:{
       onEliminar(pagoId){
 				this.$swal({

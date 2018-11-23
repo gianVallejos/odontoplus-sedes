@@ -45,11 +45,10 @@
 								</div>
 							</div>
             </b-row>
-
             <!-- Main table element -->
             <b-table show-empty
                     stacked="md"
-                    :items="this.gananciasRecords"
+                    :items="gananciasRecords"
                     :fields="fields"
                     :current-page="currentPage"
                     :per-page="perPage"
@@ -64,8 +63,8 @@
 							<template slot="index" slot-scope="row">
 								{{ row.index + 1 }}
 							</template>
-							<template slot="doctor_nombre" slot-scope="row">
-								{{ row.item.nombres }} {{ row.item.apellidos }}
+							<template slot="nombres" slot-scope="row">
+								{{ row.value }} {{ row.item.apellidos }}
 							</template>
 							<template slot="monto" slot-scope="row" class="hide-print">
 								S/. {{ row.item.monto }}
@@ -123,7 +122,7 @@
         fields: [
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+					{ key: 'nombres', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
 					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
 					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center', sortDirection: 'desc' },

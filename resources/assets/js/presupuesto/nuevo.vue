@@ -196,7 +196,7 @@
 				    			<i class="fas fa-search" aria-hidden="true"></i>
 				    		</span>
 				    	</div>
-			    		<input v-model="filter" placeholder="Buscar..." type="text" class="odInput">
+			    		<input v-model="filter" placeholder="Buscar..." type="text" class="odInput" ref="inBuscarTratamiento">
 					</b-input-group>
 				</b-col>
 				<b-col cols="12" class="pt-3">
@@ -291,8 +291,8 @@
 				    { key: 'action', label: '', class: 'text-center'}
 			    ],
 			    fieldsPrecios: [
-			    	{ key: 'index', label: '#'},
-			    	{ key: 'detalle', label: 'Tratamiento', sortable: true, sortDirection: 'desc'},
+			    	{ key: 'index', label: '#', class: 'text-center'},
+			    	{ key: 'detalle', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-with-tratamiento'},
 			    	{ key: 'monto', label: 'Precio (S/)', class: 'text-center'},
 			    	{ key: 'action', label: '' }
 			    ],
@@ -358,6 +358,7 @@
 				this.$refs.tratamientosModalRef.hide()
 				//this.actual_pieza = null
 				this.filter = ''
+				this.currentPage = 1
 			},
 			onSubmitSave(){
 				if( this.tratamientos.length != 0 ){
@@ -482,8 +483,8 @@
 	        },
 	        abrirModalDesdePieza(idPieza){
 	        	this.actual_pieza = idPieza
-			    this.fromBtn = false
-			    this.$refs.tratamientosModalRef.show()
+			    	this.fromBtn = false
+						this.$refs.tratamientosModalRef.show()
 	        },
 	        abrirModalDesdeBtn(){
 	        	this.actual_pieza = null
@@ -713,3 +714,7 @@
 		}
 	}
 </script>
+<style lang="stylus">
+	.td-with-tratamiento
+			width: 210px
+</style>

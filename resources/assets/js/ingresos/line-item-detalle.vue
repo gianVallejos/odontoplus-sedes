@@ -134,7 +134,7 @@
 							<b-col cols="12" class="text-right pr-0">
 								<b-form-group v-if="!isModificarIngreso">
 									<b-btn @click="addTrat" variant="secondary">
-										<i class="fas fa-plus"></i> Tratamiento
+										<i class="fas fa-plus"></i> Otro Tratamiento
 									</b-btn>
 									<b-btn @click="removeTrat" variant="warning">
 										<i class="fas fa-eraser"></i> Limpiar
@@ -545,7 +545,8 @@
 						confirmButtonClass: ['my-alert', 'confirm-alert'],
 		  			backdrop: `rgba(0, 0, 0, 0.6)`
 				}).then(() => {
-					window.location.href = this.url + '/ingresos/line-item/' + this.id
+					window.location.reload(true)
+					//window.location.href = this.url + '/ingresos/line-item/' + this.id
 				})
 			}
 		}
