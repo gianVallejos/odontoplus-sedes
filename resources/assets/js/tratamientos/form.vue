@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<TitleComponent titulo="Tratamientos" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">{{ title }}</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">

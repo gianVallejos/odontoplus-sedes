@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<TitleComponent titulo="Ingresos" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">{{ title }}</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -143,8 +143,9 @@
 										:sort-by.sync="sortBy"
 										:sort-desc.sync="sortDesc"
 										:sort-direction="sortDirection"
-							             @filtered="onFiltered"
-							             empty-text="No existen campos para mostrar" >
+							      @filtered="onFiltered"
+							      empty-text="No existen campos para mostrar"
+                    empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 										<template slot="nombres" slot-scope="row">
 									    		{{ row.value }} {{ row.item.apellidos }}
 									    </template>

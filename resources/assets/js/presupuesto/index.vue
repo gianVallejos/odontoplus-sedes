@@ -1,14 +1,14 @@
 <template>
-	<b-container class="pb-4">				
+	<b-container class="pb-4">
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Presupuestos" :items="breadcrumb" />				
+				<TitleComponent titulo="Presupuestos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12" class="pt-3">				
+			<b-col cols="12" class="pt-1">
 				<PanelCard>
 					<span slot="heading">Lista de Presupuestos </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
-						
+
 						<div class="row pb-3">
 							<div class="col-md-6">
 								<div class="input-group d-inline-block">
@@ -21,15 +21,15 @@
 			    						<input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
 								      	<div class="input-group-append">
 									    	<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
-									    		<i class="fas fa-sync-alt"></i>
+									    		<i class="fas fa-times"></i>
 									    	</b-btn>
 									    </div>
 								    </b-input-group>
 								</div>
 							</div>
-							<div class="col-md-6">	
+							<div class="col-md-6">
 								<div class="float-right d-inline-block">
-									<b-button-group>										
+									<b-button-group>
 										<b-button :href="url+'/presupuestos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Presupuesto
 										</b-button>
@@ -42,20 +42,22 @@
 						</div>
 
 
-						<b-table show-empty 
-								 :items="mydata" 
-								 :fields="fields" 
-								 :current-page="currentPage" 
+						<b-table show-empty
+								 :items="mydata"
+								 :fields="fields"
+								 :current-page="currentPage"
 								 :per-page="perPage"
-					             :filter="filter" 
-					             :sort-by.sync="sortBy" 
-					             :sort-desc.sync="sortDesc" 
+					             :filter="filter"
+					             :sort-by.sync="sortBy"
+					             :sort-desc.sync="sortDesc"
 					             :sort-direction="sortDirection"
 					             @filtered="onFiltered"
-					             empty-text="No existen campos para mostrar" >
+					             empty-text="No existen campos para mostrar"
+											 empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 							<template slot="actions" slot-scope="row" class="md-2">
-						        <div class="actions-table" style="color: #d1d1d1">						        	
-						        	<a :href="url+'/presupuestos/reporte/'+ row.item.id" class="action" target="_blank">Ver Presupuesto</a>
+						        <div class="actions-table" style="color: #d1d1d1">
+						        	<a :href="url+'/presupuestos/reporte/'+ row.item.id" class="action" target="_blank">Ver Presupuesto</a> |
+											<a :href="url+'/ingresos/line-item/'+ row.item.ingresosId" class="action">Ver Ingresos</a>
 						        </div>
 						    </template>
 						    <template slot="id" slot-scope="row">
@@ -64,21 +66,21 @@
 						    	</a>
 						    </template>
 						    <template slot="idPaciente" slot-scope="row">
-								{{ row.value }}						      	
-						    </template>						    	
-						    <template slot="nombrePaciente" slot-scope="row">						    	
-						      		{{ row.value }}						      	
+								{{ row.value }}
 						    </template>
-						    <template slot="nombreDoctor" slot-scope="row">						    	
-						      		{{row.value }}						      	
-						    </template>		
+						    <template slot="nombrePaciente" slot-scope="row">
+						      		{{ row.value }}
+						    </template>
+						    <template slot="nombreDoctor" slot-scope="row">
+						      		{{row.value }}
+						    </template>
 						    <template slot="fecha" slot-scope="row">
 						      		{{row.value }}
-						    </template>	
+						    </template>
 					    </b-table>
 					    <b-row>
 					    	<b-col md="6" class="pt-3 fz-3">
-					    		Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas					    		
+					    		Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas
 					    	</b-col>
 						    <b-col md="6" class="my-1 text-right">
 						    	<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
@@ -96,7 +98,7 @@
 <script>
 	import TitleComponent from '../widgets/titulo/index.vue'
 	import PanelCard from '../widgets/panel/panel-component.vue'
-	
+
 	export default{
 		mounte(){
 			console.log('Presupuesto')
@@ -105,7 +107,7 @@
 			TitleComponent,
 			PanelCard
 		},
-		props: [	
+		props: [
 			'url',
 			'mydata'
 		],
@@ -114,10 +116,10 @@
 				breadcrumb: [
 			    	{ text: 'Inicio', href: this.url },
 			    	{ text: 'Presupuestos', active: true}
-			    ],			    
-			    fields: [				    
-				    { key: 'actions', label: '', 'class': 'action-width text-center' },				    
-				    { key: 'id', label: 'Nro', class: 'text-center' }, 				    
+			    ],
+			    fields: [
+				    { key: 'actions', label: '', 'class': 'action-td-width text-center' },
+				    { key: 'id', label: 'Nro', class: 'text-center' },
 				    { key: 'idPaciente', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },
 				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
@@ -146,3 +148,7 @@
 		}
 	}
 </script>
+<style lang="stylus">
+	.action-td-width
+		width: 186px!important
+</style>

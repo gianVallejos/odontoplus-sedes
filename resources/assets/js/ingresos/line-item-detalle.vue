@@ -5,7 +5,7 @@
 			<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 				<b-row  v-if="!isAddTratamiento" >
 					<b-col cols="12" class="text-center pt-0 pb-1">
-						<b-btn variant="secondary" v-on:click.prevent="agregarTratamiento()" >
+						<b-btn variant="success" v-on:click.prevent="agregarTratamiento()" >
 							<i class="fas fa-plus"></i>&nbsp; Agregar Tratamiento
 						</b-btn>
 						<b-btn variant="primary" :href="this.url + '/ingresos/reporte/' + this.id" target="_blank">
@@ -27,7 +27,8 @@
 					            :sort-desc.sync="sortDesc"
 					            :sort-direction="sortDirection"
 					            @filtered="onFiltered"
-					            empty-text="No existen campos para mostrar" >
+					            empty-text="No existen campos para mostrar"
+											empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 							<template slot="actions" slot-scope="row">
 						        <div class="actions-table" v-if="curUser.rolid == 1">
 						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento, row.item.cantidad, row.item.monto )" class="action">Modificar</a>
@@ -93,41 +94,6 @@
 								</b-col>
 							</b-form-row>
 
-							<!-- <b-form-row>
-								<b-col>
-									<b-form-group label="Seleccionar Tratamiento" label-for="pacientes">
-										<b-input-group>
-									      	<b-form-input id="tratamientos" type="text" v-model="form.tratamiento"
-									      				  placeholder="Ningun Tratamiento Seleccionado" class="required" disabled />
-									      	<b-input-group-append>
-										    	<b-btn class="pl-3 pr-3" variant="success" v-b-modal.tratamientosModal >
-										    		<i class="fas fa-search"></i>
-										    	</b-btn>
-										    </b-input-group-append>
-									   	</b-input-group>
-									   	<span v-if="allerros.tratamiento" :class="['label label-danger']">{{ allerros.tratamiento[0] }}</span>
-									</b-form-group>
-								</b-col>
-								<b-col cols="2">
-								    <b-form-group label="Cantidad" label-for="cantidad">
-										<b-form-input v-on:input="calculateTotal" id="cantidad" type="text" v-model="form.cantidad" placeholder="Cantidad" autocomplete="off" class="required" :disabled=isDisabled required  />
-										<span v-if="allerros.cantidad" :class="['label label-danger']">{{ allerros.cantidad[0] }}</span>
-									</b-form-group>
-								</b-col>
-								<b-col cols="2">
-									<b-form-group label="Monto" label-for="monto">
-										<b-form-input v-on:input="calculateTotal" id="monto" type="text" v-model="form.monto" placeholder="Monto" autocomplete="off" class="required" :disabled=isDisabled required />
-										<span v-if="allerros.monto" :class="['label label-danger']">{{ allerros.monto[0] }}</span>
-									</b-form-group>
-								</b-col>
-								<b-col cols="2">
-									<b-form-group label="Total" label-for="total">
-										<b-form-input id="total" type="text" v-model="form.total" placeholder="Total" autocomplete="off" disabled />
-										<span v-if="allerros.total" :class="['label label-danger']">{{ allerros.total[0] }}</span>
-									</b-form-group>
-								</b-col>
-							</b-form-row> -->
-
 							<div v-for="trat in form.trats">
 								<b-form-row>
 									<b-col>
@@ -168,7 +134,7 @@
 							<b-col cols="12" class="text-right pr-0">
 								<b-form-group v-if="!isModificarIngreso">
 									<b-btn @click="addTrat" variant="secondary">
-										<i class="fas fa-plus"></i> Tratamiento
+										<i class="fas fa-plus"></i> Otro Tratamiento
 									</b-btn>
 									<b-btn @click="removeTrat" variant="warning">
 										<i class="fas fa-eraser"></i> Limpiar
@@ -191,7 +157,7 @@
 					</b-col>
 				</b-row>
 
-				<b-modal ref="tratamientosModal" id="tratamientosModal" size="md" title="Lista de Tratamientos">
+				<b-modal ref="tratamientosModal" id="tratamientosModal" size="md" title="Lista de Tratamientos" no-fade>
 					<b-row>
 						<b-col cols="12">
 							<b-input-group>
@@ -213,8 +179,9 @@
 									 :sort-by.sync="sortByPac"
 									 :sort-desc.sync="sortDescPac"
 									 :sort-direction="sortDirectionPac"
-							         @filtered="onFilteredPac"
-							         empty-text="No existen campos para mostrar" >
+							      @filtered="onFilteredPac"
+							      empty-text="No existen campos para mostrar"
+										empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 									<template slot="detalle" slot-scope="row">
 									    {{ row.value }}
 									</template>
@@ -232,7 +199,14 @@
 							<b-pagination :total-rows="totalRowsPac" :per-page="perPagePac" v-model="currentPagePac" class="d-inline-flex" />
 						</b-col>
 					</b-row>
-					<b-button slot="modal-footer" variant="primary" size="sm" @click="hideModal">Cerrar</b-button>
+					<div slot="modal-footer">
+						<b-button  variant="secondary" size="sm" :href="url + '/tratamientos/create'">
+							<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
+						</b-button>
+						<b-button variant="primary" size="sm" @click="hideModal">
+							<i class="fas fa-times"></i>&nbsp; Cerrar
+						</b-button>
+					</div>
 				</b-modal>
 
 			</div>
@@ -253,7 +227,8 @@
 			'tratamientos',
 			'doctores',
 			'id',
-			'curUser'
+			'curUser',
+			'presupuesto_id'
 		],
 		components: {
 			PanelCard
@@ -272,7 +247,7 @@
 				    { key: (this.curUser.rolid == 1) ? 'mg_core' : ''	, label: 'CORE', sortable: true, sortDirection: 'desc', 'class': 'text-center' }
 			    ],
 			    currentPage: 1,
-			   	perPage: 10,
+			   	perPage: 7,
 			    totalRows: 0,
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,
@@ -290,7 +265,7 @@
 				    { key: 'actions', label: '', sortable: false }
 			    ],
 			    currentPagePac: 1,
-			   	perPagePac: 10,
+			   	perPagePac: 7,
 			    totalRowsPac: 0,
 			    pageOptionsPac: [ 5, 10, 15 ],
 			    sortByPac: null,
@@ -570,7 +545,8 @@
 						confirmButtonClass: ['my-alert', 'confirm-alert'],
 		  			backdrop: `rgba(0, 0, 0, 0.6)`
 				}).then(() => {
-					window.location.href = this.url + '/ingresos/line-item/' + this.id
+					window.location.reload(true)
+					//window.location.href = this.url + '/ingresos/line-item/' + this.id
 				})
 			}
 		}

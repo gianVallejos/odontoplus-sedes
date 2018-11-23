@@ -80,8 +80,10 @@ class IngresoController extends Controller
             $tratamientos = json_encode($tratamientos);
             $doctores = DB::select('call OP_obtenerDoctores()');
             $doctores = json_encode($doctores);
+            $presupuestos_by_ingreso = DB::select('call OP_obtenerPresupuestos_IdIngreso("'. $id .'")');
+            $presupuestos_by_ingreso = json_encode($presupuestos_by_ingreso);
 
-            return view('ingresos.line-item', compact('ingresos', 'ingreso_detalle', 'tratamientos', 'doctores'));
+            return view('ingresos.line-item', compact('ingresos', 'ingreso_detalle', 'tratamientos', 'doctores', 'presupuestos_by_ingreso'));
         }catch(Exception $e){
             echo 'Ha ocurrido un error'; die();
         }

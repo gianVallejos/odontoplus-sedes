@@ -1,21 +1,23 @@
 <template>
-
-	<b-row align-h="between">
-		<b-col align-self="start">
-			<h4>{{ titulo }}</h4>
-	  </b-col>
-		<b-col cols="auto">
-			<b-breadcrumb :items="items"/>
-		</b-col>
-	</b-row>
-
+	<b-breadcrumb :items="items"/>
 </template>
 
 <script>
 	export default{
 		props: [
 			'titulo',
-			'items'
+			'items',
+			'icono'
 		]
 	}
 </script>
+<style lang="stylus">
+	.titulo-content
+		padding-top: 8px
+		color: #305f94
+		i
+			font-size: 1.8em
+		h4
+			padding-left: 10px
+
+</style>

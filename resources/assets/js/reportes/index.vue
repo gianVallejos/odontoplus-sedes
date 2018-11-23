@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Estadísticas" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12">
+			<b-col cols="12" class="pt-1">
 				<PanelCard>
 					<span slot="heading">Reporte de Ingrseos VS Egresos</span>
 					<b-row slot="body">
@@ -111,7 +111,6 @@
 <script>
 	import TitleComponent from '../widgets/titulo/index.vue'
 	import PanelCard from '../widgets/panel/panel-component.vue'
-	import { GChart } from 'vue-google-charts'
 	import BarChart from '../widgets/charts/bar-chart.vue'
 	import HorizontalBarChart from '../widgets/charts/horizontal-bar-chart.vue'
 	import PieChart from '../widgets/charts/pie-chart.vue'
@@ -129,7 +128,6 @@
 		components:{
 			TitleComponent,
 			PanelCard,
-			GChart,
 			BarChart,
 			HorizontalBarChart,
 			PieChart,

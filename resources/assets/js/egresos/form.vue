@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<TitleComponent titulo="Egresos" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">{{ title }}</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -24,6 +24,9 @@
 									<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
+                  <b-button variant="secondary" :href="url + '/pagos'">
+										<i class="fas fa-credit-card"></i>&nbsp;Ver Pagos
+									</b-button>
 								</div>
 								<div v-if="displayStatus == 'show'">
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar" v-if="curUser.rolid == 1">
@@ -37,6 +40,9 @@
 									</b-button>
 									<b-button variant="warning" v-on:click.prevent="onRegresar">
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
+									</b-button>
+                  <b-button variant="secondary" :href="url + '/pagos'">
+										<i class="fas fa-credit-card"></i>&nbsp;Ver Pagos
 									</b-button>
 								</div>
 							</div>
@@ -125,6 +131,9 @@
 									<b-button variant="warning" v-on:click.prevent="onRegresar" >
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
+                  <b-button variant="secondary" :href="url + '/pagos'">
+										<i class="fas fa-credit-card"></i>&nbsp;Ver Pagos
+									</b-button>
 								</div>
 								<div v-if="displayStatus != 'show'">
 									<b-button v-if="displayStatus == 'edit'" variant="success" v-on:click.prevent="onGuardarModificar">
@@ -138,6 +147,9 @@
 									</b-button>
 									<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
+									</b-button>
+                  <b-button variant="secondary" :href="url + '/pagos'">
+										<i class="fas fa-credit-card"></i>&nbsp;Ver Pagos
 									</b-button>
 								</div>
 							</div>
