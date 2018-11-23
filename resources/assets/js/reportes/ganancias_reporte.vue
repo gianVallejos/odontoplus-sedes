@@ -1,5 +1,6 @@
 <template>
 	<b-container v-if="curUser.rolid == 1" style="margin-top: -30px">
+		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
@@ -104,9 +105,13 @@
 </template>
 <script>
 	import axios from 'axios'
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	export default{
 		mounted(){
 			console.log('Pagos Mounted')
+		},
+		components: {
+			SpinnerContainer
 		},
 		name: 'Reporte-Ingreso',
 		props: [
@@ -114,7 +119,7 @@
 			'igeneral',
 			'ingresos',
 			'curUser',
-			'view_mode'
+			'view_mode',
 		],
 		data(){
 			return{
@@ -138,19 +143,24 @@
 			onSubmit(request, error_msg) {
 				self = this
 				if(request){
+					self.$refs.spinnerContainerRef.showSpinner()
+					alert('!')
 					axios(request).then((response) => {
 						if(response.data.success){
 							if( response.data.success == 'created' ){
 								this.onDisplayDetalle()
 								self.toastFunction('El pago a sido guradado correctamente', 'success')
 							}
+							self.$refs.spinnerContainerRef.hideSpinner()
 						}else if (response.data.error){
 								console.log('Response:: FAIL');
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
+								self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
-						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+							self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+							self.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 			},

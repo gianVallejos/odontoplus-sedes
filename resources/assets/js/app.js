@@ -2,11 +2,9 @@
 
 import Vue from 'vue'
 import BootstrapVue from "bootstrap-vue"
-import Toasted from 'vue-toasted'
 import VueSweetalert2 from 'vue-sweetalert2'
 
 Vue.use(BootstrapVue)
-Vue.use(Toasted)
 Vue.use(VueSweetalert2)
 /*
 var WebFont = require('webfontloader');
@@ -68,10 +66,10 @@ const app = new Vue({
 			Empresas, EmpresaForm,
 			Proveedores, ProveedorForm, ProveedorLineItems,
 			EgresosIndex, EgresoForm,
-			Precios,	
+			Precios,
 			Reportes,
 			Pagos, PagosForm, PagosReporte,
-			Ganancias, GananciasReporte	
+			Ganancias, GananciasReporte
     }
 })
 

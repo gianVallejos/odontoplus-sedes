@@ -1,5 +1,5 @@
 <template>
-  <b-container v-if="curUser.rolid == 1">
+  <b-container v-if="curUser.rolid == 1">    
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Reporte de Ganancias" :items="breadcrumb" />
@@ -46,6 +46,7 @@
 							</div>
             </b-row>
             <!-- Main table element -->
+            <SpinnerContainer :url="url" ref="spinnerContainerRef" />
             <b-table show-empty
                     stacked="md"
                     :items="gananciasRecords"
@@ -100,6 +101,7 @@
   console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
+  import SpinnerContainer from '../widgets/spinner/spinner-small.vue'
   import axios from 'axios'
 
   export default{
@@ -111,7 +113,8 @@
     name: 'Ganancias',
     components:{
 			PanelCard,
-      TitleComponent
+      TitleComponent,
+      SpinnerContainer
 		},
     props:[
       'url',
@@ -184,9 +187,11 @@
 
 				if( this.validForm() ){
 					var request = { method: 'GET', url: this.url + '/reportes/gananciasJSON/'+this.form.fechaInicio+'/'+this.form.fechaFin }
-					axios(request).then((response) => {
+					this.$refs.spinnerContainerRef.showSpinner()
+          axios(request).then((response) => {
 						this.gananciasRecords = JSON.parse(response.data.ingresos)
 						this.totalRows = this.gananciasRecords.length
+            this.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 				else{
