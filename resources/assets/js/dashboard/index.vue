@@ -13,7 +13,7 @@
 												 type="text"
 												 class="form-control odInput">
 									<div class="input-group-append">
-									<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filterPacientesOdontoplus" @click="cleanSearchTableAction()">
+									<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filterPacientesOdontoplus" @click="cleanSearchTableAction()" v-if="showTablePacientesOP">
 										<i class="fas fa-times"></i>
 									</b-btn>
 								</div>
