@@ -64,7 +64,7 @@
 	<script src="{{ asset('js/jquery.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/app.js?v=1.2.96') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.2.97') }}"></script>
 
 </body>
 </html>
