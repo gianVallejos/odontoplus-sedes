@@ -6,13 +6,13 @@
 
 <script>
 
-export default {  
+export default {
   props: [
     'url'
   ],
   data(){
     return {
-      spinnerActive: false
+      spinnerActive: true
     }
   },
   methods:{
@@ -21,7 +21,7 @@ export default {
     },
     hideSpinner(){
       this.spinnerActive = false
-    }    
+    }
   }
 }
 </script>
@@ -32,13 +32,13 @@ export default {
     width: 100%
     position: relative
     text-align: center
-    
+
   #spinner
     /* position: fixed */
     position: absolute
     top: 50%
     left: 50%
-    transform: translate(-50%,-50%)    
+    transform: translate(-50%,-50%)
     z-index: 999
     display: none
     &.active
