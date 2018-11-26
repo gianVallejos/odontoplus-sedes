@@ -34,7 +34,6 @@ Route::get('consulta_precio', 'PrecioController@getPrice');
 Route::get('reportes', 'ReporteController@index');
 Route::get('reportes/obtener-ingresos-mensuales/{year}', 'ReporteController@obtenerIngresosMensuales');
 Route::get('reportes/obtener-egresos-mensuales/{year}', 'ReporteController@obtenerEgresosMensuales');
-Route::get('reportes/obtener-ingresos-paciente', 'ReporteController@obtenerIngresosPaciente');
 Route::get('reportes/obtener-ingresos-paciente/{start}/{end}', 'ReporteController@obtenerIngresosPacienteFechas');
 Route::get('reportes/obtener-nuevos-pacientes/{start}/{end}', 'ReporteController@obtenerNuevosPacientesFechas');
 Route::get('reportes/obtener-nuevos-pacientes-anio-actual', 'ReporteController@obtenerNuevosPacientesAnioActual');
