@@ -115,8 +115,6 @@
 	export default{
 		created(){
 			this.checkActiveButton()
-			console.log('Navbar Mounted')
-			console.log(this.whoIsActive)
 		},
 		props: [
 			'url',

@@ -54,11 +54,7 @@ class PagoController extends Controller{
 
     	if ($validator->passes()) {
             try{
-                $pago = new Pago();
-                $pago->idDoctor = $request->idDoctor;
-                $pago->fecha_inicio = $request->fecha_inicio;
-                $pago->fecha_fin = $request->fecha_fin;
-                $pago->save();
+                $pago = DB::select('call OP_Pagos_add_all('. $request->idDoctor .', "'. $request->fecha_inicio . '", "' . $request->fecha_fin .'")');
 
                 return response()->json(['success' => 'created']);
 
