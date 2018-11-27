@@ -15,32 +15,32 @@ class UserController extends Controller{
     }
 
     public function index(){
-        $users = DB::select('call OP_ObtenerUsuarios()'); 
+        $users = DB::select('call OP_Usuarios_get_all()');
         $users = json_encode($users);
 
         return view('users.index',compact('users'));
     }
 
     public function create(){
-        return view('users.create');    
+        return view('users.create');
     }
 
     public function show($id){
-        $user = DB::select('call OP_ObtenerUsuarios_Id('.$id.')')[0];
-        $user = json_encode($user);       
-        
+        $user = DB::select('call OP_Usuarios_get_all_id('.$id.')')[0];
+        $user = json_encode($user);
+
         return view('users.show', compact('user', 'id'));
     }
 
     public function edit($id){
-        $user = DB::select('call OP_ObtenerUsuarios_Id('.$id.')')[0];
-        $user = json_encode($user);       
-        
+        $user = DB::select('call OP_Usuarios_get_all_id('.$id.')')[0];
+        $user = json_encode($user);
+
         return view('users.edit', compact('user'));
     }
 
     public function store(Request $request){
-        
+
     	$validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users|max:255',
@@ -49,7 +49,6 @@ class UserController extends Controller{
             'rolid' => 'required|regex:/(^[1-2]{1}$)/u',
             'is_active' => 'required'
         ]);
-
 
     	if ($validator->passes()) {
 
@@ -61,7 +60,7 @@ class UserController extends Controller{
                 $user->rolid = $request->rolid;
                 $user->is_active = $request->is_active;
                 $user->save();
-                    
+
                 return response()->json(['success' => 'created']);
 
             }catch(Exception $e){
@@ -72,7 +71,7 @@ class UserController extends Controller{
     }
 
     public function update(Request $request, $id){
-        
+
     	$validator = Validator::make($request->all(), [
             'name' => 'required|max:255',
             'email' => 'required|max:255|email|unique:users,email,'. $id.',id',
@@ -89,8 +88,8 @@ class UserController extends Controller{
                 $user->rolid = $request->rolid;
                 $user->is_active = $request->is_active;
                 if( !empty($request->password) && !empty($request->confirm_password) ){
-                    $user->password = Hash::make($request->password);  
-                } 
+                    $user->password = Hash::make($request->password);
+                }
                 $user->save();
 
                 return response()->json(['success' => 'updated']);
