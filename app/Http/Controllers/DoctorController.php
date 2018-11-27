@@ -98,7 +98,6 @@ class DoctorController extends Controller{
             }else{
                 return response()->json(['error' => 'cantDeleted']);
             }
-
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);
         }

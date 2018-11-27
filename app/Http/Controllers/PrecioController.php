@@ -13,12 +13,12 @@ class PrecioController extends Controller{
     }
 
     public function index(){
-        $companies = DB::select('call OP_ObtenerEmpresas()');
+        $companies = DB::select('call OP_Empresas_get_all()');
         $prices = DB::select('call OP_ObtenerPreciosEstandard()');
         $companies = json_encode($companies);
         $prices = json_encode($prices);
 
-        return view('precios.index',compact('companies', 'prices'));     
+        return view('precios.index',compact('companies', 'prices'));
     }
 
     public function getPrice(Request $request){
@@ -28,7 +28,7 @@ class PrecioController extends Controller{
 
 
     public function update(Request $request, $id){
-        
+
     	$validator = Validator::make($request->all(), [
             'monto' => 'required|numeric|between:0,99999999.99'
         ]);
