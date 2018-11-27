@@ -15,7 +15,7 @@ class TratamientoController extends Controller{
     public function index(){
         $tratamientos = DB::select('call OP_Tratamientos_get_all()');
         $tratamientos = json_encode($tratamientos);
-        $pacientes = DB::select('call OP_obtenerPacientes()');
+        $pacientes = DB::select('call OP_Pacientes_get_all()');
         $pacientes = json_encode($pacientes);
         return view('tratamientos.index',compact('tratamientos', 'pacientes'));
     }
