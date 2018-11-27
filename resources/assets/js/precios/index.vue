@@ -96,7 +96,6 @@
 
   export default{
     mounted() {
-      console.log('Precios mounted')
       this.data = this.prices
     },
     name: 'precios',
@@ -146,7 +145,6 @@
             this.$refs['monto-'+index][0].$el.value = response.data.price[0].monto
             this.$refs.spinnerContainerRef.hideSpinner()
           }else{
-            console.log('price not found!')
             this.$refs.spinnerContainerRef.hideSpinner()
           }
         }).catch(function (error) {
@@ -167,11 +165,9 @@
           }else if (response.data.error){
             this.all_errors = response.data.error
             this.all_errors.index = index
-            console.log(response.data.error)
             this.$refs.spinnerContainerRef.hideSpinner()
           }
         }).catch(function (error) {
-          console.log(error);
           this.$refs.spinnerContainerRef.hideSpinner()
         });
 

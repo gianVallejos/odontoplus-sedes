@@ -17,9 +17,7 @@ var WebFont = require('webfontloader');
 
 import HeaderComponent from './header/headerComponent.vue'
 import NavComponent from './header/navComponent.vue'
-import Flash from './widgets/alert/flash.vue'
 
-import ContainerGeneral from './container-general/index.vue'
 import Dashboard from './dashboard/index.vue'
 import Pacientes from './pacientes/index.vue'
 import PacienteForm from './pacientes/form.vue'
@@ -56,7 +54,7 @@ import GananciasReporte from './reportes/ganancias_reporte.vue'
 const app = new Vue({
     el: '#app',
     components: {
-    	ContainerGeneral, Dashboard,
+    	Dashboard,
     	Pacientes, PacienteForm,
     	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
 			Users, UserForm,

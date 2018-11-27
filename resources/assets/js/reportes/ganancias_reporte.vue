@@ -107,9 +107,6 @@
 	import axios from 'axios'
 	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	export default{
-		mounted(){
-			console.log('Pagos Mounted')
-		},
 		components: {
 			SpinnerContainer
 		},
@@ -153,7 +150,6 @@
 							}
 							self.$refs.spinnerContainerRef.hideSpinner()
 						}else if (response.data.error){
-								console.log('Response:: FAIL');
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
 								self.$refs.spinnerContainerRef.hideSpinner()

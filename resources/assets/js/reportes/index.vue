@@ -119,11 +119,11 @@
 	import HorizontalBarChart from '../widgets/charts/horizontal-bar-chart.vue'
 	import PieChart from '../widgets/charts/pie-chart.vue'
 	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
+	import SpinnerSmall from '../widgets/spinner/spinner-small.vue'
   import axios from 'axios'
 
 	export default{
 		mounted(){
-			console.log('Reports Mounted')
 			this.initCharts()
 		},
 		props: [
@@ -135,7 +135,8 @@
 			BarChart,
 			HorizontalBarChart,
 			PieChart,
-			SpinnerContainer
+			SpinnerContainer,
+			SpinnerSmall
 		},
 		data(){
 			return{
@@ -230,15 +231,16 @@
 				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/'+year }
 				if( year != '' ){
 					this.chartIsLoading = true
+					var self = this
 					axios(request_ingresos).then((response) => {
 						let ingresos = response.data.ingresos
             let ingresos_montos = ingresos.map(i => parseInt(i.monto))
-
+						
 						axios(request_egresos).then((response) => {
 							let egresos = response.data.egresos
 	            let egresos_montos = egresos.map(i => parseInt(i.monto))
 
-							this.ingresosVSegresosChart.data = {
+							self.ingresosVSegresosChart.data = {
 								labels: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
 								datasets: [
 									{
@@ -253,13 +255,13 @@
 									}
 								]
 							}
-							this.chartIsLoading = false
+							self.chartIsLoading = false
 
 						}).catch(function (error) {
-							this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+							self.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 						});
 					}).catch(function (error) {
-						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+						self.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 					});
 				}else{
 					this.toastFunction('Debe seleccionar año antes de buscar', 'error')
@@ -273,12 +275,13 @@
 					url: this.url + '/reportes/obtener-ingresos-paciente/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
+				var self = this
 				axios(request).then((response) => {
 					let ingresos = response.data.ingresos
 					let pacientes_nombres = ingresos.map(i => i.nombre)
           let ingresos_montos = ingresos.map(i => parseInt(i.monto))
 
-					this.ingresosPacienteChart.data = {
+					self.ingresosPacienteChart.data = {
 						labels: pacientes_nombres,
 						datasets: [
 							{
@@ -288,9 +291,9 @@
 							}
 						]
 					}
-					this.$refs.spinnerContainerRef.hideSpinner()
+					self.$refs.spinnerContainerRef.hideSpinner()
 				}).catch(function (error) {
-					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					self.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 				});
 			},
 
@@ -300,12 +303,13 @@
 					url: this.url + '/reportes/obtener-nuevos-pacientes/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
+				var self = this
 				axios(request).then((response) => {
 					let nuevos_pacientes = response.data.nuevos_pacientes
           let meses = nuevos_pacientes.map(i => i.mes.substring(0,3))
           let cantidades = nuevos_pacientes.map(i => parseInt(i.cantidad))
 
-					this.nuevosPacientesChart.data = {
+					self.nuevosPacientesChart.data = {
 						labels: meses,
 						datasets: [
 							{
@@ -315,9 +319,9 @@
 							}
 						]
 					}
-					this.$refs.spinnerContainerRef.hideSpinner()
+					self.$refs.spinnerContainerRef.hideSpinner()
 				}).catch(function (error) {
-					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					self.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 				});
 			},
 
@@ -327,12 +331,13 @@
 					url: this.url + '/reportes/obtener-pacientes-canal/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
+				var self = this
 				axios(request).then((response) => {
 					let nuevos_pacientes = response.data.pacientes_canal
           let canales = nuevos_pacientes.map(i => i.canal)
           let cantidades = nuevos_pacientes.map(i => parseInt(i.cantidad))
 
-					this.pacientesCanalChart.data = {
+					self.pacientesCanalChart.data = {
 						labels: canales,
 						datasets: [
 							{
@@ -342,9 +347,9 @@
 							}
 						]
 					}
-					this.$refs.spinnerContainerRef.hideSpinner()
+					self.$refs.spinnerContainerRef.hideSpinner()
 				}).catch(function (error) {
-					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					self.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 				});
 			},
 
@@ -354,12 +359,13 @@
 					url: this.url + '/reportes/obtener-pagos-doctor/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
+				var self = this
 				axios(request).then((response) => {
 					let records = response.data.records
 					let dr_nombres = records.map(r => r.nombres + ' ' + r.apellidos)
 					let pagos = records.map(r => (parseFloat(r.pago.replace(/,/g, ''))))
 
-					this.pagosDoctorChart.data = {
+					self.pagosDoctorChart.data = {
 						labels: dr_nombres,
 						datasets: [
 							{
@@ -369,9 +375,9 @@
 							}
 						]
 					}
-					this.$refs.spinnerContainerRef.hideSpinner()
+					self.$refs.spinnerContainerRef.hideSpinner()
 				}).catch(function (error) {
-					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					self.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 				});
 			},
 
@@ -381,12 +387,13 @@
 					url: this.url + '/reportes/obtener-ingresos-doctor/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
+				var self = this
 				axios(request).then((response) => {
 					let records = response.data.records
 					let dr_nombres = records.map(r => (r.nombres +' '+ r.apellidos))
 					let ingresos = records.map(r => (parseFloat(r.ingreso.replace(/,/g, ''))))
 
-					this.ingresosDoctorChart.data = {
+					self.ingresosDoctorChart.data = {
 						labels: dr_nombres,
 						datasets: [
 							{
@@ -396,9 +403,9 @@
 							}
 						]
 					}
-					this.$refs.spinnerContainerRef.hideSpinner()
+					self.$refs.spinnerContainerRef.hideSpinner()
 				}).catch(function (error) {
-					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					self.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 				});
 			},
 
@@ -408,11 +415,12 @@
 					url: this.url + '/reportes/obtener-tratamientos/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
+				var self = this
 		 		axios(request).then((response) => {
 					let tratamientos = response.data.tratamientos
 					let nombre_tratamientos = tratamientos.map(i => i.tratamiento)
           let numero_tratamientos = tratamientos.map(i => parseInt(i.numero))
-					this.tratamientosChart.data = {
+					self.tratamientosChart.data = {
 						labels: nombre_tratamientos,
 						datasets: [
 							{
@@ -422,23 +430,24 @@
 							}
 						]
 					}
-					this.$refs.spinnerContainerRef.hideSpinner()
+					self.$refs.spinnerContainerRef.hideSpinner()
 				}).catch(function (error) {
-					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					self.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 				});
 			},
 
-			fillTratamientosPorDoctorChart(){
+			fillTratamientosPorDoctorChart(){				
 				var request = {
 					method: 'GET',
 					url: this.url + '/reportes/obtener-tratamientos-doctor/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
+				var self = this
 				axios(request).then((response) => {
 					let records = response.data.records
 					let dr_nombres = records.map(r => (r.nombres +' '+ r.apellidos))
 					let tratamientos = records.map(r => parseInt(r.nro_tratamientos))
-					this.tratamientosDoctorChart.data = {
+					self.tratamientosDoctorChart.data = {
 						labels: dr_nombres,
 						datasets: [
 							{
@@ -450,7 +459,7 @@
 					}
 					self.$refs.spinnerContainerRef.hideSpinner()
 				}).catch(function (error) {
-					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					self.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 				});
 			},
 

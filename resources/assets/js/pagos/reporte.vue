@@ -134,7 +134,6 @@
 	import axios from 'axios'
 	export default{
 		mounted(){
-			console.log('Pagos Mounted')
 			this.initActualView()
 		},
 		components: {
@@ -208,7 +207,6 @@
 							}
 							self.$refs.spinnerContainerRef.hideSpinner()
 						}else if (response.data.error){
-								console.log('Response:: FAIL');
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
 								self.$refs.spinnerContainerRef.hideSpinner()

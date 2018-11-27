@@ -80,7 +80,7 @@ class IngresoController extends Controller
             $tratamientos = json_encode($tratamientos);
             $doctores = DB::select('call OP_Doctors_get_all()');
             $doctores = json_encode($doctores);
-            $presupuestos_by_ingreso = DB::select('call OP_obtenerPresupuestos_IdIngreso("'. $id .'")');
+            $presupuestos_by_ingreso = DB::select('call OP_Ingresos_get_presupuestos_Id("'. $id .'")');
             $presupuestos_by_ingreso = json_encode($presupuestos_by_ingreso);
 
             return view('ingresos.line-item', compact('ingresos', 'ingreso_detalle', 'tratamientos', 'doctores', 'presupuestos_by_ingreso'));
@@ -198,7 +198,7 @@ class IngresoController extends Controller
     public function destroy(Request $request, $id){
     //Desn't Exist
         try{
-            $canDelete = DB::select('call OP_esIngresoBorrable_Id('. $id .')');
+            $canDelete = DB::select('call OP_Ingresos_es_borrable_id('. $id .')');
             if( $canDelete[0]->CAN_DELETE == '1' ){
                 $ingreso = Ingreso::findOrFail($id);
                 $ingreso->is_deleted = true;

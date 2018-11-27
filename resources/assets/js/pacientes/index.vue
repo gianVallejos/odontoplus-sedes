@@ -105,9 +105,6 @@
 	import axios from 'axios'
 
 	export default{
-		mounted(){
-			console.log('Paciente Mounted')
-		},
 		name: 'Pacientes',
 		components:{
 			TitleComponent,

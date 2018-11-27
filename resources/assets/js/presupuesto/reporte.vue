@@ -343,7 +343,6 @@
 	        },
 	        pintarAllSeccionesDePiezas(){
 	        	for( var i = 0; i < this.tratamientos.length; i++ ){
-	        		console.log(this.tratamientos[i].opcion )
 	        		if( this.tratamientos[i].opcion == this.opcion ){
 		        		var pieza = this.tratamientos[i].pieza
 						var sec = this.tratamientos[i].seccion
@@ -379,7 +378,6 @@
 	        	this.tratamientos.sort(this.menorAMayor)
 	        	var monto_total = 0
 	        	for( var i = 0; i < this.tratamientos.length; i++ ){
-	        		//console.log('!!!' + this.tratamientos[i].opcion)
 	                if( this.tratamientos[i].opcion == this.opcion ){
 	                    var pz = this.tratamientos[i].pieza
 	                    var sec = this.tratamientos[i].seccion
@@ -518,14 +516,12 @@
 				if(request){
 					self.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
-						if(response.data.success){
-							console.log('Response:: OK')
+						if(response.data.success){							
 							self.$refs.spinnerContainerRef.hideSpinner()
 							if (response.data.success = 'deleted' ){
 								self.toastFunctionRedirect('Éxito', 'El presupuesto ha sido eliminado correctamente.', 'success')
 							}
-						}else if (response.data.error){
-								console.log('Response:: FAIL');
+						}else if (response.data.error){								
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
 								self.$refs.spinnerContainerRef.hideSpinner()

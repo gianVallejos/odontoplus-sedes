@@ -100,9 +100,6 @@
 	import PanelCard from '../widgets/panel/panel-component.vue'
 
 	export default{
-		mounte(){
-			console.log('Presupuesto')
-		},
 		components:{
 			TitleComponent,
 			PanelCard

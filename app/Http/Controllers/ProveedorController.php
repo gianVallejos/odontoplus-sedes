@@ -30,29 +30,29 @@ class ProveedorController extends Controller{
     }
 
     public function index(){
-        $proveedores = DB::select('call OP_ObtenerProveedores()'); 
+        $proveedores = DB::select('call OP_Proveedores_get_all()');
         $proveedores = json_encode($proveedores);
         return view('proveedores.index',compact('proveedores'));
     }
 
     public function create(){
-        return view('proveedores.new');    
+        return view('proveedores.new');
     }
 
     public function show($id){
-        $proveedor = DB::select('call OP_ObtenerProveedores_Id('.$id.')')[0];
-        $proveedor = json_encode($proveedor);       
+        $proveedor = DB::select('call OP_Proveedores_get_all_Id('.$id.')')[0];
+        $proveedor = json_encode($proveedor);
         return view('proveedores.show', compact('proveedor'));
     }
 
     public function edit($id){
-        $proveedor = DB::select('call OP_ObtenerProveedores_Id('.$id.')')[0];
-        $proveedor = json_encode($proveedor);       
+        $proveedor = DB::select('call OP_Proveedores_get_all_Id('.$id.')')[0];
+        $proveedor = json_encode($proveedor);
         return view('proveedores.edit', compact('proveedor'));
     }
-    
+
     public function store(Request $request){
-        
+
     	$validator = Validator::make($request->all(), self::$validation_rules );
 
     	if ($validator->passes()) {
@@ -74,7 +74,7 @@ class ProveedorController extends Controller{
                 $proveedor->save();
 
                 $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Proveedor/Laboratorio registrado correctamente']));
-                    
+
                 return response()->json(['success' => 'success']);
 
             }catch(Exception $e){
@@ -85,7 +85,7 @@ class ProveedorController extends Controller{
     }
 
     public function update(Request $request, $id){
-        
+
     	$validator = Validator::make($request->all(), self::$validation_rules );
 
     	if ($validator->passes()) {

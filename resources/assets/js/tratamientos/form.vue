@@ -125,8 +125,6 @@
   export default{
     mounted() {
     	this.initActualView()
-			console.log('Tratamiento Form Component')
-
     },
     name: 'Tratamiento-Form',
     components: {
@@ -244,7 +242,6 @@
           self.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
 						if(response.data.success){
-							console.log('Response:: OK')
               self.$refs.spinnerContainerRef.hideSpinner()
 							if( response.data.success == 'created' ){
 								self.setDisableForm()
@@ -262,7 +259,6 @@
 							}else if(response.data.error == 'commitFailed'){
 								self.toastFunction('Ha ocurrido un error al insertar el tratamiento o sus precios')
 							}else{
-								console.log('Response:: FAIL');
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
 							}

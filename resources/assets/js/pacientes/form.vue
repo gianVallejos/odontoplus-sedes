@@ -477,7 +477,6 @@
           self.$refs.spinnerContainerRef.showSpinner()
   				axios(request).then((response) => {
   					if(response.data.success){
-  						console.log('Response:: OK')
               self.$refs.spinnerContainerRef.hideSpinner()
   						if( response.data.success == 'created' ){
   							self.setDisableForm()
@@ -504,7 +503,6 @@
   						if( response.data.error == 'cantDeleted'){
   							self.toastFunction('El paciente está relacionado a presupuestos o ingresos activos por lo tanto no se puede eliminar.', 'error')
   						}else{
-  							console.log('Response:: FAIL');
   							self.all_errors = response.data.error
   							self.toastFunction(error_msg, 'error')
   						}

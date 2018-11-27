@@ -98,10 +98,7 @@
 	</b-container>
 </template>
 <script>
-	export default{
-		mounted(){
-			console.log('Ingresos Mounted')
-		},
+	export default{		
 		name: 'Reporte-Ingreso',
 		props: [
 			'url',

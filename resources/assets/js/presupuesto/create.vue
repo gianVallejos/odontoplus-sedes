@@ -112,9 +112,6 @@
 	import PanelCard from '../widgets/panel/panel-component.vue'
 
 	export default{
-		mounted(){
-			console.log('Create')
-		},
 		components:{
 			TitleComponent,
 			PanelCard

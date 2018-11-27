@@ -178,8 +178,6 @@
 	import Dashbox from '../widgets/dashbox/dashbox-component.vue'
 	import DashboxMed from '../widgets/dashbox/dashbox-med.vue'
 	import PanelCard from '../widgets/panel/panel-component.vue'
-	import FormBuscar from '../widgets/form/form-buscar-component.vue'
-	import TableComponent from '../widgets/table/table-component.vue'
 	import BarChart from '../widgets/charts/bar-chart.vue'
 	import SpinnerSmall from '../widgets/spinner/spinner-small.vue'
 	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
@@ -199,8 +197,6 @@
 			Dashbox,
 			DashboxMed,
 			PanelCard,
-			FormBuscar,
-			TableComponent,
 			BarChart,
 			SpinnerSmall,
 			SpinnerContainer
@@ -370,6 +366,7 @@
 				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/' + year }
 				if( year != ''){
 					this.chartIsLoading = true
+					var self = this
 					axios(request_ingresos).then((response) => {
 						let ingresos = response.data.ingresos
 						let ingresos_montos = ingresos.map(i => parseInt(i.monto))
@@ -377,7 +374,7 @@
 							let egresos = response.data.egresos
 							let egresos_montos = egresos.map(i => parseInt(i.monto))
 
-							this.ingresosVSegresosChart.data = {
+							self.ingresosVSegresosChart.data = {
 								labels: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
 								datasets: [
 									{
@@ -392,13 +389,13 @@
 									}
 								]
 							}
-							this.chartIsLoading = false
+							self.chartIsLoading = false
 
 						}).catch(function (error) {
-							this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+							self.toastFunction('Ha ocurrido un error con la información de egresos, inténtelo nuevamente.', 'error')
 						});
 					}).catch(function (error) {
-						this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+						self.toastFunction('Ha ocurrido un error con la información de ingresos, inténtelo nuevamente.', 'error')
 					});
 				}else{
 					this.toastFunction('Debe seleccionar año antes de buscar', 'error')
@@ -408,10 +405,11 @@
 			fillNuevosPacientesChart(){
 				var request = { method: 'GET', url: this.url + '/reportes/obtener-nuevos-pacientes-anio-actual' }
 				this.chartIsLoading = true
+				var self = this
 				axios(request).then((response) => {
 					let records = response.data.records
 					let cantidades = records.map(r => parseInt(r.cantidad))
-					this.nuevosPacientesChart.data = {
+					self.nuevosPacientesChart.data = {
 						labels: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
 						datasets: [
 							{
@@ -421,9 +419,9 @@
 							}
 						]
 					}
-					this.chartIsLoading = false
+					self.chartIsLoading = false
 				}).catch(function (error) {
-					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
+					self.toastFunction('Ha ocurrido un error con la información de pacientes, inténtelo nuevamente.', 'error')
 				});
 
 			},
@@ -431,6 +429,16 @@
 				var todaydate = new Date()
 				return 1900+todaydate.getYear()
 			},
+      toastFunction(msg, type){
+				this.$swal({
+						type: type,
+						title: msg,
+						toast: true,
+						position: 'top',
+						showConfirmButton: false,
+							timer: 3000
+				})
+      }
 		}
 	}
 </script>

@@ -83,15 +83,11 @@
 </template>
 
 <script>
-  console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
   import TitleComponent from '../widgets/titulo/index.vue'
 	import axios from 'axios'
 
-  export default{
-    mounted() {
-      console.log('Pagos mounted')
-    },
+  export default{    
     name: 'Pagos',
     components:{
 			PanelCard,
@@ -152,14 +148,12 @@
 				self = this
 				if(request){
 					axios(request).then((response) => {
-						if(response.data.success){
-							console.log('Response:: OK')
+						if(response.data.success){							
 							if (response.data.success = 'deleted' ){
                 this.removeRecordFromTable(record_id)
                 self.toastFunctionRedirect('Éxito', 'El Pago ha sido eliminado correctamente.', 'success')
 							}
-						}else if (response.data.error){
-							console.log('Response:: FAIL');
+						}else if (response.data.error){							
 							self.toastFunction(error_msg, 'error')
             }
 					}).catch(function (error) {
@@ -169,7 +163,6 @@
       },
       removeRecordFromTable(record_id){
         for(var i = 0 ; i < this.items.length; i++){
-          console.log(this.items[i].id + '  -  '+record_id)
           if (this.items[i].id == record_id){
             this.items.splice(i,1)
             break

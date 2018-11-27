@@ -30,8 +30,4 @@ class HomeController extends Controller
 
         return view('home', compact('pacientes'));
     }
-
-    public function containerGeneral(){
-        return view('container-general');
-    }
 }
