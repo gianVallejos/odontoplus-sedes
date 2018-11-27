@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('content')
-@if( Auth::check() )    
+@if( Auth::check() )
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

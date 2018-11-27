@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Paciente;
 use App\Ingreso;
+use App\CustomLibs\CurBD;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -24,7 +25,7 @@ class PacienteController extends Controller
     }
 
     public function index(){
-        $pacientes = DB::select('call OP_Pacientes_get_all()');
+        $pacientes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all()');
         $pacientes = json_encode($pacientes);
 
         return view($this->path.'.index', compact('pacientes'));

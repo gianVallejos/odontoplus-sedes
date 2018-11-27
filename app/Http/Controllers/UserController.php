@@ -15,7 +15,7 @@ class UserController extends Controller{
     }
 
     public function index(){
-        $users = DB::select('call OP_Usuarios_get_all()');
+        $users = DB::select('call OP_Usuarios_get_all()'); //Filtrar por Schema
         $users = json_encode($users);
 
         return view('users.index',compact('users'));
@@ -26,14 +26,14 @@ class UserController extends Controller{
     }
 
     public function show($id){
-        $user = DB::select('call OP_Usuarios_get_all_id('.$id.')')[0];
+        $user = DB::select('call OP_Usuarios_get_all_id('.$id.')')[0]; //Filtrar por Schema
         $user = json_encode($user);
 
         return view('users.show', compact('user', 'id'));
     }
 
     public function edit($id){
-        $user = DB::select('call OP_Usuarios_get_all_id('.$id.')')[0];
+        $user = DB::select('call OP_Usuarios_get_all_id('.$id.')')[0]; //Filtrar por Schema
         $user = json_encode($user);
 
         return view('users.edit', compact('user'));
