@@ -14,32 +14,32 @@ class PagoController extends Controller{
     }
 
     public function index(){
-        $pagos = DB::select('call OP_ObtenerPagos()');
+        $pagos = DB::select('call OP_Pagos_get_all()');
         $pagos = json_encode($pagos);
         return view('pagos.index', compact('pagos'));
     }
 
     public function show($idDoctor, $fechaInicial, $fechaFinal){
-        $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
-        $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
-        $doctor = DB::select('call OP_ObtenerDoctores_Id('. $idDoctor .')')[0];
-        $last_pago = DB::select('call OP_obtenerUltimoPago()')[0];
+        $ingresos = DB::select('call OP_Ingresos_get_all_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $totales = DB::select('call OP_Ingresos_get_totales_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $doctor = DB::select('call OP_Doctors_get_all_Id('. $idDoctor .')')[0];
+        $last_pago = DB::select('call OP_Pagos_get_ultimo()')[0];
         $ingresos = json_encode($ingresos);
         $igeneral = json_encode(['ultimoPago' => $last_pago, 'doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
         return view('pagos.show', compact('ingresos', 'igeneral'));
     }
 
     public function create(){
-        $doctores = DB::select('call OP_ObtenerDoctores()');
+        $doctores = DB::select('call OP_Doctors_get_all()');
         $doctores = json_encode($doctores);
         return view('pagos.create', compact('doctores'));
     }
 
     public function nuevoPagoReporte($idDoctor, $fechaInicial, $fechaFinal){
-        $ingresos = DB::select('call OP_ObtenerIngresos_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
-        $totales = DB::select('call OP_ObtenerIngresosTotales_DoctorId_RangoFechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
-        $doctor = DB::select('call OP_ObtenerDoctores_Id('.$idDoctor.')')[0];
-        $last_pago = DB::select('call OP_obtenerUltimoPago()')[0];
+        $ingresos = DB::select('call OP_Ingresos_get_all_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $totales = DB::select('call OP_Ingresos_get_totales_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $doctor = DB::select('call OP_Doctors_get_all_Id('.$idDoctor.')')[0];
+        $last_pago = DB::select('call OP_Pagos_get_ultimo()')[0];
         $ingresos = json_encode($ingresos);
         $igeneral = json_encode(['ultimoPago' => $last_pago, 'doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
         return view('pagos.new', compact('ingresos', 'igeneral'));

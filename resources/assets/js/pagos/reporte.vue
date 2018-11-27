@@ -14,7 +14,8 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5>RECIBO DE PAGO NRO {{ igeneral.ultimoPago.pagos }} </h5>
+						<h5>RECIBO DE PAGO</h5>
+						<!-- <h5>RECIBO DE PAGO NRO {{ igeneral.ultimoPago.pagos }} </h5> -->
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 							<tr>
