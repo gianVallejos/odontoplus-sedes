@@ -13,7 +13,7 @@ class TratamientoController extends Controller{
     }
 
     public function index(){
-        $tratamientos = DB::select('call OP_ObtenerTratamientos()');
+        $tratamientos = DB::select('call OP_Tratamientos_get_all()');
         $tratamientos = json_encode($tratamientos);
         $pacientes = DB::select('call OP_Pacientes_get_all()');
         $pacientes = json_encode($pacientes);
@@ -25,13 +25,13 @@ class TratamientoController extends Controller{
     }
 
     public function show($id){
-        $tratamiento = DB::select('call OP_ObtenerTratamientos_Id('.$id.')')[0];
+        $tratamiento = DB::select('call OP_Tratamiento_get_all_id('.$id.')')[0];
         $tratamiento = json_encode($tratamiento);
         return view('tratamientos.show', compact('tratamiento'));
     }
 
     public function edit($id){
-        $tratamiento = DB::select('call OP_ObtenerTratamientos_Id('.$id.')')[0];
+        $tratamiento = DB::select('call OP_Tratamiento_get_all_id('.$id.')')[0];
         $tratamiento = json_encode($tratamiento);
         return view('tratamientos.edit', compact('tratamiento'));
     }
@@ -45,11 +45,11 @@ class TratamientoController extends Controller{
     	if ($validator->passes()) {
             try{
                 DB::beginTransaction();
+                $tratamiento = DB::select('call OP_Tratamientos_add_all("'.$request->detalle.'")');
 
-                $tratamiento = new tratamiento();
-                $tratamiento->detalle = $request->detalle;
-                $tratamiento->save();
-                $pricesInserted = self::insertCompaniesStandardPrices($tratamiento->id, $request->precio_estandar);
+                if ( $tratamiento[0]->ESTADO > 0 && $tratamiento[0]->LAST_ID != 0) {
+                  $pricesInserted = self::insertCompaniesStandardPrices($tratamiento[0]->LAST_ID, $request->precio_estandar);
+                }
 
                 if($pricesInserted){
                     DB::commit();
@@ -69,8 +69,8 @@ class TratamientoController extends Controller{
         $companies = DB::select('call OP_Empresas_get_all()');
 
         foreach ($companies as $company) {
-            $status = DB::select('call OP_AgregarPrecios_EmpresaId_TratamientoId('.$company->id.','.$treatmentId.','.$price.')');
-            if($status == 0) return false;
+            $precio = DB::select('call OP_Precios_add_all('.$company->id.','.$treatmentId.','.$price.')');
+            if($precio[0]->ESTADO == 0) return false;
         }
         return true;
     }
@@ -82,27 +82,22 @@ class TratamientoController extends Controller{
         ]);
 
     	if ($validator->passes()) {
-            try{
-                $tratamiento = Tratamiento::findOrFail($id);
-                $tratamiento->detalle = $request->detalle;
-                $tratamiento->is_active = $request->is_active;
-                $tratamiento->save();
-
-                return response()->json(['success' => 'updated']);
-
-            }catch(Exception $e){
-                return response()->json(['error'=>$e->getMessage()]);
-            }
+        $tratamiento = DB::select('call OP_Tratamientos_update_all_id('.$id.',"'.$request->detalle.'")');
+        if ( $tratamiento[0]->ESTADO > 0) {
+          return response()->json(['success' => 'updated']);
+        }else{
+          return response()->json(['error'=>$e->getMessage()]);
         }
-        return response()->json(['error'=>$validator->errors()]);
+      }
+      return response()->json(['error'=>$validator->errors()]);
     }
 
     public function destroy(Request $request, $id){
         try{
-            $canDelete = DB::select('call OP_esTratamientoBorrable_Id('. $id .')');
+            $canDelete = DB::select('call OP_Tratamiento_es_borrable_id('. $id .')');
 
             if( $canDelete[0]->CAN_DELETE == '1' ){
-                $res = DB::select('call OP_eliminarTratamiento_Id('. $id .')');
+                $res = DB::select('call OP_Tratamiento_delete_Id('. $id .')');
 
                 return response()->json(['success' => 'deleted']);
             }else{
