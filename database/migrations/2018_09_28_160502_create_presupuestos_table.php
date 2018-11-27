@@ -20,6 +20,8 @@ class CreatePresupuestosTable extends Migration
             $table->integer('idDoctor');
             $table->integer('descuento');
 
+            $table->boolean('is_deleted')->default(false);
+
             $table->timestamps();
         });
     }

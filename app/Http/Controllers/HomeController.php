@@ -12,7 +12,7 @@ class HomeController extends Controller
      *
      * @return void
      */
-    
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -25,16 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $last_pacientes = DB::select('call OP_obtenerUltimosDiezPacientes()');
-        $last_pacientes = json_encode($last_pacientes);
+      $pacientes = DB::select('call OP_Pacientes_get_all()');
+      $pacientes = json_encode($pacientes);
 
-        $last_presupuestos = DB::select('call OP_obtenerUltimosDiezPresupuestos()');
-        $last_presupuestos = json_encode($last_presupuestos);
-        
-        return view('home', compact('last_pacientes', 'last_presupuestos'));
-    }
-
-    public function containerGeneral(){
-        return view('container-general');
+        return view('home', compact('pacientes'));
     }
 }

@@ -15,6 +15,16 @@ class CreateEgresosTable extends Migration
     {
         Schema::create('egresos', function (Blueprint $table) {
             $table->increments('id');
+            $table->date('fecha')->nullable();
+            $table->integer('cantidad')->nullable();
+            $table->string('concepto', 125)->nullable();
+            $table->string('tipo', 125)->nullable();
+            $table->string('observacion', 125)->nullable();
+            $table->decimal('precio_unitario', 10, 2)->nullable();
+            $table->integer('doctorId')->nullable();
+
+            $table->boolean('is_deleted')->default(false);
+            
             $table->timestamps();
         });
     }

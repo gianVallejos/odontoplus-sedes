@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<TitleComponent titulo="Pagos" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">Lista de Pagos</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -21,15 +21,18 @@
 			    						<input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
 								      	<div class="input-group-append">
 									    	<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
-									    		<i class="fas fa-sync-alt"></i>
+									    		<i class="fas fa-times"></i>
 									    	</b-btn>
 									    </div>
 								    </b-input-group>
 								</div>
 							</div>
-							<div class="col-md-6">							
+							<div class="col-md-6">
 								<div class="float-right d-inline-block">
-									<b-button-group>										
+									<b-button-group>
+                    <!-- <b-button variant="secondary" :href="url + '/egresos/create'">
+            					<i class="fas fa-money-bill"></i>&nbsp; Nuevo Egreso
+            				</b-button> -->
 										<b-button :href="url+'/pagos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Pago
 										</b-button>
@@ -37,10 +40,8 @@
 								</div>
 							</div>
             </b-row>
-
             <!-- Main table element -->
             <b-table show-empty
-                    stacked="md"
                     :items="items"
                     :fields="fields"
                     :current-page="currentPage"
@@ -50,18 +51,19 @@
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
                     @filtered="onFiltered"
-                    empty-text="No existen campos para mostrar" >
+                    empty-text="No existen campos para mostrar"
+                    empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table" style="color: #d1d1d1">						        	
-                  <a :href="url+'/pagos/detalle/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" target="_blank" >Detalle</a>
+                  <div class="actions-table" style="color: #d1d1d1">
+                  <a :href="url+'/pagos/detalle/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" target="_blank" >Ver Pago</a>
                   |
                   <a v-on:click.prevent="onEliminar( row.item.id )" class="action" >Eliminar</a>
                 </div>
               </template>
-              <template slot="doctor" slot-scope="row">                                  
-                    {{ row.item.nombres }} {{ row.item.apellidos }}                  
+              <template slot="nombres" slot-scope="row">
+                    {{ row.value }} {{ row.item.apellidos }}
               </template>
             </b-table>
 
@@ -81,15 +83,11 @@
 </template>
 
 <script>
-  console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
   import TitleComponent from '../widgets/titulo/index.vue'
-	import axios from 'axios'  
+	import axios from 'axios'
 
-  export default{
-    mounted() { 
-      console.log('Pagos mounted')
-    },
+  export default{    
     name: 'Pagos',
     components:{
 			PanelCard,
@@ -104,10 +102,10 @@
 			return{
         fields: [
           { key: 'actions', label: '', 'class': 'action-width' },
-          { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
-          { key: 'fecha_inicio', label: 'Fecha de Inicio', sortable: true },
-          { key: 'fecha_fin', label: 'Fecha Fin', sortable: true },
-          { key: 'created_at', label: 'Fecha de Creación', sortable: true  }
+          { key: 'nombres', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+          { key: 'fecha_inicio', label: 'Fecha de Inicio', sortable: true, sortDirection: 'desc' },
+          { key: 'fecha_fin', label: 'Fecha Fin', sortable: true, sortDirection: 'desc' },
+          { key: 'created_at', label: 'Fecha de Creación', sortable: true, sortDirection: 'desc'  }
         ],
         currentPage: 1,
         perPage: 10,
@@ -124,22 +122,14 @@
         ]
 			}
 		},
-    computed: {
-      sortOptions () {
-        // Create an options list from our fields
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => { return { text: f.label, value: f.key } })
-      }
-    },
 		methods:{
       onEliminar(pagoId){
-				this.$swal({ 
-						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+				this.$swal({
+						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>',
 						html:  '<span style="font-size: 1em"> ¿Está seguro de eliminar este Pago?' +
-									'</span>',	
-						animation: false, 
-						showConfirmButton: true, 
+									'</span>',
+						animation: false,
+						showConfirmButton: true,
 						showCancelButton: true,
 						confirmButtonText: 'Aceptar',
 						confirmButtonClass: ['my-alert', 'confirm-alert'],
@@ -150,22 +140,20 @@
 					if( result.value ){
 						var request = { method: 'DELETE', url: this.url + '/pagos/' + pagoId }
             var mssgOnFail = 'Ha ocurrido un error al eliminar este registro.'
-            this.onSubmit(request, mssgOnFail, pagoId)  
-					}	
+            this.onSubmit(request, mssgOnFail, pagoId)
+					}
 				})
 			},
 			onSubmit(request, error_msg, record_id) {
 				self = this
 				if(request){
 					axios(request).then((response) => {
-						if(response.data.success){
-							console.log('Response:: OK')
+						if(response.data.success){							
 							if (response.data.success = 'deleted' ){
-                this.removeRecordFromTable(record_id)				
-                self.toastFunctionRedirect('Éxito', 'El Pago ha sido eliminado correctamente...', 'success')			
+                this.removeRecordFromTable(record_id)
+                self.toastFunctionRedirect('Éxito', 'El Pago ha sido eliminado correctamente.', 'success')
 							}
-						}else if (response.data.error){
-							console.log('Response:: FAIL');
+						}else if (response.data.error){							
 							self.toastFunction(error_msg, 'error')
             }
 					}).catch(function (error) {
@@ -175,9 +163,8 @@
       },
       removeRecordFromTable(record_id){
         for(var i = 0 ; i < this.items.length; i++){
-          console.log(this.items[i].id + '  -  '+record_id)
           if (this.items[i].id == record_id){
-            this.items.splice(i,1) 
+            this.items.splice(i,1)
             break
           }
         }
@@ -199,12 +186,11 @@
 						html: msg,
 						toast: false,
 						position: 'center',
-						showConfirmButton: false,
-	  					timer: 3000,
-	  					backdrop: `rgba(0, 0, 0, 0.6)`
+						confirmButtonClass: ['my-alert', 'confirm-alert'],
+		  			backdrop: `rgba(0, 0, 0, 0.6)`
 				}).then(() => {
-					this.redireccionarToIndex()
-				})	
+					window.location.href = this.url + '/pagos'
+				})
 			},
       toastFunction(msg, type){
 				this.$swal({

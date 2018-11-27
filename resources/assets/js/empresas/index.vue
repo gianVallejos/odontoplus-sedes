@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<TitleComponent titulo="Empresas" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">Lista de Empresas</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -21,18 +21,18 @@
 			    						<input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
 								      	<div class="input-group-append">
 									    	<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
-									    		<i class="fas fa-sync-alt"></i>
+									    		<i class="fas fa-times"></i>
 									    	</b-btn>
 									    </div>
 								    </b-input-group>
 								</div>
 							</div>
-							<div class="col-md-6">							
+							<div class="col-md-6">
 								<div class="float-right d-inline-block" v-if="curUser.rolid == 1">
-									<b-button-group>										
+									<b-button-group>
 										<b-button :href="url+'/empresas/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nueva Empresa
-										</b-button>										
+										</b-button>
 									</b-button-group>
 								</div>
 							</div>
@@ -48,12 +48,13 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
-                    @filtered="onFiltered" 
+                    @filtered="onFiltered"
                     empty-text="No existen campos para mostrar"
+                    empty-filtered-text="No existen pacientes que coincidan con la búsqueda"
               >
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table text-center" style="color: #d1d1d1">						        	
-                    <a :href="url+'/empresas/'+ row.item.id" class="action" >Detalle</a>
+                  <div class="actions-table text-center" style="color: #d1d1d1">
+                    <a :href="url+'/empresas/'+ row.item.id" class="action" >Ver Empresa</a>
                     <span v-if="curUser.rolid == 1">|</span>
                     <a :href="url+'/empresas/'+ row.item.id+'/edit'" class="action" v-if="curUser.rolid == 1">Modificar</a>
                   </div>
@@ -81,14 +82,10 @@
 </template>
 
 <script>
-  console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
 
   export default{
-    mounted() { 
-      console.log('empresas mounted')
-    },
     name: 'empresas',
     components:{
 			PanelCard,

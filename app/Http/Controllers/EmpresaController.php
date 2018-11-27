@@ -19,48 +19,44 @@ class EmpresaController extends Controller{
     }
 
     public function index(){
-        $empresas = DB::select('call OP_ObtenerEmpresas_DESC()'); 
+        $empresas = DB::select('call OP_Empresas_get_all_desc()');
         $empresas = json_encode($empresas);
-
         return view('empresas.index', compact('empresas'));
     }
 
     public function create(){
-        return view('empresas.create');    
+        return view('empresas.create');
     }
 
     public function show($id){
-        $empresa = DB::select('call OP_ObtenerEmpresas_Id('.$id.')')[0];
-        $empresa = json_encode($empresa);       
+        $empresa = DB::select('call OP_Empresas_get_all_Id('.$id.')')[0];
+        $empresa = json_encode($empresa);
         return view('empresas.show', compact('empresa'));
     }
 
     public function edit($id){
-        $empresa = DB::select('call OP_ObtenerEmpresas_Id('.$id.')')[0];
-        $empresa = json_encode($empresa);       
+        $empresa = DB::select('call OP_Empresas_get_all_Id('.$id.')')[0];
+        $empresa = json_encode($empresa);
         return view('empresas.edit', compact('empresa'));
     }
-    
-    public function store(Request $request){        
+
+    public function store(Request $request){
     	$validator = Validator::make($request->all(), self::$validation_rules );
 
     	if ($validator->passes()) {
             try{
                 DB::beginTransaction();
-
-                $empresa = new Empresa();
-                $empresa->nombre = $request->nombre;
-                $empresa->ruc = $request->ruc;
-                $empresa->save();
-                $pricesInserted = self::insertTreatmentsStandardPrices($empresa->id);
-
-                if($pricesInserted){
-                    DB::commit();
-                    $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Empresa registrada correctamente']));
-                    return response()->json(['success' => 'success']);
-                }else{
-                    DB::rollback();
-                    return response()->json(['error' => 'Ha ocurrido un error al insertar la empresa o sus precios']);
+                $empresa = DB::select('call OP_Empresas_add_all("'. $request->nombre .'", "'. $request->ruc . '")');
+                if( $empresa[0]->ESTADO > 0 ){
+                    $pricesInserted = self::insertTreatmentsStandardPrices($empresa[0]->LAST_ID);
+                    if($pricesInserted){
+                        DB::commit();
+                        $request->session()->flash('alert', json_encode(['type' => 'success', 'msg' => 'Empresa registrada correctamente']));
+                        return response()->json(['success' => 'created']);
+                    }else{
+                        DB::rollback();
+                        return response()->json(['error' => 'Ha ocurrido un error al insertar la empresa o sus precios']);
+                    }
                 }
             }catch(Exception $e){
                 return response()->json(['error'=>$e->getMessage()]);
@@ -71,45 +67,38 @@ class EmpresaController extends Controller{
     }
 
     public function insertTreatmentsStandardPrices($companyId){
-        $prices = DB::select('call OP_ObtenerPreciosEstandard()');
-         
+        $prices = DB::select('call OP_Precios_get_all_standard()');
+
         foreach ($prices as $price) {
-            $status = DB::select('call OP_AgregarPrecios_EmpresaId_TratamientoId('.$companyId.','.$price->id_tratamiento.','.$price->monto.')');
-            if($status == 0) return false;
+            $status = DB::select('call OP_Precios_add_all('.$companyId.','.$price->id_tratamiento.','.$price->monto.')');
+            if($status[0]->ESTADO == 0) return false;
         }
         return true;
     }
 
     public function update(Request $request, $id){
-        
+
     	$validator = Validator::make($request->all(), self::$validation_rules );
 
     	if ($validator->passes()) {
-            try{
-                $empresa = Empresa::findOrFail($id);
-                $empresa->nombre = $request->nombre;
-                $empresa->ruc = $request->ruc;
-                $empresa->save();
-
+            $empresa = DB::select('call OP_Empresas_update_all_Id("'. $request->nombre .'", "'. $request->ruc . '", '. $id .')');
+            if( $empresa[0]->ESTADO > 0 ){
                 return response()->json(['success' => 'updated']);
-
-            }catch(Exception $e){
-                return response()->json(['error'=>$e->getMessage()]);
+            }else{
+                return response()->json(['error' => 'Ha ocurrido un error']);
             }
         }
-        
+
         return response()->json(['error'=>$validator->errors()]);
     }
 
     public function destroy(Request $request, $id){
-        try{
-            $empresa = Empresa::findOrFail($id);
-            $empresa->is_deleted = true;
-            $empresa->save();
-
-            return response()->json(['success' => 'deleted']);
-        }catch(Exception $e){
-            return response()->json(['error'=>$e->getMessage()]);
-        }
+      try{
+        //FALTA VERIFICAR SI ES BORRABLE
+          $empresa = DB::select('call OP_Empresas_delete_all('. $id .')');
+          return response()->json(['success' => 'deleted']);
+      }catch(Exception $e){
+          return response()->json(['error' => 'Ha ocurrido un error']);
+      }
     }
 }

@@ -1,10 +1,11 @@
 <template>
   <b-container>
+    <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<b-col cols="12">
 				<TitleComponent titulo="Precios" :items="breadcrumb" />
 			</b-col>
-      <b-col cols="12">
+      <b-col cols="12" class="pt-1">
         <PanelCard>
           <span slot="heading">Lista de Precios</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -18,26 +19,16 @@
                                     <i class="fas fa-search" aria-hidden="true"></i>
                                 </span>
                             </div>
-                            <input v-model="search" placeholder="Buscar..." type="text" class="odInput buscar">   
+                            <input v-model="search" placeholder="Buscar..." type="text" class="odInput buscar">
                             <div class="input-group-append">
                               <b-btn class="pl-3 pr-3" variant="secondary" :disabled="!search" @click="search = ''">
-                                <i class="fas fa-sync-alt"></i>
+                                <i class="fas fa-times"></i>
                               </b-btn>
-                            </div>                         
+                            </div>
                         </b-input-group>
                     </div>
                 </div>
-                <div class="col-md-6">							
-                  <div class="float-right d-inline-block">
-                    <b-button-group>										
-                      <b-button :href="this.url+'/tratamientos'" variant="secondary">
-                        <i class="fas fa-tooth"></i>&nbsp; Ir a Tratamientos
-                      </b-button>
-                      <b-button :href="this.url+'/empresas'" variant="warning">
-                        <i class="fas fa-building"></i>&nbsp; Ir a Empresas
-                      </b-button>
-                    </b-button-group>
-                  </div>
+                <div class="col-md-6">
 							  </div>
             </b-row>
 
@@ -82,8 +73,15 @@
                 </tbody>
               </table>
             </div>
-
           </div>
+          <div class="text-right" slot="footer">
+              <b-button :href="this.url+'/tratamientos'" variant="secondary">
+                <i class="fas fa-tooth"></i>&nbsp; Ir a Tratamientos
+              </b-button>
+              <b-button :href="this.url+'/empresas'" variant="warning">
+                <i class="fas fa-building"></i>&nbsp; Ir a Empresas
+              </b-button>
+          </div>          
         </PanelCard>
 			</b-col>
 		</b-row>
@@ -93,17 +91,18 @@
 <script>
 	import PanelCard from '../widgets/panel/panel-component.vue'
   import TitleComponent from '../widgets/titulo/index.vue'
-	import axios from 'axios'  
+  import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
+	import axios from 'axios'
 
   export default{
-    mounted() { 
-      console.log('Precios mounted')
+    mounted() {
       this.data = this.prices
     },
     name: 'precios',
     components:{
 			PanelCard,
-      TitleComponent
+      TitleComponent,
+      SpinnerContainer
 		},
     props:[
       'companies',
@@ -122,11 +121,11 @@
         computedTodos:[]
 			}
 		},
-    computed: {      
-      computedData: function() { 
-          this.computedTodos = this.prices;  
+    computed: {
+      computedData: function() {
+          this.computedTodos = this.prices;
           if (this.search) {
-            this.computedTodos = this.computedTodos.filter(item => item.tratamiento.toUpperCase().includes(this.search.toUpperCase()));   
+            this.computedTodos = this.computedTodos.filter(item => item.tratamiento.toUpperCase().includes(this.search.toUpperCase()));
             return this.computedTodos;
           }
           return this.computedTodos;
@@ -139,14 +138,14 @@
         var company_id = this.$refs['emp-'+index][0].$el.value
         var treatment_id = this.prices[ind].id_tratamiento
         var request = { method: 'GET', url: this.url+'/consulta_precio?empresa_id='+ company_id + '&tratamiento_id=' + treatment_id}
-
+        this.$refs.spinnerContainerRef.showSpinner()
         axios(request).then((response) => {
           if(response.data.price){
             this.prices[ind].id = response.data.price[0].id
             this.$refs['monto-'+index][0].$el.value = response.data.price[0].monto
-          }
-          else{
-            console.log('price not found!')
+            this.$refs.spinnerContainerRef.hideSpinner()
+          }else{
+            this.$refs.spinnerContainerRef.hideSpinner()
           }
         }).catch(function (error) {
           console.log(error);
@@ -158,24 +157,24 @@
         var id = this.prices[this.buscarPosicion(item.tratamiento)].id
         var amount = this.$refs['monto-'+index][0].$el.value
         var request = { method: 'PUT', url: this.url+'/precios/'+ id, data: { monto: amount } }
-        
+        this.$refs.spinnerContainerRef.showSpinner()
         axios(request).then((response) => {
           if(response.data.success){
-              this.toastFunctionRedirect('Éxito', 'El precio ha sido actualizado correctamente. <br />Redireccionando...', 'success')
-          }
-          else if (response.data.error){
+              this.toastFunctionRedirect('Éxito', 'El precio ha sido actualizado correctamente.', 'success')
+              this.$refs.spinnerContainerRef.hideSpinner()
+          }else if (response.data.error){
             this.all_errors = response.data.error
             this.all_errors.index = index
-            console.log(response.data.error)
+            this.$refs.spinnerContainerRef.hideSpinner()
           }
         }).catch(function (error) {
-          console.log(error);
+          this.$refs.spinnerContainerRef.hideSpinner()
         });
-        
+
       },
       buscarPosicion(tratamiento){
           for( var i = 0; i < this.prices.length; i++ ){
-            if( this.prices[i].tratamiento == tratamiento ) 
+            if( this.prices[i].tratamiento == tratamiento )
                 return i
           }
       },
@@ -198,19 +197,18 @@
         return Math.ceil(this.totalRows / this.perPage )
       },
       toastFunctionRedirect(title, msg, type){
-        this.$swal({
-            type: type,
-            title: title,
-            html: msg,
-            toast: false,
-            position: 'center',
-            showConfirmButton: false,
-              timer: 3000,
-              backdrop: `rgba(0, 0, 0, 0.6)`
-        }).then(() => {
-          window.location.href = this.url + '/precios'
-        })  
-      }
+				this.$swal({
+						type: type,
+						title: title,
+						html: msg,
+						toast: false,
+						position: 'center',
+						confirmButtonClass: ['my-alert', 'confirm-alert'],
+		  			backdrop: `rgba(0, 0, 0, 0.6)`
+				}).then(() => {
+					window.location.reload(true)
+				})
+			}
 		}
   }
 </script>

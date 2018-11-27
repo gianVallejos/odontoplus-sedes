@@ -10,10 +10,10 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<div class="profileImage">
 						  		<span class="perfil-img">
-						  			<img :src=perfilUrl alt="Imagen de Perfil">	
+						  			<img :src=perfilUrl alt="Imagen de Perfil">
 						  		</span>
 						  		<div class="user-name">
-						  			<p>{{ user.name }} </p>						  			
+						  			<p>{{ user.name }} </p>
 						  			<span>{{ rol[user.rolid-1].nombre }}</span>
 						  		</div>
 						  		<i class="fa fa-angle-down lnr"></i>
@@ -22,20 +22,20 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-					    		<a :href="url + '/'">
+					    		<a :href="url + '/'" v-bind:class="[(whoIsActiveDetail == 'inicio') ? 'active' : '']">
 					    			<i class="fas fa-home"></i>Inicio
 					    		</a>
 					    	</li>
 					    	<li>
-					    		<a :href="url + '/users/' + user.id">
+					    		<a :href="url + '/users/' + user.id" v-bind:class="[(whoIsActiveDetail == 'users') ? 'active' : '']">
 					    			<i class="fas fa-user"></i>Ver Perfil
 					    		</a>
 					    	</li>
-					    	<li v-if="user.rolid == 1">
+					    	<!-- <li v-if="user.rolid == 1">
 					    		<a :href="url + '/users'">
 					          		<i class="fas fa-users"></i>Usuarios
 					          	</a>
-					    	</li>
+					    	</li> -->
 					    	<li>
 					    		<a :href="logoutRoute" v-on:click="logout" >
 					    			<i class="fas fa-power-off"></i>Cerrar Sesión
@@ -46,16 +46,15 @@
 					    	</li>
 					  	</ul>
 					</li>
-				</ul>				
+				</ul>
 			</div>
 		</div>
-	</div>	
+	</div>
 </template>
 <script>
 	export default{
-		mounted(){
-			console.log('Header Mounted')
-			console.log('url' + this.logoUrl);
+		created(){
+				this.checkActiveButton()
 		},
 		data() {
 			return {
@@ -65,19 +64,34 @@
 				rol: [
 					{id: 1, nombre: 'Administrador' },
 					{id: 2, nombre: 'Colaborador' }
-				]
+				],
+				whoIsActiveDetail: ''
 			}
 		},
 		props: [
 			'user',
 			'logoutRoute',
-			'url'
+			'url',
+			'curUrl'
 		],
 		methods: {
+			checkActiveButton(){
+					if( this.curUrl.includes('users') ){
+							this.whoIsActiveDetail = 'users'
+					}else if( !this.curUrl.includes('doctores') || !this.curUrl.includes('pacientes') ||
+										!this.curUrl.includes('presupuestos') || !this.curUrl.includes('ingresos') ||
+										!this.curUrl.includes('egresos') || !this.curUrl.includes('pagos') ||
+										!this.curUrl.includes('ganancias') || !this.curUrl.includes('reportes') ||
+										!this.curUrl.includes('tratamientos') || !this.curUrl.includes('precios') ||
+										!this.curUrl.includes('empresas')
+									){
+											this.whoIsActiveDetail = 'inicio'
+									}
+			},
 			logout (evt) {
 		      evt.preventDefault()
 		      document.getElementById('logout-form').submit()
-		    }			
+		    }
 		}
 	}
 </script>

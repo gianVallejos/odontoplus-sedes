@@ -1,29 +1,29 @@
 <template>
-	<b-container v-if="curUser.rolid == 1" class="pb-4">				
+	<b-container v-if="curUser.rolid == 1" class="pb-4">
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Pagos" :items="breadcrumb" />				
+				<TitleComponent titulo="Pagos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12">				
+			<b-col cols="12" class="pt-1">				
 				<PanelCard>
 					<span slot="heading">Nuevo Pago </span>
-					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">						
+					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						<b-row>
 							<b-col cols="6" class="pt-1 pb-4">
 								<div class="form-title">
-									<i class="fas fa-file-invoice-dollar"></i> 
+									<i class="fas fa-file-invoice-dollar"></i>
 									<div class="d-inline"> Nuevo Pago </div>
 								</div>
 								<p class="form-description fz-3 pt-3 pr-4">
 									Para crear un nuevo pago debe seleccionar un rango de fechas y el doctor al que se le realizará el pago.
-									<br /><br />Al seleccionar "Ver Nuevo Pago" aparecerá la lista de ingresos del doctor seleccionado en el periodo ingresado y podrá ser guardado. 
+									<br /><br />Al seleccionar "Ver Nuevo Pago" aparecerá la lista de ingresos del doctor seleccionado en el periodo ingresado y podrá ser guardado.
 								</p>
 								<p class="form-description fz-3 pt-3 pr-4">
-									<span class="help-required"> &nbsp; Campos obligatorios. </span>												
+									<span class="help-required"> &nbsp; Campos obligatorios. </span>
 								</p>
 							</b-col>
-							<b-col cols="6" class="pt-1 pb-4">	
-								<b-form>			
+							<b-col cols="6" class="pt-1 pb-4">
+								<b-form>
                    <b-form-row>
                     <b-col cols="6">
                       <b-form-group label="Fecha de Inicio" label-for="fechainicio">
@@ -37,7 +37,7 @@
                         <span v-if="all_errors.fechaFin" :class="['label label-danger']">{{ all_errors.fechaFin[0] }}</span>
                       </b-form-group>
                     </b-col>
-                  </b-form-row>						
+                  </b-form-row>
 									<b-form-group label="Seleccionar Doctor" label-for="apellidos">
 										<b-form-select v-model="form.doctorSelected">
 											<option :value="null">Ningun Doctor Seleccionado</option>
@@ -47,7 +47,7 @@
 										</b-form-select>
 										<span v-if="all_errors.doctorSelected" :class="['label label-danger']">{{ all_errors.doctorSelected[0] }}</span>
 									</b-form-group>
-								</b-form>								
+								</b-form>
 							</b-col>
 							<b-col cols="12">
 								<div class="text-center">
@@ -72,9 +72,6 @@
 	import PanelCard from '../widgets/panel/panel-component.vue'
 
 	export default{
-		mounted(){
-			console.log('Create')
-		},
 		components:{
 			TitleComponent,
 			PanelCard
@@ -92,7 +89,7 @@
 			    	{ text: 'Inicio', href: this.url + '/' },
 			    	{ text: 'Pagos', href: this.url + '/pagos' },
 			    	{ text: 'Nuevo Pago', active: true }
-			    ],		
+			    ],
 			    isDisabled: false,
 			    form: {
 						doctorSelected: null,
@@ -100,10 +97,10 @@
             fechaFin: this.getMyDate()
 					},
 			    all_errors: [],
-			    fields: [				    				    
-				    { key: 'id', label: 'Nro Historia', class: 'text-center' }, 				    
+			    fields: [
+				    { key: 'id', label: 'Nro Historia', class: 'text-center' },
 				    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
-				    { key: 'actions', label: '', sortable: false },				    
+				    { key: 'actions', label: '', sortable: false },
 			    ],
 			    currentPage: 1,
 			   	perPage: 10,
@@ -117,17 +114,17 @@
 		},
 		methods: {
 			setMyDateToToday() {
-				this.myDate = new Date();		      
+				this.myDate = new Date();
 			},
 			addADayToMyDate() {
-				if (this.myDate){ // as myDate can be null		        
+				if (this.myDate){ // as myDate can be null
 					this.myDate = new Date(this.myDate.setDate(this.myDate.getDate()));
 				}
 			},
 			getMyDate(){
 				this.setMyDateToToday()
 				this.addADayToMyDate()
-				return this.myDate && this.myDate.toISOString().split('T')[0]			    	
+				return this.myDate && this.myDate.toISOString().split('T')[0]
 			},
 			onSubmit () {
 				if( this.validForm() ){

@@ -1,10 +1,10 @@
 <template>
-  <b-container v-if="curUser.rolid == 1">
+  <b-container v-if="curUser.rolid == 1">    
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Reporte de Ganancias" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">Detalle de Ganancias</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -21,11 +21,11 @@
 									</b-col>
 									<b-col cols="4">
 										<b-form-group label="Hasta:" label-for="fechafin" class="mb-0">
-											<b-input id="fechafin" type="date" v-model="form.fechaFin" />											
+											<b-input id="fechafin" type="date" v-model="form.fechaFin" />
 											<span v-if="all_errors.fechaFin" :class="['label label-danger']">{{ all_errors.fechaFin[0] }}</span>
-									  </b-form-group>											
+									  </b-form-group>
 									</b-col>
-									<b-col cols="4" class="pt-4 mt-1">										
+									<b-col cols="4" class="pt-4 mt-1">
 											<b-btn variant="primary" v-on:click.prevent="refreshIngresosTable()" >
 												<i class="fas fa-search"></i>&nbsp;&nbsp;Buscar
 											</b-btn>
@@ -35,9 +35,9 @@
 
 								</div>
 							</div>
-							<div class="col-md-6 pt-4 mt-1">							
+							<div class="col-md-6 pt-4 mt-1">
 								<div class="float-right d-inline-block">
-									<b-button-group>										
+									<b-button-group>
 										<b-button variant="primary" v-on:click.prevent="goToPDFView()" >
 											<i class="fas fa-file-alt"></i>&nbsp; Reporte
 										</b-button>
@@ -45,11 +45,11 @@
 								</div>
 							</div>
             </b-row>
-
             <!-- Main table element -->
+            <SpinnerContainer :url="url" ref="spinnerContainerRef" />
             <b-table show-empty
                     stacked="md"
-                    :items="this.gananciasRecords"
+                    :items="gananciasRecords"
                     :fields="fields"
                     :current-page="currentPage"
                     :per-page="perPage"
@@ -58,13 +58,14 @@
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
                     @filtered="onFiltered"
-                    empty-text="No existen campos para mostrar" >
+                    empty-text="No existen campos para mostrar"
+                    empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 
 							<template slot="index" slot-scope="row">
 								{{ row.index + 1 }}
 							</template>
-							<template slot="doctor_nombre" slot-scope="row">
-								{{ row.item.nombres }} {{ row.item.apellidos }}
+							<template slot="nombres" slot-scope="row">
+								{{ row.value }} {{ row.item.apellidos }}
 							</template>
 							<template slot="monto" slot-scope="row" class="hide-print">
 								S/. {{ row.item.monto }}
@@ -97,21 +98,21 @@
 </template>
 
 <script>
-  console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
+  import SpinnerContainer from '../widgets/spinner/spinner-small.vue'
   import axios from 'axios'
 
   export default{
-    mounted() { 
-			console.log('Ganancias mounted')
+    mounted() {
 			this.initDates()
 			this.initTable()
     },
     name: 'Ganancias',
     components:{
 			PanelCard,
-      TitleComponent
+      TitleComponent,
+      SpinnerContainer
 		},
     props:[
       'url',
@@ -122,12 +123,12 @@
         fields: [
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+					{ key: 'nombres', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
 					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
 					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
-					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-center', sortDirection: 'desc' },			        
-					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-center', sortDirection: 'desc'}		
+					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
+					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-center', sortDirection: 'desc'}
 				],
 				gananciasRecords: [ ],
 				form: {
@@ -181,12 +182,14 @@
 				alert(this.form)
 			},
 			refreshIngresosTable(){
-				
+
 				if( this.validForm() ){
 					var request = { method: 'GET', url: this.url + '/reportes/gananciasJSON/'+this.form.fechaInicio+'/'+this.form.fechaFin }
-					axios(request).then((response) => {									
+					this.$refs.spinnerContainerRef.showSpinner()
+          axios(request).then((response) => {
 						this.gananciasRecords = JSON.parse(response.data.ingresos)
 						this.totalRows = this.gananciasRecords.length
+            this.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 				else{

@@ -1,5 +1,6 @@
 <template>
 	<b-container v-if="curUser.rolid == 1">
+		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2 mt-0">
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
@@ -13,7 +14,8 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5>RECIBO DE PAGO NRO {{ igeneral.ultimoPago.pagos }} </h5>
+						<h5>RECIBO DE PAGO</h5>
+						<!-- <h5>RECIBO DE PAGO NRO {{ igeneral.ultimoPago.pagos }} </h5> -->
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 							<tr>
@@ -25,14 +27,14 @@
 								<td>{{ igeneral.fechaInicial }} </td>
 								<td class="pr-title">HASTA:</td>
 								<td>{{igeneral.fechaFinal}}</td>
-							</tr>	
+							</tr>
 							<tr>
 								<td class="pr-title">TOTAL DR: </td>
-								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>								
+								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>
 							</tr>
 							<tr class="hide-print">
 								<td class="pr-title">TOTAL: </td>
-								<td colspan="3">S/ {{ igeneral.totales.total }}</td>								
+								<td colspan="3">S/ {{ igeneral.totales.total }}</td>
 							</tr>
 					</table>
 				</div>
@@ -49,7 +51,10 @@
 				<b-button variant="warning" v-on:click.prevent="onCerrar()">
 					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
 				</b-button>
-			</b-col>			
+				<b-button variant="secondary" :href="url + '/egresos/create'">
+					<i class="fas fa-money-bill"></i>&nbsp; Nuevo Egreso
+				</b-button>
+			</b-col>
 		</b-row>
 		<b-row>
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
@@ -58,15 +63,15 @@
 						<i class="fas fa-file-invoice-dollar"></i> &nbsp;Detalle de Pago
 					</div>
 				</div>
-			</b-col>			
+			</b-col>
 		</b-row>
 		<b-row>
 			<b-col cols="12">
-				<b-table 	show-empty 
-							:items="ingresos" 
-							:fields="fields" 								 
+				<b-table 	show-empty
+							:items="ingresos"
+							:fields="fields"
 					        empty-text="No existen campos para mostrar"
-					        :foot-clone=false >							
+					        :foot-clone=false >
 					<template slot="index" slot-scope="row">
 						{{ row.index + 1 }}
 					</template>
@@ -79,7 +84,9 @@
 					<template slot="total" slot-scope="row">
 						S/. {{ row.item.total }}
 					</template>
-
+					<template slot="empresa" slot-scope="row">
+						S/. {{ calculateEmpresaAmount(row.item.total, row.item.doctor)}}
+					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
@@ -102,7 +109,7 @@
 				</div>
 			</b-col>
 		</b-row>
-		
+
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
@@ -114,17 +121,23 @@
 				<b-button variant="warning" v-on:click.prevent="onCerrar()">
 					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
 				</b-button>
-			</b-col>			
+				<b-button variant="secondary" :href="url + '/egresos/create'">
+					<i class="fas fa-money-bill"></i>&nbsp; Nuevo Egreso
+				</b-button>
+			</b-col>
 		</b-row>
-		
+
 	</b-container>
 </template>
 <script>
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 	export default{
 		mounted(){
-			console.log('Pagos Mounted')
 			this.initActualView()
+		},
+		components: {
+			SpinnerContainer
 		},
 		name: 'Reporte-Pago',
 		props: [
@@ -136,31 +149,33 @@
 		],
 		data(){
 			return{
-				fields: [				    
+				fields: [
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },					
-				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
-				    { key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
-				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
-				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },			        
-				    { key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'}			        
-					],
+					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc', class: 'text-center' },
+					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
+					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
+					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
+					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
+					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
+					{ key: 'empresa', label: 'Total Emp.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
+					{ key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'}
+				],
 				displayStatus: ''
 			}
 		},
 		methods: {
-			initActualView(){    		
+			initActualView(){
 				this.displayStatus = this.view_mode
 		    if( this.displayStatus == 'new' ){
 		    	this.onDisplayNuevo()
 		    }else if( this.displayStatus == 'show' ){
 		    	this.onDisplayDetalle()
-		    }	   
+		    }
 			},
-			onDisplayNuevo(){    		
+			onDisplayNuevo(){
     		this.displayStatus = 'new'
-			}, 
+			},
 			onDisplayDetalle(){
 				this.displayStatus = 'show'
 			},
@@ -172,30 +187,33 @@
 					var request = { method: 'POST', url: this.url + '/pagos', data: body }
 	    			var mssgOnFail = 'EL pago no puede ser registrado, por favor, vuelva a generarlo nuvamente.'
 
-					this.onSubmit(request, mssgOnFail)   
+					this.onSubmit(request, mssgOnFail)
 				}else{
-					this.toastFunction('El pago no puede ser registrado por que el total es cero', 'error')	
+					this.toastFunction('El pago no puede ser registrado por que el total es cero', 'error')
 				}
-			},	
+			},
 			imprimirPagina(){
 				window.print()
 			},
 			onSubmit(request, error_msg) {
 				self = this
 				if(request){
+					self.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
 						if(response.data.success){
-							if( response.data.success == 'created' ){	
-								this.onDisplayDetalle()		
-								self.toastFunction('El pago a sido guradado correctamente', 'success')				
+							if( response.data.success == 'created' ){
+								this.onDisplayDetalle()
+								self.toastFunctionRedirect('Éxito', 'El pago ha sido guardado correctamente pero debe registrarlo como egreso manualmente.<br /> ¿Desea agregar un nuevo egreso?', 'success')
 							}
+							self.$refs.spinnerContainerRef.hideSpinner()
 						}else if (response.data.error){
-								console.log('Response:: FAIL');
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
+								self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
 						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+						self.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 			},
@@ -206,13 +224,34 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-							timer: 3000
+						timer: 3000
+				})
+			},
+			toastFunctionRedirect(title, msg, type){
+				this.$swal({
+						title: title,
+						html:  msg,
+						type: type,
+						showConfirmButton: true,
+						showCancelButton: true,
+						confirmButtonText: '<i class="fas fa-money-bill"></i> Nuevo Egreso',
+						confirmButtonClass: ['my-alert', 'nuevo-alert'],
+						cancelButtonText: '<i class="fas fa-times-circle"></i> Cerrar',
+						cancelButtonClass: ['my-alert', 'cerrar-alert'],
+						showCloseButton: true
+				}).then((result) => {
+					if( result.value ){
+						window.location = this.url + '/egresos/create'
+					}
 				})
 			},
 			onCerrar(){
 				window.close()
 				window.opener.location.reload()
 				window.opener.external.comeback()
+			},
+			calculateEmpresaAmount(total, monto_doctor){
+				return (total -monto_doctor).toFixed(2)
 			}
 		}
 	}
@@ -221,7 +260,7 @@
 	table.data-general{
 		width: 520px;
 		font-size: 1.15em;
-		font-family: 'Rubik', sans-serif;	
+		font-family: 'Rubik', sans-serif;
 		border: 2px solid #f3f3f3;
 	}
 	table.data-general tr td{
@@ -249,15 +288,15 @@
 	}
 
 	.pr-logo{
-		position: relative; 
-		height: 100%; 
+		position: relative;
+		height: 100%;
 		padding-top: 20px;
 		width: 265px;
 	}
 
 	.pr-logo span{
 		display: block;
-		font-size: .8em;		
+		font-size: .8em;
 		text-align: center;
 	}
 
@@ -269,7 +308,7 @@
 	.pr-section-title{
 		background: #f3f3f3;
 		padding: 8px 14px;
-		-webkit-print-color-adjust: exact;		
+		-webkit-print-color-adjust: exact;
 	}
 
 	.pr-seccion-title-text{
@@ -279,7 +318,7 @@
 	}
 
 	.monto-class{
-		font-size: 1.4em;		
+		font-size: 1.4em;
 	}
 
 	.monto-class span{
@@ -308,8 +347,16 @@
 		}
 	}
 
-	@page{ 
+	@page{
 	    size: auto;
-	    margin: auto;  
+	    margin: auto;
+	}
+
+	.td-doc-width{
+		width: 150px;
+	}
+
+	.td-trat-width{
+		width: 200px;
 	}
 </style>

@@ -15,6 +15,10 @@ class CreateIngresosTable extends Migration
     {
         Schema::create('ingresos', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('idPaciente');
+
+            $table->boolean('is_deleted')->default(false);
+            
             $table->timestamps();
         });
     }

@@ -1,21 +1,22 @@
 <template>
   <b-container id="container-template">
+    <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Doctores" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">{{ title }}</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
- 
+
 						<b-form>
 							<!--input type="hidden" name="_token" :value="csrf"-->
-							<div class="text-center">								
-								<div v-if="displayStatus != 'show'">	
+							<div class="text-center">
+								<div v-if="displayStatus != 'show'">
 									<b-button v-if="displayStatus == 'edit'" type="submit" variant="success" v-on:click.prevent="onGuardarModificar">
 										<i class="fas fa-save"></i>&nbsp; Guardar
-									</b-button>						
+									</b-button>
 									<b-button v-if="displayStatus == 'new'" type="submit" variant="success" v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
@@ -26,13 +27,13 @@
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
-								<div v-if="displayStatus == 'show'">									
+								<div v-if="displayStatus == 'show'">
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
 									<b-button variant="danger" v-on:click.prevent="onEliminar(
-											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
-							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
 							   				  v-if="curUser.rolid == 1">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
@@ -54,31 +55,31 @@
 											</p>
 											<br/>
 											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>												
+												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
 										    <b-form-group label="Nombres" label-for="nombres">
-											    <b-form-input id="nombres" type="text" class="required" 
+											    <b-form-input id="nombres" type="text" class="required"
 											    			  v-model="form.nombres" placeholder="Nombres" autocomplete="off" :disabled=isDisabled />
 												<span v-if="all_errors.nombres" :class="['label label-danger']">{{ all_errors.nombres[0] }}</span>
 										    </b-form-group>
 											<b-form-group label="Apellidos" label-for="apellidos">
-												<b-form-input   id="apellidos" type="text" class="required" 
+												<b-form-input   id="apellidos" type="text" class="required"
 																v-model="form.apellidos" placeholder="Apellidos" autocomplete="off" :disabled=isDisabled />
 												<span v-if="all_errors.apellidos" :class="['label label-danger']">{{ all_errors.apellidos[0] }}</span>
 										    </b-form-group>
 											<b-form-group label="DNI" label-for="dni">
-												<b-form-input id="dni" type="text" class="required" 
+												<b-form-input id="dni" type="text" class="required"
 												  			  v-model="form.dni" maxlength="8" placeholder="DNI" autocomplete="off" :disabled=isDisabled />
 												<span v-if="all_errors.dni" :class="['label label-danger']">{{ all_errors.dni[0] }}</span>
 										    </b-form-group>
 											<b-form-group label="Margen de Ganancia (%)" label-for="margen_ganancia">
-												<b-form-input id="margen_ganancia" type="text" 
-															  v-model="form.margen_ganancia" placeholder="Margen de Ganancia (%)" 
+												<b-form-input id="margen_ganancia" type="text"
+															  v-model="form.margen_ganancia" placeholder="Margen de Ganancia (%)"
 															  autocomplete="off" :disabled=isDisabled />
 												<span v-if="all_errors.margen_ganancia" :class="['label label-danger']">{{ all_errors.margen_ganancia[0] }}</span>
-										    </b-form-group>				
+										    </b-form-group>
 										</b-col>
 									</b-row>
 
@@ -93,7 +94,7 @@
 											</p>
 											<br/>
 											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>												
+												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
@@ -125,18 +126,18 @@
 											</p>
 											<br/>
 											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>												
+												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
 												<b-form-group label="Dirección" label-for="direccion">
 													<b-form-input id="direccion" type="text" class="required" v-model="form.direccion" placeholder="Dirección" required autocomplete="off" :disabled=isDisabled />
 													<span v-if="all_errors.direccion" :class="['label label-danger']">{{ all_errors.direccion[0] }}</span>
-												</b-form-group>		
+												</b-form-group>
 												<b-form-group label="Email" label-for="email">
 													<b-form-input id="email" type="email" v-model="form.email" placeholder="Email" autocomplete="off" :disabled=isDisabled />
 													<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
-										    </b-form-group>	
+										    </b-form-group>
 												<b-form-group label="Teléfono" label-for="telefono">
 											    <b-form-input id="telefono" type="text" v-model="form.telefono" placeholder="Teléfono" :disabled=isDisabled />
 											    <span v-if="all_errors.telefono" :class="['label label-danger']">{{ all_errors.telefono[0] }}</span>
@@ -160,14 +161,14 @@
 
 							</div>
 
-							<div class="text-center">								
-								<div v-if="displayStatus == 'show'">									
+							<div class="text-center">
+								<div v-if="displayStatus == 'show'">
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
 									<b-button variant="danger" v-on:click.prevent="onEliminar(
-											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
-							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
 							   				  v-if="curUser.rolid == 1">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
@@ -175,10 +176,10 @@
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
 								</div>
-								<div v-if="displayStatus != 'show'">	
+								<div v-if="displayStatus != 'show'">
 									<b-button v-if="displayStatus == 'edit'" variant="success" v-on:click.prevent="onGuardarModificar">
 										<i class="fas fa-save"></i>&nbsp; Guardar
-									</b-button>						
+									</b-button>
 									<b-button v-if="displayStatus == 'new'" variant="success" v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
@@ -204,17 +205,18 @@
 <script>
   import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
+  import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
   export default{
-    mounted() {     	
+    mounted() {
     	this.initActualView()
-		console.log('Doctores Form Component')
     },
     name: 'Doctor-Form',
     components: {
       PanelCard,
-      TitleComponent
+      TitleComponent,
+      SpinnerContainer
     },
     props:[
       	'title',
@@ -250,10 +252,10 @@
 		displayStatus: '',
         isDisabled: false,
 		genero: {
-			options: [ 
-						  {value: "Masculino", text: "Masculino"}, 
+			options: [
+						  {value: "Masculino", text: "Masculino"},
 						  {value: "Femenino", text: "Femenino"}
-			] 
+			]
 		},
 		estadoCivil: [
 			{ value: "Soltero", text: "Soltero" },
@@ -264,7 +266,7 @@
       }
     },
     methods:{
-		initActualView(){    		
+		initActualView(){
 			this.displayStatus = this.view_mode
 		    if( this.displayStatus == 'new' ){
 		    	this.onDisplayNuevo()
@@ -273,34 +275,34 @@
 		    }else if( this.displayStatus == 'edit' ){
 		    	this.onDisplayModificar()
 		    	this.setControllerDataToForms()
-		    }     	   
+		    }
 	    },
 		setMyDateToToday() {
-			this.myDate = new Date();		      
+			this.myDate = new Date();
 		},
 		addADayToMyDate() {
-			if (this.myDate){ // as myDate can be null		        
+			if (this.myDate){ // as myDate can be null
 				this.myDate = new Date(this.myDate.setDate(this.myDate.getDate()));
 			}
 		},
 		getMyDate(){
 			this.setMyDateToToday()
 			this.addADayToMyDate()
-			return this.myDate && this.myDate.toISOString().split('T')[0]			    	
-		},		
-    	onDisplayNuevo(){    		
+			return this.myDate && this.myDate.toISOString().split('T')[0]
+		},
+    	onDisplayNuevo(){
     		this.displayStatus = 'new'
-			this.setEnableForm()			
-    	}, 
+			this.setEnableForm()
+    	},
     	onDisplayDetalle(){
     		this.displayStatus = 'show'
 			this.setDisableForm()
 			this.setControllerDataToForms()
 
-    	},	
+    	},
     	onDisplayModificar(){
     		this.displayStatus = 'edit'
-    		this.setEnableForm()			
+    		this.setEnableForm()
     	},
     	setEnableForm(){
     		this.isDisabled = false
@@ -327,20 +329,20 @@
     	onGuardarNuevo(){
     		var request = { method: 'POST', url: this.url + '/doctores', data: this.form }
     		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
-    		this.onSubmit(request, mssgOnFail)    															
+    		this.onSubmit(request, mssgOnFail)
     	},
     	onGuardarModificar(){
-    		var request = { method: 'PUT', url: this.url + '/doctores/'+ this.record_id, data: this.form }    			
+    		var request = { method: 'PUT', url: this.url + '/doctores/'+ this.record_id, data: this.form }
     		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
     		this.onSubmit(request, mssgOnFail)
     	},
     	onEliminar(msg){
-    		this.$swal({ 
-						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+    		this.$swal({
+						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>',
 						html:  '<span style="font-size: 1em">' + msg +
-							   '</span>',	
-						animation: false, 
-						showConfirmButton: true, 
+							   '</span>',
+						animation: false,
+						showConfirmButton: true,
 						showCancelButton: true,
 						confirmButtonText: 'Aceptar',
 						confirmButtonClass: ['my-alert', 'confirm-alert'],
@@ -351,41 +353,43 @@
 				if( result.value ){
 					var request = { method: 'DELETE', url: this.url + '/doctores/' + this.record_id, data: this.form }
 	    			var mssgOnFail = 'Ha ocurrido un error al eliminar este registro.'
-	    			this.onSubmit(request, mssgOnFail)  
-				}	
+	    			this.onSubmit(request, mssgOnFail)
+				}
 			})
     	},
 		onSubmit(request, error_msg) {
 			self = this
 			if(request){
+        self.$refs.spinnerContainerRef.showSpinner()
 				axios(request).then((response) => {
 					if(response.data.success){
-						console.log('Response:: OK')
-						if( response.data.success == 'created' ){							
+						if( response.data.success == 'created' ){
 							self.setDisableForm()
-							self.toastFunctionRedirect('Éxito', 'El doctor ha sido creado correctamente. <br />Redireccionando...', 'success')
-						}else if( response.data.success == 'updated' ){													
+							self.toastFunctionRedirect('Éxito', 'El doctor ha sido creado correctamente.', 'success')
+						}else if( response.data.success == 'updated' ){
 							self.toastFunction('El doctor ha sido modificado correctamente.', 'success')
-							self.afterSuccessGuardar()							
-						}else if (response.data.success = 'deleted' ){							
+							self.afterSuccessGuardar()
+						}else if (response.data.success = 'deleted' ){
 							self.form.is_active = !self.form.is_active
-							self.toastFunctionRedirect('Éxito', 'El doctor ha sido eliminado correctamente. <br />Redireccionando...', 'success')
+							self.toastFunctionRedirect('Éxito', 'El doctor ha sido eliminado correctamente.', 'success')
 						}
+            self.$refs.spinnerContainerRef.hideSpinner()
 					}else if (response.data.error){
 						if( response.data.error == 'cantDeleted'){
 							self.toastFunction('El doctor está relacionado a presupuestos activos por lo tanto no se puede eliminar.', 'error')
 						}else{
-							console.log('Response:: FAIL');
 							self.all_errors = response.data.error
 							self.toastFunction(error_msg, 'error')
 						}
+            self.$refs.spinnerContainerRef.hideSpinner()
 					}
 				}).catch(function (error) {
 					self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+          self.$refs.spinnerContainerRef.hideSpinner()
 				});
 			}
 		},
-		afterSuccessGuardar(){	
+		afterSuccessGuardar(){
 			this.displayStatus = 'show'
 			this.setDisableForm()
 			this.setFormDataToUser()
@@ -440,20 +444,19 @@
   					timer: 3000
 			})
 		},
-		toastFunctionRedirect(title, msg, type){
-			this.$swal({
-					type: type,
-					title: title,
-					html: msg,
-					toast: false,
-					position: 'center',
-					showConfirmButton: false,
-  					timer: 3000,
-  					backdrop: `rgba(0, 0, 0, 0.6)`
-			}).then(() => {
-				this.redireccionarToIndex()
-			})	
-		}
+    toastFunctionRedirect(title, msg, type){
+      this.$swal({
+          type: type,
+          title: title,
+          html: msg,
+          toast: false,
+          position: 'center',
+          confirmButtonClass: ['my-alert', 'confirm-alert'],
+          backdrop: `rgba(0, 0, 0, 0.6)`
+      }).then(() => {
+        window.location.href = this.url + '/doctores'
+      })
+    }
 
     }
   }

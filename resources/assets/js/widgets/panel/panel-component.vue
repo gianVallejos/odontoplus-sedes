@@ -14,9 +14,6 @@
 
 <script>
 	export default{
-		mounted(){
-			console.log('Card Mounted')
-		},
 		computed: {
 		    hasHeadingSlot () {
 		      return !!this.$slots['heading']

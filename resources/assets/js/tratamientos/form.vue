@@ -1,21 +1,22 @@
 <template>
   <b-container id="container-template">
+    <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Tratamientos" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">{{ title }}</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
- 
+
 						<b-form>
 							<!--input type="hidden" name="_token" :value="csrf"-->
 							<div class="text-center">
-								<div v-if="displayStatus != 'show'">	
+								<div v-if="displayStatus != 'show'">
 									<b-button v-if="displayStatus == 'edit'" type="submit" variant="success" v-on:click.prevent="onGuardarModificar">
 										<i class="fas fa-save"></i>&nbsp; Guardar
-									</b-button>						
+									</b-button>
 									<b-button v-if="displayStatus == 'new'" type="submit" variant="success" v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
@@ -26,13 +27,13 @@
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
-								<div v-if="displayStatus == 'show'">									
+								<div v-if="displayStatus == 'show'">
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
 									<b-button variant="danger" v-on:click.prevent="onEliminar(
-											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
-							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
 							   				  v-if="curUser.rolid == 1 && canDeleteTratamiento()">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
@@ -56,32 +57,32 @@
 											</p>
 											<br/>
 											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>												
+												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
 										    <b-form-group label="Nombre de Tratamiento" label-for="detalle">
-											    <b-form-input id="detalle" type="text" class="required" v-model="form.detalle" 
+											    <b-form-input id="detalle" type="text" class="required" v-model="form.detalle"
 											    			  :disabled=isDisabled placeholder="Nombre de Tratamiento" autocomplete="off"/>
 													<span v-if="all_errors.detalle" :class="['label label-danger']">{{ all_errors.detalle[0] }}</span>
 										    </b-form-group>
 										    <b-form-group label="Precio Estándar" label-for="precio_estandar" v-if="displayStatus == 'new'">
-											    <b-form-input id="precio_estandar" type="number" step="0.1" class="required" v-model="form.precio_estandar" 
+											    <b-form-input id="precio_estandar" type="number" step="0.1" class="required" v-model="form.precio_estandar"
 											    			  :disabled=isDisabled placeholder="Precio Estandar" autocomplete="off"/>
 													<span v-if="all_errors.precio_estandar" :class="['label label-danger']">{{ all_errors.precio_estandar[0] }}</span>
-										    </b-form-group>	
+										    </b-form-group>
 										</b-col>
 									</b-row>
 							</div>
 
-							<div class="text-center">								
-								<div v-if="displayStatus == 'show'">									
+							<div class="text-center">
+								<div v-if="displayStatus == 'show'">
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
 									<b-button variant="danger" v-on:click.prevent="onEliminar(
-											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
-							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
 							   				  v-if="curUser.rolid == 1 && canDeleteTratamiento()">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
@@ -89,10 +90,10 @@
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
 								</div>
-								<div v-if="displayStatus != 'show'">	
+								<div v-if="displayStatus != 'show'">
 									<b-button v-if="displayStatus == 'edit'" variant="success" v-on:click.prevent="onGuardarModificar">
 										<i class="fas fa-save"></i>&nbsp; Guardar
-									</b-button>						
+									</b-button>
 									<b-button v-if="displayStatus == 'new'" variant="success" v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
@@ -116,24 +117,24 @@
 </template>
 
 <script>
-  	import PanelCard from '../widgets/panel/panel-component.vue'
+  import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
+  import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
   export default{
-    mounted() {     	    	
+    mounted() {
     	this.initActualView()
-			console.log('Tratamiento Form Component')	
-
     },
     name: 'Tratamiento-Form',
     components: {
       	PanelCard,
-      	TitleComponent
+      	TitleComponent,
+        SpinnerContainer
     },
     props:[
 		'title',
-		'url',		
+		'url',
 		'record',
 		'curUser',
 		'view_mode'
@@ -156,7 +157,7 @@
       }
     },
     methods:{
-			initActualView(){    		
+			initActualView(){
 				this.displayStatus = this.view_mode
 		    	if( this.displayStatus == 'new' ){
 		    		this.onDisplayNuevo()
@@ -165,34 +166,34 @@
 		    	}else if( this.displayStatus == 'edit' ){
 		    		this.onDisplayModificar()
 		    		this.setControllerDataToForms()
-		    	}     	   
+		    	}
 	    	},
 			setMyDateToToday() {
-				this.myDate = new Date();		      
+				this.myDate = new Date();
 			},
 			addADayToMyDate() {
-				if (this.myDate){ // as myDate can be null		        
+				if (this.myDate){ // as myDate can be null
 					this.myDate = new Date(this.myDate.setDate(this.myDate.getDate()));
 				}
 			},
 			getMyDate(){
 				this.setMyDateToToday()
 				this.addADayToMyDate()
-				return this.myDate && this.myDate.toISOString().split('T')[0]			    	
-			},		
-	    	onDisplayNuevo(){    		
+				return this.myDate && this.myDate.toISOString().split('T')[0]
+			},
+	    	onDisplayNuevo(){
 	    		this.displayStatus = 'new'
 				this.setEnableForm()
-	    	}, 
+	    	},
 	    	onDisplayDetalle(){
 	    		this.displayStatus = 'show'
 				this.setDisableForm()
 				this.setControllerDataToForms()
 
-	    	},	
+	    	},
 	    	onDisplayModificar(){
 	    		this.displayStatus = 'edit'
-	    		this.setEnableForm()			
+	    		this.setEnableForm()
 	    	},
 	    	setEnableForm(){
 	    		this.isDisabled = false
@@ -207,20 +208,20 @@
 	    	onGuardarNuevo(){
 	    		var request = { method: 'POST', url: this.url + '/tratamientos', data: this.form }
 	    		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
-	    		this.onSubmit(request, mssgOnFail)    															
+	    		this.onSubmit(request, mssgOnFail)
 	    	},
 	    	onGuardarModificar(){
-	    		var request = { method: 'PUT', url: this.url + '/tratamientos/'+ this.record_id, data: this.form }    			
+	    		var request = { method: 'PUT', url: this.url + '/tratamientos/'+ this.record_id, data: this.form }
 	    		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
 	    		this.onSubmit(request, mssgOnFail)
 	    	},
 	    	onEliminar(msg){
-	    		this.$swal({ 
-							title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+	    		this.$swal({
+							title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>',
 							html:  '<span style="font-size: 1em">' + msg +
-								   '</span>',	
-							animation: false, 
-							showConfirmButton: true, 
+								   '</span>',
+							animation: false,
+							showConfirmButton: true,
 							showCancelButton: true,
 							confirmButtonText: 'Aceptar',
 							confirmButtonClass: ['my-alert', 'confirm-alert'],
@@ -231,25 +232,26 @@
 					if( result.value ){
 						var request = { method: 'DELETE', url: this.url + '/tratamientos/' + this.record_id, data: this.form }
 		    			var mssgOnFail = 'Ha ocurrido un error al eliminar este registro.'
-		    			this.onSubmit(request, mssgOnFail)  
-					}	
+		    			this.onSubmit(request, mssgOnFail)
+					}
 				})
 	    	},
 			onSubmit(request, error_msg) {
 				self = this
 				if(request){
+          self.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
 						if(response.data.success){
-							console.log('Response:: OK')
-							if( response.data.success == 'created' ){							
+              self.$refs.spinnerContainerRef.hideSpinner()
+							if( response.data.success == 'created' ){
 								self.setDisableForm()
-								self.toastFunctionRedirect('Éxito', 'El tratamiento ha sido creado correctamente. <br />Redireccionando...', 'success')
-							}else if( response.data.success == 'updated' ){													
+								self.toastFunctionRedirect('Éxito', 'El tratamiento ha sido creado correctamente.', 'success')
+							}else if( response.data.success == 'updated' ){
 								self.toastFunction('El tratamiento ha sido modificado correctamente.', 'success')
-								self.afterSuccessGuardar()							
-							}else if (response.data.success = 'deleted' ){							
+								self.afterSuccessGuardar()
+							}else if (response.data.success = 'deleted' ){
 								self.form.is_active = !self.form.is_active
-								self.toastFunctionRedirect('Éxito', 'El tratamiento ha sido eliminado correctamente. <br />Redireccionando...', 'success')
+								self.toastFunctionRedirect('Éxito', 'El tratamiento ha sido eliminado correctamente.', 'success')
 							}
 						}else if (response.data.error){
 							if( response.data.error == 'cantDeleted'){
@@ -257,17 +259,18 @@
 							}else if(response.data.error == 'commitFailed'){
 								self.toastFunction('Ha ocurrido un error al insertar el tratamiento o sus precios')
 							}else{
-								console.log('Response:: FAIL');
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
 							}
+              self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
 						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+            self.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 			},
-			afterSuccessGuardar(){	
+			afterSuccessGuardar(){
 				this.displayStatus = 'show'
 				this.setDisableForm()
 				this.setFormDataToUser()
@@ -311,19 +314,18 @@
 	  					timer: 3000
 				})
 			},
-			toastFunctionRedirect(title, msg, type){
+      toastFunctionRedirect(title, msg, type){
 				this.$swal({
 						type: type,
 						title: title,
 						html: msg,
 						toast: false,
 						position: 'center',
-						showConfirmButton: false,
-	  					timer: 3000,
-	  					backdrop: `rgba(0, 0, 0, 0.6)`
+						confirmButtonClass: ['my-alert', 'confirm-alert'],
+		  			backdrop: `rgba(0, 0, 0, 0.6)`
 				}).then(() => {
-					this.redireccionarToIndex()
-				})	
+					window.location.href = this.url + '/tratamientos'
+				})
 			},
 			canDeleteTratamiento(){
 				if( this.record_id == null ) return false

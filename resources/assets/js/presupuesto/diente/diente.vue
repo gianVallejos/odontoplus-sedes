@@ -36,7 +36,6 @@
 		},
 		methods: {
 			accionDiente(seccion){
-				console.log(this.isEditable)
 				if( this.isEditable ){
 					this.pintarDienteSeleccionado(seccion)
 					this.$emit('click', seccion, this.pieza)

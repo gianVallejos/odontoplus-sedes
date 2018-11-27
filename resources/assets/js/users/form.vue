@@ -1,21 +1,22 @@
 <template>
   <b-container id="container-template">
+    <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Usuarios" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">{{ title }}</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
- 
+
 						<b-form>
 							<!--input type="hidden" name="_token" :value="csrf"-->
 							<div class="text-center">
-								<div v-if="displayStatus != 'show'">	
+								<div v-if="displayStatus != 'show'">
 									<b-button v-if="displayStatus == 'edit'" type="submit" variant="success" v-on:click.prevent="onGuardarModificar">
 										<i class="fas fa-save"></i>&nbsp; Guardar
-									</b-button>						
+									</b-button>
 									<b-button v-if="displayStatus == 'new'" type="submit" variant="success" v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
@@ -26,17 +27,17 @@
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
 								</div>
-								<div v-if="displayStatus == 'show'">									
+								<div v-if="displayStatus == 'show'">
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
 									<b-button variant="danger" v-on:click.prevent="onDesactivar(
-											  'Al desactivar este registro no podrá iniciar sesión ni usar el usuario en el sistema.' + 
-							   				  '<br /><br />¿Seguro que desea desactivar este usuario?')" 
+											  'Al desactivar este registro no podrá iniciar sesión ni usar el usuario en el sistema.' +
+							   				  '<br /><br />¿Seguro que desea desactivar este usuario?')"
 							   				  v-if="curUser.rolid == 1 && form.is_active ">
 										<i class="fas fa-user-slash"></i>&nbsp;Desactivar
 									</b-button>
-									<b-button variant="success" v-on:click.prevent="onDesactivar('¿Esta seguro que desea activar este usuario?.')" 
+									<b-button variant="success" v-on:click.prevent="onDesactivar('¿Esta seguro que desea activar este usuario?.')"
 											  v-if="curUser.rolid == 1 && !form.is_active ">
 										<i class="fas fa-user-slash"></i>&nbsp;Activar
 									</b-button>
@@ -59,7 +60,7 @@
 											</p>
 											<br/>
 											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>												
+												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
@@ -70,7 +71,7 @@
 												<b-form-group label="Email" label-for="email">
 													<b-form-input id="email" type="email" class="required" v-model="form.email" :disabled=isDisabled placeholder="Email" required autocomplete="off"/>
 													<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
-										    </b-form-group>		
+										    </b-form-group>
 										    <b-form-group label="Nueva Contraseña" label-for="password" >
 													<b-form-input id="password" type="password" class="required" v-model="form.password" :disabled=isDisabled placeholder="********" required autocomplete="off" maxlength="20"/>
 													<span v-if="all_errors.password" :class="['label label-danger']">{{ all_errors.password[0] }}</span>
@@ -89,12 +90,12 @@
 												<div class="d-inline">Privilegios de Usuario</div>
 											</div>
 											<p class="form-description fz-3 pt-3 pr-4">
-												Los privilegios de usuario son una colección de accesos a diferentes partes del sistema según el rol asignado. 
+												Los privilegios de usuario son una colección de accesos a diferentes partes del sistema según el rol asignado.
 												<br />Administrador (Acceso total al sistema)
 												<br />Colaborador (Restrincciones en reportes y eliminación de datos)
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">										
+										<b-col cols="6" class="pt-3 pb-4">
 												<b-form-group label="Rol">
 													<b-form-radio-group id="rol_id" v-model="form.rolid" :disabled=isDisabled name="radioSubComponent">
 														<b-form-radio value=2>Colaborador</b-form-radio>
@@ -104,21 +105,21 @@
 												<b-form-group label="Estado" label-for="is_active">
 													<b-form-checkbox id="is_active" v-model="form.is_active" :disabled=isDisabled>
 														Usuario Activado
-													</b-form-checkbox>		
+													</b-form-checkbox>
 										    </b-form-group>
 										</b-col>
 									</b-row>
 
 							</div>
 
-							<div class="text-center">								
-								<div v-if="displayStatus == 'show'">									
+							<div class="text-center">
+								<div v-if="displayStatus == 'show'">
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
 									<b-button variant="danger" v-on:click.prevent="onDesactivar(
-											  'Al desactivar este registro no podrá iniciar sesión ni usar el usuario en el sistema.' + 
-							   				  '<br /><br />¿Seguro que desea desactivar este usuario?')" 
+											  'Al desactivar este registro no podrá iniciar sesión ni usar el usuario en el sistema.' +
+							   				  '<br /><br />¿Seguro que desea desactivar este usuario?')"
 							   				  v-if="curUser.rolid == 1 && form.is_active ">
 										<i class="fas fa-user-slash"></i>&nbsp;Desactivar
 									</b-button>
@@ -129,10 +130,10 @@
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
 								</div>
-								<div v-if="displayStatus != 'show'">	
+								<div v-if="displayStatus != 'show'">
 									<b-button v-if="displayStatus == 'edit'" variant="success" v-on:click.prevent="onGuardarModificar">
 										<i class="fas fa-save"></i>&nbsp; Guardar
-									</b-button>						
+									</b-button>
 									<b-button v-if="displayStatus == 'new'" variant="success" v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
@@ -158,18 +159,18 @@
 <script>
   import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
+  import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
   export default{
-    mounted() { 
+    mounted() {
     	this.initActualView()
-    	
-		console.log('Users Form Component')		
     },
     name: 'User-Form',
     components: {
       PanelCard,
-      TitleComponent
+      TitleComponent,
+      SpinnerContainer
     },
     props:[
       	'title',
@@ -209,20 +210,20 @@
 	    	}else if( this.displayStatus == 'edit' ){
 	    		this.onDisplayModificar()
 	    		this.setControllerDataToForms()
-	    	}     	   
+	    	}
     	},
-    	onDisplayNuevo(){    		
+    	onDisplayNuevo(){
     		this.displayStatus = 'new'
 			this.setEnableForm()
-    	}, 
+    	},
     	onDisplayDetalle(){
     		this.displayStatus = 'show'
 			this.setDisableForm()
 			this.setControllerDataToForms()
-    	},	
+    	},
     	onDisplayModificar(){
     		this.displayStatus = 'edit'
-    		this.setEnableForm()			
+    		this.setEnableForm()
     	},
     	setEnableForm(){
     		this.isDisabled = false
@@ -240,20 +241,20 @@
     	onGuardarNuevo(){
     		var request = { method: 'POST', url: this.url + '/users', data: this.form }
     		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
-    		this.onSubmit(request, mssgOnFail)    															
+    		this.onSubmit(request, mssgOnFail)
     	},
     	onGuardarModificar(){
-    		var request = { method: 'PUT', url: this.url + '/users/'+ this.record_id, data: this.form }    			
+    		var request = { method: 'PUT', url: this.url + '/users/'+ this.record_id, data: this.form }
     		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
     		this.onSubmit(request, mssgOnFail)
     	},
     	onDesactivar(msg){
-    		this.$swal({ 
-						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+    		this.$swal({
+						title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>',
 						html:  '<span style="font-size: 1em">' + msg +
-							   '</span>',	
-						animation: false, 
-						showConfirmButton: true, 
+							   '</span>',
+						animation: false,
+						showConfirmButton: true,
 						showCancelButton: true,
 						confirmButtonText: 'Aceptar',
 						confirmButtonClass: ['my-alert', 'confirm-alert'],
@@ -264,37 +265,39 @@
 				if( result.value ){
 					var request = { method: 'DELETE', url: this.url + '/users/' + this.record_id, data: this.form }
 	    			var mssgOnFail = 'Ha ocurrido un error al desactivar este usuario.'
-	    			this.onSubmit(request, mssgOnFail)  
-				}	
+	    			this.onSubmit(request, mssgOnFail)
+				}
 			})
     	},
 		onSubmit(request, error_msg) {
 			self = this
 			if(request){
+        self.$refs.spinnerContainerRef.showSpinner()
 				axios(request).then((response) => {
 					if(response.data.success){
-						console.log('Response:: OK')
-						if( response.data.success == 'created' ){							
+            self.$refs.spinnerContainerRef.hideSpinner()						         
+						if( response.data.success == 'created' ){
 							self.setDisableForm()
-							self.toastFunctionRedirect('Éxito', 'El usuario ha sido creado correctamente. <br />Redireccionando...', 'success')
-						}else if( response.data.success == 'updated' ){													
+							self.toastFunctionRedirect('Éxito', 'El usuario ha sido creado correctamente.', 'success')
+						}else if( response.data.success == 'updated' ){
 							self.toastFunction('El usuario ha sido modificado correctamente.', 'success')
-							self.afterSuccessGuardar()							
+							self.afterSuccessGuardar()
 						}else if (response.data.success = 'deleted' ){
 							self.form.is_active = !self.form.is_active
 							self.afterSuccessGuardar('Usuario actualizado correctamente')
 						}
-					}else if (response.data.error){
-						console.log('Response:: FAIL');
+					}else if (response.data.error){						
 						self.all_errors = response.data.error
 						self.toastFunction(error_msg, 'error')
+            self.$refs.spinnerContainerRef.hideSpinner()
 					}
 				}).catch(function (error) {
 					self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+          self.$refs.spinnerContainerRef.hideSpinner()
 				});
 			}
 		},
-		afterSuccessGuardar(){	
+		afterSuccessGuardar(){
 			this.displayStatus = 'show'
 			this.setDisableForm()
 			this.setFormDataToUser()
@@ -344,20 +347,19 @@
   					timer: 3000
 			})
 		},
-		toastFunctionRedirect(title, msg, type){
-			this.$swal({
-					type: type,
-					title: title,
-					html: msg,
-					toast: false,
-					position: 'center',
-					showConfirmButton: false,
-  					timer: 3000,
-  					backdrop: `rgba(0, 0, 0, 0.6)`
-			}).then(() => {
-				this.redireccionarToIndex()
-			})	
-		}
+    toastFunctionRedirect(title, msg, type){
+      this.$swal({
+          type: type,
+          title: title,
+          html: msg,
+          toast: false,
+          position: 'center',
+          confirmButtonClass: ['my-alert', 'confirm-alert'],
+          backdrop: `rgba(0, 0, 0, 0.6)`
+      }).then(() => {
+          window.location.href = this.url + '/users'
+      })
+    }
     }
   }
 

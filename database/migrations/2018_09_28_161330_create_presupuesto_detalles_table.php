@@ -21,6 +21,8 @@ class CreatePresupuestoDetallesTable extends Migration
             $table->integer('secUno');
             $table->integer('secDos');
             $table->integer('opcion');
+            $table->decimal('monto', 10, 2)->default('0.00');
+
             $table->timestamps();
         });
     }

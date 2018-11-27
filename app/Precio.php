@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Precio extends Model{
-    public $timestamps = false;
+class Precio extends Model
+{
+    //
 }

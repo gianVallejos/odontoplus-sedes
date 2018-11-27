@@ -2,9 +2,9 @@
   <b-container>
 		<b-row>
 			<div class="col-md-12">
-				<TitleComponent titulo="Doctores" :items="breadcrumb" />
+				<TitleComponent icono="fas fa-user-md" titulo="Doctores" :items="breadcrumb" />
 			</div>
-      <div class="col-md-12">
+      <div class="col-md-12 pt-1">
         <PanelCard>
           <span slot="heading">Lista de Doctores</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -21,15 +21,15 @@
 			    						<input v-model="filter" placeholder="Buscar..." type="text" class="odInput buscar">
 								      	<div class="input-group-append">
 									    	<b-btn class="pl-3 pr-3" variant="secondary" :disabled="!filter" @click="filter = ''">
-									    		<i class="fas fa-sync-alt"></i>
+									    		<i class="fas fa-times"></i>
 									    	</b-btn>
 									    </div>
 								    </b-input-group>
 								</div>
 							</div>
-							<div class="col-md-6">							
+							<div class="col-md-6">
 								<div class="float-right d-inline-block">
-									<b-button-group>										
+									<b-button-group>
 										<b-button :href="url+'/doctores/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Doctor
 										</b-button>
@@ -50,10 +50,11 @@
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
                     @filtered="onFiltered"
-                    empty-text="No existen campos para mostrar" >
+                    empty-text="No existen campos para mostrar"
+                    empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
                 <template slot="actions" slot-scope="row">
-                    <div class="actions-table" style="color: #d1d1d1">						        	
-                    <a :href="url+'/doctores/'+ row.item.id" class="action" >Detalle</a>
+                    <div class="actions-table" style="color: #d1d1d1">
+                    <a :href="url+'/doctores/'+ row.item.id" class="action" >Ver Doctor</a>
                     |
                     <a :href="url+'/doctores/'+ row.item.id+'/edit'" class="action" >Modificar</a>
                   </div>
@@ -63,23 +64,23 @@
                       {{ row.value }} {{ row.item.apellidos }}
                     </a>
                 </template>
-                <template slot="dni" slot-scope="row">                    
+                <template slot="dni" slot-scope="row">
                       {{ row.value }}
                 </template>
-                <template slot="email" slot-scope="row">                    
+                <template slot="email" slot-scope="row">
                       {{ row.value }}
                 </template>
-                <template slot="celular" slot-scope="row">                    
+                <template slot="celular" slot-scope="row">
                       {{ row.value }}
                 </template>
-                <template slot="margen_ganancia" slot-scope="row">                                      
+                <template slot="margen_ganancia" slot-scope="row">
                       {{ (row.value == null) ? '0%' : row.value + '%' }}
                 </template>
             </b-table>
-            
+
           <b-row>
                 <b-col md="6" class="pt-3 fz-3">
-                  Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas                  
+                  Mostrando {{ currentPage }} de {{ totalCurrentPages() }} páginas
                 </b-col>
                 <b-col md="6" class="my-1 text-right">
                   <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="float-right" />
@@ -94,14 +95,10 @@
 </template>
 
 <script>
-  console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
 
   export default{
-    mounted() { 
-      console.log('doctores mounted')
-    },
     name: 'doctores',
     components:{
 			PanelCard,

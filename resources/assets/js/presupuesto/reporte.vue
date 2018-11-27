@@ -1,5 +1,6 @@
 <template>
 	<b-container>
+		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2" style="margin-top: -20px;">
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
@@ -19,7 +20,7 @@
 							<tr>
 								<td class="pr-title">FECHA: </td>
 								<td>{{ pgeneral.fecha }}</td>
-							</tr>	
+							</tr>
 							<tr>
 								<td class="pr-title">PACIENTE: </td>
 								<td>{{ pgeneral.nombrePaciente }}</td>
@@ -42,12 +43,18 @@
 					<i class="fas fa-print"></i> &nbsp;Imprimir
 				</b-button>
 				<b-button variant="danger" v-on:click.prevent="onEliminar(
-											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
-							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
 							   				  v-if="curUser.rolid == 1" >
 					<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 				</b-button>
-			</b-col>			
+				<b-button variant="warning" v-on:click.prevent="cerrarVenta()">
+					<i class="fas fa-times"></i> &nbsp;Cerrar
+				</b-button>
+				<b-button variant="secondary" :href="url + '/ingresos/line-item/' + pgeneral.ingresosId">
+					<i class="fas fa-money-check-alt"></i> &nbsp;Ver Ingresos
+				</b-button>
+			</b-col>
 		</b-row>
 		<b-row class="d-print-none" v-if="isMultipleOption">
 			<b-col cols="6" class="pr-0 pl-0 pt-4">
@@ -64,90 +71,90 @@
 						<i class="fas fa-tooth"></i> &nbsp;ODONTOGRAMA <span v-if="isMultipleOption">NRO {{ (this.opc1) ? '1' : '2' }}</span>
 					</div>
 				</div>
-			</b-col>			
+			</b-col>
 		</b-row>
 
 		<!-- ODONTOGRAMA -->
 		<section id="odontograma">
 			<b-row class="pt-4 pb-4">
-							<b-col cols="6" class="text-right pl-0 od-right-border">												
+							<b-col cols="6" class="text-right pl-0 od-right-border">
 								<div class="d-inline-block text-center" v-for="i in range(18, 11)" >
 									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span>
 									<Diente :ref="'pz'+i" :pieza=i :isEditable="false" />
-								</div>				
+								</div>
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
 								<div class="d-inline-block text-center" v-for="i in range(21, 28)" >
-									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span> 
+									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span>
 									<Diente :ref="'pz'+i" :pieza=i :isEditable="false" />
-								</div>				
+								</div>
 							</b-col>
-							<b-col cols="6" class="text-right pl-0 od-right-border">												
-								<div class="d-inline-block text-center" v-for="i in range(55, 51)" >									
+							<b-col cols="6" class="text-right pl-0 od-right-border">
+								<div class="d-inline-block text-center" v-for="i in range(55, 51)" >
 									<Diente :ref="'pz'+i" :pieza=i :isEditable="false" />
-									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span> 
-								</div>				
+									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span>
+								</div>
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
-								<div class="d-inline-block text-center" v-for="i in range(61, 65)" >									
+								<div class="d-inline-block text-center" v-for="i in range(61, 65)" >
 									<Diente :ref="'pz'+i" :pieza=i :isEditable="false" />
-									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span> 
-								</div>				
+									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span>
+								</div>
 							</b-col>
 							<b-col cols="12">
-								<hr>	
-							</b-col>							
-							<b-col cols="6" class="text-right pl-0 od-right-border">												
+								<hr>
+							</b-col>
+							<b-col cols="6" class="text-right pl-0 od-right-border">
 								<div class="d-inline-block text-center" v-for="i in range(85, 81)" >
 									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span>
 									<Diente :ref="'pz'+i" :pieza=i :isEditable="false" />
-								</div>				
+								</div>
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
 								<div class="d-inline-block text-center" v-for="i in range(71, 75)" >
 									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span>
 									<Diente :ref="'pz'+i" :pieza=i :isEditable="false" />
-								</div>				
+								</div>
 							</b-col>
-							<b-col cols="6" class="text-right pl-0 od-right-border">												
-								<div class="d-inline-block text-center" v-for="i in range(48, 41)" >									
+							<b-col cols="6" class="text-right pl-0 od-right-border">
+								<div class="d-inline-block text-center" v-for="i in range(48, 41)" >
 									<Diente :ref="'pz'+i" :pieza=i :isEditable="false" />
 									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span>
-								</div>				
+								</div>
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
-								<div class="d-inline-block text-center" v-for="i in range(31, 38)" >									
+								<div class="d-inline-block text-center" v-for="i in range(31, 38)" >
 									<Diente :ref="'pz'+i" :pieza=i :isEditable="false" />
 									<span class="od-modal" v-bind:class="{noEditable : !isEditable}" >{{ i }}</span>
-								</div>				
+								</div>
 							</b-col>
 			</b-row>
 		</section>
-		<section>						
+		<section>
 			<b-row class="pt-4 pb-3">
-							<b-col cols="12">								
+							<b-col cols="12">
 								<b-table show-empty :items=tratamientos_tabla :fields="fields" empty-text="No existen campos para mostrar">
-									<template slot="pieza" slot-scope="row">								    	
+									<template slot="pieza" slot-scope="row">
 								    	{{ row.value }}
 								    </template>
-								    <template slot="tratamiento" slot-scope="row">								    	
+								    <template slot="tratamiento" slot-scope="row">
 								    	{{ row.value }}
 								    </template>
-								    <template slot="deductible" slot-scope="row">								    	
+								    <template slot="deductible" slot-scope="row">
 								    	{{ row.value }}
 								    </template>
-								    <template slot="monto" slot-scope="row">								    	
+								    <template slot="monto" slot-scope="row">
 								    	S/ {{ row.value }}
 								    </template>
-								    <template slot="total" slot-scope="row">								    	
+								    <template slot="total" slot-scope="row">
 								    	S/ {{ row.value }}
 								    </template>
-								</b-table>											
+								</b-table>
 							</b-col>
 			</b-row>
 			<b-row class="pt-0 pb-3">
-				<b-col cols="12" class="text-right pr-4 pt-3" v-if="isDescuento">			
-					<div class="subtotal-layout">							
+				<b-col cols="12" class="text-right pr-4 pt-3" v-if="isDescuento">
+					<div class="subtotal-layout">
 						<div class="sub d-inline-block">Subtotal: </div>
 						<div class="d-inline-block presupuesto-sub text-left">
 							<span>S/ {{ sub_total }}</span>
@@ -155,19 +162,19 @@
 					</div>
 				</b-col>
 				<b-col cols="12" class="text-right pr-4" v-if="isDescuento">
-					<div class="subtotal-layout">							
+					<div class="subtotal-layout">
 						<div class="sub d-inline-block">Descuento: </div>
-						<b-form-select v-model="descuento" :options="options_descuento" class="presupuesto-form" v-on:input="aplicarDescuento()" disabled />							
+						<b-form-select v-model="descuento" :options="options_descuento" class="presupuesto-form" v-on:input="aplicarDescuento()" disabled />
 					</div>
 				</b-col>
 				<b-col cols="12" class="text-right pr-4">
-					<div class="subtotal-layout">							
+					<div class="subtotal-layout">
 						<div class="sub d-inline-block">Total: </div>
 						<div class="d-inline-block presupuesto-sub text-left">
 							<span>S/ {{ total }}</span>
 						</div>
 					</div>
-				</b-col>				
+				</b-col>
 			</b-row>
 			<b-row class="d-print-none">
 				<b-col cols="12" class="pt-1 pb-2 text-center">
@@ -175,32 +182,40 @@
 						<i class="fas fa-print"></i> &nbsp;Imprimir
 					</b-button>
 					<b-button variant="danger" v-on:click.prevent="onEliminar(
-											  'A continuación eliminará el registro actual y no podrá ser recuperado.' + 
-							   				  '<br /><br />¿Seguro que desea eliminar este registro?')" 
+											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
+							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
 							   				  v-if="curUser.rolid == 1" >
-					<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
-				</b-button>
-				</b-col>			
+						<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
+					</b-button>
+					<b-button variant="warning" v-on:click.prevent="cerrarVenta()">
+						<i class="fas fa-times"></i> &nbsp;Cerrar
+					</b-button>
+					<b-button variant="secondary" :href="url + '/ingresos/line-item/' + pgeneral.ingresosId">
+						<i class="fas fa-money-check-alt"></i> &nbsp;Ver Ingresos
+					</b-button>
+				</b-col>
 			</b-row>
 		</section>
-		
+
 	</b-container>
 </template>
 <script>
 	import Diente from './diente/diente.vue'
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
 	export default{
-		mounted(){			
+		mounted(){
 			this.record_id = this.pgeneral.id
 			this.tratamientos = this.pdetalle
 			this.descuento = this.pgeneral.descuento
 			this.isMultipleOptions()
 			this.haveDescuento()
-			this.restartMainDientes()			
+			this.restartMainDientes()
 		},
 		components: {
-			Diente
+			Diente,
+			SpinnerContainer
 		},
 		props: [
 			'url',
@@ -217,7 +232,7 @@
 			    todos: ['', 'center', 'top', 'right', 'left', 'bottom', 'ionomero'],
 			    tratamientos: [],
 			    tratamientos_tabla: [],
-			    fields: [				    				    				    
+			    fields: [
 				    { key: 'pieza', label: 'Pieza', class: 'text-center'},
 				    { key: 'tratamiento', label: 'Tratamiento'},
 				    { key: 'deductible', label: 'Deductible', class: 'text-center'},
@@ -268,7 +283,7 @@
 			haveDescuento(){
 				if( this.descuento > 0 ){
 					this.isDescuento = true
-					this.matchDescuento()					
+					this.matchDescuento()
 					return true
 				}
 				return false
@@ -280,17 +295,17 @@
 					this.descuento = 10
 				}
 			},
-			range(min,max){				
+			range(min,max){
 				var array = [],
 				j = 0;
 				if( min <= max ){
 					for(var i = min; i <= max; i++){
-						array[j] = i;						
+						array[j] = i;
 						j++;
 					}
 				}else{
 					for( var i = min; i >= max; i-- ){
-						array[j] = i;						
+						array[j] = i;
 						j++;
 					}
 				}
@@ -306,15 +321,15 @@
 	        cambiarOpcion(opc){
 	        	this.opcion = opc
 	        	this.changeOpcionBoton(opc)
-	        	this.restartMainDientes()	        	       	
+	        	this.restartMainDientes()
 	        },
-	        restartMainDientes(){ //Principal		        	
-				this.restartAllPintadoDientes()					
-				this.pintarAllSeccionesDePiezas()            				
-				this.mostrarTratamientosEnTabla()				           
+	        restartMainDientes(){ //Principal
+				this.restartAllPintadoDientes()
+				this.pintarAllSeccionesDePiezas()
+				this.mostrarTratamientosEnTabla()
 	        },
 	        restartAllPintadoDientes(){
-	        	for( var i = 0; i < this.tratamientos.length; i++ ){	        		
+	        	for( var i = 0; i < this.tratamientos.length; i++ ){
 	        		if( this.tratamientos[i].pieza != 0 ){
 		        		this.despintarSeccionDiente(2, this.tratamientos[i].pieza)
 		        		this.despintarSeccionDiente(3, this.tratamientos[i].pieza)
@@ -328,7 +343,6 @@
 	        },
 	        pintarAllSeccionesDePiezas(){
 	        	for( var i = 0; i < this.tratamientos.length; i++ ){
-	        		console.log(this.tratamientos[i].opcion )
 	        		if( this.tratamientos[i].opcion == this.opcion ){
 		        		var pieza = this.tratamientos[i].pieza
 						var sec = this.tratamientos[i].seccion
@@ -359,12 +373,11 @@
 	            */
 	        },
 	        mostrarTratamientosEnTabla(){
-	        	this.tratamientos_tabla = []	
+	        	this.tratamientos_tabla = []
 	        	this.sub_total = 0
 	        	this.tratamientos.sort(this.menorAMayor)
-	        	var monto_total = 0  	
+	        	var monto_total = 0
 	        	for( var i = 0; i < this.tratamientos.length; i++ ){
-	        		//console.log('!!!' + this.tratamientos[i].opcion)
 	                if( this.tratamientos[i].opcion == this.opcion ){
 	                    var pz = this.tratamientos[i].pieza
 	                    var sec = this.tratamientos[i].seccion
@@ -374,7 +387,7 @@
 	                    if( this.tratamientos[i].secUno == 0 && this.tratamientos[i].secDos == 0 ){
 	                    	ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
 	                    	monto_total += parseFloat(monto)
-	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);		                        
+	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);
 	                    }else if( this.tratamientos[i].secUno != 0 && this.tratamientos[i].secDos == 0 ){
 	                        sec = 29;
 	                        ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
@@ -387,8 +400,8 @@
 	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);
 	                    }
 	                }
-	            }   
-	            this.sub_total = this.redondearADos(monto_total)	            
+	            }
+	            this.sub_total = this.redondearADos(monto_total)
 	            this.total = this.calcularDescuento()
 	        },
 	        calcularDescuento(){
@@ -407,7 +420,7 @@
 	        	}else if( this.trat_string[seccion] == 'bottom' ){
 					this.$refs[sec][0].isBottom = false//!this.isBottom
 	        	}else if( this.trat_string[seccion] == 'ionomero' ){
-					this.$refs[sec][0].isIonomero = false//!this.isIonomero	        	
+					this.$refs[sec][0].isIonomero = false//!this.isIonomero
 	        	}else if( seccion >= 8 && seccion <= 11 ){
 	        		this.$refs[sec][0].isCorona = false
 	        	}else if( seccion >= 8 && seccion <= 23 ){
@@ -441,8 +454,8 @@
 	                this.pintarResina(piezaDiente, auxSeccion);
 	            }
 	        },
-	        pintarResina(pieza, seccion){	            
-	            var sec = 'pz' + pieza	            
+	        pintarResina(pieza, seccion){
+	            var sec = 'pz' + pieza
 	        	if( seccion == '7' ){
 					this.$refs[sec][0].isMiddle = true//!this.isMiddle
 	        	}else if( this.trat_string[seccion] == 'top' ){
@@ -454,7 +467,7 @@
 	        	}else if( this.trat_string[seccion] == 'bottom' ){
 					this.$refs[sec][0].isBottom = true//!this.isBottom
 	        	}else if( this.trat_string[seccion] == 'ionomero' )
-					this.$refs[sec][0].isIonomero = true//!this.isIonomero	
+					this.$refs[sec][0].isIonomero = true//!this.isIonomero
 	        },
 	        getIndiceTratamientoPorSeccion(sec){
 	        	for( var i = 0; i < this.precios.length; i++ ){
@@ -463,12 +476,12 @@
 	        		}
 	        	}
 	        },
-	        agregarDatosATabla(ind, pieza, tratamiento, monto){	 //Puede ser mejor       	
+	        agregarDatosATabla(ind, pieza, tratamiento, monto){	 //Puede ser mejor
 	        	if( pieza == 0 ){
 	        		pieza = ' '
 	        	}
 		    	this.tratamientos_tabla.push({id: ind, pieza, tratamiento, deductible: 0, monto, total: monto})
-		    	//this.calcularTotalesMonto(monto)		    	
+		    	//this.calcularTotalesMonto(monto)
 	        },
 	        changeOpcionBoton(opc){
 	        	if( opc == 2 ){
@@ -478,12 +491,12 @@
 	        	}
 	        },
 	    	onEliminar(msg){
-	    		this.$swal({ 
-							title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+	    		this.$swal({
+							title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>',
 							html:  '<span style="font-size: 1em">' + msg +
-								   '</span>',	
-							animation: false, 
-							showConfirmButton: true, 
+								   '</span>',
+							animation: false,
+							showConfirmButton: true,
 							showCancelButton: true,
 							confirmButtonText: 'Aceptar',
 							confirmButtonClass: ['my-alert', 'confirm-alert'],
@@ -494,26 +507,28 @@
 					if( result.value ){
 						var request = { method: 'DELETE', url: this.url + '/presupuestos/' + this.record_id, data: this.form }
 		    			var mssgOnFail = 'Ha ocurrido un error al eliminar este registro.'
-		    			this.onSubmit(request, mssgOnFail)  
-					}	
+		    			this.onSubmit(request, mssgOnFail)
+					}
 				})
 	    	},
 			onSubmit(request, error_msg) {
 				self = this
 				if(request){
+					self.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
-						if(response.data.success){
-							console.log('Response:: OK')
-							if (response.data.success = 'deleted' ){	
-								self.toastFunctionRedirect('Éxito', 'El presupuesto ha sido eliminado correctamente. <br />Redireccionando...', 'success')				
+						if(response.data.success){							
+							self.$refs.spinnerContainerRef.hideSpinner()
+							if (response.data.success = 'deleted' ){
+								self.toastFunctionRedirect('Éxito', 'El presupuesto ha sido eliminado correctamente.', 'success')
 							}
-						}else if (response.data.error){							
-								console.log('Response:: FAIL');
+						}else if (response.data.error){								
 								self.all_errors = response.data.error
-								self.toastFunction(error_msg, 'error')							
+								self.toastFunction(error_msg, 'error')
+								self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
 						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+						self.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 			},
@@ -534,12 +549,17 @@
 						html: msg,
 						toast: false,
 						position: 'center',
-						showConfirmButton: false,
-	  					timer: 3000,
-	  					backdrop: `rgba(0, 0, 0, 0.6)`
+						confirmButtonClass: ['my-alert', 'confirm-alert'],
+		  			backdrop: `rgba(0, 0, 0, 0.6)`
 				}).then(() => {
-					window.location.href = this.url + '/presupuestos/'
-				})	
+						window.close()
+						window.opener.location.reload()
+						window.opener.external.comeback()						
+						//window.location.href = this.url + '/presupuestos'
+				})
+			},
+			cerrarVenta(){
+					window.close()
 			}
 
 		}
@@ -549,7 +569,7 @@
 	table.data-general{
 		width: 520px;
 		font-size: 1.15em;
-		font-family: 'Rubik', sans-serif;	
+		font-family: 'Rubik', sans-serif;
 		border: 2px solid #f3f3f3;
 	}
 	table.data-general tr td{
@@ -577,15 +597,15 @@
 	}
 
 	.pr-logo{
-		position: relative; 
-		height: 100%; 
+		position: relative;
+		height: 100%;
 		padding-top: 20px;
 		width: 265px;
 	}
 
 	.pr-logo span{
 		display: block;
-		font-size: .8em;		
+		font-size: .8em;
 		text-align: center;
 	}
 
@@ -597,7 +617,7 @@
 	.pr-section-title{
 		background: #f3f3f3;
 		padding: 8px 14px;
-		-webkit-print-color-adjust: exact;		
+		-webkit-print-color-adjust: exact;
 	}
 
 	.pr-seccion-title-text{
@@ -623,10 +643,10 @@
 	    font-size: .85em;
 	  }
 	}
-	
-	@page{ 
+
+	@page{
 	    size: auto;
-	    margin: auto;  
+	    margin: auto;
 	}
 
 </style>

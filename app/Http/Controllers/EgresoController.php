@@ -23,101 +23,82 @@ class EgresoController extends Controller{
         $this->middleware('auth');
     }
 
-    public function index()
-    {
-        $egresos = DB::select('call OP_obtenerEgresos()');
+    public function index(){
+        $egresos = DB::select('call OP_Egresos_get_all()');
         $egresos = json_encode($egresos);
 
         return view($this->path . '.index', compact('egresos'));
     }
 
-    public function create()
-    {        
-        $doctores = DB::select('call OP_obtenerDoctores()');
+    public function create(){
+        $doctores = DB::select('call OP_Doctors_get_all()');
         $doctores = json_encode($doctores);
 
         return view($this->path . '.create', compact('doctores'));
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $validator = Validator::make($request->all(), self::$validation_rules );
 
         if ($validator->passes()) {
-            try{
-                $egreso = new Egreso();
-                $egreso->fecha = $request->fecha;
-                $egreso->tipo = $request->tipo;
-                $egreso->doctorId = $request->doctor;
-                $egreso->cantidad = $request->cantidad;
-                $egreso->concepto = $request->concepto;
-                $egreso->precio_unitario = $request->monto;
-                $egreso->observacion = $request->nota;
-                $egreso->save();
-                
+            if( $request->doctor == null ){
+                $egreso = DB::select('call OP_Egresos_add_all("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
+                                                                . $request->tipo . '", "'. $request->nota .'", '. $request->monto .')');
+            }else{
+                $egreso = DB::select('call OP_Egresos_add_all_doctor("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
+                                                                       . $request->tipo . '", "'. $request->nota .'", '. $request->monto .', '. $request->doctor .')');
+            }
+            if( $egreso[0]->ESTADO > 0 ){
                 return response()->json(['success' => 'created']);
-
-            }catch(Exception $e){
-                return response()->json(['error'=>$e->getMessage()]);
+            }else{
+                return response()->json(['error'=> 'Ha ocurrido un error']);
             }
         }
         return response()->json(['error'=>$validator->errors()]);
     }
 
-    public function show($id)
-    {
-        $egreso = DB::select('call OP_obtenerEgresos_Id('.$id.')')[0];
+    public function show($id){
+        $egreso = DB::select('call OP_Egresos_get_all_Id('.$id.')')[0];
         $egreso = json_encode($egreso);
-        $doctores = DB::select('call OP_obtenerDoctores()');
+        $doctores = DB::select('call OP_Doctors_get_all()');
         $doctores = json_encode($doctores);
 
         return view('egresos.show', compact('egreso', 'doctores'));
     }
 
-    public function edit($id)
-    {
-        $doctores = DB::select('call OP_obtenerDoctores()');
+    public function edit($id){
+        $doctores = DB::select('call OP_Doctors_get_all()');
         $doctores = json_encode($doctores);
-        $egreso = DB::select('call OP_obtenerEgresos_Id('. $id .')')[0];
+        $egreso = DB::select('call OP_Egresos_get_all_Id('. $id .')')[0];
         $egreso = json_encode($egreso);
 
         return view($this->path . '.edit', compact('doctores', 'egreso'));
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         $validator = Validator::make($request->all(), self::$validation_rules );
 
         if ($validator->passes()) {
-            try{
-                $egreso = Egreso::findOrFail($id);
-                $egreso->fecha = $request->fecha;
-                $egreso->tipo = $request->tipo;
-                $egreso->doctorId = $request->doctor;
-                $egreso->cantidad = $request->cantidad;
-                $egreso->concepto = $request->concepto;
-                $egreso->precio_unitario = $request->monto;
-                $egreso->observacion = $request->nota;
-                $egreso->save();     
-
-                return response()->json(['success' => 'updated']);
-
-            }catch(Exception $e){
-                return response()->json(['error'=>$e->getMessage()]);
-            }
+          if( $request->doctor == null ){
+              $egreso = DB::select('call OP_Egresos_update_all_Id("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
+                                                                    . $request->tipo . '", "'. $request->nota .'", '. $request->monto .', '. $id .')');
+          }else{
+              $egreso = DB::select('call OP_Egresos_update_all_doctor_Id("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
+                                                                           . $request->tipo . '", "'. $request->nota .'", '. $request->monto .', '. $request->doctor .', '. $id .')');
+          }
+          if( $egreso[0]->ESTADO > 0 ){
+              return response()->json(['success' => 'updated']);
+          }else{
+              return response()->json(['error'=> 'Ha ocurrido un error']);
+          }
         }
         return response()->json(['error'=>$validator->errors()]);
     }
 
-    public function destroy(Request $request, $id)
-    {
+    public function destroy(Request $request, $id){
         try{
-            $egreso = Egreso::findOrFail($id);
-            $egreso->is_deleted = true;
-            $egreso->save();
-
+            $res = DB::select('call OP_Egresos_delete_all_Id('. $id .')');
             return response()->json(['success' => 'deleted']);
-
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);
         }

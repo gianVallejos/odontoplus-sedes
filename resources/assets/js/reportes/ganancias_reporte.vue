@@ -1,5 +1,6 @@
 <template>
 	<b-container v-if="curUser.rolid == 1" style="margin-top: -30px">
+		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<b-col cols="4" class="text-left" >
 				<div class="pr-logo">
@@ -15,16 +16,16 @@
 					<div class="text-center pb-2">
 						<h5> REPORTE DE GANANCIAS </h5>
 					</div>
-					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >	
+					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 						<tr>
 							<td class="pr-title">DESDE:</td>
 							<td>{{ igeneral.fechaInicial }} </td>
 							<td class="pr-title">HASTA:</td>
 							<td>{{igeneral.fechaFinal}}</td>
-						</tr>		
+						</tr>
 						<tr>
 							<td class="pr-title">TOTAL: </td>
-							<td colspan="3">S/ {{ igeneral.totales.total }}</td>								
+							<td colspan="3">S/ {{ igeneral.totales.total }}</td>
 						</tr>
 					</table>
 				</div>
@@ -38,7 +39,7 @@
 				<b-button variant="warning" v-on:click.prevent="onCerrar()">
 					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
 				</b-button>
-			</b-col>			
+			</b-col>
 		</b-row>
 		<b-row>
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
@@ -47,32 +48,34 @@
 						<i class="fas fa-file-invoice-dollar"></i> &nbsp;Detalle de Ganancias
 					</div>
 				</div>
-			</b-col>			
+			</b-col>
 		</b-row>
 		<b-row>
 			<b-col cols="12">
-				<b-table 	show-empty 
-							:items="ingresos" 
-							:fields="fields" 								 
+				<b-table 	show-empty
+							:items="ingresos"
+							:fields="fields"
 					        empty-text="No existen campos para mostrar"
-					        :foot-clone=false >							
+					        :foot-clone=false >
 					<template slot="index" slot-scope="row">
 						{{ row.index + 1 }}
+					</template>
+					<template slot="historia" slot-scope="row">
+						{{ row.value }}
 					</template>
 					<template slot="doctor_nombre" slot-scope="row">
 						{{ row.item.nombres }} {{ row.item.apellidos }}
 					</template>
 					<template slot="monto" slot-scope="row" class="hide-print">
-						S/. {{ row.item.monto }}
+						S/. {{ row.value }}
 					</template>
 					<template slot="total" slot-scope="row">
-						S/. {{ row.item.total }}
+						S/. {{ row.value }}
 					</template>
-
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
-          <template slot="ganancia" slot-scope="row">
+          			<template slot="ganancia" slot-scope="row">
 						S/. {{ redondearADos(row.item.total - row.item.doctor)  }}
 					</template>
 				</b-table>
@@ -86,7 +89,7 @@
 				</div>
 			</b-col>
 		</b-row>
-		
+
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
 				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
@@ -95,16 +98,17 @@
 				<b-button variant="warning" v-on:click.prevent="onCerrar()">
 					<i class="fas fa-times-circle"></i>&nbsp; Cerrar
 				</b-button>
-			</b-col>			
+			</b-col>
 		</b-row>
-		
+
 	</b-container>
 </template>
 <script>
 	import axios from 'axios'
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	export default{
-		mounted(){
-			console.log('Pagos Mounted')
+		components: {
+			SpinnerContainer
 		},
 		name: 'Reporte-Ingreso',
 		props: [
@@ -112,19 +116,20 @@
 			'igeneral',
 			'ingresos',
 			'curUser',
-			'view_mode'
+			'view_mode',
 		],
 		data(){
 			return{
-				fields: [				    
+				fields: [
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
-				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
+					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc', class: 'text-center' },
+					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
+				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
 				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', class: 'text-center' },
 				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'text-center' },
-				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'text-center' },			        
-				    { key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}			        
+				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'text-center' },
+				    { key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],
 			}
 		},
@@ -135,19 +140,23 @@
 			onSubmit(request, error_msg) {
 				self = this
 				if(request){
+					self.$refs.spinnerContainerRef.showSpinner()
+					alert('!')
 					axios(request).then((response) => {
 						if(response.data.success){
-							if( response.data.success == 'created' ){	
-								this.onDisplayDetalle()		
-								self.toastFunction('El pago a sido guradado correctamente', 'success')				
+							if( response.data.success == 'created' ){
+								this.onDisplayDetalle()
+								self.toastFunction('El pago a sido guradado correctamente', 'success')
 							}
+							self.$refs.spinnerContainerRef.hideSpinner()
 						}else if (response.data.error){
-								console.log('Response:: FAIL');
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
+								self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
-						self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+							self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
+							self.$refs.spinnerContainerRef.hideSpinner()
 					});
 				}
 			},
@@ -175,7 +184,7 @@
 	table.data-general{
 		width: 520px;
 		font-size: 1.15em;
-		font-family: 'Rubik', sans-serif;	
+		font-family: 'Rubik', sans-serif;
 		border: 2px solid #f3f3f3;
 	}
 	table.data-general tr td{
@@ -203,15 +212,15 @@
 	}
 
 	.pr-logo{
-		position: relative; 
-		height: 100%; 
+		position: relative;
+		height: 100%;
 		padding-top: 20px;
 		width: 265px;
 	}
 
 	.pr-logo span{
 		display: block;
-		font-size: .8em;		
+		font-size: .8em;
 		text-align: center;
 	}
 
@@ -223,7 +232,7 @@
 	.pr-section-title{
 		background: #f3f3f3;
 		padding: 8px 14px;
-		-webkit-print-color-adjust: exact;		
+		-webkit-print-color-adjust: exact;
 	}
 
 	.pr-seccion-title-text{
@@ -233,7 +242,7 @@
 	}
 
 	.monto-class{
-		font-size: 1.4em;		
+		font-size: 1.4em;
 	}
 
 	.monto-class span{
@@ -247,8 +256,16 @@
 			display: none
 		}
 	}
-	@page{ 
+	@page{
 	    size: auto;
-	    margin: auto;  
+	    margin: auto;
+	}
+
+	.td-doc-width{
+		width: 150px;
+	}
+
+	.td-trat-width{
+		width: 185px;
 	}
 </style>

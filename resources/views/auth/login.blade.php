@@ -21,26 +21,26 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-md-12">                                          
+                    <div class="col-md-12">
                         <form method="POST" action="{{ route('login') }}">
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="icon-input">
                                         <i class="fas fa-envelope"></i>
-                                    </span>                                
+                                    </span>
                                     <input placeholder="Dirección de E-mail" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} odInput" name="email" value="{{ old('email') }}" >
-                                    
+
                                         <span class="invalid-feedback" role="alert">
                                             {{ $errors->first('email') }}
-                                        </span>                                    
+                                        </span>
                                 </div>
                             </div>
                             <div class='form-group'>
                                 <div class="input-group">
                                     <span class="icon-input">
                                         <i class="fas fa-lock"></i>
-                                    </span> 
+                                    </span>
                                     <input type="password" placeholder="Contraseña" class="form-control odInput{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" autocomplete="off">
                                     @if ($errors->has('password'))
                                         <span class="invalid-feedback" role="alert">
@@ -48,7 +48,7 @@
                                         </span>
                                     @endif
                                 </div>
-                            </div>                            
+                            </div>
                             <div class='form-group'>
                                 <button type="submit" class="btn btn-primary btn-login">
                                     Iniciar Sesión
@@ -59,24 +59,24 @@
                                     <input style="margin-top: 2px" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                     <label class="d-inline-block mb-0" for="remember">No cerrar sesión</label>
                                 </div>
-                                <div class="d-inline-block" style="float: right">                                    
+                                <div class="d-inline-block" style="float: right">
                                     <a href="#" data-toggle="modal" data-target="#exampleModal">
                                         ¿Olvidaste tu contraseña?
                                     </a>
-                                </div>                    
-                            </div>       
-                        </form>  
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
-        
+
     </div>
     <div class='sign text-center'>
         <a href="http://www.odontoplus.pe" target="_blank">
             <img src="{{ asset('images/sistema/logo_odontoplus_login.png')}}" alt="Odontoplus Logotipo">
         </a>
-        <p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.0.4</p>
+        <p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.1.0</p>
     </div>
 
 </div>

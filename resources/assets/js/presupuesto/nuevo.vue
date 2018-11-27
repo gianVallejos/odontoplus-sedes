@@ -1,23 +1,24 @@
 <template>
-	<b-container class="pb-4">				
+	<b-container class="pb-4">
+		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<b-col cols="12">
-				<TitleComponent titulo="Presupuestos" :items="breadcrumb" />				
+				<TitleComponent titulo="Presupuestos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12" class="pt-3">				
+			<b-col cols="12" class="pt-1">
 				<PanelCard>
 					<span slot="heading">Presupuesto Nro {{ nro }} </span>
-					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">												
+					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						<div class="presupuesto-top">
-							<b-row>							
-									<b-col cols="6 pb-2">										
+							<b-row>
+									<b-col cols="6 pb-2">
 										<span>Fecha:</span>
 										<div class="d-inline-block texto">
 											{{ fechahora }}
-										</div>										
+										</div>
 									</b-col>
 									<b-col cols="6 pb-2">
-										<span>Nro Historia:</span><div class="d-inline-block texto">{{ paciente.id }}</div>										
+										<span>Nro Historia:</span><div class="d-inline-block texto">{{ paciente.id }}</div>
 									</b-col>
 									<b-col cols="6 pb-2">
 										<span>Paciente:</span><div class="d-inline-block texto">{{ paciente.nombres }} {{ paciente.apellidos }}</div>
@@ -29,8 +30,8 @@
 										<span>Empresa:</span><div class="d-inline-block texto">{{ paciente.empresa }}</div>
 									</b-col>
 									<b-col cols="6 pb-2">
-										<span>Sede:</span><div class="d-inline-block texto">Cajamarca</div>					
-									</b-col>							
+										<span>Sede:</span><div class="d-inline-block texto">Cajamarca</div>
+									</b-col>
 							</b-row>
 						</div>
 						<b-row class="pb-3">
@@ -45,111 +46,112 @@
 							<b-col cols="12" class="text-center pt-4 pb-4">
 								<b-button type="submit" variant="success" v-on:click="onSubmitSave">
 									<i class="fas fa-save"></i>&nbsp; Guardar
-								</b-button>								
+								</b-button>
 								<b-button :href="url + '/presupuestos'" variant="danger">
 									<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 								</b-button>
 							</b-col>
 						</b-row>
 						<b-row class="pt-4 pb-4">
-							<b-col cols="6" class="text-right pl-0 od-right-border">												
+							<b-col cols="6" class="text-right pl-0 od-right-border">
 								<div class="d-inline-block text-center" v-for="i in range(18, 11)" >
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
 									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
-								</div>				
+								</div>
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
 								<div class="d-inline-block text-center" v-for="i in range(21, 28)" >
-									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span> 
+									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
 									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
-								</div>				
+								</div>
 							</b-col>
-							<b-col cols="6" class="text-right pl-0 od-right-border">												
-								<div class="d-inline-block text-center" v-for="i in range(55, 51)" >									
+							<b-col cols="6" class="text-right pl-0 od-right-border">
+								<div class="d-inline-block text-center" v-for="i in range(55, 51)" >
 									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
-									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span> 
-								</div>				
+									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
+								</div>
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
-								<div class="d-inline-block text-center" v-for="i in range(61, 65)" >									
+								<div class="d-inline-block text-center" v-for="i in range(61, 65)" >
 									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
-									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span> 
-								</div>				
+									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
+								</div>
 							</b-col>
 							<b-col cols="12">
-								<hr>	
-							</b-col>							
-							<b-col cols="6" class="text-right pl-0 od-right-border">												
+								<hr>
+							</b-col>
+							<b-col cols="6" class="text-right pl-0 od-right-border">
 								<div class="d-inline-block text-center" v-for="i in range(85, 81)" >
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
 									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
-								</div>				
+								</div>
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
 								<div class="d-inline-block text-center" v-for="i in range(71, 75)" >
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
 									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
-								</div>				
+								</div>
 							</b-col>
-							<b-col cols="6" class="text-right pl-0 od-right-border">												
-								<div class="d-inline-block text-center" v-for="i in range(48, 41)" >									
+							<b-col cols="6" class="text-right pl-0 od-right-border">
+								<div class="d-inline-block text-center" v-for="i in range(48, 41)" >
 									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
-								</div>				
+								</div>
 							</b-col>
 							<b-col cols="6" class="text-left pr-0">
-								<div class="d-inline-block text-center" v-for="i in range(31, 38)" >									
+								<div class="d-inline-block text-center" v-for="i in range(31, 38)" >
 									<Diente :ref="'pz'+i" @click="middlewareTratamientoResina" :pieza=i :isEditable="true" />
 									<span class="od-modal" v-on:click="abrirModalDesdePieza(i)">{{ i }}</span>
-								</div>				
+								</div>
 							</b-col>
-						</b-row>						
+						</b-row>
 						<b-row class="pt-4">
 							<b-col cols="6" class="text-left">
 								<b-button v-on:click=abrirModalDesdeBtn >Agregar Tratamiento Extra</b-button>
 							</b-col>
-							<b-col cols="6" class="text-right pr-4">		
+							<b-col cols="6" class="text-right pr-4">
 								<div class="subtotal-layout pt-1" >
 									<div class="sub d-inline-block">Subtotal: </div>
 									<div class="d-inline-block presupuesto-sub text-left">
 										<span>S/ {{ sub_total }}</span>
 									</div>
-								</div>						
+								</div>
 							</b-col>
 						</b-row>
 						<b-row class="pt-4 pb-3">
-							<b-col cols="12">								
-								<b-table  show-empty 
-										  :items=tratamientos_tabla 
-										  :fields="fields" 
+							<b-col cols="12">
+								<b-table  show-empty
+										  :items=tratamientos_tabla
+										  :fields="fields"
 										  empty-text="No existen campos para mostrar"
+											empty-filtered-text="No existen pacientes que coincidan con la búsqueda"
 								>
-									<template slot="pieza" slot-scope="row">								    	
+									<template slot="pieza" slot-scope="row">
 								    	{{ row.value }}
 								    </template>
-								    <template slot="tratamiento" slot-scope="row">								    	
+								    <template slot="tratamiento" slot-scope="row">
 								    	{{ row.value }}
 								    </template>
-								    <template slot="deductible" slot-scope="row">								    	
+								    <template slot="deductible" slot-scope="row">
 								    	{{ row.value }}
 								    </template>
-								    <template slot="monto" slot-scope="row">								    	
+								    <template slot="monto" slot-scope="row">
 								    	S/ {{ row.value }}
 								    </template>
-								    <template slot="total" slot-scope="row">								    	
+								    <template slot="total" slot-scope="row">
 								    	S/ {{ row.value }}
 								    </template>
-								    <template slot="action" slot-scope="row">								    	
+								    <template slot="action" slot-scope="row">
 								    	<a href="#" v-on:click.prevent="eliminarTratamiento(row.item.id)" class="tratamiento-delete">
 								    		Eliminar
 								    	</a>
 								    </template>
-								</b-table>											
+								</b-table>
 							</b-col>
 						</b-row>
 						<b-row class="pt-4 pb-3">
-							<b-col cols="12" class="text-right pr-4">			
-								<div class="subtotal-layout">							
+							<b-col cols="12" class="text-right pr-4">
+								<div class="subtotal-layout">
 									<div class="sub d-inline-block">Subtotal: </div>
 									<div class="d-inline-block presupuesto-sub text-left">
 										<span>S/ {{ sub_total }}</span>
@@ -157,13 +159,13 @@
 								</div>
 							</b-col>
 							<b-col cols="12" class="text-right pr-4">
-								<div class="subtotal-layout">							
+								<div class="subtotal-layout">
 									<div class="sub d-inline-block">Descuento: </div>
-									<b-form-select v-model="descuento" :options="options_descuento" class="presupuesto-form" v-on:input="aplicarDescuento()" />									
+									<b-form-select v-model="descuento" :options="options_descuento" class="presupuesto-form" v-on:input="aplicarDescuento()" />
 								</div>
 							</b-col>
 							<b-col cols="12" class="text-right pr-4">
-								<div class="subtotal-layout">							
+								<div class="subtotal-layout">
 									<div class="sub d-inline-block">Total: </div>
 									<div class="d-inline-block presupuesto-sub text-left">
 										<span>S/ {{ total }}</span>
@@ -175,7 +177,7 @@
 							<b-col cols="12" class="text-center pt-4 pb-4">
 								<b-button type="submit" variant="success" v-on:click="onSubmitSave">
 									<i class="fas fa-save"></i>&nbsp; Guardar
-								</b-button>								
+								</b-button>
 								<b-button :href="url + '/presupuestos'" variant="danger">
 									<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 								</b-button>
@@ -183,10 +185,10 @@
 						</b-row>
 
 					</div>
-				</PanelCard>				
+				</PanelCard>
 			</b-col>
-		</b-row>				
-		<b-modal ref="tratamientosModalRef" id="modal1" title="Lista de Tratamientos" size="lg" no-fade hide-footer>
+		</b-row>
+		<b-modal ref="tratamientosModalRef" id="modal1" title="Lista de Tratamientos" size="md" no-fade>
 			<b-row>
 				<b-col cols="12">
 					<b-input-group>
@@ -195,42 +197,51 @@
 				    			<i class="fas fa-search" aria-hidden="true"></i>
 				    		</span>
 				    	</div>
-			    		<input v-model="filter" placeholder="Buscar..." type="text" class="odInput">
+			    		<input v-model="filter" placeholder="Buscar..." type="text" class="odInput" ref="inBuscarTratamiento">
 					</b-input-group>
 				</b-col>
 				<b-col cols="12" class="pt-3">
-					<b-table  show-empty 
-							  :items="precios_table" 
-							  :fields="fieldsPrecios" 
-							  :current-page="currentPage" 
-							  :per-page="perPage" 
-							  :filter="filter" 								
-							  :sort-by.sync="sortBy" 
-							  :sort-desc.sync="sortDesc" 								
-							  :sort-direction="sortDirection" 
+					<b-table  show-empty
+							  :items="precios_table"
+							  :fields="fieldsPrecios"
+							  :current-page="currentPage"
+							  :per-page="perPage"
+							  :filter="filter"
+							  :sort-by.sync="sortBy"
+							  :sort-desc.sync="sortDesc"
+							  :sort-direction="sortDirection"
 							  @filtered="onFiltered"
 							  empty-text="No existen campos para mostrar"
-					>						
+								empty-filtered-text="No existen pacientes que coincidan con la búsqueda"
+					>
 						<template slot="index" slot-scope="row">
 					      {{ row.index + 1 }}
 					    </template>
-						<template slot="detalle" slot-scope="row">								    	
+						<template slot="detalle" slot-scope="row">
 							{{ row.value }}
 						</template>
-						<template slot="monto" slot-scope="row">								    	
+						<template slot="monto" slot-scope="row">
 							S/ {{ row.value }}
 						</template>
-						<template slot="action" slot-scope="row">								    	
+						<template slot="action" slot-scope="row">
 							<a href="#" @click.prevent="middlewareTratamientoResinaFromModal(row.item.id, actual_pieza)">
 								Agregar
 							</a>
-						</template>	
-					</b-table>					
+						</template>
+					</b-table>
 				</b-col>
 				<b-col cols="12" class="text-center">
 					<b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="d-inline-flex" />
 				</b-col>
 			</b-row>
+			<div slot="modal-footer">
+				<b-button  variant="secondary" size="sm" :href="url + '/tratamientos/create'">
+					<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
+				</b-button>
+				<b-button variant="primary" size="sm" @click="hideModal">
+					<i class="fas fa-times"></i>&nbsp; Cerrar
+				</b-button>
+			</div>
   		</b-modal>
 	</b-container>
 </template>
@@ -238,22 +249,21 @@
 	import TitleComponent from '../widgets/titulo/index.vue'
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import Diente from './diente/diente.vue'
+	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
 	export default{
-		created(){									
-			console.log('Nuevo presupuesto mounted')
-		},
 		components:{
 			TitleComponent,
 			PanelCard,
-			Diente
+			Diente,
+			SpinnerContainer
 		},
 		props: [
 			'url',
 			'nro',
 			'doctor',
-			'paciente', 
+			'paciente',
 			'act_empresa',
 			'precios',
 			'precios_table',
@@ -272,7 +282,7 @@
 			    todos: ['', 'center', 'top', 'right', 'left', 'bottom', 'ionomero'],
 			    tratamientos: [],
 			    tratamientos_tabla: [],
-			    fields: [				    				    				    
+			    fields: [
 				    { key: 'pieza', label: 'Pieza', class: 'text-center'},
 				    { key: 'tratamiento', label: 'Tratamiento'},
 				    { key: 'deductible', label: 'Deductible', class: 'text-center'},
@@ -281,14 +291,14 @@
 				    { key: 'action', label: '', class: 'text-center'}
 			    ],
 			    fieldsPrecios: [
-			    	'index',
-			    	{ key: 'detalle', label: 'Tratamiento', sortable: true, sortDirection: 'desc'},
+			    	{ key: 'index', label: '#', class: 'text-center'},
+			    	{ key: 'detalle', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-with-tratamiento'},
 			    	{ key: 'monto', label: 'Precio (S/)', class: 'text-center'},
 			    	{ key: 'action', label: '' }
-			    ],			    
+			    ],
 			    modalTratamientos: false,
 			    currentPage: 1,
-			   	perPage: 10,
+			   	perPage: 6,
 			    totalRows: 0,
 			    pageOptions: [ 5, 10, 15 ],
 			    sortBy: null,
@@ -312,6 +322,9 @@
 			}
 		},
 		methods: {
+			hideModal(){
+				this.$refs.tratamientosModalRef.hide()
+			},
 			onFiltered (filteredItems) {
 		      this.totalRows = filteredItems.length
 		      this.currentPage = 1
@@ -322,17 +335,17 @@
 		    eliminarTratamiento(ind){
 		    	alert(ind)
 		    },
-			range(min,max){				
+			range(min,max){
 				var array = [],
 				j = 0;
 				if( min <= max ){
 					for(var i = min; i <= max; i++){
-						array[j] = i;						
+						array[j] = i;
 						j++;
 					}
 				}else{
 					for( var i = min; i >= max; i-- ){
-						array[j] = i;						
+						array[j] = i;
 						j++;
 					}
 				}
@@ -345,17 +358,18 @@
 				this.$refs.tratamientosModalRef.hide()
 				//this.actual_pieza = null
 				this.filter = ''
-			},			
+				this.currentPage = 1
+			},
 			onSubmitSave(){
 				if( this.tratamientos.length != 0 ){
-						this.$swal({ 
-							 title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>', 
+						this.$swal({
+							 title: '<span style="#fff; font-size: 1em" class="pt-2">Atención</span>',
 							 html: '<span style="font-size: 1em">' +
-							 		'A continuación se guardará el actual presupuesto y no podrá ser modificado.' + 
+							 		'A continuación se guardará el actual presupuesto y no podrá ser modificado.' +
 							 		'<br /><br />¿Seguro que deseas guardar este presupuesto?' +
-							 		'</span>',	
-							 animation: false, 
-							 showConfirmButton: true, 
+							 		'</span>',
+							 animation: false,
+							 showConfirmButton: true,
 							 showCancelButton: true,
 							 confirmButtonText: 'Aceptar',
 							 confirmButtonClass: ['my-alert', 'confirm-alert'],
@@ -365,28 +379,30 @@
 							}).then((result) => {
 								if( result.value ){
 									this.guardarTratamiento()
-								}	
+								}
 							})
 				}else{
-					this.toastFunction('Debe agregar por lo menos un tratamiento', 'warning')					
+					this.toastFunction('Debe agregar por lo menos un tratamiento', 'warning')
 				}
 			},
 			guardarTratamiento(){
+				this.$refs.spinnerContainerRef.showSpinner()
 				axios.post(this.url + '/presupuestos', {
 					pacienteId: this.paciente.id,
 					doctorId: this.doctor.id,
 					nroPresupuesto: this.nro,
 					descuento: this.descuento,
 					tratamientos: this.tratamientos
-				}).then( (request) => {	
+				}).then( (request) => {
 						if( request.data == "ok" ){
+							this.$refs.spinnerContainerRef.hideSpinner()
 							this.isSuccess = true
-							this.toastFunctionRedirect('<span style="#fff; font-size: 1em">Éxito</span>', 'Presupuesto guardado correctamente <br />Redireccionando...', 'success')
-						}
+							this.toastFunctionRedirect('<span style="#fff; font-size: 1em">Éxito</span>', 'Presupuesto guardado correctamente', 'success')
+						}						
 				}).catch((error) => {
-					console.log('Error: ' + error)
-					this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
-                })
+						this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
+						this.$refs.spinnerContainerRef.hideSpinner()
+          })					
 			},
 			esResina(value){
 	            if( value <= 5 ) return true;
@@ -394,7 +410,7 @@
 	            return false;
 	        },
 	        existeResina(pieza){
-	            for( var i = 0; i < this.tratamientos.length; i++ ){	            	
+	            for( var i = 0; i < this.tratamientos.length; i++ ){
 	                if( this.tratamientos[i].pieza == pieza && this.esResina(this.tratamientos[i].seccion) && this.tratamientos[i].opcion == this.opcion ){ //Es caries
 	                    return i;
 	                }
@@ -407,9 +423,9 @@
 	            }
 	            return false;
 	        },
-	        agregarDatosATabla(ind, pieza, tratamiento, monto){	 //Puede ser mejor       	
+	        agregarDatosATabla(ind, pieza, tratamiento, monto){	 //Puede ser mejor
 		    	this.tratamientos_tabla.push({id: ind, pieza, tratamiento, deductible: 0, monto, total: monto})
-		    	//this.calcularTotalesMonto(monto)		    	
+		    	//this.calcularTotalesMonto(monto)
 	        },
 	        redondearADos(total){
 	        	return parseFloat(Math.round(total * 100) / 100).toFixed(2)
@@ -426,10 +442,10 @@
 	            */
 	        },
 	        mostrarTratamientosEnTabla(){
-	        	this.tratamientos_tabla = []	
+	        	this.tratamientos_tabla = []
 	        	this.sub_total = 0
 	        	this.tratamientos.sort(this.menorAMayor)
-	        	var monto_total = 0    	
+	        	var monto_total = 0
 	        	for( var i = 0; i < this.tratamientos.length; i++ ){
 	                if( this.tratamientos[i].opcion == this.opcion ){
 	                    var pz = this.tratamientos[i].pieza
@@ -440,7 +456,7 @@
 	                    if( this.tratamientos[i].secUno == null && this.tratamientos[i].secDos == null ){
 	                    	ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
 	                    	monto_total += parseFloat(monto)
-	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);	                        
+	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);
 	                    }else if( this.tratamientos[i].secUno != null && this.tratamientos[i].secDos == null ){
 	                        sec = 29;
 	                        ind_sec_tabla = this.getIndiceTratamientoPorSeccion(sec)
@@ -453,8 +469,8 @@
 	                        this.agregarDatosATabla(i, pz, this.precios[ind_sec_tabla].detalle, monto);
 	                    }
 	                }
-	            }   
-	            this.sub_total = this.redondearADos(monto_total)	            
+	            }
+	            this.sub_total = this.redondearADos(monto_total)
 	            this.total = this.calcularDescuento()
 	        },
 	        calcularDescuento(){
@@ -469,8 +485,8 @@
 	        },
 	        abrirModalDesdePieza(idPieza){
 	        	this.actual_pieza = idPieza
-			    this.fromBtn = false
-			    this.$refs.tratamientosModalRef.show()
+			    	this.fromBtn = false
+						this.$refs.tratamientosModalRef.show()
 	        },
 	        abrirModalDesdeBtn(){
 	        	this.actual_pieza = null
@@ -482,7 +498,7 @@
 	        	this.fromBtn = false
 	        	this.agregarTratamiento(seccion, pieza)
 	        },
-	        middlewareTratamientoResinaFromModal(seccion, pieza){		        	
+	        middlewareTratamientoResinaFromModal(seccion, pieza){
 	        	if( this.actual_pieza == null && !this.fromBtn ) return 0
 
 	        	if( this.fromBtn ){
@@ -495,7 +511,7 @@
 				}
 				this.closeModal()
 	        },
-	        agregarTratamiento(seccion, pieza){	        	
+	        agregarTratamiento(seccion, pieza){
 	        	var addPieza = true
 	        	var ind_sec_tabla  = null
 	        	if( pieza != null ){
@@ -503,14 +519,14 @@
 					   if( this.esResina(seccion) ){
 					   		var ind = this.existeResina(pieza)
 							if( ind != -1 ){
-								if( this.tratamientos[ind].secUno == null && this.tratamientos[ind].secDos == null 
+								if( this.tratamientos[ind].secUno == null && this.tratamientos[ind].secDos == null
 									&& this.tratamientos[ind].opcion == this.opcion){
 									ind_sec_tabla = this.getIndiceTratamientoPorSeccion(29) //Resina Compuesta
-			                        this.tratamientos[ind].secUno = seccion	
-			                        this.tratamientos[ind].monto = this.precios[ind_sec_tabla].monto                 
+			                        this.tratamientos[ind].secUno = seccion
+			                        this.tratamientos[ind].monto = this.precios[ind_sec_tabla].monto
 			                        addPieza = false
 			                        this.mostrarTratamientosEnTabla()
-			                    }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos == null 
+			                    }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos == null
 			                    		  && this.tratamientos[ind].opcion == this.opcion){
 			                    	ind_sec_tabla = this.getIndiceTratamientoPorSeccion(30) //Resina Compleja
 			                        this.tratamientos[ind].secDos = seccion
@@ -518,13 +534,13 @@
 			                        addPieza = false
 			                        this.mostrarTratamientosEnTabla()
 			                    }else if( this.tratamientos[ind].secUno != null && this.tratamientos[ind].secDos != null && this.tratamientos[ind].opcion == this.opcion){
-			                        this.toastFunction('No puede agregar más de tres resinas en una sola pieza.', 'error')			                        
-			                        addPieza = false	    
+			                        this.toastFunction('No puede agregar más de tres resinas en una sola pieza.', 'error')
+			                        addPieza = false
 			                    }
 							}
 					   	}
 					}else{
-						this.toastFunction('No puede agregar el mismo tratamiento en la misma pieza.', 'error')				   		
+						this.toastFunction('No puede agregar el mismo tratamiento en la misma pieza.', 'error')
 					   addPieza = false
 					}
 				}
@@ -533,7 +549,7 @@
 					this.tratamientos.push({pieza, seccion, secUno: null, secDos: null, opcion: this.opcion, monto: this.precios[ind_sec_tabla].monto})
 					this.mostrarTratamientosEnTabla()
 				}
-				console.log('tratamientos: ' + JSON.stringify(this.tratamientos))
+				
 	        },
 	        despintarSeccionDiente(seccion, pieza){
 	        	var sec = 'pz' + pieza
@@ -548,7 +564,7 @@
 	        	}else if( this.trat_string[seccion] == 'bottom' ){
 					this.$refs[sec][0].isBottom = false//!this.isBottom
 	        	}else if( this.trat_string[seccion] == 'ionomero' ){
-					this.$refs[sec][0].isIonomero = false//!this.isIonomero	        	
+					this.$refs[sec][0].isIonomero = false//!this.isIonomero
 	        	}else if( seccion >= 8 && seccion <= 11 ){
 	        		this.$refs[sec][0].isCorona = false
 	        	}else if( seccion >= 8 && seccion <= 23 ){
@@ -563,7 +579,7 @@
 	            var flag = 0
 	            var ind_sec_tabla = null
 	            if( this.esResina(this.tratamientos[id].seccion) ){ //Eliminar caries
-	                if( this.tratamientos[id].secUno != null && this.tratamientos[id].secDos != null ){	
+	                if( this.tratamientos[id].secUno != null && this.tratamientos[id].secDos != null ){
 	                	this.despintarSeccionDiente(this.tratamientos[id].secDos, this.tratamientos[id].pieza)
 	                    this.tratamientos[id].secDos = null; flag = 1
 	                    ind_sec_tabla = this.getIndiceTratamientoPorSeccion(29) //Resina Compuesta
@@ -582,17 +598,16 @@
 	            		this.despintarSeccionDiente(this.tratamientos[id].seccion, this.tratamientos[id].pieza)
 	            	}
 	                this.tratamientos.splice(id, 1)
-	            }	            
+	            }
 	            this.restartMainDientes()
-	            console.log('tratamientos: ' + JSON.stringify(this.tratamientos))
 	        },
 	        cambiarOpcion(opc){
 	        	this.opcion = opc
 	        	this.changeOpcionBoton(opc)
-	        	this.restartMainDientes()	        	       	
+	        	this.restartMainDientes()
 	        },
-	        restartMainDientes(){ //Principal	    
-				this.restartAllPintadoDientes()	
+	        restartMainDientes(){ //Principal
+				this.restartAllPintadoDientes()
 				this.pintarAllSeccionesDePiezas()
 				this.mostrarTratamientosEnTabla()
 	        },
@@ -641,8 +656,8 @@
 	                this.pintarResina(piezaDiente, auxSeccion);
 	            }
 	        },
-	        pintarResina(pieza, seccion){	            
-	            var sec = 'pz' + pieza	            
+	        pintarResina(pieza, seccion){
+	            var sec = 'pz' + pieza
 	        	if( seccion == '7' ){
 					this.$refs[sec][0].isMiddle = true//!this.isMiddle
 	        	}else if( this.trat_string[seccion] == 'top' ){
@@ -654,7 +669,7 @@
 	        	}else if( this.trat_string[seccion] == 'bottom' ){
 					this.$refs[sec][0].isBottom = true//!this.isBottom
 	        	}else if( this.trat_string[seccion] == 'ionomero' )
-					this.$refs[sec][0].isIonomero = true//!this.isIonomero	
+					this.$refs[sec][0].isIonomero = true//!this.isIonomero
 	        },
 	        pintarOtroTratamiento(seccion, pieza){
 	        	var sec = 'pz' + pieza
@@ -691,13 +706,16 @@
 						html: msg,
 						toast: false,
 						position: 'center',
-						showConfirmButton: false,
-	  					timer: 3000,
-	  					backdrop: `rgba(0, 0, 0, 0.6)`
+						confirmButtonClass: ['my-alert', 'confirm-alert'],
+		  			backdrop: `rgba(0, 0, 0, 0.6)`
 				}).then(() => {
 					window.location.href = this.url + '/presupuestos'
-				})	
+				})
 			}
 		}
 	}
 </script>
+<style lang="stylus">
+	.td-with-tratamiento
+			width: 210px
+</style>

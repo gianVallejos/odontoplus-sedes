@@ -27,12 +27,13 @@ class CreatePacientesTable extends Migration
             $table->string('fax', 50)->nullable();
             $table->string('celular', 50)->nullable();
             $table->string('celular_aux', 50)->nullable();
-            $table->integer('empresa_id')->nullable();
+            $table->integer('empresa_id');
             $table->integer('seguro_ind')->nullable();
-            $table->string('nombre_apoderado', 120)->nullable();
-            $table->string('celular_apoderado', 50)->nullable();
+            $table->string('nombre_apoderado', 150)->nullable();
+            $table->string('celular_apoderado', 150)->nullable();
+            $table->integer('referencia_id')->nullable();
 
-            $table->boolean('isDeleted')->default(false);
+            $table->boolean('is_deleted')->default(false);
 
             $table->timestamps();
         });
