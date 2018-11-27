@@ -165,8 +165,6 @@
   export default{
     mounted() {
     	this.initActualView()
-
-		console.log('Users Form Component')
     },
     name: 'User-Form',
     components: {
@@ -277,8 +275,7 @@
         self.$refs.spinnerContainerRef.showSpinner()
 				axios(request).then((response) => {
 					if(response.data.success){
-            self.$refs.spinnerContainerRef.hideSpinner()
-						console.log('Response:: OK')            
+            self.$refs.spinnerContainerRef.hideSpinner()						         
 						if( response.data.success == 'created' ){
 							self.setDisableForm()
 							self.toastFunctionRedirect('Éxito', 'El usuario ha sido creado correctamente.', 'success')
@@ -289,8 +286,7 @@
 							self.form.is_active = !self.form.is_active
 							self.afterSuccessGuardar('Usuario actualizado correctamente')
 						}
-					}else if (response.data.error){
-						console.log('Response:: FAIL');
+					}else if (response.data.error){						
 						self.all_errors = response.data.error
 						self.toastFunction(error_msg, 'error')
             self.$refs.spinnerContainerRef.hideSpinner()

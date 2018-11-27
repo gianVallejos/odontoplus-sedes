@@ -98,7 +98,6 @@
 </template>
 
 <script>
-  console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
   import SpinnerContainer from '../widgets/spinner/spinner-small.vue'
@@ -106,7 +105,6 @@
 
   export default{
     mounted() {
-			console.log('Ganancias mounted')
 			this.initDates()
 			this.initTable()
     },

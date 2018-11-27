@@ -16,7 +16,6 @@ Route::get('/', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('dashboard');
-Route::get('/container-general', 'HomeController@containerGeneral');
 Route::resource('users', 'UserController');
 Route::resource('doctores', 'DoctorController');
 Route::resource('pacientes', 'PacienteController');
@@ -29,6 +28,7 @@ Route::resource('pagos', 'PagoController');
 Route::get('pagos/nuevo/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoController@nuevoPagoReporte');
 Route::get('pagos/detalle/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoController@show');
 Route::get('consulta_precio', 'PrecioController@getPrice');
+Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
 
 //REPORTS
 Route::get('reportes', 'ReporteController@index');
@@ -60,15 +60,3 @@ Route::delete('ingresos/line-item/{id}', 'IngresoController@lineItemDelete');
 Route::get('ingresos/reporte/{id}', 'IngresoController@reporte');
 
 Route::resource('egresos', 'EgresoController');
-
-//APIS
-Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
-Route::get('api-v1/op-obtener-pacientes', 'WsOdontoplusController@OP_obtenerPacientes')->name('pacientes.obtener');
-Route::post('api-v1/op-crear-paciente', 'WsOdontoplusController@OP_crearPaciente')->name('paientes.crear');
-Route::get('api-v1/op-obtener-paciente-id/{id}', 'WsOdontoplusController@OP_obtenerPacientes_Id')->name('pacientes.obtener.id');
-Route::put('api-v1/op-actualizar-paciente-id/{id}', 'WsOdontoplusController@OP_actualizarPaciente_Id')->name('pacientes.actualizar');
-Route::get('/api-v1/op-eliminar-paciente-id/{id}', 'WsOdontoplusController@OP_eliminarPaciente_Id');
-
-//Presupuestos API
-Route::get('/api-v1/op-obtener-presupuestos', 'WsOdontoplusController@OP_obtenerPresupuestos');
-Route::post('/api-v1/save-nuevo-presupuesto', 'WsOdontoplusController@OP_saveNuevoPresupuesto');

@@ -55,8 +55,6 @@
 	export default{
 		created(){
 				this.checkActiveButton()
-				console.log('Header Mounted')
-				console.log('url' + this.logoUrl);
 		},
 		data() {
 			return {

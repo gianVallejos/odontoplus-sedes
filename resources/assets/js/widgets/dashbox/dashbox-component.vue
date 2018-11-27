@@ -18,9 +18,6 @@
 
 <script>
 	export default{
-		mounted(){
-			console.log('Dashbox Mounted')
-		},
 		props: [
 			'iconUrl',
 			'subname',

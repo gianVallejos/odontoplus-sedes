@@ -174,8 +174,7 @@
   	export default{
     	mounted() {
       		this.initActualView()
-			console.log('Ingresos Form Component')
-		},
+		  },
 	    name: 'Ingreso-Form',
 	    components: {
 	      	PanelCard,
@@ -310,8 +309,7 @@
 					self = this
 					if(request){
 						axios(request).then((response) => {
-							if(response.data.success){
-								console.log('Response:: OK')
+							if(response.data.success){								
 								if( response.data.success == 'created' ){
 									self.setDisableForm()
 									self.toastFunctionRedirect('Éxito', 'El ingreso ha sido creado correctamente.', 'success')
@@ -325,8 +323,7 @@
 							}else if (response.data.error){
 								if( response.data.error == 'cantDeleted'){
 									self.toastFunction('El ingreso tiene tratamientos agregados por lo tanto no se puede eliminar.', 'error')
-								}else{
-									console.log('Response:: FAIL');
+								}else{									
 									self.all_errors = response.data.error
 									self.toastFunction(error_msg, 'error')
 								}

@@ -87,14 +87,10 @@
 </template>
 
 <script>
-  console.log( this.props )
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import TitleComponent from '../widgets/titulo/index.vue'
 
   export default{
-    mounted() {
-      console.log('Users mounted')
-    },
     name: 'Users',
     components:{
 			PanelCard,

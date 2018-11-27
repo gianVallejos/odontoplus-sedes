@@ -253,9 +253,6 @@
 	import axios from 'axios'
 
 	export default{
-		mounted(){
-			console.log('Nuevo presupuesto mounted')
-		},
 		components:{
 			TitleComponent,
 			PanelCard,
@@ -403,7 +400,6 @@
 							this.toastFunctionRedirect('<span style="#fff; font-size: 1em">Éxito</span>', 'Presupuesto guardado correctamente', 'success')
 						}						
 				}).catch((error) => {
-						console.log('Error: ' + error)
 						this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
 						this.$refs.spinnerContainerRef.hideSpinner()
           })					
@@ -553,7 +549,7 @@
 					this.tratamientos.push({pieza, seccion, secUno: null, secDos: null, opcion: this.opcion, monto: this.precios[ind_sec_tabla].monto})
 					this.mostrarTratamientosEnTabla()
 				}
-				console.log('tratamientos: ' + JSON.stringify(this.tratamientos))
+				
 	        },
 	        despintarSeccionDiente(seccion, pieza){
 	        	var sec = 'pz' + pieza
@@ -604,7 +600,6 @@
 	                this.tratamientos.splice(id, 1)
 	            }
 	            this.restartMainDientes()
-	            console.log('tratamientos: ' + JSON.stringify(this.tratamientos))
 	        },
 	        cambiarOpcion(opc){
 	        	this.opcion = opc

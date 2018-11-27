@@ -51,9 +51,6 @@
 	import axios from 'axios'
 
 	export default{
-		mounted(){
-			console.log('Ingreso Line Item Mounted')
-		},
 		props: [
 			'url',
 			'title',
