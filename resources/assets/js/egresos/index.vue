@@ -107,10 +107,7 @@
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import axios from 'axios'
 
-	export default{
-		mounted(){
-			console.log('mounted')
-		},
+	export default{		
 		props: [
 			'url',
 			'egresos',

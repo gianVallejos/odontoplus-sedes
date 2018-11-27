@@ -211,7 +211,6 @@
   export default{
     mounted() {
     	this.initActualView()
-		console.log('Doctores Form Component')
     },
     name: 'Doctor-Form',
     components: {
@@ -364,7 +363,6 @@
         self.$refs.spinnerContainerRef.showSpinner()
 				axios(request).then((response) => {
 					if(response.data.success){
-						console.log('Response:: OK')
 						if( response.data.success == 'created' ){
 							self.setDisableForm()
 							self.toastFunctionRedirect('Éxito', 'El doctor ha sido creado correctamente.', 'success')
@@ -380,7 +378,6 @@
 						if( response.data.error == 'cantDeleted'){
 							self.toastFunction('El doctor está relacionado a presupuestos activos por lo tanto no se puede eliminar.', 'error')
 						}else{
-							console.log('Response:: FAIL');
 							self.all_errors = response.data.error
 							self.toastFunction(error_msg, 'error')
 						}

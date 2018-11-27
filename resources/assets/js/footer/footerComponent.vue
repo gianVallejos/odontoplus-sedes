@@ -7,8 +7,6 @@
 </template>
 <script>
 	export default{
-		mounted(){
-			console.log('Footer Mounted')
-		}
+		
 	}
 </script>
