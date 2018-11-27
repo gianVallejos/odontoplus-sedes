@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-      $pacientes = DB::select('call OP_obtenerPacientes()');
+      $pacientes = DB::select('call OP_Pacientes_get_all()');
       $pacientes = json_encode($pacientes);
 
         return view('home', compact('pacientes'));

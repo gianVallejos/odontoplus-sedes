@@ -15,7 +15,7 @@ class TratamientoController extends Controller{
     public function index(){
         $tratamientos = DB::select('call OP_ObtenerTratamientos()');
         $tratamientos = json_encode($tratamientos);
-        $pacientes = DB::select('call OP_obtenerPacientes()');
+        $pacientes = DB::select('call OP_Pacientes_get_all()');
         $pacientes = json_encode($pacientes);
         return view('tratamientos.index',compact('tratamientos', 'pacientes'));
     }
@@ -66,7 +66,7 @@ class TratamientoController extends Controller{
     }
 
     public function insertCompaniesStandardPrices($treatmentId, $price){
-        $companies = DB::select('call OP_ObtenerEmpresas()');
+        $companies = DB::select('call OP_Empresas_get_all()');
 
         foreach ($companies as $company) {
             $status = DB::select('call OP_AgregarPrecios_EmpresaId_TratamientoId('.$company->id.','.$treatmentId.','.$price.')');
