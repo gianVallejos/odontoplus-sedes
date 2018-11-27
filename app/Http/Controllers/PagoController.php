@@ -50,31 +50,24 @@ class PagoController extends Controller{
             'idDoctor' => 'required',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date'
-        ]);
-
+      ]);
     	if ($validator->passes()) {
-            try{
-                $pago = DB::select('call OP_Pagos_add_all('. $request->idDoctor .', "'. $request->fecha_inicio . '", "' . $request->fecha_fin .'")');
-
-                return response()->json(['success' => 'created']);
-
-            }catch(Exception $e){
-                return response()->json(['error'=>$e->getMessage()]);
-            }
-        }
-        return response()->json(['error'=>$validator->errors()]);
+          $pago = DB::select('call OP_Pagos_add_all('. $request->idDoctor .', "'. $request->fecha_inicio . '", "' . $request->fecha_fin .'")');
+          if( $pago[0]->ESTADO > 0 ){
+              return response()->json(['success' => 'created']);
+          }else{
+              return response()->json(['error'=> 'Ha ocurrido un error']);
+          }
+      }
+      return response()->json(['error'=>$validator->errors()]);
     }
 
     public function destroy($id){
-        try{
-            $pago = Pago::findOrFail($id);
-            $pago->is_deleted = 1;
-            $pago->save();
-
+        $pago = DB::select('call OP_Pagos_delete_all('. $id .')');
+        if( $pago[0]->ESTADO > 0 ){
             return response()->json(['success' => 'deleted']);
-
-        }catch(Exception $e){
-            return response()->json(['error'=>$e->getMessage()]);
+        }else{
+            return response()->json(['error'=> 'Ha ocurrido un error']);
         }
     }
 }
