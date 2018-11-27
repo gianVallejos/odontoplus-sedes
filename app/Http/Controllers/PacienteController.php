@@ -32,31 +32,31 @@ class PacienteController extends Controller
     }
 
     public function create(){
-        $empresas = DB::select('call OP_Empresas_get_all()');
+        $empresas =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
         $empresas = json_encode($empresas);
-        $referencias = DB::select('call OP_Referencias_get_all()');
+        $referencias =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Referencias_get_all()');
         $referencias = json_encode($referencias);
 
         return view($this->path . '.create', compact('empresas', 'referencias'));
     }
 
     public function show($id){
-        $paciente = DB::select('call OP_Pacientes_get_all_Id('. $id .')')[0];
+        $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all_Id('. $id .')')[0];
         $paciente = json_encode($paciente);
-        $empresas = DB::select('call OP_Empresas_get_all()');
+        $empresas =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
         $empresas = json_encode($empresas);
-        $referencias = DB::select('call OP_Referencias_get_all()');
+        $referencias =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Referencias_get_all()');
         $referencias = json_encode($referencias);
 
         return view($this->path . '.show', compact('empresas', 'paciente', 'referencias'));
     }
 
     public function edit($id){
-        $paciente = DB::select('call OP_Pacientes_get_all_Id('. $id .')')[0];
+        $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all_Id('. $id .')')[0];
         $paciente = json_encode($paciente);
-        $empresas = DB::select('call OP_Empresas_get_all()');
+        $empresas =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
         $empresas = json_encode($empresas);
-        $referencias = DB::select('call OP_Referencias_get_all()');
+        $referencias =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Referencias_get_all()');
         $referencias = json_encode($referencias);
 
         return view($this->path . '.edit', compact('empresas', 'paciente', 'referencias'));
@@ -89,13 +89,13 @@ class PacienteController extends Controller
 
         if ($validator->passes()) {
             DB::beginTransaction();
-            $paciente = DB::select('call OP_Pacientes_add_all("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni .'", "'. $request->email
+            $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_add_all("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni .'", "'. $request->email
                                                                . '", "' . $request->direccion .'", "'. $request->fechanacimiento .'", "'. $request->genero
                                                                .'", "'. $request->estado .'", "'. $request->telefono . '", "' . $request->fax . '", "' . $request->celular
                                                                . '", "'. $request->celular_aux . '", ' . $request->empresa_id . ', ' . $request->seguro_ind
                                                                . ', "' . $request->nombre_apoderado . '", "' . $request->celular_apoderado . '", ' . $request->referencia_id .')');
             if( $paciente[0]->ESTADO > 0 ){
-              $ingreso = DB::select('call OP_Ingresos_add_all("'. $paciente[0]->LAST_ID .'")');
+              $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_add_all("'. $paciente[0]->LAST_ID .'")');
               if( $ingreso[0]->ESTADO > 0 ){
                 DB::commit();
                 return response()->json(['success' => 'created', 'id_created' => $paciente[0]->LAST_ID]);
@@ -138,7 +138,7 @@ class PacienteController extends Controller
         });
 
         if ($validator->passes()) {
-            $paciente = DB::select('call OP_Pacientes_update_all_Id("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni .'", "'. $request->email
+            $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_update_all_Id("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni .'", "'. $request->email
                                                                       . '", "' . $request->direccion .'", "'. $request->fechanacimiento .'", "'. $request->genero
                                                                       .'", "'. $request->estado .'", "'. $request->telefono . '", "' . $request->fax . '", "' . $request->celular
                                                                       . '", "'. $request->celular_aux . '", ' . $request->empresa_id . ', ' . $request->seguro_ind
@@ -156,10 +156,10 @@ class PacienteController extends Controller
 
     public function destroy(Request $request, $id){
         try{
-            $canDelete = DB::select('call OP_Pacientes_es_borrable_Id('. $id .')');
+            $canDelete =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_es_borrable_Id('. $id .')');
             if( $canDelete[0]->CAN_DELETE == '1' ){
-                $res = DB::select('call OP_Pacientes_delete_all_Id('. $id .')');
-                $res2 = DB::select('call OP_Ingresos_delete_all_Id('. $id .')');
+                $res =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_delete_all_Id('. $id .')');
+                $res2 =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_delete_all_Id('. $id .')');
                 return response()->json(['success' => 'deleted']);
             }else{
                 return response()->json(['error' => 'cantDeleted']);

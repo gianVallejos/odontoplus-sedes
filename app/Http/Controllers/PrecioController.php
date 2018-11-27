@@ -13,8 +13,8 @@ class PrecioController extends Controller{
     }
 
     public function index(){
-        $companies = DB::select('call OP_Empresas_get_all()');
-        $prices = DB::select('call OP_Precios_get_all_standard()');
+        $companies =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
+        $prices =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_all_standard()');
         $companies = json_encode($companies);
         $prices = json_encode($prices);
 
@@ -22,7 +22,7 @@ class PrecioController extends Controller{
     }
 
     public function getPrice(Request $request){
-        $price = DB::select('call OP_Precios_get_by_empresa_tratamiento_Id('. $request->empresa_id .','. $request->tratamiento_id .')');
+        $price =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_by_empresa_tratamiento_Id('. $request->empresa_id .','. $request->tratamiento_id .')');
         return response()->json(['price' => $price ]);
     }
 
@@ -33,7 +33,7 @@ class PrecioController extends Controller{
         ]);
 
     	if ($validator->passes()) {
-          $precio = DB::select('call OP_Precios_update_monto_Id('. $request->monto .', '. $id .')');
+          $precio =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_update_monto_Id('. $request->monto .', '. $id .')');
           if( $precio[0]->ESTADO > 0 ){
               return response()->json(['success' => 'success']);
           }else{

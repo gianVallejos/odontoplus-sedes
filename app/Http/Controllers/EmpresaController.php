@@ -19,7 +19,7 @@ class EmpresaController extends Controller{
     }
 
     public function index(){
-        $empresas = DB::select('call OP_Empresas_get_all_desc()');
+        $empresas =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all_desc()');
         $empresas = json_encode($empresas);
         return view('empresas.index', compact('empresas'));
     }
@@ -29,13 +29,13 @@ class EmpresaController extends Controller{
     }
 
     public function show($id){
-        $empresa = DB::select('call OP_Empresas_get_all_Id('.$id.')')[0];
+        $empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all_Id('.$id.')')[0];
         $empresa = json_encode($empresa);
         return view('empresas.show', compact('empresa'));
     }
 
     public function edit($id){
-        $empresa = DB::select('call OP_Empresas_get_all_Id('.$id.')')[0];
+        $empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all_Id('.$id.')')[0];
         $empresa = json_encode($empresa);
         return view('empresas.edit', compact('empresa'));
     }
@@ -46,7 +46,7 @@ class EmpresaController extends Controller{
     	if ($validator->passes()) {
             try{
                 DB::beginTransaction();
-                $empresa = DB::select('call OP_Empresas_add_all("'. $request->nombre .'", "'. $request->ruc . '")');
+                $empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_add_all("'. $request->nombre .'", "'. $request->ruc . '")');
                 if( $empresa[0]->ESTADO > 0 ){
                     $pricesInserted = self::insertTreatmentsStandardPrices($empresa[0]->LAST_ID);
                     if($pricesInserted){
@@ -67,10 +67,10 @@ class EmpresaController extends Controller{
     }
 
     public function insertTreatmentsStandardPrices($companyId){
-        $prices = DB::select('call OP_Precios_get_all_standard()');
+        $prices =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_all_standard()');
 
         foreach ($prices as $price) {
-            $status = DB::select('call OP_Precios_add_all('.$companyId.','.$price->id_tratamiento.','.$price->monto.')');
+            $status =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_add_all('.$companyId.','.$price->id_tratamiento.','.$price->monto.')');
             if($status[0]->ESTADO == 0) return false;
         }
         return true;
@@ -81,7 +81,7 @@ class EmpresaController extends Controller{
     	$validator = Validator::make($request->all(), self::$validation_rules );
 
     	if ($validator->passes()) {
-            $empresa = DB::select('call OP_Empresas_update_all_Id("'. $request->nombre .'", "'. $request->ruc . '", '. $id .')');
+            $empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_update_all_Id("'. $request->nombre .'", "'. $request->ruc . '", '. $id .')');
             if( $empresa[0]->ESTADO > 0 ){
                 return response()->json(['success' => 'updated']);
             }else{
@@ -95,7 +95,7 @@ class EmpresaController extends Controller{
     public function destroy(Request $request, $id){
       try{
         //FALTA VERIFICAR SI ES BORRABLE
-          $empresa = DB::select('call OP_Empresas_delete_all('. $id .')');
+          $empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_delete_all('. $id .')');
           return response()->json(['success' => 'deleted']);
       }catch(Exception $e){
           return response()->json(['error' => 'Ha ocurrido un error']);

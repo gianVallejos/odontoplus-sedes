@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Doctor;
 use Illuminate\Http\Request;
+use App\CustomLibs\CurBD;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,7 +30,7 @@ class DoctorController extends Controller{
     }
 
     public function index(){
-        $doctors = DB::select('call OP_Doctors_get_all_DESC()');
+        $doctors = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all_DESC()');
         $doctors = json_encode($doctors);
         return view('doctors.index',compact('doctors'));
     }
@@ -39,13 +40,13 @@ class DoctorController extends Controller{
     }
 
     public function show($id){
-        $doctor = DB::select('call OP_Doctors_get_all_Id('.$id.')')[0];
+        $doctor = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all_Id('.$id.')')[0];
         $doctor = json_encode($doctor);
         return view('doctors.show', compact('doctor'));
     }
 
     public function edit($id){
-        $doctor = DB::select('call OP_Doctors_get_all_Id('.$id.')')[0];
+        $doctor = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all_Id('.$id.')')[0];
         $doctor = json_encode($doctor);
         return view('doctors.edit', compact('doctor'));
     }
@@ -56,7 +57,7 @@ class DoctorController extends Controller{
           if( $request->margen_ganancia == null ){
               $request->margen_ganancia = 0;
           }
-          $doctor = DB::select('call OP_Doctors_add_all("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni
+          $doctor = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_add_all("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni
                                                          .'", "'. $request->email .'", "'. $request->direccion . '", "'. $request->fechanacimiento
                                                          .'", "'. $request->genero . '", "'. $request->estado .'", "'. $request->telefono
                                                          .'", "'. $request->celular . '", "'. $request->celular_aux . '", ' . $request->margen_ganancia .')');
@@ -75,7 +76,7 @@ class DoctorController extends Controller{
           if( $request->margen_ganancia == null ){
               $request->margen_ganancia = 0;
           }
-          $doctor = DB::select('call OP_Doctors_update_all_Id("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni
+          $doctor = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_update_all_Id("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni
                                                                 .'", "'. $request->email .'", "'. $request->direccion . '", "'. $request->fechanacimiento
                                                                 .'", "'. $request->genero . '", "'. $request->estado .'", "'. $request->telefono
                                                                 .'", "'. $request->celular . '", "'. $request->celular_aux . '", ' . $request->margen_ganancia .', '. $id .')');
@@ -90,9 +91,9 @@ class DoctorController extends Controller{
 
     public function destroy(Request $request, $id){
         try{
-            $canDelete = DB::select('call OP_Doctors_es_borrable_Id('. $id .')');
+            $canDelete = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_es_borrable_Id('. $id .')');
             if( $canDelete[0]->CAN_DELETE == '1' ){
-                $res = DB::select('call OP_Doctors_delete_all_Id('. $id .')');
+                $res = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_delete_all_Id('. $id .')');
 
                 return response()->json(['success' => 'deleted']);
             }else{
