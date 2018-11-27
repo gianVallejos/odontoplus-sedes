@@ -65,30 +65,36 @@
 			</b-col>
 			<b-col class="pt-3" :cols="isAdmin() ? '9' : '12'">
 				<PanelCard v-if="isAdmin()">
-						<span slot="heading">Ingresos vs. Egresos</span>
-						<b-row slot="body" class="px-3 pb-3">
-							<b-col xl="12" cols="12">
-								<b-form-row>
-									<b-col xl="3" cols="12">
-										<b-input-group prepend="Año">
-											<b-form-select id="yead" v-model="ingresosVSegresosChart.year" :options="years" v-on:input="fillIngresosVSegresosChart()" />
-										</b-input-group>
-									</b-col>
-								</b-form-row>
-							</b-col>
-							<b-col xl="12" cols="12">
-								<bar-chart :chart-data="ingresosVSegresosChart.data" :height = "350"></bar-chart>
-							</b-col>
-						</b-row>
+					<span slot="heading">Ingresos vs. Egresos</span>
+					<b-row slot="body" class="px-3 pb-3">
+						<b-col xl="12" cols="12">
+							<b-form-row>
+								<b-col xl="3" cols="12">
+									<b-input-group prepend="Año">
+										<b-form-select id="yead" v-model="ingresosVSegresosChart.year" :options="years" v-on:input="fillIngresosVSegresosChart()" />
+									</b-input-group>
+								</b-col>
+							</b-form-row>
+						</b-col>
+						<b-col xl="12" cols="12">
+							<div class="chart-area" v-if="chartIsLoading" >
+								<SpinnerSmall :url="url" />
+							</div>
+							<bar-chart v-if="!chartIsLoading" :chart-data="ingresosVSegresosChart.data" :height = "350"></bar-chart>
+						</b-col>
+					</b-row>
 				</PanelCard>
 
 				<PanelCard v-if="!isAdmin()">
-						<span slot="heading">  Nuevos Pacientes - {{this.getCurrentYear()}}</span>
-						<b-row slot="body" class="px-3 pb-3">
-							<b-col xl="12" cols="12">
-								<bar-chart :chart-data="nuevosPacientesChart.data" :height = "320"></bar-chart>
-							</b-col>
-						</b-row>
+					<span slot="heading">  Nuevos Pacientes - {{this.getCurrentYear()}}</span>
+					<b-row slot="body" class="px-3 pb-3">
+						<b-col xl="12" cols="12">
+							<div class="chart-area" v-if="chartIsLoading" >
+								<SpinnerSmall :url="url" />
+							</div>
+							<bar-chart v-if="!chartIsLoading" :chart-data="nuevosPacientesChart.data" :height = "320"></bar-chart>
+						</b-col>
+					</b-row>
 				</PanelCard>
 
 			</b-col>
@@ -182,7 +188,6 @@
 	export default{
 		mounted(){
 			this.initCharts()
-			this.$refs.spinnerSmallRef.showSpinner()
 		},
 		props: [
 			'url',
@@ -313,7 +318,8 @@
 		    sortDesc: false,
 		    sortDirection: 'asc',
 		    filterPaciente: '',
-		    emptyMessage: 'No existen campos para mostrar'
+		    emptyMessage: 'No existen campos para mostrar',
+				chartIsLoading: false
 			}
 		},
 		methods:{
@@ -363,10 +369,10 @@
 				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/' + year }
 				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/' + year }
 				if( year != ''){
+					this.chartIsLoading = true
 					axios(request_ingresos).then((response) => {
 						let ingresos = response.data.ingresos
 						let ingresos_montos = ingresos.map(i => parseInt(i.monto))
-
 						axios(request_egresos).then((response) => {
 							let egresos = response.data.egresos
 							let egresos_montos = egresos.map(i => parseInt(i.monto))
@@ -386,6 +392,7 @@
 									}
 								]
 							}
+							this.chartIsLoading = false
 
 						}).catch(function (error) {
 							this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
@@ -400,11 +407,10 @@
 			},
 			fillNuevosPacientesChart(){
 				var request = { method: 'GET', url: this.url + '/reportes/obtener-nuevos-pacientes-anio-actual' }
-
+				this.chartIsLoading = true
 				axios(request).then((response) => {
 					let records = response.data.records
 					let cantidades = records.map(r => parseInt(r.cantidad))
-
 					this.nuevosPacientesChart.data = {
 						labels: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
 						datasets: [
@@ -415,7 +421,7 @@
 							}
 						]
 					}
-
+					this.chartIsLoading = false
 				}).catch(function (error) {
 					this.toastFunction('Ha ocurrido un error, inténtelo nuevamente.', 'error')
 				});
@@ -424,7 +430,7 @@
 			getCurrentYear(){
 				var todaydate = new Date()
 				return 1900+todaydate.getYear()
-			}
+			},
 		}
 	}
 </script>
@@ -458,4 +464,6 @@
 		padding-right: 52px
 		&:last-of-type
 			padding-right: 0px
+	.chart-area
+		height: 350px
 </style>
