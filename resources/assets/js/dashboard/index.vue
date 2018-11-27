@@ -181,7 +181,6 @@
 
 	export default{
 		mounted(){
-			console.log('Inicio Mounted')
 			this.initCharts()
 			this.$refs.spinnerSmallRef.showSpinner()
 		},
