@@ -23,9 +23,6 @@ const mixins = {
       }
       return false
     }
-  },
-  created() {
-    console.log('test mixins')
   }
 }
 
