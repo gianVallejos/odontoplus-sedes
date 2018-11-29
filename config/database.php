@@ -63,21 +63,6 @@ return [
             'engine' => null,
         ],
 
-        '2_20601744750_CAJ' => [
-            'driver' => 'mysql',
-            'host' => '127.0.0.1',
-            'port' => '3306',
-            'database' => 'op_20601744750_bd',
-            'username' => 'root',
-            'password' => '',
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ],
-
 
     ],
 
