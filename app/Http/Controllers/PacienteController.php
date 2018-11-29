@@ -65,8 +65,8 @@ class PacienteController extends Controller
     public function store(Request $request){
         //print_r($request->all()); die();
         $validator = Validator::make($request->all(), [
-                                    'nombres' => 'required|string|max:90',
-                                    'apellidos' => 'required|string|max:90',
+                                    'nombres' => 'required|alpha|max:90',
+                                    'apellidos' => 'required|alpha|max:90',
                                     'dni' => 'required|unique:'.CurBD::getCurrentSchema().'.pacientes|digits:8',
                                     'direccion' => 'required|string|max:90',
                                     'fechanacimiento' => 'required|date|before:now',
@@ -94,7 +94,7 @@ class PacienteController extends Controller
                                                                .'", "'. $request->estado .'", "'. $request->telefono . '", "' . $request->fax . '", "' . $request->celular
                                                                . '", "'. $request->celular_aux . '", ' . $request->empresa_id . ', ' . $request->seguro_ind
                                                                . ', "' . $request->nombre_apoderado . '", "' . $request->celular_apoderado . '", ' . $request->referencia_id .')');
-            
+
             if( $paciente[0]->ESTADO > 0 ){
               $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_add_all("'. $paciente[0]->LAST_ID .'")');
               if( $ingreso[0]->ESTADO > 0 ){
@@ -116,8 +116,8 @@ class PacienteController extends Controller
     public function update(Request $request, $id){
 
         $validator = Validator::make($request->all(), [
-                        'nombres' => 'required|string|max:90',
-                        'apellidos' => 'required|string|max:90',
+                        'nombres' => 'required|alpha|max:90',
+                        'apellidos' => 'required|alpha|max:90',
                         'dni' => 'required|digits:8',
                         'direccion' => 'required|string|max:90',
                         'fechanacimiento' => 'required|date|before:now',
