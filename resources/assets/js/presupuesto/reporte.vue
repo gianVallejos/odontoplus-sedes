@@ -3,12 +3,24 @@
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2" style="margin-top: -20px;">
 			<b-col cols="4" class="text-left" >
-				<div class="pr-logo">
-					<img :src="this.url + '/images/empresa/logotipo_pdf.png'" alt="Logo Empresa" />
-					<span>Jr. Silva Santisteban #507, Cajamarca - Perú</span>
-					<span>citas@sonrisacore.com</span>
-					<span>(076) 284095 (Citas) </span>
-    				<span>991 981911 - 966 704974 (Emergencias)</span>
+				<div class="pr-logo-layout">
+					<div class="pr-logo">
+						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
+					</div>
+					<div class="pr-descripcion-logo">
+						<span v-if="cliente.direccion != null">
+							{{ cliente.direccion }} {{ cliente.ciudad }} - Perú <br />
+						</span>
+						<span v-if="cliente.email != null">
+							{{ cliente.email }} <br />
+						</span>
+						<span v-if="cliente.telefono != null">
+							{{ cliente.telefono }} <br />
+						</span>
+	    			<span v-if="cliente.celular != null">
+							{{ cliente.celular }} <span v-if="cliente.celular_aux != null"> - </span> {{ cliente.celular_aux }}
+						</span>
+					</div>
 				</div>
 			</b-col>
 			<b-col cols="8" class="text-right">
@@ -206,6 +218,8 @@
 
 	export default{
 		mounted(){
+			this.setLogotipo()
+
 			this.record_id = this.pgeneral.id
 			this.tratamientos = this.pdetalle
 			this.descuento = this.pgeneral.descuento
@@ -222,10 +236,12 @@
 			'curUser',
 			'pgeneral',
 			'pdetalle',
-			'precios'
+			'precios',
+			'cliente'
 		],
 		data(){
 			return{
+				logoUrl: '',
 				pieza_actual: '',
 			    tratamiento_actual: '',
 			    opcion: 1,
@@ -268,6 +284,12 @@
 			}
 		},
 		methods: {
+			setLogotipo(){
+				this.logoUrl = this.url + '/images/logotipos/' + this.curUser.schema + '_BG_WHITE.png'
+			},
+			setDefaultImagenLogo(){
+				this.logoUrl = this.url + '/images/logotipos/1_ODONTOPLUS_CAJ_BG_WHITE.png'
+			},
 			imprimirPagina(){
 				window.print()
 			},
@@ -516,12 +538,12 @@
 				if(request){
 					self.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
-						if(response.data.success){							
+						if(response.data.success){
 							self.$refs.spinnerContainerRef.hideSpinner()
 							if (response.data.success = 'deleted' ){
 								self.toastFunctionRedirect('Éxito', 'El presupuesto ha sido eliminado correctamente.', 'success')
 							}
-						}else if (response.data.error){								
+						}else if (response.data.error){
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')
 								self.$refs.spinnerContainerRef.hideSpinner()
@@ -554,7 +576,7 @@
 				}).then(() => {
 						window.close()
 						window.opener.location.reload()
-						window.opener.external.comeback()						
+						window.opener.external.comeback()
 						//window.location.href = this.url + '/presupuestos'
 				})
 			},
@@ -596,22 +618,23 @@
 		font-family: 'Open Sans', sans-serif;
 	}
 
-	.pr-logo{
-		position: relative;
-		height: 100%;
-		padding-top: 20px;
-		width: 265px;
+	.pr-logo-layout{
+		/* margin-top: 22px; */
 	}
 
-	.pr-logo span{
+	.pr-logo{
+		position: relative;
+		padding-top: 20px;
+		width: 265px;
+		padding-left: 6px;
+	}
+
+	.pr-descripcion-logo{
 		display: block;
 		font-size: .8em;
 		text-align: center;
-	}
-
-	.pr-logo img{
-		object-fit: cover;
-		width: 100%;
+		width: 265px;
+		/* margin-top: 8px; */
 	}
 
 	.pr-section-title{

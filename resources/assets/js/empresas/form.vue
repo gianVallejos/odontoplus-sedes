@@ -1,5 +1,5 @@
 <template>
-  <b-container id="container-template">
+  <b-container id="container-template" v-if="this.$root.autorizadoVerEmpresa(curUser.schema, curUser.rolid)">
     <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<div class="col-md-12">
@@ -243,7 +243,7 @@
 							}
 						}else if (response.data.error){
 							if( response.data.error == 'cantDeleted'){
-								self.toastFunction('La empresa está relacionada a tratamientos activos por lo tanto no se puede eliminar.', 'error')
+								self.toastFunction('La empresa está relacionada a pacientes activos, por lo tanto no se puede eliminar.', 'error')
 							}else{
 								self.all_errors = response.data.error
 								self.toastFunction(error_msg, 'error')

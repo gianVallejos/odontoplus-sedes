@@ -39,8 +39,8 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Tratamiento</th>
-                    <th scope="col">Empresa</th>
-                    <th scope="col">Monto</th>
+                    <th scope="col" class="text-center" v-if="$root.autorizadoVerEmpresa(curUser.schema, curUser.rolid)">Empresa</th>
+                    <th scope="col" class="text-center">Monto</th>
                     <th scope="col"></th>
                   </tr>
                 </thead>
@@ -48,14 +48,14 @@
                   <tr v-for="(item, index) in computedData" :key="index" >
                     <th scope="row">{{ index + 1}}</th>
                     <td>{{item.tratamiento}}</td>
-                    <td>
+                    <td width="180" v-if="$root.autorizadoVerEmpresa(curUser.schema, curUser.rolid)">
                       <b-form-select :ref="'emp-' + index" class="small" v-model="item.id_empresa" v-on:input="onSelectedCompany(index, item)">
                         <option v-for="(e,index) in companies" :key="index" :value="e.id">
                           {{ e.nombre }}
                         </option>
                       </b-form-select>
                     </td>
-                    <td>
+                    <td width="170">
                       <b-input-group class="small" prepend="S/.">
                         <b-form-input :ref="'monto-'+index" class="small" type="text" v-model="item.monto"></b-form-input>
                       </b-input-group>
@@ -64,7 +64,7 @@
 
                       </div>
                     </td>
-                    <td v-if="curUser.rolid == 1">
+                    <td width="120" v-if="curUser.rolid == 1">
                       <b-button class="small" variant="success" v-on:click.prevent="onModificar(index, item)">
                         Guardar
                       </b-button>
@@ -81,7 +81,7 @@
               <b-button :href="this.url+'/empresas'" variant="warning">
                 <i class="fas fa-building"></i>&nbsp; Ir a Empresas
               </b-button>
-          </div>          
+          </div>
         </PanelCard>
 			</b-col>
 		</b-row>

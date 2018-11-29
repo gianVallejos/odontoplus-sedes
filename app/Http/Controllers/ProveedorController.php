@@ -30,7 +30,7 @@ class ProveedorController extends Controller{
     }
 
     public function index(){
-        $proveedores = DB::select('call OP_Proveedores_get_all()');
+        $proveedores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Proveedores_get_all()');
         $proveedores = json_encode($proveedores);
         return view('proveedores.index',compact('proveedores'));
     }
@@ -40,13 +40,13 @@ class ProveedorController extends Controller{
     }
 
     public function show($id){
-        $proveedor = DB::select('call OP_Proveedores_get_all_Id('.$id.')')[0];
+        $proveedor =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Proveedores_get_all_Id('.$id.')')[0];
         $proveedor = json_encode($proveedor);
         return view('proveedores.show', compact('proveedor'));
     }
 
     public function edit($id){
-        $proveedor = DB::select('call OP_Proveedores_get_all_Id('.$id.')')[0];
+        $proveedor =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Proveedores_get_all_Id('.$id.')')[0];
         $proveedor = json_encode($proveedor);
         return view('proveedores.edit', compact('proveedor'));
     }

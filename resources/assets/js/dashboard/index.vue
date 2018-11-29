@@ -28,10 +28,10 @@
 											empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 								<template slot="actions" slot-scope="row">
 									<div class="actions-table" style="color: #d1d1d1">
-											<a :href="url + '/pacientes/' + row.item.id" class="action">Ver Paciente</a> |
+											<a :href="url + '/pacientes/' + row.item.id" target="_blank" class="action">Ver Paciente</a> |
 											<a :href="url + '/presupuestos/reporte/' + row.item.presupuestosId" target="_blank"
 												 class="action" v-if="row.item.presupuestosId != null">Ver Presupuesto</a><span v-if="row.item.presupuestosId != null"> | </span>
-											<a :href="url + '/ingresos/line-item/' + row.item.ingresoId" class="action">Ver Ingresos</a>
+											<a :href="url + '/ingresos/line-item/' + row.item.ingresoId" target="_blank" class="action">Ver Ingresos</a>
 									</div>
 								</template>
 								<template slot="nombres" slot-scope="row">

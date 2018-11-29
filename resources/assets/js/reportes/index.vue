@@ -209,7 +209,7 @@
 					this.fillTratamientosPorDoctorChart()
 				}
 				else {
-					this.toastFunction('Rago de fechas inválido. El rago de fechas debe ser menor a un año.', 'error')
+					this.toastFunction('Rango de fechas inválido. El rango de fechas debe ser menor a un año.', 'error')
 				}
 			},
 			setMyDateToToday() {
@@ -371,7 +371,8 @@
 							{
 								label: 'Pagos',
 								backgroundColor: ["#FF6384","#36A2EB","#FFCE56", "#4db6ac","#7e57c2"],
-								data: pagos
+								data: pagos,
+								fillText: 'Test'
 							}
 						]
 					}

@@ -51,7 +51,10 @@ import PagosReporte from './pagos/reporte.vue'
 import Ganancias from './reportes/ganancias.vue'
 import GananciasReporte from './reportes/ganancias_reporte.vue'
 
+import Mixin from './mixins/permisos.js'
+
 const app = new Vue({
+    mixins: [Mixin],
     el: '#app',
     components: {
     	Dashboard,
@@ -72,6 +75,7 @@ const app = new Vue({
 })
 
 const header = new Vue({
+  mixins: [Mixin],
 	el: '#header',
 	components: {
 		HeaderComponent,

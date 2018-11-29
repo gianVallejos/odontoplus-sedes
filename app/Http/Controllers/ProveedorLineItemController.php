@@ -19,13 +19,13 @@ class ProveedorLineItemController extends Controller{
     }
 
     public function show($id){
-        $proveedor = DB::select('call OP_ObtenerProveedores_Id('.$id.')')[0];
-        $line_items = DB::select('call OP_ObtenerProveedoresDetalles_Id('.$id.')');
-        $data = json_encode(['proveedor' => $proveedor, 'line_items' => $line_items]);       
+        $proveedor =  DB::connection(CurBD::getCurrentSchema())->select('call OP_ObtenerProveedores_Id('.$id.')')[0];
+        $line_items =  DB::connection(CurBD::getCurrentSchema())->select('call OP_ObtenerProveedoresDetalles_Id('.$id.')');
+        $data = json_encode(['proveedor' => $proveedor, 'line_items' => $line_items]);
         return view('proveedores.line_items', compact('data'));
     }
     public function store(Request $request){
-        
+
     	$validator = Validator::make($request->all(), self::$validation_rules );
 
     	if ($validator->passes()) {
@@ -46,7 +46,7 @@ class ProveedorLineItemController extends Controller{
     }
 
     public function update(Request $request, $id){
-        
+
     	$validator = Validator::make($request->all(), self::$validation_rules );
 
     	if ($validator->passes()) {

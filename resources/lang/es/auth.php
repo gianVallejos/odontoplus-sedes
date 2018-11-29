@@ -12,4 +12,5 @@ return [
     */
     'failed' => 'E-mail o contraseña incorrecta. Inténtalo nuevamente.',
     'throttle' => 'Demasiados intentos de inicio de sesión. Vuelva a intentarlo en :seconds segundos.',
+    'notactivated' => 'Esta cuenta ha sido desactivada por su administrador.',
 ];

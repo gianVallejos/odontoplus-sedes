@@ -7,7 +7,6 @@
     data () {
       return {
         options: {
-
           legend: {
             display: false
           },

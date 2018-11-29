@@ -16,9 +16,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="logotipo text-center">
-                            <a href="http://www.sonrisacore.com" target="_blank">
-                                <img src="{{ asset('images/empresa/logotipo-blue.png') }}" alt="CORE Logotipo">
-                            </a>
+														<a href="https://www.odontoplus.pe" target="_blank">
+                            	<img src="{{ asset('images/logotipos/1_ODONTOPLUS_CAJ_BG_WHITE.png?v=1.0.1') }}" alt="Logotipo">
+														</a>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -73,9 +73,6 @@
 
     </div>
     <div class='sign text-center'>
-        <a href="http://www.odontoplus.pe" target="_blank">
-            <img src="{{ asset('images/sistema/logo_odontoplus_login.png')}}" alt="Odontoplus Logotipo">
-        </a>
         <p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.1.0</p>
     </div>
 

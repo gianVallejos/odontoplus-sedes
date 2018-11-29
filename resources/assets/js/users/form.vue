@@ -72,11 +72,11 @@
 													<b-form-input id="email" type="email" class="required" v-model="form.email" :disabled=isDisabled placeholder="Email" required autocomplete="off"/>
 													<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
 										    </b-form-group>
-										    <b-form-group label="Nueva Contraseña" label-for="password" >
+										    <b-form-group :label="displayStatus == 'edit' ? 'Nueva contraseña' : 'Contraseña'" label-for="password" >
 													<b-form-input id="password" type="password" class="required" v-model="form.password" :disabled=isDisabled placeholder="********" required autocomplete="off" maxlength="20"/>
 													<span v-if="all_errors.password" :class="['label label-danger']">{{ all_errors.password[0] }}</span>
 										    </b-form-group>
-										    <b-form-group label="Confirmar Nueva Contraseña" label-for="confirm_password" >
+										    <b-form-group :label="displayStatus == 'edit' ? 'Confirmar nueva contraseña' : 'Confirmar contraseña'" label-for="confirm_password" >
 											    <b-form-input id="confirm_password" type="password" class="required" v-model="form.confirm_password" :disabled=isDisabled placeholder="********" required autocomplete="off" maxlength="20"/>
 													<span v-if="all_errors.confirm_password" :class="['label label-danger']">{{ all_errors.confirm_password[0] }}</span>
 										    </b-form-group>
@@ -182,24 +182,24 @@
     data(){
       return{
         form: {
-			name: '',
-			email: '',
-			password: '',
-			confirm_password: '',
-			rolid: 2,
-			is_active: true
-		},
-		record_id: '',
-		all_errors: [],
-        breadcrumb: [
-          { text: 'Inicio', href: '/' },
-          { text: 'Usuarios', href: this.url + '/users' },
-          { text: this.title, active: true },
-        ],
-        displayStatus: '',
-        isDisabled: false
-      }
-    },
+    			name: '',
+    			email: '',
+    			password: '',
+    			confirm_password: '',
+    			rolid: 2,
+    			is_active: true
+    		},
+  		record_id: '',
+  		all_errors: [],
+          breadcrumb: [
+            { text: 'Inicio', href: '/' },
+            { text: 'Usuarios', href: this.url + '/users' },
+            { text: this.title, active: true },
+          ],
+          displayStatus: '',
+          isDisabled: false
+        }
+      },
     methods:{
     	initActualView(){
 			this.displayStatus = this.view_mode
@@ -275,7 +275,7 @@
         self.$refs.spinnerContainerRef.showSpinner()
 				axios(request).then((response) => {
 					if(response.data.success){
-            self.$refs.spinnerContainerRef.hideSpinner()						         
+            self.$refs.spinnerContainerRef.hideSpinner()
 						if( response.data.success == 'created' ){
 							self.setDisableForm()
 							self.toastFunctionRedirect('Éxito', 'El usuario ha sido creado correctamente.', 'success')
@@ -286,7 +286,7 @@
 							self.form.is_active = !self.form.is_active
 							self.afterSuccessGuardar('Usuario actualizado correctamente')
 						}
-					}else if (response.data.error){						
+					}else if (response.data.error){
 						self.all_errors = response.data.error
 						self.toastFunction(error_msg, 'error')
             self.$refs.spinnerContainerRef.hideSpinner()
