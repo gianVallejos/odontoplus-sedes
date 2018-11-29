@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Empresa;
 use Illuminate\Http\Request;
+use App\CustomLibs\CurBD;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 

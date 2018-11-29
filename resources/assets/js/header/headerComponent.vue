@@ -2,7 +2,7 @@
 	<div class="header">
 		<div class="container">
 			<a :href="url + '/'">
-				<img :src=logoUrl class="logoHeaderComponent" alt="Logo de Empresa">
+				<img :src=logoUrl class="logoHeaderComponent" alt="Logo de Empresa" @error="setDefaultImagenLogo">
 			</a>
 			<div class="head-right">
 				<ul>
@@ -55,10 +55,11 @@
 	export default{
 		created(){
 				this.checkActiveButton()
+				this.setLogotipo()
 		},
 		data() {
 			return {
-				logoUrl: this.url + '/images/empresa/logotipo.png',
+				logoUrl: '',
 				perfilUrl: this.url + '/images/sistema/perfil-default.png',
 				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 				rol: [
@@ -72,9 +73,16 @@
 			'user',
 			'logoutRoute',
 			'url',
-			'curUrl'
+			'curUrl',
+			'nameLogotipo'
 		],
 		methods: {
+			setLogotipo(){
+				this.logoUrl = this.url + '/images/logotipos/' + this.user.schema + '_BG_DARK.png'
+			},
+			setDefaultImagenLogo(){
+				this.logoUrl = this.url + '/images/logotipos/1_ODONTOPLUS_CAJ_BG_DARK.png'
+			},
 			checkActiveButton(){
 					if( this.curUrl.includes('users') ){
 							this.whoIsActiveDetail = 'users'

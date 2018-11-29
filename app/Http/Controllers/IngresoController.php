@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ingreso;
 use Illuminate\Http\Request;
+use App\CustomLibs\CurBD;
 use Illuminate\Support\Facades\DB;
 use Validator;
 
@@ -66,7 +67,9 @@ class IngresoController extends Controller
         $igeneral = json_encode($igeneral);
         $idetalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_all_Id('. $id .')');
         $idetalle = json_encode($idetalle);
-        return view($this->path . '.reporte', compact('igeneral', 'idetalle'));
+        $cliente = CurBD::getCurrentClienteData();
+
+        return view($this->path . '.reporte', compact('igeneral', 'idetalle', 'cliente'));
     }
 
     public function lineItem($id){

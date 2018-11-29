@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Pago;
 use Illuminate\Http\Request;
+use App\CustomLibs\CurBD;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -42,7 +43,9 @@ class PagoController extends Controller{
         $last_pago =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_get_ultimo()')[0];
         $ingresos = json_encode($ingresos);
         $igeneral = json_encode(['ultimoPago' => $last_pago, 'doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
-        return view('pagos.new', compact('ingresos', 'igeneral'));
+        $cliente = CurBD::getCurrentClienteData();
+
+        return view('pagos.new', compact('ingresos', 'igeneral', 'cliente'));
     }
 
     public function store(Request $request){

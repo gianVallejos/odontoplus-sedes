@@ -1,5 +1,5 @@
 <template>
-  <b-container id="container-template">
+  <b-container id="container-template" v-if="this.$root.autorizadoVerEmpresa(curUser.schema, curUser.rolid)">
     <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<div class="col-md-12">

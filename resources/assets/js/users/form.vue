@@ -182,24 +182,24 @@
     data(){
       return{
         form: {
-			name: '',
-			email: '',
-			password: '',
-			confirm_password: '',
-			rolid: 2,
-			is_active: true
-		},
-		record_id: '',
-		all_errors: [],
-        breadcrumb: [
-          { text: 'Inicio', href: '/' },
-          { text: 'Usuarios', href: this.url + '/users' },
-          { text: this.title, active: true },
-        ],
-        displayStatus: '',
-        isDisabled: false
-      }
-    },
+    			name: '',
+    			email: '',
+    			password: '',
+    			confirm_password: '',
+    			rolid: 2,
+    			is_active: true
+    		},
+  		record_id: '',
+  		all_errors: [],
+          breadcrumb: [
+            { text: 'Inicio', href: '/' },
+            { text: 'Usuarios', href: this.url + '/users' },
+            { text: this.title, active: true },
+          ],
+          displayStatus: '',
+          isDisabled: false
+        }
+      },
     methods:{
     	initActualView(){
 			this.displayStatus = this.view_mode
@@ -275,7 +275,7 @@
         self.$refs.spinnerContainerRef.showSpinner()
 				axios(request).then((response) => {
 					if(response.data.success){
-            self.$refs.spinnerContainerRef.hideSpinner()						         
+            self.$refs.spinnerContainerRef.hideSpinner()
 						if( response.data.success == 'created' ){
 							self.setDisableForm()
 							self.toastFunctionRedirect('Éxito', 'El usuario ha sido creado correctamente.', 'success')
@@ -286,7 +286,7 @@
 							self.form.is_active = !self.form.is_active
 							self.afterSuccessGuardar('Usuario actualizado correctamente')
 						}
-					}else if (response.data.error){						
+					}else if (response.data.error){
 						self.all_errors = response.data.error
 						self.toastFunction(error_msg, 'error')
             self.$refs.spinnerContainerRef.hideSpinner()

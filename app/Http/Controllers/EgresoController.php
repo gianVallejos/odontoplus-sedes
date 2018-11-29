@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Egreso;
 use Illuminate\Http\Request;
+use App\CustomLibs\CurBD;
 use Illuminate\Support\Facades\DB;
 use Validator;
 

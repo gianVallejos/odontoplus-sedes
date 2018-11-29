@@ -2,13 +2,25 @@
 	<b-container v-if="curUser.rolid == 1" style="margin-top: -30px">
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
-			<b-col cols="4" class="text-left" >
-				<div class="pr-logo">
-					<img :src="this.url + '/images/empresa/logotipo_pdf.png'" alt="Logo Empresa" />
-					<span>Jr. Silva Santisteban #507, Cajamarca - Perú</span>
-					<span>citas@sonrisacore.com</span>
-					<span>(076) 284095 (Citas) </span>
-    				<span>991 981911 - 966 704974 (Emergencias)</span>
+			<b-col cols="4" class="text-left pl-0" >
+				<div class="pr-logo-layout">
+					<div class="pr-logo">
+						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
+					</div>
+					<div class="pr-descripcion-logo">
+						<span v-if="cliente.direccion != null">
+							{{ cliente.direccion }} {{ cliente.ciudad }} - Perú <br />
+						</span>
+						<span v-if="cliente.email != null">
+							{{ cliente.email }} <br />
+						</span>
+						<span v-if="cliente.telefono != null">
+							{{ cliente.telefono }} <br />
+						</span>
+	    			<span v-if="cliente.celular != null">
+							{{ cliente.celular }} <span v-if="cliente.celular_aux != null"> - </span> {{ cliente.celular_aux }}
+						</span>
+					</div>
 				</div>
 			</b-col>
 			<b-col cols="8" class="text-right mt-4 pt-3">
@@ -107,6 +119,9 @@
 	import axios from 'axios'
 	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	export default{
+		mounted(){
+			this.setLogotipo()
+		},
 		components: {
 			SpinnerContainer
 		},
@@ -117,9 +132,11 @@
 			'ingresos',
 			'curUser',
 			'view_mode',
+			'cliente'
 		],
 		data(){
 			return{
+				logoUrl: '',
 				fields: [
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
@@ -134,6 +151,12 @@
 			}
 		},
 		methods: {
+			setLogotipo(){
+				this.logoUrl = this.url + '/images/logotipos/' + this.curUser.schema + '_BG_WHITE.png'
+			},
+			setDefaultImagenLogo(){
+				this.logoUrl = this.url + '/images/logotipos/1_ODONTOPLUS_CAJ_BG_WHITE.png'
+			},
 			imprimirPagina(){
 				window.print()
 			},
@@ -211,23 +234,31 @@
 		font-family: 'Open Sans', sans-serif;
 	}
 
-	.pr-logo{
-		position: relative;
-		height: 100%;
-		padding-top: 20px;
-		width: 265px;
+	.pr-logo-layout{
+		margin-top: 22px;
 	}
 
-	.pr-logo span{
+	.pr-logo{
+		position: relative;
+		padding-top: 20px;
+		width: 265px;
+		padding-left: 6px;
+	}
+
+	.pr-descripcion-logo{
 		display: block;
 		font-size: .8em;
 		text-align: center;
+		width: 265px;
+		margin-top: 8px;
 	}
 
-	.pr-logo img{
+
+
+	/* .pr-logo img{
 		object-fit: cover;
 		width: 100%;
-	}
+	} */
 
 	.pr-section-title{
 		background: #f3f3f3;

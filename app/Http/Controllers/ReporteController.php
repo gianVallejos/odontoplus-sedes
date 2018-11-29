@@ -74,7 +74,8 @@ class reporteController extends Controller{
         $totales = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_totales_doctor_id_fechas("0","'. $start .'","'. $end .'")');
         $ingresos = json_encode($ingresos);
         $igeneral = json_encode(['totales' => $totales[0], 'fechaInicial' => $start, 'fechaFinal' => $end]);
-        return view('reportes.ganancias_reporte', compact('ingresos', 'igeneral'));
+        $cliente = CurBD::getCurrentClienteData();
+        return view('reportes.ganancias_reporte', compact('ingresos', 'igeneral', 'cliente'));
     }
     public function gananciasFechasJSON($start, $end){
         $ingresos = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_ingresos_por_doctor_doctor_id_fechas("0","'. $start .'","'. $end .'")');

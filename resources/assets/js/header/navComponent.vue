@@ -94,7 +94,7 @@
 		          			<i class="fas fa-dollar-sign"></i>Precio de Tratamientos
 		          		</a>
 		          	</li>
-		          	<li class="li-dropdown">
+		          	<li class="li-dropdown" v-if="this.$root.autorizadoVerEmpresa(user.schema, user.rolid)">
 			          	<a :href="url + '/empresas'" v-bind:class="[(whoIsActiveDetail == 'empresas') ? 'active' : '']">
 			          		<i class="fas fa-building"></i>Empresas
 			          	</a>

@@ -3,12 +3,24 @@
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2 mt-0">
 			<b-col cols="4" class="text-left" >
-				<div class="pr-logo">
-					<img :src="this.url + '/images/empresa/logotipo_pdf.png'" alt="Logo Empresa" />
-					<span>Jr. Silva Santisteban #507, Cajamarca - Perú</span>
-					<span>citas@sonrisacore.com</span>
-					<span>(076) 284095 (Citas) </span>
-    				<span>991 981911 - 966 704974 (Emergencias)</span>
+				<div class="pr-logo-layout">
+					<div class="pr-logo">
+						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
+					</div>
+					<div class="pr-descripcion-logo">
+						<span v-if="cliente.direccion != null">
+							{{ cliente.direccion }} {{ cliente.ciudad }} - Perú <br />
+						</span>
+						<span v-if="cliente.email != null">
+							{{ cliente.email }} <br />
+						</span>
+						<span v-if="cliente.telefono != null">
+							{{ cliente.telefono }} <br />
+						</span>
+	    			<span v-if="cliente.celular != null">
+							{{ cliente.celular }} <span v-if="cliente.celular_aux != null"> - </span> {{ cliente.celular_aux }}
+						</span>
+					</div>
 				</div>
 			</b-col>
 			<b-col cols="8" class="text-right">
@@ -134,6 +146,7 @@
 	import axios from 'axios'
 	export default{
 		mounted(){
+			this.setLogotipo()
 			this.initActualView()
 		},
 		components: {
@@ -145,10 +158,12 @@
 			'igeneral',
 			'ingresos',
 			'curUser',
-			'view_mode'
+			'view_mode',
+			'cliente'
 		],
 		data(){
 			return{
+				logoUrl: '',
 				fields: [
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
@@ -165,6 +180,12 @@
 			}
 		},
 		methods: {
+			setLogotipo(){
+				this.logoUrl = this.url + '/images/logotipos/' + this.curUser.schema + '_BG_WHITE.png'
+			},
+			setDefaultImagenLogo(){
+				this.logoUrl = this.url + '/images/logotipos/1_ODONTOPLUS_CAJ_BG_WHITE.png'
+			},
 			initActualView(){
 				this.displayStatus = this.view_mode
 		    if( this.displayStatus == 'new' ){
@@ -287,22 +308,22 @@
 		font-family: 'Open Sans', sans-serif;
 	}
 
-	.pr-logo{
-		position: relative;
-		height: 100%;
-		padding-top: 20px;
-		width: 265px;
+	.pr-logo-layout{
+		/* margin-top: 22px; */
 	}
 
-	.pr-logo span{
+	.pr-logo{
+		position: relative;
+		padding-top: 20px;
+		width: 265px;
+		padding-left: 6px;
+	}
+
+	.pr-descripcion-logo{
 		display: block;
 		font-size: .8em;
 		text-align: center;
-	}
-
-	.pr-logo img{
-		object-fit: cover;
-		width: 100%;
+		width: 265px;
 	}
 
 	.pr-section-title{

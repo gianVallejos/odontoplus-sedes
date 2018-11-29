@@ -26,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-      $pacientes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all()');
+      $pacientes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_for_search()');
       $pacientes = json_encode($pacientes);
 
         return view('home', compact('pacientes'));

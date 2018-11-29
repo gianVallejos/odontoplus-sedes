@@ -18,8 +18,8 @@ CREATE TABLE `doctors` (
   `celular_aux` varchar(50) DEFAULT NULL,
   `margen_ganancia` decimal(10,0) DEFAULT '0',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `updated_at` date NOT NULL,
-  `created_at` date NOT NULL,
+  `created_at` timestamp NULL,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -37,8 +37,8 @@ CREATE TABLE `egresos` (
   `precio_unitario` decimal(6,2) DEFAULT NULL,
   `doctorId` int(11) DEFAULT NULL,
   `is_deleted` tinyint(4) DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -50,9 +50,9 @@ CREATE TABLE `empresas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(120) NOT NULL,
   `ruc` varchar(12) DEFAULT NULL,
-  `created_at` date NOT NULL,
-  `updated_at` date NOT NULL,
   `is_deleted` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -63,9 +63,9 @@ DROP TABLE IF EXISTS `ingresos`;
 CREATE TABLE `ingresos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `idPaciente` int(11) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `is_deleted` tinyint(4) DEFAULT '0',
+  `created_at` timestamp NULL,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -106,12 +106,12 @@ CREATE TABLE `pacientes` (
   `celular_aux` varchar(50) DEFAULT NULL,
   `empresa_id` int(11) NOT NULL,
   `seguro_ind` int(11) DEFAULT NULL,
-  `updated_at` date NOT NULL,
-  `created_at` date NOT NULL,
   `nombre_apoderado` varchar(150) DEFAULT NULL,
   `celular_apoderado` varchar(150) DEFAULT NULL,
   `is_deleted` tinyint(4) DEFAULT '0',
   `referencia_id` int(11) DEFAULT '1',
+  `created_at` timestamp NULL,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -125,8 +125,8 @@ CREATE TABLE `pagos` (
   `fecha_inicio` date NOT NULL,
   `fecha_fin` date NOT NULL,
   `is_deleted` tinyint(4) DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -139,8 +139,8 @@ CREATE TABLE `precios` (
   `idEmpresa` int(11) NOT NULL,
   `idTratamiento` int(11) NOT NULL,
   `monto` decimal(10,2) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -155,6 +155,8 @@ CREATE TABLE `presupuestos` (
   `idDoctor` int(11) NOT NULL,
   `descuento` int(11) NOT NULL,
   `is_deleted` tinyint(4) DEFAULT '0',
+  `created_at` timestamp NULL,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -185,27 +187,16 @@ CREATE TABLE `referencias` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `roles`
--- ----------------------------
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE `roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) DEFAULT NULL,
-  `descripcion` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
--- ----------------------------
 --  Table structure for `tratamientos`
 -- ----------------------------
 DROP TABLE IF EXISTS `tratamientos`;
 CREATE TABLE `tratamientos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `detalle` varchar(120) NOT NULL,
-  `updated_at` date NOT NULL,
-  `created_at` date NOT NULL,
   `is_active` tinyint(4) DEFAULT '1',
   `is_deleted` tinyint(4) DEFAULT '0',
+  `created_at` timestamp NULL,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -220,8 +211,8 @@ CREATE PROCEDURE `OP_Doctors_add_all`(IN XNOMBRES VARCHAR(90), IN XAPELLIDOS VAR
 																			 IN XGENERO VARCHAR(25), IN XESTADO VARCHAR(25), IN XTELEFONO VARCHAR(50),
 																			 IN XCELULAR VARCHAR(50), IN XCELULAR_AUX VARCHAR(50), IN XMARGEN_GANANCIA DECIMAL(10, 0))
 BEGIN
-	INSERT INTO doctors(nombres, apellidos, dni, email, direccion, fechanacimiento, genero, estado, telefono, celular, celular_aux, margen_ganancia)
-		VALUES (XNOMBRES, XAPELLIDOS, XDNI, XEMAIL, XDIRECCION, XFECHA_NACIMIENTO, XGENERO, XESTADO, XTELEFONO, XCELULAR, XCELULAR_AUX, XMARGEN_GANANCIA);
+INSERT INTO doctors(nombres, apellidos, dni, email, direccion, fechanacimiento, genero, estado, telefono, celular, celular_aux, margen_ganancia, created_at, updated_at)
+  VALUES (XNOMBRES, XAPELLIDOS, XDNI, XEMAIL, XDIRECCION, XFECHA_NACIMIENTO, XGENERO, XESTADO, XTELEFONO, XCELULAR, XCELULAR_AUX, XMARGEN_GANANCIA, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -317,9 +308,11 @@ CREATE PROCEDURE `OP_Doctors_update_all_Id`(IN XNOMBRES VARCHAR(90), IN XAPELLID
 																			 IN XCELULAR VARCHAR(50), IN XCELULAR_AUX VARCHAR(50),
 																			 IN XMARGEN_GANANCIA DECIMAL(10, 0), IN XID INT)
 BEGIN
-	UPDATE doctors SET nombres = XNOMBRES, apellidos = XAPELLIDOS, dni = XDNI, email = XEMAIL,
-										 direccion = XDIRECCION, fechanacimiento = XFECHA_NACIMIENTO, genero = XGENERO,
-										 estado = XESTADO, telefono = XTELEFONO, celular = XCELULAR, celular_aux = XCELULAR_AUX, margen_ganancia = XMARGEN_GANANCIA
+  UPDATE doctors SET nombres = XNOMBRES, apellidos = XAPELLIDOS, dni = XDNI, email = XEMAIL,
+                     direccion = XDIRECCION, fechanacimiento = XFECHA_NACIMIENTO, genero = XGENERO,
+                     estado = XESTADO, telefono = XTELEFONO, celular = XCELULAR,
+                     celular_aux = XCELULAR_AUX, margen_ganancia = XMARGEN_GANANCIA,
+                     updated_at = NOW()
 	WHERE id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
@@ -336,8 +329,8 @@ CREATE PROCEDURE `OP_Egresos_add_all`(IN XFECHA DATE, IN XCANTIDAD INT,
 																				 IN XCONCEPTO VARCHAR(125), IN XTIPO VARCHAR(125),
 																				 IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2))
 BEGIN
-	INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario)
-		VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO);
+INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, created_at, updated_at)
+  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -354,8 +347,8 @@ CREATE PROCEDURE `OP_Egresos_add_all_doctor`(IN XFECHA DATE, IN XCANTIDAD INT,
 																				 IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2),
 																				 IN XDOCTOR_ID INT)
 BEGIN
-	INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, doctorId)
-		VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, XDOCTOR_ID);
+INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, doctorId, created_at, updated_at)
+  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, XDOCTOR_ID, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -468,9 +461,9 @@ CREATE PROCEDURE `OP_Egresos_update_all_doctor_Id`(IN XFECHA DATE, IN XCANTIDAD 
 																										IN XDOCTOR_ID INT, IN XID INT)
 BEGIN
 	UPDATE egresos
-		SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
-		  	tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
-				doctorId = XDOCTOR_ID
+    SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
+        tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
+        doctorId = XDOCTOR_ID, updated_at = NOW()
 		WHERE egresos.id = XID;
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -488,9 +481,9 @@ CREATE PROCEDURE `OP_Egresos_update_all_Id`(IN XFECHA DATE, IN XCANTIDAD INT,
 																						 IN XID INT)
 BEGIN
 	UPDATE egresos
-		SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
-		  	tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
-				doctorId = NULL
+    SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
+        tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
+        doctorId = NULL, updated_at = NOW()
 		WHERE egresos.id = XID;
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -504,8 +497,8 @@ DROP PROCEDURE IF EXISTS `OP_Empresas_add_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Empresas_add_all`(IN XNOMBRE VARCHAR(120), IN XRUC VARCHAR(12))
 BEGIN
-	INSERT INTO empresas(nombre, ruc)
-		VALUES (XNOMBRE, XRUC);
+  INSERT INTO empresas(nombre, ruc, created_at, updated_at)
+    VALUES (XNOMBRE, XRUC, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END
@@ -580,8 +573,8 @@ DROP PROCEDURE IF EXISTS `OP_Empresas_update_all_Id`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Empresas_update_all_Id`(IN XNOMBRE VARCHAR(120), IN XRUC VARCHAR(12), IN XID INT)
 BEGIN
-	UPDATE empresas SET nombre = XNOMBRE, ruc = XRUC
-		WHERE empresas.id = XID;
+  UPDATE empresas SET nombre = XNOMBRE, ruc = XRUC, updated_at = NOW()
+    WHERE empresas.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -595,8 +588,8 @@ DROP PROCEDURE IF EXISTS `OP_Ingresos_add_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_add_all`(IN XPACIENTE_ID INT)
 BEGIN
-	INSERT INTO ingresos(idPaciente)
-		VALUES (XPACIENTE_ID);
+INSERT INTO ingresos(idPaciente, created_at, updated_at)
+  VALUES (XPACIENTE_ID, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -712,7 +705,7 @@ CREATE PROCEDURE `OP_Ingresos_Detalle_update_all`(IN XID_INGRESO INT, IN XID_PRE
 BEGIN
 		DECLARE MONTO_TOTAL DECIMAL(11, 2);
 
-		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO, fecha = XFECHA, doctorId = XDOCTOR
+		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO, fecha = XFECHA, doctorId = XDOCTOR, updated_at = NOW()
 		WHERE ingresos_detalle.id = XID;
 
 END
@@ -1026,12 +1019,12 @@ CREATE PROCEDURE `OP_Pacientes_add_all`(IN XNOMBRES VARCHAR(90), IN XAPELLIDOS V
 																				IN XCELULAR_APODERADO VARCHAR(150),
 																			  IN XREFERENCIA_ID INT)
 BEGIN
-	INSERT INTO pacientes(nombres, apellidos, dni, email, direccion, fechanacimiento, genero, estado, telefono, fax,
-										  celular, celular_aux, empresa_id, seguro_ind, nombre_apoderado, celular_apoderado,
-											referencia_id)
-		VALUES (XNOMBRES, XAPELLIDOS, XDNI, XEMAIL, XDIRECCION, XFECHA_NACIMIENTO, XGENERO, XESTADO, XTELEFONO, XFAX,
-						XCELULAR, XCELULAR_AUX, XID_EMPRESA, XID_SEGURO_IND, XNOMBRE_APODERADO, XCELULAR_APODERADO,
-						XREFERENCIA_ID);
+  INSERT INTO pacientes(nombres, apellidos, dni, email, direccion, fechanacimiento, genero, estado, telefono, fax,
+                    celular, celular_aux, empresa_id, seguro_ind, nombre_apoderado, celular_apoderado,
+                    referencia_id, created_at, updated_at)
+  VALUES (XNOMBRES, XAPELLIDOS, XDNI, XEMAIL, XDIRECCION, XFECHA_NACIMIENTO, XGENERO, XESTADO, XTELEFONO, XFAX,
+          XCELULAR, XCELULAR_AUX, XID_EMPRESA, XID_SEGURO_IND, XNOMBRE_APODERADO, XCELULAR_APODERADO,
+          XREFERENCIA_ID, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END
@@ -1127,6 +1120,26 @@ END
 DELIMITER ;
 
 -- ----------------------------
+--  Procedure definition for `OP_Pacientes_get_for_search`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Pacientes_get_for_search`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Pacientes_get_for_search`()
+BEGIN
+	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
+				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
+				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre, ingresos.id as ingresoId,
+				 presupuestos.id as presupuestosId
+		FROM pacientes as pc
+	INNER JOIN empresas as emp on emp.id = pc.empresa_id
+	INNER JOIN ingresos on ingresos.idPaciente = pc.id
+	LEFT JOIN presupuestos on presupuestos.idPaciente = pc.id
+		ORDER BY pc.id DESC;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
 --  Procedure definition for `OP_Pacientes_get_pacientes_creados_por_mes_anio_actual`
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pacientes_get_pacientes_creados_por_mes_anio_actual`;
@@ -1209,12 +1222,12 @@ CREATE PROCEDURE `OP_Pacientes_update_all_Id`(IN XNOMBRES VARCHAR(90), IN XAPELL
 																							IN XCELULAR_APODERADO VARCHAR(150),
 																							IN XREFERENCIA_ID INT, IN XID INT)
 BEGIN
-	UPDATE pacientes SET nombres = XNOMBRES, apellidos = XAPELLIDOS, dni = XDNI, email = XEMAIL,
-											 direccion = XDIRECCION, fechanacimiento = XFECHA_NACIMIENTO, genero = XGENERO,
-											 estado = XESTADO, telefono = XTELEFONO, fax = XFAX, celular = XCELULAR,
-											 celular_aux = XCELULAR_AUX, empresa_id = XID_EMPRESA, seguro_ind = XID_SEGURO_IND,
-											 nombre_apoderado = XNOMBRE_APODERADO, celular_apoderado = XCELULAR_APODERADO,
-											referencia_id = XREFERENCIA_ID
+  UPDATE pacientes SET nombres = XNOMBRES, apellidos = XAPELLIDOS, dni = XDNI, email = XEMAIL,
+                       direccion = XDIRECCION, fechanacimiento = XFECHA_NACIMIENTO, genero = XGENERO,
+                       estado = XESTADO, telefono = XTELEFONO, fax = XFAX, celular = XCELULAR,
+                       celular_aux = XCELULAR_AUX, empresa_id = XID_EMPRESA, seguro_ind = XID_SEGURO_IND,
+                       nombre_apoderado = XNOMBRE_APODERADO, celular_apoderado = XCELULAR_APODERADO,
+                      referencia_id = XREFERENCIA_ID, updated_at = NOW()
 	WHERE pacientes.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
@@ -1310,7 +1323,7 @@ DROP PROCEDURE IF EXISTS `OP_Precios_add_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Precios_add_all`(IN empresaId int, IN tratamientoId int, IN precio decimal)
 BEGIN
-  INSERT INTO precios (idEmpresa, idTratamiento, monto) values (empresaId, tratamientoId, precio);
+  INSERT INTO precios (idEmpresa, idTratamiento, monto, created_at, updated_at) values (empresaId, tratamientoId, precio, NOW(), NOW());
   SELECT ROW_COUNT() AS ESTADO;
 END
 ;;
@@ -1385,7 +1398,7 @@ DROP PROCEDURE IF EXISTS `OP_Precios_update_monto_Id`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Precios_update_monto_Id`(IN XMONTO DECIMAL(10, 2), IN XID INT)
 BEGIN
-	UPDATE precios SET monto = XMONTO WHERE precios.id = XID;
+	UPDATE precios SET monto = XMONTO, updated_at = NOW() WHERE precios.id = XID;
 	SELECT ROW_COUNT() AS ESTADO;
 END
 ;;
@@ -1398,8 +1411,8 @@ DROP PROCEDURE IF EXISTS `OP_Presupuestos_add_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Presupuestos_add_all`(IN ID_PRESUPUESTO INT, IN XID_PACIENTE INT, IN XID_DOCTOR INT, IN XDESCUENTO INT)
 BEGIN
-		INSERT INTO presupuestos(id, fechahora, idPaciente, idDoctor, descuento)
-			VALUES (ID_PRESUPUESTO, NOW(), XID_PACIENTE, XID_DOCTOR, XDESCUENTO);
+    INSERT INTO presupuestos(id, fechahora, idPaciente, idDoctor, descuento, created_at, updated_at)
+      VALUES (ID_PRESUPUESTO, NOW(), XID_PACIENTE, XID_DOCTOR, XDESCUENTO, NOW(), NOW());
 
 		SELECT ROW_COUNT() AS ESTADO;
 END
@@ -1561,8 +1574,8 @@ DROP PROCEDURE IF EXISTS `OP_Tratamientos_add_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Tratamientos_add_all`(IN XDETALLE VARCHAR(120))
 BEGIN
-  INSERT INTO tratamientos (detalle)
-  VALUES (XDETALLE);
+  INSERT INTO tratamientos (detalle, created_at, updated_at)
+  VALUES (XDETALLE, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END
@@ -1648,7 +1661,7 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Tratamientos_update_all_id`(IN XID INT(11), IN XDETALLE VARCHAR(120))
 BEGIN
   UPDATE tratamientos
-	SET detalle = XDETALLE
+	   SET detalle = XDETALLE, updated_at = NOW()
 	WHERE id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
@@ -1716,35 +1729,35 @@ INSERT INTO `empresas` VALUES ('1', 'Empresa Default', null, '2018-11-27', '2018
 -- ----------------------------
 -- Records of precios
 -- ----------------------------
-INSERT INTO `precios` VALUES ('1', '1', '2', '15.00', '2018-11-27 16:32:35', '2018-11-27 16:32:35');
-INSERT INTO `precios` VALUES ('2', '1', '3', '15.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('3', '1', '4', '15.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('4', '1', '5', '15.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('1', '1', '2', '10.00', '2018-11-27 16:32:35', '2018-11-27 16:32:35');
+INSERT INTO `precios` VALUES ('2', '1', '3', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('3', '1', '4', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('4', '1', '5', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
 INSERT INTO `precios` VALUES ('5', '1', '6', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('6', '1', '7', '15.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('7', '1', '8', '35.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('8', '1', '9', '45.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('9', '1', '10', '50.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('10', '1', '11', '52.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('11', '1', '12', '62.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('12', '1', '13', '75.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('13', '1', '14', '20.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('14', '1', '15', '105.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('15', '1', '16', '120.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('16', '1', '17', '175.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('17', '1', '18', '15.20', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('18', '1', '19', '122.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('19', '1', '20', '50.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('20', '1', '21', '40.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('21', '1', '22', '65.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('22', '1', '23', '22.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('23', '1', '26', '12.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('24', '1', '27', '16.50', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('25', '1', '28', '45.20', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('26', '1', '29', '24.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('27', '1', '30', '35.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('28', '1', '31', '0.00', '2018-11-27 16:33:12', '2018-11-27 16:33:12');
-INSERT INTO `precios` VALUES ('29', '1', '31', '82.10', '2018-11-27 16:33:14', '2018-11-27 16:33:14');
+INSERT INTO `precios` VALUES ('6', '1', '7', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('7', '1', '8', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('8', '1', '9', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('9', '1', '10', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('10', '1', '11', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('11', '1', '12', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('12', '1', '13', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('13', '1', '14', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('14', '1', '15', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('15', '1', '16', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('16', '1', '17', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('17', '1', '18', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('18', '1', '19', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('19', '1', '20', '25.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
+INSERT INTO `precios` VALUES ('20', '1', '21', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
+INSERT INTO `precios` VALUES ('21', '1', '22', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
+INSERT INTO `precios` VALUES ('22', '1', '23', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
+INSERT INTO `precios` VALUES ('23', '1', '26', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
+INSERT INTO `precios` VALUES ('24', '1', '27', '25.50', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
+INSERT INTO `precios` VALUES ('25', '1', '28', '25.20', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
+INSERT INTO `precios` VALUES ('26', '1', '29', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
+INSERT INTO `precios` VALUES ('27', '1', '30', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
+INSERT INTO `precios` VALUES ('28', '1', '31', '10.00', '2018-11-27 16:33:12', '2018-11-27 16:33:12');
+INSERT INTO `precios` VALUES ('29', '1', '31', '27.00', '2018-11-27 16:33:14', '2018-11-27 16:33:14');
 
 
 -- ----------------------------
@@ -1754,13 +1767,6 @@ INSERT INTO `referencias` VALUES ('1', 'Otros');
 INSERT INTO `referencias` VALUES ('2', 'Referidos');
 INSERT INTO `referencias` VALUES ('3', 'TV');
 INSERT INTO `referencias` VALUES ('4', 'Redes Sociales');
-
-
--- ----------------------------
--- Records of roles
--- ----------------------------
-INSERT INTO `roles` VALUES ('1', 'Administrador', 'Administrador');
-INSERT INTO `roles` VALUES ('2', 'Colaborador', 'Usuario Invitado');
 
 -- ----------------------------
 -- Records of tratamientos
