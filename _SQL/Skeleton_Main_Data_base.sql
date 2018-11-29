@@ -32,6 +32,10 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+INSERT INTO `users` VALUES ('1', 'Admin', 'admin@odontoplus.pe', '$2y$10$U74ylBqdic.7idkr.hWgP.bZMU77dZz4s0ksFsvPkPjxH4I9npCkm', '5Br6qEsRNgPWknSaqJ3uuJa3LwOtzE8nsF606fqPrJ12t0Ok0m1yVX4YXIML', '2018-11-27 15:51:31', '2018-11-27 15:51:31', '1', '1', '0', '1_ODONTOPLUS_CAJ', '1');
+
+
 DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -44,6 +48,8 @@ CREATE TABLE `clientes` (
   `url_logotipo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+INSERT INTO `clientes` VALUES ('1', 'Odontoplus', null, null, 'Cajamarca', 'Av. Miguel Grau 656', null, '943 598585', '982 780954', 'contacto@odontoplus.com');
 
 CREATE PROCEDURE `OP_Usuarios_add_all`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
 																		 IN XPASSWORD VARCHAR(255), IN XROLID TINYINT, IN XIS_ACTIVE TINYINT, IN XSCHEMA VARCHAR(255), IN XID_CLIENTE INT)

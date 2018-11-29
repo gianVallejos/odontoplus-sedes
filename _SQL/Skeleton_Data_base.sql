@@ -59,7 +59,7 @@ CREATE TABLE `empresas` (
 -- ----------------------------
 -- Records of empresas
 -- ----------------------------
-INSERT INTO `empresas` VALUES ('1', 'Empresa Default', null, '2018-11-27', '2018-11-27', '0');
+INSERT INTO `empresas` VALUES ('1', 'Empresa Default', null, '0', '2018-11-27', '2018-11-27');
 
 -- ----------------------------
 --  Table structure for `ingresos`
@@ -249,30 +249,30 @@ CREATE TABLE `tratamientos` (
 -- ----------------------------
 -- Records of tratamientos
 -- ----------------------------
-INSERT INTO `tratamientos` VALUES ('2', 'Resina Simple Vestibular', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('3', 'Resina Simple Mesial', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('4', 'Resina Simple Distal', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('5', 'Resina Simple Palatino', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('6', 'Ionomero', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('7', 'Resina Simple Oclusal', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('8', 'Corona Fenestrada', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('9', 'Corona Metal Porcelana', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('10', 'Corona de Acero', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('11', 'Corona Free Metal', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('12', 'Exodoncia Simple', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('13', 'Exodoncia Compleja', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('14', 'Exodoncia 3ra Molar', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('15', 'Endodoncia Incisivo', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('16', 'Endodoncia de Premolar', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('17', 'Endodoncia Molar', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('18', 'Carillas Inyectada', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('19', 'Carilla Estratificada', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('20', 'Pulpotomia', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('21', 'Pulpectomia', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('22', 'Perno de Colado', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('23', 'Perno de Fibra de Vidrio', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('27', 'Incrustacion de Porcelana', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('28', 'Incrustacion Metal', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('29', 'Resina Compuesta', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('30', 'Resina Compleja', '2018-11-27', '2018-11-27', '1', '0');
-INSERT INTO `tratamientos` VALUES ('31', 'Sellantes por pieza dental', '2018-11-27', '2018-11-27', '1', '0');
+INSERT INTO `tratamientos` VALUES ('2', 'Resina Simple Vestibular', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('3', 'Resina Simple Mesial', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('4', 'Resina Simple Distal', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('5', 'Resina Simple Palatino', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('6', 'Ionomero', '2018-11-27', '1', '0', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('7', 'Resina Simple Oclusal', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('8', 'Corona Fenestrada', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('9', 'Corona Metal Porcelana', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('10', 'Corona de Acero', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('11', 'Corona Free Metal', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('12', 'Exodoncia Simple', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('13', 'Exodoncia Compleja', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('14', 'Exodoncia 3ra Molar', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('15', 'Endodoncia Incisivo', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('16', 'Endodoncia de Premolar', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('17', 'Endodoncia Molar', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('18', 'Carillas Inyectada', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('19', 'Carilla Estratificada', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('20', 'Pulpotomia', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('21', 'Pulpectomia', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('22', 'Perno de Colado', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('23', 'Perno de Fibra de Vidrio', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('27', 'Incrustacion de Porcelana', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('28', 'Incrustacion Metal', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('29', 'Resina Compuesta', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('30', 'Resina Compleja', '1', '0', '2018-11-27', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('31', 'Sellantes por pieza dental', '2018-11-27', '1', '0', '2018-11-27');

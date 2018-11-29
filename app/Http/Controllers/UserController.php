@@ -54,9 +54,10 @@ class UserController extends Controller{
     	if ($validator->passes()) {
 
             try{
+                $is_active = ($request->is_active == null) ? 0 : 1;
                 $user = DB::select('call OP_Usuarios_add_all("'. $request->name .'", "'. $request->email
                                                               .'", "'. Hash::make($request->password) .'", '. $request->rolid
-                                                              .', '. $request->is_active .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .')');
+                                                              .', '. $is_active .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .')');
 
                 if( $user[0]->ESTADO > 0 ){
                     return response()->json(['success' => 'created']);
@@ -83,13 +84,14 @@ class UserController extends Controller{
 
     	if ($validator->passes()) {
             try{
+                $is_active = ($request->is_active == null) ? 0 : 1;
                 if( !empty($request->password) && !empty($request->confirm_password) ){
                     $user = DB::select('call OP_Usuarios_update_all("'. $request->name .'", "'. $request->email
                                                                       .'", "'. Hash::make($request->password) .'", '. $request->rolid
-                                                                      .', '. $request->is_active .', '. $id .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .')');
+                                                                      .', '. $is_active .', '. $id .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .')');
                 }else{
                     $user = DB::select('call OP_Usuarios_update_no_pass("'. $request->name .'", "'. $request->email
-                                                                          .'", '. $request->rolid .', '. $request->is_active .', '. $id .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .')');
+                                                                          .'", '. $request->rolid .', '. $is_active .', '. $id .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .')');
                 }
 
                 if( $user[0]->ESTADO > 0 ){

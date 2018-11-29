@@ -325,7 +325,7 @@ DELIMITER ;
 -- ----------------------------
 --  Procedure definition for `OP_Empresas_es_borrable_Id`
 -- ----------------------------
-DROP PROCEDURE IF EXISTS `OP_Empresas_delete_all`;
+DROP PROCEDURE IF EXISTS `OP_Empresas_es_borrable_Id`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Empresas_es_borrable_Id`(IN XID INT)
 BEGIN

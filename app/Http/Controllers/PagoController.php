@@ -27,7 +27,8 @@ class PagoController extends Controller{
         $last_pago =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_get_ultimo()')[0];
         $ingresos = json_encode($ingresos);
         $igeneral = json_encode(['ultimoPago' => $last_pago, 'doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
-        return view('pagos.show', compact('ingresos', 'igeneral'));
+        $cliente = CurBD::getCurrentClienteData();
+        return view('pagos.show', compact('ingresos', 'igeneral', 'cliente'));        
     }
 
     public function create(){
