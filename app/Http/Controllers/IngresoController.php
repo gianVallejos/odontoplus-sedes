@@ -62,7 +62,7 @@ class IngresoController extends Controller
         return response()->json(['error'=>$validator->errors()]);
     }
 
-    public function reporte($id){
+    public function reporte($id){      
         $igeneral =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_Id('. $id .')')[0];
         $igeneral = json_encode($igeneral);
         $idetalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_all_Id('. $id .')');

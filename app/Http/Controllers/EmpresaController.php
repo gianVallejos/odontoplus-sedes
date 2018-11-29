@@ -95,11 +95,15 @@ class EmpresaController extends Controller{
 
     public function destroy(Request $request, $id){
       try{
-        //FALTA VERIFICAR SI ES BORRABLE
-          $empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_delete_all('. $id .')');
-          return response()->json(['success' => 'deleted']);
+          $canDelete =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_es_borrable_Id('. $id .')');
+          if( $canDelete[0]->CAN_DELETE == '1' ){
+            $empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_delete_all('. $id .')');
+            return response()->json(['success' => 'deleted']);
+          }else{
+              return response()->json(['error' => 'cantDeleted']);
+          }
       }catch(Exception $e){
-          return response()->json(['error' => 'Ha ocurrido un error']);
+          return response()->json(['error'=>$e->getMessage()]);
       }
     }
 }
