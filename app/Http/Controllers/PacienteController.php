@@ -80,7 +80,7 @@ class PacienteController extends Controller
                                     'empresa_id' => 'nullable',
                                     'seguro_ind' => 'nullable',
                                     'referencia_id' => 'nullable',
-                                    'nombre_apoderado' => 'nullable|string|max:150',
+                                    'nombre_apoderado' => 'nullable|alpha|max:150',
                                     'celular_apoderado' => 'nullable|string|max:150',
                                 ] );
         $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){
@@ -131,7 +131,7 @@ class PacienteController extends Controller
                         'empresa_id' => 'nullable',
                         'seguro_ind' => 'nullable',
                         'referencia_id' => 'nullable',
-                        'nombre_apoderado' => 'nullable|string|max:150',
+                        'nombre_apoderado' => 'nullable|alpha|max:150',
                         'celular_apoderado' => 'nullable|string|max:150',
                     ] );
         $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){
