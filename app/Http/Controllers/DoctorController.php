@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Validator;
 class DoctorController extends Controller{
 
     public static $validation_rules = [
-        'nombres' => 'required|string|max:90',
-        'apellidos' => 'required|string|max:90',
+        'nombres' => 'required|alpha|max:90',
+        'apellidos' => 'required|alpha|max:90',
         'dni' => 'required|digits:8',
         'email' => 'nullable|email|max:90',
         'direccion' => 'required|string|max:90',
@@ -22,7 +22,7 @@ class DoctorController extends Controller{
         'telefono' => 'nullable|string|max:50',
         'celular' => 'nullable|string|max:50',
         'celular_aux' => 'nullable|string|max:50',
-        'margen_ganancia' => 'nullable|min:0|max:100'
+        'margen_ganancia' => 'nullable|integer|min:0|max:100'
     ];
 
     public function __construct(){

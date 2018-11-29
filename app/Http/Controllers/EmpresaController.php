@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class EmpresaController extends Controller{
 
     public static $validation_rules = [
-        'nombre' => 'required|max:120',
+        'nombre' => 'required|string|max:120',
         'ruc' => 'nullable|digits:12'
     ];
 

@@ -13,9 +13,9 @@ class EgresoController extends Controller{
         'fecha' => 'required|date',
         'tipo' => 'required',
         'doctor' => 'required_if:tipo,Pago a Personal',
-        'cantidad' => 'required|numeric',
+        'cantidad' => 'required|integer|min:0',
         'concepto' => 'required|string|max:125',
-        'monto' => 'required|numeric',
+        'monto' => 'required|numeric|min:0',
         'total' => 'numeric',
     ];
 

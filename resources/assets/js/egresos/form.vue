@@ -404,7 +404,11 @@
 				})
 			},
 			calculateTotal(){
-				this.form.total = parseFloat(this.form.cantidad) * parseFloat(this.form.monto)
+        this.form.total = parseFloat(this.form.cantidad) * parseFloat(this.form.monto)
+        if( isNaN(this.form.total) ){
+          this.form.total = 0
+        }
+				
 			},
 			changeDoctorOption(){
 				if( this.form.tipo == 'Pago a Personal' && this.displayStatus != 'show' ){

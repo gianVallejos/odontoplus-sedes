@@ -72,11 +72,11 @@
 													<b-form-input id="email" type="email" class="required" v-model="form.email" :disabled=isDisabled placeholder="Email" required autocomplete="off"/>
 													<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
 										    </b-form-group>
-										    <b-form-group label="Nueva Contraseña" label-for="password" >
+										    <b-form-group :label="displayStatus == 'edit' ? 'Nueva contraseña' : 'Contraseña'" label-for="password" >
 													<b-form-input id="password" type="password" class="required" v-model="form.password" :disabled=isDisabled placeholder="********" required autocomplete="off" maxlength="20"/>
 													<span v-if="all_errors.password" :class="['label label-danger']">{{ all_errors.password[0] }}</span>
 										    </b-form-group>
-										    <b-form-group label="Confirmar Nueva Contraseña" label-for="confirm_password" >
+										    <b-form-group :label="displayStatus == 'edit' ? 'Confirmar nueva contraseña' : 'Confirmar contraseña'" label-for="confirm_password" >
 											    <b-form-input id="confirm_password" type="password" class="required" v-model="form.confirm_password" :disabled=isDisabled placeholder="********" required autocomplete="off" maxlength="20"/>
 													<span v-if="all_errors.confirm_password" :class="['label label-danger']">{{ all_errors.confirm_password[0] }}</span>
 										    </b-form-group>

@@ -39,7 +39,7 @@ class TratamientoController extends Controller{
 
     public function store(Request $request){
     	$validator = Validator::make($request->all(), [
-            'detalle' => 'required|max:120',
+            'detalle' => 'required|alpha_num|max:120',
             'precio_estandar' => 'required|numeric|between:0,99999999.99'
         ]);
 

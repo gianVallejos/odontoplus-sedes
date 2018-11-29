@@ -392,13 +392,25 @@
 				}
 				for( var i = 0; i < this.form.trats.length; i++ ){
 						if( this.form.trats[i].precioId == '' ){
-								this.toastFunction('Debe seleccionar un tratamiento en la línea '+ (i+1), 'error')
+								this.toastFunction('Debe seleccionar un tratamiento, en la línea '+ (i+1), 'error')
 								return false
 						}else if( this.form.trats[i].cantidad == '' ){
-								this.toastFunction('Debe seleccionar una cantidad en la línea '+ (i+1), 'error')
+								this.toastFunction('Debe seleccionar una cantidad, en la línea '+ (i+1), 'error')
 								return false
 						}else if( this.form.trats[i].monto == '' ){
-								this.toastFunction('Debe seleccionar un monto en la línea '+ (i+1), 'error')
+								this.toastFunction('Debe seleccionar un monto, en la línea '+ (i+1), 'error')
+								return false
+						}else if( this.form.trats[i].cantidad < 0 ){
+								this.toastFunction('La cantidad debe ser un número positivo, en la línea '+ (i+1), 'error')
+								return false
+						}else if( this.form.trats[i].monto < 0 ){
+								this.toastFunction('El monto debe ser un número positivo, en la línea '+ (i+1), 'error')
+								return false
+						}else if( isNaN(this.form.trats[i].cantidad) ){
+								this.toastFunction('La cantidad debe ser únicamente un número, en la línea '+ (i+1), 'error')
+								return false
+						}else if( isNaN(this.form.trats[i].monto) ){
+								this.toastFunction('El monto debe ser únicamente un número, en la línea '+ (i+1), 'error')
 								return false
 						}
 				}
@@ -535,7 +547,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-		  				timer: 3000
+		  				timer: 4000
 				})
 			},
 			toastFunctionRedirect(title, msg, type){
