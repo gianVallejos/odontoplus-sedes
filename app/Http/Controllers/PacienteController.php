@@ -65,8 +65,8 @@ class PacienteController extends Controller
     public function store(Request $request){
         //print_r($request->all()); die();
         $validator = Validator::make($request->all(), [
-                                    'nombres' => 'required|alpha|max:90',
-                                    'apellidos' => 'required|alpha|max:90',
+                                    'nombres' => 'required|string|max:90',
+                                    'apellidos' => 'required|string|max:90',
                                     'dni' => 'required|unique:'.CurBD::getCurrentSchema().'.pacientes|digits:8',
                                     'direccion' => 'required|string|max:90',
                                     'fechanacimiento' => 'required|date|before:now',
@@ -80,7 +80,7 @@ class PacienteController extends Controller
                                     'empresa_id' => 'nullable',
                                     'seguro_ind' => 'nullable',
                                     'referencia_id' => 'nullable',
-                                    'nombre_apoderado' => 'nullable|alpha|max:150',
+                                    'nombre_apoderado' => 'nullable|string|max:150',
                                     'celular_apoderado' => 'nullable|string|max:150',
                                 ] );
         $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){
@@ -116,8 +116,8 @@ class PacienteController extends Controller
     public function update(Request $request, $id){
 
         $validator = Validator::make($request->all(), [
-                        'nombres' => 'required|alpha|max:90',
-                        'apellidos' => 'required|alpha|max:90',
+                        'nombres' => 'required|string|max:90',
+                        'apellidos' => 'required|string|max:90',
                         'dni' => 'required|digits:8',
                         'direccion' => 'required|string|max:90',
                         'fechanacimiento' => 'required|date|before:now',
@@ -131,7 +131,7 @@ class PacienteController extends Controller
                         'empresa_id' => 'nullable',
                         'seguro_ind' => 'nullable',
                         'referencia_id' => 'nullable',
-                        'nombre_apoderado' => 'nullable|alpha|max:150',
+                        'nombre_apoderado' => 'nullable|string|max:150',
                         'celular_apoderado' => 'nullable|string|max:150',
                     ] );
         $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){

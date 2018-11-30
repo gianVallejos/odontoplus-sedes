@@ -43,7 +43,7 @@ class UserController extends Controller{
     public function store(Request $request){
 
     	$validator = Validator::make($request->all(), [
-            'name' => 'required|alpha|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users|max:255',
             'password' => 'required|min:6|max:50|same:confirm_password',
             'confirm_password' => 'required|same:password|min:6|max:50',

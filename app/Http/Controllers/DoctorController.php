@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Validator;
 class DoctorController extends Controller{
 
     public static $validation_rules = [
-        'nombres' => 'required|alpha|max:90',
-        'apellidos' => 'required|alpha|max:90',
+        'nombres' => 'required|string|max:90',
+        'apellidos' => 'required|string|max:90',
         'dni' => 'required|digits:8',
         'email' => 'nullable|email|max:90',
         'direccion' => 'required|string|max:90',
