@@ -56,6 +56,16 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DROP TABLE IF EXISTS `password_resets`;
+create table `password_resets`
+(
+	id int auto_increment primary key,
+	email varchar(255) not null,
+	token varchar(255) null,
+	created_at timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP
+)
+;
+
 -- ----------------------------
 --  Procedure definition for `OP_Clientes_get_all_byUserId`
 -- ----------------------------
