@@ -1,65 +1,87 @@
 @extends('layout')
 
+@push('styles')
+	<link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
+@endpush
+
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+	<div class="overlay-green"></div>
+  <div class="auth-box">
+    <div class="card">
+      <div class="card-body">
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('password.update') }}">
-                        @csrf
+				<div class="row">
+					<div class="col-md-12">
+						<div class="logotipo text-center">
+							<a href="https://www.odontoplus.pe" target="_blank">
+								<img src="{{ asset('images/logotipos/1_ODONTOPLUS_CAJ_BG_WHITE.png?v=1.0.1') }}" alt="Logotipo">
+							</a>
+						</div>
+					</div>
 
-                        <input type="hidden" name="token" value="{{ $token }}">
+					<div class="col-md-12 mb-4 mt-3">
+						<h5>Recuperación de Contraseña</h5>
+					</div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+					<div class="col-md-12">
+						<form method="POST" action="{{ route('password.update') }}">
+								@csrf
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email ?? old('email') }}" required autofocus>
+								<input type="hidden" name="token" value="{{ $token }}">
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+								<div class="form-group">
+									<div class="input-group">
+										<span class="icon-input">
+												<i class="fas fa-envelope"></i>
+										</span>
+										<input id="email" placeholder="Dirección de E-mail" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} odInput" name="email" value="{{ $email ?? old('email') }}" required autofocus>
+										@if ($errors->has('email'))
+												<span class="invalid-feedback" role="alert">
+														<strong>{{ $errors->first('email') }}</strong>
+												</span>
+										@endif
+									</div>
+								</div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+								<div class="form-group">
+									<div class="input-group">
+										<span class="icon-input">
+												<i class="fas fa-lock"></i>
+										</span>
+										<input id="password" type="password" placeholder="Contraseña" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} odInput" name="password" autocomplete="off" required>
+										@if ($errors->has('password'))
+												<span class="invalid-feedback" role="alert">
+														<strong>{{ $errors->first('password') }}</strong>
+												</span>
+										@endif
+									</div>
+								</div>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+								<div class="form-group">
+									<div class="input-group">
+										<span class="icon-input">
+												<i class="fas fa-lock"></i>
+										</span>
+										<input id="password-confirm" type="password"  placeholder="Confirmar Contraseña" class="form-control" name="password_confirmation" required>
+									</div>
+								</div>
 
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+								<div class="form-group">
+									<button type="submit" class="btn btn-primary btn-login">
+										Actualizar Contraseña
+									</button>
+								</div>
+						</form>
+					</div>
+				</div>
 
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+
+	<div class='sign text-center'>
+			<p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.1.0</p>
+	</div>
 </div>
 @endsection
