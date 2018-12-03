@@ -20,8 +20,8 @@
 						</div>
 					</div>
 
-					<div class="col-md-12 mb-4 mt-3">
-						<h5>Recuperación de Contraseña</h5>
+					<div class="col-md-12 mb-2 mt-3 card-title">
+						Recuperación de Contraseña
 					</div>
 
 					<div class="col-md-12">
