@@ -60,7 +60,7 @@
                                     <label class="d-inline-block mb-0" for="remember">No cerrar sesión</label>
                                 </div>
                                 <div class="d-inline-block" style="float: right">
-                                    <a href="#" data-toggle="modal" data-target="#exampleModal">
+                                    <a href="{{ url('/') }}/password/reset">
                                         ¿Olvidaste tu contraseña?
                                     </a>
                                 </div>

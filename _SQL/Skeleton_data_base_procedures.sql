@@ -1428,7 +1428,7 @@ BEGIN
 
 	SELECT empresa_id INTO XID_EMPRESA FROM pacientes where pacientes.id = XID_PACIENTE;
 
-	SELECT precios.id, detalle, monto FROM PRECIOS
+	SELECT precios.id, detalle, monto FROM precios
 		INNER JOIN tratamientos ON precios.idTratamiento = tratamientos.id
 	WHERE idEmpresa = XID_EMPRESA ORDER BY (tratamientos.id);
 END
