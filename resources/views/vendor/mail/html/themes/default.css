@@ -6,7 +6,7 @@ body, body *:not(html):not(style):not(br):not(tr):not(code) {
 }
 
 body {
-    background-color: #f5f8fa;
+    background-color: #f3f3f3;
     color: #74787E;
     height: 100%;
     hyphens: auto;
@@ -82,7 +82,7 @@ img {
 /* Layout */
 
 .wrapper {
-    background-color: #f5f8fa;
+    background-color: #f3f3f3;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -210,7 +210,7 @@ img {
 }
 
 .button {
-    border-radius: 3px;
+    border-radius: 0px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
     color: #FFF;
     display: inline-block;
@@ -220,11 +220,11 @@ img {
 
 .button-blue,
 .button-primary {
-    background-color: #3097D1;
-    border-top: 10px solid #3097D1;
-    border-right: 18px solid #3097D1;
-    border-bottom: 10px solid #3097D1;
-    border-left: 18px solid #3097D1;
+    background-color: #305f94;
+    border-top: 10px solid #305f94;
+    border-right: 18px solid #305f94;
+    border-bottom: 10px solid #305f94;
+    border-left: 18px solid #305f94;
 }
 
 .button-green,

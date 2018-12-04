@@ -74,6 +74,12 @@
 								</div>
 						</form>
 					</div>
+					<div class="col-md-12 text-center">
+						¿Ya tienes una cuenta? Inicia sesión
+							<a href="{{ url('/') }}">
+									aquí
+							</a>
+					</div>
 				</div>
 
       </div>
