@@ -421,9 +421,10 @@
 					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
 					var request = { method: 'PUT', url: this.url + '/ingresos/line-item/' + this.ingresoDetalleId, data: this.form }
 					this.$refs.spinnerContainerRef.showSpinner()
+					var self = this
 					axios(request).then((response) => {
 						if(response.data.success){							
-							this.updateTabla(this.ingresoDetalleId,{
+							self.updateTabla(this.ingresoDetalleId,{
 																	  id: this.ingresoDetalleId,
 																	  idTratamiento: this.form.trats[0].precioId,
 																	  fecha: this.form.fecha,
@@ -436,19 +437,19 @@
 																	  mg: this.redondearADos(response.data.mg),
 																	  mg_core: this.redondearADos(response.data.mg_core)
 																	})
-							this.actualizarTotal(response.data.total)
-							this.cerrarAddTratamiento()
-							this.toastFunction('Ingreso modificado correctamente.', 'success')
-							this.ingresoDetalleId = ''
-							this.$refs.spinnerContainerRef.hideSpinner()
+							self.actualizarTotal(response.data.total)
+							self.cerrarAddTratamiento()
+							self.toastFunction('Ingreso modificado correctamente.', 'success')
+							self.ingresoDetalleId = ''
+							self.$refs.spinnerContainerRef.hideSpinner()
 						}
 						else if (response.data.error){							
-							this.allerros = response.data.error
-							this.toastFunction(mssgOnFail, 'error')
-							this.$refs.spinnerContainerRef.hideSpinner()
+							self.allerros = response.data.error
+							self.toastFunction(mssgOnFail, 'error')
+							self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
-						this.$refs.spinnerContainerRef.hideSpinner()
+						self.$refs.spinnerContainerRef.hideSpinner()
 					})
 				}
 			},

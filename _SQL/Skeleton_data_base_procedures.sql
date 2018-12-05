@@ -526,7 +526,7 @@ CREATE PROCEDURE `OP_Ingresos_Detalle_update_all`(IN XID_INGRESO INT, IN XID_PRE
 BEGIN
 		DECLARE MONTO_TOTAL DECIMAL(11, 2);
 
-		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO, fecha = XFECHA, doctorId = XDOCTOR, updated_at = NOW()
+		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO, fecha = XFECHA, doctorId = XDOCTOR
 		WHERE ingresos_detalle.id = XID;
 
 END
