@@ -219,7 +219,7 @@
 	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
 	import axios from 'axios'
 
-	export default{		
+	export default{
 		props:[
 			'url',
 			'record',
@@ -244,7 +244,7 @@
 				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: (this.curUser.rolid == 1) ? 'mg' : ''	, label: 'Doctor', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
-				    { key: (this.curUser.rolid == 1) ? 'mg_core' : ''	, label: 'CORE', sortable: true, sortDirection: 'desc', 'class': 'text-center' }
+				    { key: (this.curUser.rolid == 1) ? 'mg_core' : ''	, label: 'Empresa', sortable: true, sortDirection: 'desc', 'class': 'text-center' }
 			    ],
 			    currentPage: 1,
 			   	perPage: 7,
@@ -367,16 +367,16 @@
 					var request = { method: 'POST', url: this.url + '/ingresos/line-item', data: this.form }
 					this.$refs.spinnerContainerRef.showSpinner()
 					axios(request).then((response) => {
-						if(response.data.success){							
+						if(response.data.success){
 							this.toastFunctionRedirect('Éxito', 'Los tratamientos han sido agregado correctamente.', 'success')
 							this.$refs.spinnerContainerRef.hideSpinner()
 						}
-						else if (response.data.error){							
+						else if (response.data.error){
 							this.allerros = response.data.error
 							this.toastFunction(mssgOnFail, 'error')
 							this.$refs.spinnerContainerRef.hideSpinner()
 						}
-					}).catch(function (error) {						
+					}).catch(function (error) {
 						this.$refs.spinnerContainerRef.hideSpinner()
 					})
 				}
@@ -423,7 +423,7 @@
 					this.$refs.spinnerContainerRef.showSpinner()
 					var self = this
 					axios(request).then((response) => {
-						if(response.data.success){							
+						if(response.data.success){
 							self.updateTabla(this.ingresoDetalleId,{
 																	  id: this.ingresoDetalleId,
 																	  idTratamiento: this.form.trats[0].precioId,
@@ -443,7 +443,7 @@
 							self.ingresoDetalleId = ''
 							self.$refs.spinnerContainerRef.hideSpinner()
 						}
-						else if (response.data.error){							
+						else if (response.data.error){
 							self.allerros = response.data.error
 							self.toastFunction(mssgOnFail, 'error')
 							self.$refs.spinnerContainerRef.hideSpinner()
@@ -473,17 +473,17 @@
 						var request = { method: 'DELETE', url: this.url + '/ingresos/line-item/' + $id }
 						this.$refs.spinnerContainerRef.showSpinner()
 						axios(request).then((response) => {
-							if(response.data.success){								
+							if(response.data.success){
 								this.toastFunctionRedirect('Éxito', 'El registro ha sido eliminado correctamente.', 'success')
 								this.ingresoDetalleId = ''
 								this.$refs.spinnerContainerRef.hideSpinner()
 							}
-							else if (response.data.error){								
+							else if (response.data.error){
 								this.allerros = response.data.error
 								this.toastFunction(mssgOnFail, 'error')
 								this.$refs.spinnerContainerRef.hideSpinner()
 							}
-						}).catch(function (error) {							
+						}).catch(function (error) {
 							this.$refs.spinnerContainerRef.hideSpinner()
 						})
 					}
