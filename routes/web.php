@@ -29,6 +29,7 @@ Route::get('pagos/nuevo/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoController
 Route::get('pagos/detalle/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoController@show');
 Route::get('consulta_precio', 'PrecioController@getPrice');
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
+Route::resource('citas', 'CitaController');
 
 //REPORTS
 Route::get('reportes', 'ReporteController@index');
