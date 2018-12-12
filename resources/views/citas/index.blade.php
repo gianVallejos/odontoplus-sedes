@@ -1,5 +1,7 @@
 @extends('layout')
-
+<script>
+    var global_url = "{{ route('home') }}";
+</script>
 @section('content')
 <div class="container pb-4">
   <div class="row">

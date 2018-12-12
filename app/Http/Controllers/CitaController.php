@@ -11,8 +11,12 @@ class CitaController extends Controller{
     }
 
     public function index(){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all()');
-        return response()->json(['data' => $data ]);
+        $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all()');
+        return view('citas.index', compact('cita'));
+    }
+
+    public function create(){
+        return view('citas.create');
     }
 
     public function show($id){
