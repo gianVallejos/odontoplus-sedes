@@ -1541,3 +1541,51 @@ BEGIN
 END
 ;;
 DELIMITER ;
+
+-- CITAS PROCEDURES
+
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all`;
+CREATE PROCEDURE OP_Citas_get_all()
+BEGIN
+  SELECT c.title, CONCAT(d.nombres, " ", d.apellidos) as doctor, CONCAT(p.nombres, " ",p.apellidos) as paciente, c.desde, c.hasta
+  FROM citas c
+  INNER JOIN doctors d on d.id = c.idDoctor
+  INNER JOIN pacientes p on p.id = c.idPaciente;
+END;
+
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all_id`;
+CREATE PROCEDURE OP_Citas_get_all_id(IN XID INT)
+BEGIN
+  SELECT c.title, CONCAT(d.nombres, " ", d.apellidos) as doctor, CONCAT(p.nombres, " ",p.apellidos) as paciente, c.desde, c.hasta
+  FROM citas c
+  INNER JOIN doctors d on d.id = c.idDoctor
+  INNER JOIN pacientes p on p.id = c.idPaciente
+  WHERE c.id = XID;
+END;
+
+DROP PROCEDURE IF EXISTS `OP_Citas_add_all`;
+CREATE PROCEDURE OP_Citas_add_all(IN XTITULO varchar(200), IN XDESDE DATETIME, IN XHASTA DATETIME,
+                                  IN XIDPACIENTE INT, IN XIDDOCTOR INT)
+BEGIN
+  INSERT INTO citas(title, desde, hasta, idPaciente, idDoctor)
+  VALUES (XTITULO, XDESDE, XHASTA, XIDPACIENTE, XIDDOCTOR);
+	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
+END;
+
+DROP PROCEDURE IF EXISTS `OP_Citas_update_all`;
+CREATE PROCEDURE OP_Citas_update_all(IN XID INT, IN XTITULO varchar(200), IN XDESDE DATETIME, IN XHASTA DATETIME,
+                                  IN XIDPACIENTE INT, IN XIDDOCTOR INT)
+BEGIN
+  UPDATE citas SET title = XTITULO, desde = XDESDE, hasta = XHASTA, idPaciente = XIDPACIENTE, idDoctor = XIDDOCTOR
+	WHERE citas.id = XID;
+
+	SELECT ROW_COUNT() AS ESTADO;
+END;
+
+DROP PROCEDURE IF EXISTS `OP_Citas_delete_all_Id`;
+CREATE PROCEDURE OP_Citas_delete_all_Id(IN XID INT)
+BEGIN
+	DELETE FROM citas
+  WHERE id = XID;
+	ALTER TABLE `citas` AUTO_INCREMENT = 1;
+END;
