@@ -25,19 +25,60 @@ class CitaController extends Controller{
     }
 
     public function show($id){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all_id('.$id.')')[0];
-        return response()->json(['data' => $data ]);
+        $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all_id('.$id.')')[0];
+        return response()->json(['cita' => $cita ]);
     }
 
     public function store(Request $request){
     	$validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:200',
+            'titulo' => 'required|string|max:200',
+            'desde' => 'required',
+            'hasta' => 'required',
+            'idPaciente' => 'required|integer',
+            'idDoctor' => 'required|integer'
         ]);
 
     	if ($validator->passes()) {
-            $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_add_all("'.$request->title.'")');
+            $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_add_all("'. $request->titulo .'", "'. $request->desde .'", "'. $request->hasta
+                                                           .'",'. $request->idPaciente .','. $request->idDoctor.')');
+            if( $cita[0]->ESTADO > 0 ){
+               return response()->json(['success' => 'created']);
+            }else{
+               return response()->json(['error'=> 'Ha ocurrido un error']);
+            }
         }
         return response()->json(['error'=>$validator->errors()]);
+    }
+
+    public function update(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|string|max:200',
+            'desde' => 'required',
+            'hasta' => 'required',
+            'idPaciente' => 'required|integer',
+            'idDoctor' => 'required|integer'
+        ]);
+
+    	if ($validator->passes()) {
+
+          $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_update_all('.$id.',"'. $request->titulo .'", "'. $request->desde .'", "'. $request->hasta
+                                                         .'",'. $request->idPaciente .','. $request->idDoctor.')'   );
+          if( $cita[0]->ESTADO > 0 ){
+              return response()->json(['success' => 'updated']);
+          }else{
+              return response()->json(['error'=> 'Ha ocurrido un error']);
+          }
+      }
+      return response()->json(['error'=>$validator->errors()]);
+    }
+
+    public function destroy($id){
+        $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_delete_all_Id('. $id .')');
+        if( $cita[0]->ESTADO > 0 ){
+            return response()->json(['success' => 'deleted']);
+        }else{
+            return response()->json(['error'=> 'Ha ocurrido un error']);
+        }
     }
 
 }
