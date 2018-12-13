@@ -79,22 +79,22 @@
     									</b-form-group>
                       <b-form-row>
                         <b-col cols="12">
-                          <b-form-group label="Desde:" label-for="desde">
-                            <b-form-input type="date" v-model="form.desde" class="required"
+                          <b-form-group label="Fecha:">
+                            <b-form-input type="date" v-model="form.fecha" class="required"
                                     :disabled=isDisabled />
                             <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
                           </b-form-group>
 												</b-col>
 												<b-col cols="6">
                           <b-form-group label="Desde:" label-for="desde">
-                            <b-form-input type="date" v-model="form.desde" class="required"
+                            <b-form-input type="time" v-model="form.desde" class="required"
                                     :disabled=isDisabled />
                             <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
                           </b-form-group>
 												</b-col>
 											    <b-col cols="6">
                             <b-form-group label="Hasta:" label-for="hasta">
-    											    <b-form-input type="date" v-model="form.hasta" class="required"
+    											    <b-form-input type="time" v-model="form.hasta" class="required"
     											    			  :disabled=isDisabled />
     											    <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
     										    </b-form-group>
@@ -225,8 +225,9 @@
         form: {
             idPacienteSelected: '',
             pacienteSelected: '',
-    				desde: this.getMyDate(),
-            hasta: this.getMyDate(),
+            fecha: this.getMyDate(),
+    				desde: '09:00',
+            hasta: '10:00',
             doctorSelected: null
     		},
     		record_id: '',
@@ -330,7 +331,9 @@
     	onGuardarNuevo(){
     		var request = { method: 'POST', url: this.url + '/doctores', data: this.form }
     		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
-    		this.onSubmit(request, mssgOnFail)
+        console.log(this.form.desde)
+        console.log(this.form.hasta)
+    		//this.onSubmit(request, mssgOnFail)
     	},
     	onGuardarModificar(){
     		var request = { method: 'PUT', url: this.url + '/doctores/'+ this.record_id, data: this.form }
