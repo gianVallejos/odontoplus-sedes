@@ -16,24 +16,24 @@ $(document).ready(function() {
       eventDrop: function(event, delta, revertFunc) {
         var date = new Date(event.start)
         var fecha = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-        if (confirm("Are you sure about this change?")) {
+        // if (confirm("Are you sure about this change?")) {
           $.ajax({
             type: "GET",
             url: global_url + '/v1/citas/update-fecha-cita/' + fecha + '/' + event.idEvent,
             success: function(data){
               if( data.success == 'updated' ){
-                alert('OK')
+                console.log('Cita movida correctamente')
               }else{
-                alert('ERROR')
+                alert('Ha ocurrido un errro. Consultar con soporte de Odontoplus')
               }
             },
             error: function(error){
               alert(JSON.stringify(error))
             }
           })
-        }else{
-          revertFunc()
-        }
+        // }else{
+        //   revertFunc()
+        // }
       },
       eventClick: function(calEvent, jsEvent, view) {
         $(this).css('border-color', '#305f94');
