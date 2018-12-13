@@ -14,18 +14,30 @@ $(document).ready(function() {
       dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
       editable: true,
       eventDrop: function(event, delta, revertFunc) {
-        alert(event.title + " was dropped on " + event.start.format());
-
-        if (!confirm("Are you sure about this change?")) {
-          revertFunc();
+        var date = new Date(event.start)
+        var fecha = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+        if (confirm("Are you sure about this change?")) {
+          $.ajax({
+            type: "GET",
+            url: global_url + '/v1/citas/update-fecha-cita/' + fecha + '/' + event.idEvent,
+            success: function(data){
+              if( data.success == 'updated' ){
+                alert('OK')
+              }else{
+                alert('ERROR')
+              }
+            },
+            error: function(error){
+              alert(JSON.stringify(error))
+            }
+          })
+        }else{
+          revertFunc()
         }
-
       },
       eventClick: function(calEvent, jsEvent, view) {
-        console.log(calEvent)
-
         $(this).css('border-color', '#305f94');
-
+        window.location.href = global_url + '/citas/' + calEvent.idEvent
       },
       dayClick: function(date, jsEvent, view) {
         $('#calendar').fullCalendar('changeView', 'listDay')
@@ -34,7 +46,7 @@ $(document).ready(function() {
       header: {
         left: 'prev,next month, today',
         center: 'title',
-        right: 'listMonth,listWeek,listDay crearCitaBtn'
+        right: 'listDay,listWeek,listMonth crearCitaBtn'
       },
       customButtons: {
         crearCitaBtn: {

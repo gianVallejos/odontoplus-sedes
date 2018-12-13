@@ -1,7 +1,6 @@
 @extends('layout')
 <script>
     var global_url = "{{ route('home') }}";
-    var events = '{!! json_encode($citas) !!}';
 </script>
 @section('content')
 <div class="container pb-4">

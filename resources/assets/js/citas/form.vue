@@ -37,8 +37,11 @@
 							   				  v-if="curUser.rolid == 1">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
-									<b-button variant="warning" v-on:click.prevent="onRegresar">
+                  <b-button variant="warning" v-on:click.prevent="onRegresar" >
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
+									</b-button>
+									<b-button variant="secondary" v-on:click.prevent="onRegresar">
+										<i class="fas fa-calendar-alt"></i>&nbsp;Ver Calendario
 									</b-button>
 								</div>
 							</div>
@@ -63,7 +66,7 @@
                         <b-input-group>
                               <b-form-input id="pacientes" type="text" v-model="form.paciente" placeholder="Ningun Paciente Seleccionado" class="required" disabled />
                               <b-input-group-append>
-                              <b-btn class="pl-3 pr-3" variant="success" v-b-modal.exampleModal >
+                              <b-btn class="pl-3 pr-3" variant="success" v-b-modal.exampleModal v-if="displayStatus != 'show'">
                                 <i class="fas fa-search"></i>
                               </b-btn>
                             </b-input-group-append>
@@ -71,7 +74,7 @@
                         <span v-if="all_errors.paciente" :class="['label label-danger']">{{ all_errors.paciente[0] }}</span>
                       </b-form-group>
                       <b-form-group label="Seleccionar Doctor" label-for="apellidos">
-    										<b-form-select v-model="form.idDoctor" class="required">
+    										<b-form-select v-model="form.idDoctor" class="required" :disabled=isDisabled>
     											<option :value="null">Ningun Doctor Seleccionado</option>
     											<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
     												{{ doctor.nombres }} {{ doctor.apellidos}}
@@ -116,8 +119,11 @@
 							   				  v-if="curUser.rolid == 1">
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
-									<b-button variant="warning" v-on:click.prevent="onRegresar" >
+                  <b-button variant="warning" v-on:click.prevent="onRegresar" >
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
+									</b-button>
+									<b-button variant="secondary" v-on:click.prevent="onRegresar" >
+										<i class="fas fa-calendar-alt"></i>&nbsp;Ver Calendario
 									</b-button>
 								</div>
 								<div v-if="displayStatus != 'show'">
@@ -313,20 +319,13 @@
     		this.isDisabled = true
     	},
     	setControllerDataToForms(){
-    		this.record_id = this.record.id
-    		this.form.nombres = this.record.nombres
-			this.form.apellidos = this.record.apellidos
-			this.form.dni = this.record.dni
-			this.form.email = this.record.email
-			this.form.direccion = this.record.direccion
-			this.form.telefono = this.record.telefono
-			this.form.celular = this.record.celular
-			this.form.margen_ganancia = this.record.margen_ganancia
-			this.form.genero = this.record.genero
-			this.form.estado = this.record.estado
-			this.form.celular_aux = this.record.celular_aux
-			this.form.fechanacimiento = this.record.fechanacimiento
-
+    		this.record_id = this.record.idEvent
+        this.form.idPaciente =  this.record.idPaciente
+        this.form.paciente =  this.record.title
+        this.form.fecha =  this.record.fecha
+        this.form.desde =  this.record.start
+        this.form.hasta =  this.record.end
+        this.form.idDoctor =  this.record.idDoctor
     	},
     	onGuardarNuevo(){
     		var request = { method: 'POST', url: this.url + '/citas', data: this.form }
@@ -334,7 +333,7 @@
     		this.onSubmit(request, mssgOnFail)
     	},
     	onGuardarModificar(){
-    		var request = { method: 'PUT', url: this.url + '/doctores/'+ this.record_id, data: this.form }
+    		var request = { method: 'PUT', url: this.url + '/citas/'+ this.record_id, data: this.form }
     		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
     		this.onSubmit(request, mssgOnFail)
     	},
@@ -353,7 +352,7 @@
 						showCloseButton: true
 			}).then((result) => {
 				if( result.value ){
-					var request = { method: 'DELETE', url: this.url + '/doctores/' + this.record_id, data: this.form }
+					var request = { method: 'DELETE', url: this.url + '/citas/' + this.record_id }
 	    			var mssgOnFail = 'Ha ocurrido un error al eliminar este registro.'
 	    			this.onSubmit(request, mssgOnFail)
 				}
