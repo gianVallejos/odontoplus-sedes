@@ -16,7 +16,12 @@ class CitaController extends Controller{
     }
 
     public function create(){
-        return view('citas.create');
+      $pacientes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all()');
+      $pacientes = json_encode($pacientes);
+      $doctores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
+      $doctores = json_encode($doctores);
+
+      return view('citas.create', compact('pacientes', 'doctores'));
     }
 
     public function show($id){

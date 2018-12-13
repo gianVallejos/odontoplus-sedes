@@ -59,27 +59,47 @@
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
-										    <b-form-group label="Nombres" label-for="nombres">
-											    <b-form-input id="nombres" type="text" class="required"
-											    			  v-model="form.nombres" placeholder="Nombres" autocomplete="off" :disabled=isDisabled />
-												<span v-if="all_errors.nombres" :class="['label label-danger']">{{ all_errors.nombres[0] }}</span>
-										    </b-form-group>
-											<b-form-group label="Apellidos" label-for="apellidos">
-												<b-form-input   id="apellidos" type="text" class="required"
-																v-model="form.apellidos" placeholder="Apellidos" autocomplete="off" :disabled=isDisabled />
-												<span v-if="all_errors.apellidos" :class="['label label-danger']">{{ all_errors.apellidos[0] }}</span>
-										    </b-form-group>
-											<b-form-group label="DNI" label-for="dni">
-												<b-form-input id="dni" type="text" class="required"
-												  			  v-model="form.dni" maxlength="8" placeholder="DNI" autocomplete="off" :disabled=isDisabled />
-												<span v-if="all_errors.dni" :class="['label label-danger']">{{ all_errors.dni[0] }}</span>
-										    </b-form-group>
-											<b-form-group label="Margen de Ganancia (%)" label-for="margen_ganancia">
-												<b-form-input id="margen_ganancia" type="text"
-															  v-model="form.margen_ganancia" placeholder="Margen de Ganancia (%)"
-															  autocomplete="off" :disabled=isDisabled />
-												<span v-if="all_errors.margen_ganancia" :class="['label label-danger']">{{ all_errors.margen_ganancia[0] }}</span>
-										    </b-form-group>
+                      <b-form-group label="Seleccionar Paciente" label-for="pacientes">
+                        <b-input-group>
+                              <b-form-input id="pacientes" type="text" v-model="form.pacienteSelected" placeholder="Ningun Paciente Seleccionado" disabled />
+                              <b-input-group-append>
+                              <b-btn class="pl-3 pr-3" variant="success" v-b-modal.exampleModal >
+                                <i class="fas fa-search"></i>
+                              </b-btn>
+                            </b-input-group-append>
+                          </b-input-group>
+                      </b-form-group>
+                      <b-form-group label="Seleccionar Doctor" label-for="apellidos">
+    										<b-form-select v-model="form.doctorSelected">
+    											<option :value="null">Ningun Doctor Seleccionado</option>
+    											<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
+    												{{ doctor.nombres }} {{ doctor.apellidos}}
+    											</option>
+    										</b-form-select>
+    									</b-form-group>
+                      <b-form-row>
+                        <b-col cols="12">
+                          <b-form-group label="Desde:" label-for="desde">
+                            <b-form-input type="date" v-model="form.desde" class="required"
+                                    :disabled=isDisabled />
+                            <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
+                          </b-form-group>
+												</b-col>
+												<b-col cols="6">
+                          <b-form-group label="Desde:" label-for="desde">
+                            <b-form-input type="date" v-model="form.desde" class="required"
+                                    :disabled=isDisabled />
+                            <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
+                          </b-form-group>
+												</b-col>
+											    <b-col cols="6">
+                            <b-form-group label="Hasta:" label-for="hasta">
+    											    <b-form-input type="date" v-model="form.hasta" class="required"
+    											    			  :disabled=isDisabled />
+    											    <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
+    										    </b-form-group>
+												</b-col>
+											</b-form-row>
 										</b-col>
 									</b-row>
 
@@ -122,6 +142,54 @@
         </PanelCard>
 
 			</div>
+      <b-modal ref="myModalRef" id="exampleModal" size="md" title="Lista de Pacientes">
+        <b-row>
+          <b-col cols="12">
+            <b-input-group>
+              <div class="input-group-append">
+                <span class="icon-input">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                  </span>
+                </div>
+                <input v-model="filter" placeholder="Buscar..." type="text" class="odInput">
+              </b-input-group>
+          </b-col>
+          <b-col cols="12" class="pt-3 pb-2">
+            <b-table 	show-empty
+                      :items="pacientes"
+                      :fields="fields"
+                      :current-page="currentPage"
+                      :per-page="perPage"
+                      :filter="filter"
+                      :sort-by.sync="sortBy"
+                      :sort-desc.sync="sortDesc"
+                      :sort-direction="sortDirection"
+                      @filtered="onFiltered"
+                      empty-text="No existen campos para mostrar"
+                      empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
+              <template slot="nombres" slot-scope="row">
+                    {{ row.value }} {{ row.item.apellidos }}
+                </template>
+                <template slot="actions" slot-scope="row" class="md-2">
+                    <div class="actions-table" style="color: #d1d1d1">
+                      <a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="action">Seleccionar</a>
+                    </div>
+                </template>
+            </b-table>
+          </b-col>
+          <b-col cols="12" class="text-center">
+            <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="d-inline-flex" />
+          </b-col>
+        </b-row>
+        <div slot="modal-footer">
+          <b-button  variant="secondary" size="sm" :href="url + '/pacientes/create'">
+            <i class="fas fa-plus"></i>&nbsp; Nuevo Paciente
+          </b-button>
+          <b-button variant="primary" size="sm" @click="hideModal">
+            <i class="fas fa-times"></i>&nbsp; Cerrar
+          </b-button>
+        </div>
+      </b-modal>
 		</b-row>
   </b-container>
 </template>
@@ -147,24 +215,19 @@
       	'url',
     		'record',
     		'curUser',
-    		'view_mode'
+    		'view_mode',
+        'pacientes',
+        'doctores'
     ],
     data(){
       return{
       	myDate: new Date(),
         form: {
-    				nombres: '',
-    				apellidos: '',
-    				dni: '',
-    				email: '',
-    				direccion: '',
-    				telefono: '',
-    				celular: '',
-    				margen_ganancia: '',
-    				genero: 'Masculino',
-    				estado: 'Soltero',
-    				celular_aux: '',
-    				fechanacimiento: this.getMyDate()
+            idPacienteSelected: '',
+            pacienteSelected: '',
+    				desde: this.getMyDate(),
+            hasta: this.getMyDate(),
+            doctorSelected: null
     		},
     		record_id: '',
     		all_errors: [],
@@ -174,19 +237,20 @@
               { text: this.title, active: true },
     		],
     		displayStatus: '',
-            isDisabled: false,
-    		genero: {
-    			options: [
-    						  {value: "Masculino", text: "Masculino"},
-    						  {value: "Femenino", text: "Femenino"}
-    			]
-    		},
-    		estadoCivil: [
-    			{ value: "Soltero", text: "Soltero" },
-    			{ value: "Casado", text: "Casado" },
-    			{ value: "Viudo", text: "Viudo" },
-    			{ value: "Divorciado", text: "Divorciado" },
-    		]
+        isDisabled: false,
+        fields: [
+          { key: 'id', label: 'Nro Historia', class: 'text-center' },
+          { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
+          { key: 'actions', label: '', sortable: false },
+        ],
+        currentPage: 1,
+        perPage: 7,
+        totalRows: 0,
+        pageOptions: [ 5, 10, 15 ],
+        sortBy: null,
+        sortDesc: false,
+        sortDirection: 'asc',
+        filter: ''
       }
     },
     methods:{
@@ -201,6 +265,19 @@
 		    	this.setControllerDataToForms()
 		    }
 	    },
+      getMyDate(){
+  			this.setMyDateToToday()
+  			this.addADayToMyDate()
+  			return this.myDate && this.myDate.toISOString().split('T')[0]
+  		},
+      setMyDateToToday() {
+  			this.myDate = new Date();
+  		},
+  		addADayToMyDate() {
+  			if (this.myDate){ // as myDate can be null
+  				this.myDate = new Date(this.myDate.setDate(this.myDate.getDate()));
+  			}
+  		},
 		setMyDateToToday() {
 			this.myDate = new Date();
 		},
@@ -348,6 +425,9 @@
     	onRegresar(){
     		this.redireccionarToIndex()
     	},
+			hideModal(){
+				this.$refs.myModalRef.hide()
+			},
 		onCancelarModificar(){
 			this.displayStatus = 'show'
 			this.setControllerDataToForms()
@@ -358,6 +438,16 @@
 		onCancelarNuevo(){
 			this.redireccionarToIndex()
 		},
+    onFiltered (filteredItems) {
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
+      },
+      agregarPaciente(id, nombres, apellidos){
+        //alert(id)
+        this.form.idPacienteSelected = id
+        this.form.pacienteSelected = nombres + ' ' + apellidos
+        this.$refs.myModalRef.hide()
+      },
 		toastFunction(msg, type){
 		 	this.$swal({
 					type: type,
