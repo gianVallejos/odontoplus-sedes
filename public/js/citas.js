@@ -1,23 +1,12 @@
 $(document).ready(function() {
-
     // page is now ready, initialize the calendar...
-
     $('#calendar').fullCalendar({
-      events: [
-          {
-              title  : 'Event1',
-              start  : '2018-12-01'
-          },
-          {
-              title  : 'Event2',
-              start  : '2018-12-05 15:00:00',
-              end    : '2018-12-07 15:00:00'
-          },
-          {
-              title  : 'Event3',
-              start  : '2018-12-09 12:30:00',
-              allDay : false // will make the time show
-          }
+      eventSources: [
+        {
+          url: global_url + '/v1/citas/get-all-events',
+          color: '#0aab8a',
+          textColor: '#f3f3f3'
+        }
       ],
       monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
       monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
@@ -25,7 +14,6 @@ $(document).ready(function() {
       dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
       editable: true,
       eventDrop: function(event, delta, revertFunc) {
-
         alert(event.title + " was dropped on " + event.start.format());
 
         if (!confirm("Are you sure about this change?")) {
@@ -33,10 +21,20 @@ $(document).ready(function() {
         }
 
       },
+      eventClick: function(calEvent, jsEvent, view) {
+        console.log(calEvent)
+
+        $(this).css('border-color', '#305f94');
+
+      },
+      dayClick: function(date, jsEvent, view) {
+        $('#calendar').fullCalendar('changeView', 'listDay')
+        $('#calendar').fullCalendar('gotoDate', date)
+      },
       header: {
-        left: 'prev,next today',
+        left: 'prev,next month, today',
         center: 'title',
-        right: 'month,listWeek,listMonth crearCitaBtn'
+        right: 'listMonth,listWeek,listDay crearCitaBtn'
       },
       customButtons: {
         crearCitaBtn: {
@@ -49,10 +47,11 @@ $(document).ready(function() {
       buttonText: {
         today: 'Hoy',
         month: 'Calendario',
+        listMonth: 'Mes',
         listWeek: 'Semana',
-        listMonth: 'Mes'
+        listDay: 'Día'
+
       },
       allDayText: 'Todo el día'
     })
-
 });

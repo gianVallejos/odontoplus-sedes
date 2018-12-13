@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\CustomLibs\CurBD;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class CitaController extends Controller{
     public function __construct(){
@@ -11,8 +12,15 @@ class CitaController extends Controller{
     }
 
     public function index(){
-        $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all()');
-        return view('citas.index', compact('cita'));
+      $citas = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all()');
+      
+      return view('citas.index', compact('citas'));
+    }
+
+    public function getEventsCitas(){
+      $citas = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all()');
+
+      return response()->json($citas);
     }
 
     public function create(){
@@ -31,16 +39,17 @@ class CitaController extends Controller{
 
     public function store(Request $request){
     	$validator = Validator::make($request->all(), [
-            'titulo' => 'required|string|max:200',
-            'desde' => 'required',
-            'hasta' => 'required',
+            'paciente' => 'required|string|max:200',
+            'fecha' => 'required|date',
+            'desde' => 'required|date_format:H:i',
+            'hasta' => 'required|date_format:H:i|after:desde',
             'idPaciente' => 'required|integer',
             'idDoctor' => 'required|integer'
         ]);
 
     	if ($validator->passes()) {
-            $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_add_all("'. $request->titulo .'", "'. $request->desde .'", "'. $request->hasta
-                                                           .'",'. $request->idPaciente .','. $request->idDoctor.')');
+            $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_add_all("'. $request->paciente .'", "'. $request->fecha . ' ' . $request->desde .'", "'.
+                                                                                                 $request->fecha . ' ' . $request->hasta .'", '. $request->idPaciente .','. $request->idDoctor.')');
             if( $cita[0]->ESTADO > 0 ){
                return response()->json(['success' => 'created']);
             }else{

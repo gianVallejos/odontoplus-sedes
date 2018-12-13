@@ -61,16 +61,17 @@
 										<b-col cols="6" class="pt-3 pb-4">
                       <b-form-group label="Seleccionar Paciente" label-for="pacientes">
                         <b-input-group>
-                              <b-form-input id="pacientes" type="text" v-model="form.pacienteSelected" placeholder="Ningun Paciente Seleccionado" disabled />
+                              <b-form-input id="pacientes" type="text" v-model="form.paciente" placeholder="Ningun Paciente Seleccionado" class="required" disabled />
                               <b-input-group-append>
                               <b-btn class="pl-3 pr-3" variant="success" v-b-modal.exampleModal >
                                 <i class="fas fa-search"></i>
                               </b-btn>
                             </b-input-group-append>
-                          </b-input-group>
+                        </b-input-group>
+                        <span v-if="all_errors.paciente" :class="['label label-danger']">{{ all_errors.paciente[0] }}</span>
                       </b-form-group>
                       <b-form-group label="Seleccionar Doctor" label-for="apellidos">
-    										<b-form-select v-model="form.doctorSelected">
+    										<b-form-select v-model="form.idDoctor" class="required">
     											<option :value="null">Ningun Doctor Seleccionado</option>
     											<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
     												{{ doctor.nombres }} {{ doctor.apellidos}}
@@ -80,23 +81,22 @@
                       <b-form-row>
                         <b-col cols="12">
                           <b-form-group label="Fecha:">
-                            <b-form-input type="date" v-model="form.fecha" class="required"
-                                    :disabled=isDisabled />
-                            <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
+                            <b-form-input type="date" v-model="form.fecha" class="required" :disabled=isDisabled />
+                            <span v-if="all_errors.fecha" :class="['label label-danger']">{{ all_errors.fecha[0] }}</span>
                           </b-form-group>
 												</b-col>
 												<b-col cols="6">
                           <b-form-group label="Desde:" label-for="desde">
                             <b-form-input type="time" v-model="form.desde" class="required"
                                     :disabled=isDisabled />
-                            <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
+                            <span v-if="all_errors.desde" :class="['label label-danger']">{{ all_errors.desde[0] }}</span>
                           </b-form-group>
 												</b-col>
 											    <b-col cols="6">
                             <b-form-group label="Hasta:" label-for="hasta">
     											    <b-form-input type="time" v-model="form.hasta" class="required"
     											    			  :disabled=isDisabled />
-    											    <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
+    											    <span v-if="all_errors.hasta" :class="['label label-danger']">{{ all_errors.hasta[0] }}</span>
     										    </b-form-group>
 												</b-col>
 											</b-form-row>
@@ -223,12 +223,12 @@
       return{
       	myDate: new Date(),
         form: {
-            idPacienteSelected: '',
-            pacienteSelected: '',
+            idPaciente: '',
+            paciente: '',
             fecha: this.getMyDate(),
     				desde: '09:00',
             hasta: '10:00',
-            doctorSelected: null
+            idDoctor: null
     		},
     		record_id: '',
     		all_errors: [],
@@ -329,11 +329,9 @@
 
     	},
     	onGuardarNuevo(){
-    		var request = { method: 'POST', url: this.url + '/doctores', data: this.form }
+    		var request = { method: 'POST', url: this.url + '/citas', data: this.form }
     		var mssgOnFail = 'Existen campos inválidos, veríficalos antes de guardar.'
-        console.log(this.form.desde)
-        console.log(this.form.hasta)
-    		//this.onSubmit(request, mssgOnFail)
+    		this.onSubmit(request, mssgOnFail)
     	},
     	onGuardarModificar(){
     		var request = { method: 'PUT', url: this.url + '/doctores/'+ this.record_id, data: this.form }
@@ -369,23 +367,19 @@
 					if(response.data.success){
 						if( response.data.success == 'created' ){
 							self.setDisableForm()
-							self.toastFunctionRedirect('Éxito', 'El doctor ha sido creado correctamente.', 'success')
+							self.toastFunctionRedirect('Éxito', 'La cita ha sido creada correctamente.', 'success')
 						}else if( response.data.success == 'updated' ){
-							self.toastFunction('El doctor ha sido modificado correctamente.', 'success')
+							self.toastFunction('La cita ha sido modificada correctamente.', 'success')
 							self.afterSuccessGuardar()
 						}else if (response.data.success = 'deleted' ){
 							self.form.is_active = !self.form.is_active
-							self.toastFunctionRedirect('Éxito', 'El doctor ha sido eliminado correctamente.', 'success')
+							self.toastFunctionRedirect('Éxito', 'La cita ha sido eliminada correctamente.', 'success')
 						}
             self.$refs.spinnerContainerRef.hideSpinner()
 					}else if (response.data.error){
-						if( response.data.error == 'cantDeleted'){
-							self.toastFunction('El doctor está relacionado a presupuestos activos por lo tanto no se puede eliminar.', 'error')
-						}else{
 							self.all_errors = response.data.error
 							self.toastFunction(error_msg, 'error')
-						}
-            self.$refs.spinnerContainerRef.hideSpinner()
+              self.$refs.spinnerContainerRef.hideSpinner()
 					}
 				}).catch(function (error) {
 					self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
@@ -423,7 +417,7 @@
 			this.form.confirm_password = ''
 		},
 		redireccionarToIndex(){ //Btn Regresar
-			window.location.href = this.url + '/doctores'
+			window.location.href = this.url + '/citas'
 		},
     	onRegresar(){
     		this.redireccionarToIndex()
@@ -447,8 +441,8 @@
       },
       agregarPaciente(id, nombres, apellidos){
         //alert(id)
-        this.form.idPacienteSelected = id
-        this.form.pacienteSelected = nombres + ' ' + apellidos
+        this.form.idPaciente = id
+        this.form.paciente = nombres + ' ' + apellidos
         this.$refs.myModalRef.hide()
       },
 		toastFunction(msg, type){
@@ -471,7 +465,7 @@
           confirmButtonClass: ['my-alert', 'confirm-alert'],
           backdrop: `rgba(0, 0, 0, 0.6)`
       }).then(() => {
-        window.location.href = this.url + '/doctores'
+        window.location.href = this.url + '/citas'
       })
     }
 

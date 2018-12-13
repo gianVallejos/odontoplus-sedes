@@ -61,4 +61,6 @@ Route::put('ingresos/line-item/{id}', 'IngresoController@lineItemUpdate');
 Route::delete('ingresos/line-item/{id}', 'IngresoController@lineItemDelete');
 Route::get('ingresos/reporte/{id}', 'IngresoController@reporte');
 
+Route::get('v1/citas/get-all-events', 'CitaController@getEventsCitas');
+
 Route::resource('egresos', 'EgresoController');

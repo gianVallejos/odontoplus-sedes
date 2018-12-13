@@ -65,10 +65,10 @@
 	<script src="{{ asset('js/jquery.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/moment.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/fullcalendar.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/citas.js?v=1.0.2') }}"></script>
+	<script src="{{ asset('js/citas.js?v=1.0.5') }}"></script>
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/app.js?v=1.3.10') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.3.14') }}"></script>
 
 
 </body>
