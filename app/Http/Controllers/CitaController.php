@@ -5,6 +5,8 @@ use App\CustomLibs\CurBD;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CitaProgramada;
 
 class CitaController extends Controller{
     public function __construct(){
@@ -22,7 +24,7 @@ class CitaController extends Controller{
     }
 
     public function changeFechaCita($fecha, $id){
-      $res = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_update_fecha_cita("'. $fecha .'", '. $id .')');      
+      $res = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_update_fecha_cita("'. $fecha .'", '. $id .')');
       if( $res[0]->ESTADO > 0 ){
          return response()->json(['success' => 'updated']);
       }else{
@@ -65,6 +67,9 @@ class CitaController extends Controller{
                                                                                                  $request->desde .'", "'. $request->hasta .'", '.
                                                                                                  $request->idPaciente .','. $request->idDoctor.')');
             if( $cita[0]->ESTADO > 0 ){
+               if ($request->enviarEmail) {
+                 self::sendNotificationEmail($request->idPaciente, $request->fecha, $request->desde);
+               }
                return response()->json(['success' => 'created']);
             }else{
                return response()->json(['error'=> 'Ha ocurrido un error']);
@@ -89,9 +94,12 @@ class CitaController extends Controller{
                                                                                                 $request->desde .'", "'. $request->hasta .'",' .
                                                                                                 $request->idPaciente .','. $request->idDoctor.')'   );
           if( $cita[0]->ESTADO > 0 ){
-              return response()->json(['success' => 'updated']);
+            if ($request->enviarEmail) {
+              self::sendNotificationEmail($request->idPaciente, $request->fecha, $request->desde);
+            }
+            return response()->json(['success' => 'updated']);
           }else{
-              return response()->json(['error'=> 'Ha ocurrido un error']);
+            return response()->json(['error'=> 'Ha ocurrido un error']);
           }
       }
       return response()->json(['error'=>$validator->errors()]);
@@ -100,6 +108,15 @@ class CitaController extends Controller{
     public function destroy($id){
         $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_delete_all_Id('. $id .')');
         return response()->json(['success' => 'deleted']);
+    }
+
+    public function sendNotificationEmail($idPaciente, $fecha, $hora_inicio){
+      $cliente = json_decode(CurBD::getCurrentClienteData());
+      $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all_Id('. $idPaciente .')')[0];
+
+      if ($paciente->email != '') {
+        Mail::to($paciente->email)->send(new CitaProgramada($paciente->nombres, $fecha, $hora_inicio, $cliente));
+      }
     }
 
 }
