@@ -103,6 +103,11 @@
     										    </b-form-group>
 												</b-col>
 											</b-form-row>
+											<b-form-group label-for="enviar_email">
+												<b-form-checkbox id="enviar_email" v-model="form.enviarEmail" :disabled=isDisabled>
+													Enviar email de notificación a paciente.
+												</b-form-checkbox>
+											</b-form-group>
 										</b-col>
 									</b-row>
 
@@ -234,7 +239,8 @@
             fecha: this.getMyDate(),
     				desde: '09:00',
             hasta: '10:00',
-            idDoctor: null
+            idDoctor: null,
+						enviarEmail: true
     		},
     		record_id: '',
     		all_errors: [],

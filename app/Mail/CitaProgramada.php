@@ -20,9 +20,8 @@ class CitaProgramada extends Mailable
      *
      * @return void
      */
-    public function __construct($nombre_paciente, $doctor, $fecha, $hora_incio, $cliente){
+    public function __construct($nombre_paciente, $fecha, $hora_incio, $cliente){
         $this->nombre_paciente = $nombre_paciente;
-        $this->doctor = $doctor;
         $this->fecha = $fecha;
         $this->hora_incio = $hora_incio;
         $this->cliente = $cliente;
