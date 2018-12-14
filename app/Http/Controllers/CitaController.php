@@ -68,7 +68,7 @@ class CitaController extends Controller{
                                                                                                  $request->idPaciente .','. $request->idDoctor.')');
             if( $cita[0]->ESTADO > 0 ){
                if ($request->enviarEmail) {
-                 self::sendNotificationEmail($request->idPaciente, $request->fecha, $request->desde);
+                 self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde);
                }
                return response()->json(['success' => 'created']);
             }else{
@@ -95,7 +95,7 @@ class CitaController extends Controller{
                                                                                                 $request->idPaciente .','. $request->idDoctor.')'   );
           if( $cita[0]->ESTADO > 0 ){
             if ($request->enviarEmail) {
-              self::sendNotificationEmail($request->idPaciente, $request->fecha, $request->desde);
+              self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde);
             }
             return response()->json(['success' => 'updated']);
           }else{
