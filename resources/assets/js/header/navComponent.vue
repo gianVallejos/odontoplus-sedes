@@ -106,6 +106,11 @@
 		        	</li-->
 		        </ul>
 		      </li>
+					<li class="item" v-bind:class="[(whoIsActive == 'citas') ? 'active' : '']">
+		      	<a :href="url + '/citas'">
+		      		<i class="fas fa-calendar-alt"></i> Citas
+		      	</a>
+		      </li>
 
 		    </ul>
 		</div>
@@ -166,6 +171,8 @@
 				}else if( this.curUrl.includes('empresas') ){
 						this.whoIsActive = 'tratamientos'
 						this.whoIsActiveDetail = 'empresas'
+				}else if( this.curUrl.includes('citas') ){
+						this.whoIsActive = 'citas'
 				}else{
 					this.whoIsActive = 'dashboard'
 					this.whoIsActiveDetail = ''
