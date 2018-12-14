@@ -235,12 +235,12 @@
 			    		for_admin: false
 			    	},
 			    	{
-			    		iconUrl: 'fas fa-money-bill',
-							subname: 'Nuevo',
-			    		name: 'Egreso',
+			    		iconUrl: 'fas fa-calendar-alt',
+							subname: 'Nueva',
+			    		name: 'Cita',
 			    		color: 'modificar',
 							show_modal: 0,
-			    		url: this.url + '/egresos/create',
+			    		url: this.url + '/citas/create',
 			    		for_admin: false
 			    	}
 		    ],
@@ -254,10 +254,18 @@
 							for_admin: true
 						},
 						{
+							iconUrl: 'fas fa-money-bill',
+							subname: 'Ver ',
+							name: 'Egresos',
+							color: 'nuevo',
+							url: this.url + '/egresos',
+							for_admin: true
+						},
+						{
 							iconUrl: 'fas fa-chart-line',
 							subname: 'Ver ',
 							name: 'Estadísticas',
-							color: 'nuevo',
+							color: 'guardar',
 							url: this.url + '/reportes',
 							for_admin: true
 						},
@@ -265,15 +273,16 @@
 							iconUrl: 'fas fa-hand-holding-usd',
 							subname: 'Ver ',
 							name: 'Ganancias Totales',
-							color: 'guardar',
+							color: 'modificar',
 							url: this.url + '/reportes/ganancias',
 							for_admin: true
 						},
+
 						{
 							iconUrl: 'fas fa-users',
 							subname: 'Ver ',
 							name: 'Usuarios',
-							color: 'modificar',
+							color: 'info',
 							url: this.url + '/users',
 							for_admin: true
 						}

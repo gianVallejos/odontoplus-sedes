@@ -19,6 +19,7 @@ import HeaderComponent from './header/headerComponent.vue'
 import NavComponent from './header/navComponent.vue'
 
 import Dashboard from './dashboard/index.vue'
+import CitaForm from './citas/form.vue'
 import Pacientes from './pacientes/index.vue'
 import PacienteForm from './pacientes/form.vue'
 import PresupuestoIndex from './presupuesto/index.vue'
@@ -59,6 +60,7 @@ const app = new Vue({
     components: {
     	Dashboard,
     	Pacientes, PacienteForm,
+      CitaForm,
     	PresupuestoIndex, PresupuestoCreate, PresupuestoNuevo, PresupuestoReporte,
 			Users, UserForm,
 			Doctores, DoctorForm,
