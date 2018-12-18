@@ -62,6 +62,7 @@ Route::delete('ingresos/line-item/{id}', 'IngresoController@lineItemDelete');
 Route::get('ingresos/reporte/{id}', 'IngresoController@reporte');
 
 Route::get('v1/citas/get-all-events', 'CitaController@getEventsCitas');
+Route::get('v1/citas/get-all-events/{idDoctor}', 'CitaController@getEventsCitasPorDoctor');
 Route::get('v1/citas/update-fecha-cita/{fecha}/{id}', 'CitaController@changeFechaCita');
 
 Route::resource('egresos', 'EgresoController');
