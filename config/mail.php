@@ -57,7 +57,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'soporte@odontoplus.pe'),
-        'name' => env('MAIL_FROM_NAME', 'Soporte Odontoplus'),
+        'name' => env('MAIL_FROM_NAME', '¡Tienes una cita dental!'),
     ],
 
     /*
