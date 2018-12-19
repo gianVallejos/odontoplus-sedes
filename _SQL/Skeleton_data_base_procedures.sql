@@ -1622,10 +1622,18 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Citas_update_fecha_cita`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Citas_update_fecha_cita`(IN XFECHA DATE, IN XID INT)
+CREATE PROCEDURE `OP_Citas_update_fecha_cita`(IN XFECHA DATE, IN XID INT)
 BEGIN
 	UPDATE citas SET fecha = XFECHA WHERE citas.id = XID;
 	SELECT ROW_COUNT() AS ESTADO;
 END
 ;;
 DELIMITER ;
+
+CREATE PROCEDURE `OP_Citas_get_all_doctor_id`(IN doctorId int)
+BEGIN
+  SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
+				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
+		FROM citas c
+	WHERE c.idDoctor = doctorId;
+END
