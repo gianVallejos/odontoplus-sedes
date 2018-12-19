@@ -7,13 +7,13 @@
 			</b-col>
 			<b-col cols="12" class="pt-1">
 				<PanelCard>
-					<span slot="heading">Reporte de Ingrseos VS Egresos</span>
+					<span slot="heading">Estadísticas de Ingresos vs Egresos</span>
 					<b-row slot="body">
 						<b-col cols="12">
 							<b-form-row>
 								<b-col xl="2" cols="12">
 									<b-input-group prepend="Año">
-										<b-form-select id="estado" v-model="ingresosVSegresosChart.year" :options="years" v-on:input="fillIngresosVSegresosChart()" />
+										<b-form-select id="estado" v-model="ingresosVsEgresosChart.year" :options="years" v-on:input="fillingresosVsEgresosChart()" />
 									</b-input-group>
 								</b-col>
 							</b-form-row>
@@ -25,14 +25,14 @@
 								<div class="chart-area" v-if="chartIsLoading" >
 									<SpinnerSmall :url="url" />
 								</div>
-								<bar-chart v-if="!chartIsLoading" :chart-data="ingresosVSegresosChart.data" :height = "300"></bar-chart>
+								<bar-chart v-if="!chartIsLoading" :chart-data="ingresosVsEgresosChart.data" :height = "300"></bar-chart>
 							</div>
 						</b-col>
 					</b-row>
 				</PanelCard>
 				<br/>
 				<PanelCard>
-					<span slot="heading">Reportes Generales</span>
+					<span slot="heading">Estadísticas Generales</span>
 					<b-row slot="body">
 						<b-col cols="7">
 							<div class="pb-4">
@@ -157,7 +157,7 @@
 					{ value: "2019", text: "2019" },
 					{ value: "2020", text: "2020" }
 				],
-				ingresosVSegresosChart: {
+				ingresosVsEgresosChart: {
 					data: null,
 					year: null
 				},
@@ -190,12 +190,12 @@
 				this.fillDataCharts()
 			},
 			setDatesToChart(today){
-				this.ingresosVSegresosChart.year = today.substring(0,4)
+				this.ingresosVsEgresosChart.year = today.substring(0,4)
 				this.reportesGenerales.start_date = today.substring(0,4)+'-01-01'
 				this.reportesGenerales.end_date = today
 			},
 			fillDataCharts(){
-				this.fillIngresosVSegresosChart()
+				this.fillingresosVsEgresosChart()
 				this.fillReportesGeneralesCharts()
 			},
 			fillReportesGeneralesCharts(){
@@ -225,8 +225,8 @@
 				this.addADayToMyDate()
 				return this.myDate && this.myDate.toISOString().split('T')[0]
 			},
-			fillIngresosVSegresosChart(){
-				var year = this.ingresosVSegresosChart.year
+			fillingresosVsEgresosChart(){
+				var year = this.ingresosVsEgresosChart.year
 				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/'+year }
 				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/'+year }
 				if( year != '' ){
@@ -240,7 +240,7 @@
 							let egresos = response.data.egresos
 	            let egresos_montos = egresos.map(i => parseInt(i.monto))
 
-							self.ingresosVSegresosChart.data = {
+							self.ingresosVsEgresosChart.data = {
 								labels: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
 								datasets: [
 									{

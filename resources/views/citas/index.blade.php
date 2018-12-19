@@ -33,7 +33,7 @@
             <div class="col-md-4 pr-4 pl-4 pt-2 pb-4">
               <div class="float-left input-group" role="group">
                 <div class="input-group-prepend">
-                  <div class="input-group-text"> Doctor </div>
+                  <div class="input-group-text fz-4"> Doctor </div>
                 </div>
                 <select class="form-control" name="id_doctor">
                   <option value="all" selected>Todos</option>
