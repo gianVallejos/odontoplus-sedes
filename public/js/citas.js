@@ -1,6 +1,12 @@
 $(document).ready(function() {
     // page is now ready, initialize the calendar
-    var id_doctor = '';
+    var events = {
+      url: global_url + '/v1/citas/get-all-events',
+      error: function() { alert('...'); },
+      color: '#0aab8a',
+      textColor: '#f3f3f3'
+    };
+
     $("select[name='id_doctor']").change(function(){
       if ($(this).val() == 'all') {
         events.url = global_url + '/v1/citas/get-all-events'
@@ -8,17 +14,10 @@ $(document).ready(function() {
       else {
         events.url = global_url + '/v1/citas/get-all-events/' + $(this).val();
       }
-      $('#calendar').fullCalendar('removeEventSource', events);
+      $('#calendar').fullCalendar('removeEventSources');
       $('#calendar').fullCalendar('addEventSource', events);
       $('#calendar').fullCalendar('refetchEvents');
     });
-
-    var events = {
-      url: global_url + '/v1/citas/get-all-events',
-      error: function() { alert('...'); },
-      color: '#0aab8a',
-      textColor: '#f3f3f3'
-    };
 
     $('#calendar').fullCalendar({
       eventSources: [ events ],
