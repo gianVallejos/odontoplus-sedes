@@ -14,11 +14,19 @@ class CitaController extends Controller{
     }
 
     public function index(){
-      return view('citas.index');
+      $doctores = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
+
+      return view('citas.index', compact('doctores'));
     }
 
     public function getEventsCitas(){
       $citas = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all()');
+
+      return response()->json($citas);
+    }
+
+    public function getEventsCitasPorDoctor($idDoctor){
+      $citas = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all_doctor_id('. $idDoctor .')');
 
       return response()->json($citas);
     }

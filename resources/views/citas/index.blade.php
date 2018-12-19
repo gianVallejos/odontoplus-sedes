@@ -29,6 +29,28 @@
                 </a>
               </div>
             </div> -->
+
+            <div class="col-md-4 pr-4 pl-4 pt-2 pb-4">
+              <div class="float-left input-group" role="group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"> Doctor </div>
+                </div>
+                <select class="form-control" name="id_doctor">
+                  <option value="all" selected>Todos</option>
+                  @foreach($doctores as $dr)
+                    <option value="{{ $dr->id }}">{{ $dr->nombres.' '.$dr->apellidos }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+
+
+            <!--select id="dropdown">
+              <option value="All" data-feed="all-feed.php" selected>All</option>
+              <option value="This" data-feed="this-feed.php">This</option>
+              <option value="That" data-feed="that-feed.php">That</option>
+            </select-->
+
             <div class="col-md-12 pr-4 pl-4">
               <div id='calendar'></div>
             </div>

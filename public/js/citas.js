@@ -1,13 +1,26 @@
 $(document).ready(function() {
-    // page is now ready, initialize the calendar...
+    // page is now ready, initialize the calendar
+    var events = {
+      url: global_url + '/v1/citas/get-all-events',
+      error: function() { alert('...'); },
+      color: '#0aab8a',
+      textColor: '#f3f3f3'
+    };
+
+    $("select[name='id_doctor']").change(function(){
+      if ($(this).val() == 'all') {
+        events.url = global_url + '/v1/citas/get-all-events'
+      }
+      else {
+        events.url = global_url + '/v1/citas/get-all-events/' + $(this).val();
+      }
+      $('#calendar').fullCalendar('removeEventSources');
+      $('#calendar').fullCalendar('addEventSource', events);
+      $('#calendar').fullCalendar('refetchEvents');
+    });
+
     $('#calendar').fullCalendar({
-      eventSources: [
-        {
-          url: global_url + '/v1/citas/get-all-events',
-          color: '#0aab8a',
-          textColor: '#f3f3f3'
-        }
-      ],
+      eventSources: [ events ],
       monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
       monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
       dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
