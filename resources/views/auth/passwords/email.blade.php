@@ -15,13 +15,10 @@
 					<div class="row">
 					<div class="col-md-12">
 								<div class="logotipo text-center">
-										<a href="https://www.odontoplus.pe" target="_blank">
+										<a href="{{ url('/') }}">
 											<img src="{{ asset('images/logotipos/1_ODONTOPLUS_CAJ_BG_WHITE.png?v=1.0.1') }}" alt="Logotipo">
 										</a>
 								</div>
-					</div>
-					<div class="col-md-12 mb-2 mt-3 card-title">
-						Recuperación de Contraseña
 					</div>
 					<div class="col-md-12">
 					  @if (session('status'))
@@ -29,6 +26,9 @@
                     {{ session('status') }}
                 </div>
             @endif
+					</div>
+					<div class="col-md-12 pb-3" style="font-size: .95em; color: #858ea7">
+						Introduce tu correo electrónico y te enviaremos un email con los pasos para poder recuperar tu contraseña
 					</div>
 					<div class="col-md-12">
             <form method="POST" action="{{ route('password.email') }}">
@@ -48,10 +48,16 @@
                 </div>
                 <div class="form-group">
                   <button type="submit" class="btn btn-primary btn-login">
-                      Enviar Email de Recuperación
+                      Enviar email de recuperación
                   </button>
                 </div>
             </form>
+					</div>
+					<div class="col-md-12 text-center">
+						¿Ya tienes una cuenta? Inicia sesión
+							<a href="{{ url('/') }}">
+									aquí
+							</a>
 					</div>
 				</div>
 

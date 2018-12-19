@@ -1,4 +1,16 @@
 
+DROP TABLE IF EXISTS `citas`;
+CREATE TABLE `citas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `titulo` varchar(200) DEFAULT NULL,
+  `desde` time DEFAULT NULL,
+  `hasta` time DEFAULT NULL,
+  `idPaciente` int(11) DEFAULT NULL,
+  `idDoctor` int(11) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 -- ----------------------------
 --  Table structure for `doctors`
 -- ----------------------------

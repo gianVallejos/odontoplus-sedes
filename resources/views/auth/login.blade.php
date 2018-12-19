@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="logotipo text-center">
-														<a href="https://www.odontoplus.pe" target="_blank">
+														<a href="{{ url('/') }}">
                             	<img src="{{ asset('images/logotipos/1_ODONTOPLUS_CAJ_BG_WHITE.png?v=1.0.1') }}" alt="Logotipo">
 														</a>
                         </div>
@@ -51,7 +51,7 @@
                             </div>
                             <div class='form-group'>
                                 <button type="submit" class="btn btn-primary btn-login">
-                                    Iniciar Sesión
+                                    Iniciar sesión
                                 </button>
                             </div>
                             <div class="login-bottom">
@@ -73,7 +73,7 @@
 
     </div>
     <div class='sign text-center'>
-        <p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.1.0</p>
+        <p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.1.1</p>
     </div>
 
 </div>

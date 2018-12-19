@@ -526,7 +526,7 @@ CREATE PROCEDURE `OP_Ingresos_Detalle_update_all`(IN XID_INGRESO INT, IN XID_PRE
 BEGIN
 		DECLARE MONTO_TOTAL DECIMAL(11, 2);
 
-		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO, fecha = XFECHA, doctorId = XDOCTOR, updated_at = NOW()
+		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO, fecha = XFECHA, doctorId = XDOCTOR
 		WHERE ingresos_detalle.id = XID;
 
 END
@@ -1541,3 +1541,99 @@ BEGIN
 END
 ;;
 DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Citas_add_all`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Citas_add_all`;
+DELIMITER ;;
+CREATE  PROCEDURE `OP_Citas_add_all`(IN XTITULO varchar(200), IN XFECHA date, IN XDESDE TIME, IN XHASTA TIME,
+                                  IN XIDPACIENTE INT, IN XIDDOCTOR INT)
+BEGIN
+  INSERT INTO citas(titulo, fecha, desde, hasta, idPaciente, idDoctor)
+			VALUES (XTITULO, XFECHA, XDESDE, XHASTA, XIDPACIENTE, XIDDOCTOR);
+	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Citas_delete_all_Id`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Citas_delete_all_Id`;
+DELIMITER ;;
+CREATE  PROCEDURE `OP_Citas_delete_all_Id`(IN XID INT)
+BEGIN
+	DELETE FROM citas
+		WHERE id = XID;
+	ALTER TABLE `citas` AUTO_INCREMENT = 1;
+  SELECT ROW_COUNT() AS ESTADO;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Citas_get_all`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all`;
+DELIMITER ;;
+CREATE  PROCEDURE `OP_Citas_get_all`()
+BEGIN
+  SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
+				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
+		FROM citas c;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Citas_get_all_id`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all_id`;
+DELIMITER ;;
+CREATE  PROCEDURE `OP_Citas_get_all_id`(IN XID INT)
+BEGIN
+  SELECT c.id as idEvent, c.titulo as title, c.idDoctor as idDoctor, c.idPaciente as idPaciente,
+				 c.fecha as fecha, c.desde as start, c.hasta as end
+		FROM citas c
+	WHERE c.id = XID;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Citas_update_all`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Citas_update_all`;
+DELIMITER ;;
+CREATE  PROCEDURE `OP_Citas_update_all`(IN XID INT, IN XTITULO varchar(200), IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME,
+ IN XIDPACIENTE INT, IN XIDDOCTOR INT)
+BEGIN
+  UPDATE citas SET titulo = XTITULO, fecha = XFECHA, desde = XDESDE, hasta = XHASTA, idPaciente = XIDPACIENTE, idDoctor = XIDDOCTOR
+		WHERE citas.id = XID;
+
+	SELECT ROW_COUNT() AS ESTADO;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Citas_update_fecha_cita`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Citas_update_fecha_cita`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_update_fecha_cita`(IN XFECHA DATE, IN XID INT)
+BEGIN
+	UPDATE citas SET fecha = XFECHA WHERE citas.id = XID;
+	SELECT ROW_COUNT() AS ESTADO;
+END
+;;
+DELIMITER ;
+
+CREATE PROCEDURE `OP_Citas_get_all_doctor_id`(IN doctorId int)
+BEGIN
+  SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
+				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
+		FROM citas c
+	WHERE c.idDoctor = doctorId;
+END

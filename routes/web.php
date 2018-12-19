@@ -25,10 +25,12 @@ Route::resource('proveedores', 'ProveedorController');
 Route::resource('proveedorLineItems', 'ProveedorLineItemController');
 Route::resource('precios', 'PrecioController');
 Route::resource('pagos', 'PagoController');
+Route::resource('citas', 'CitaController');
 Route::get('pagos/nuevo/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoController@nuevoPagoReporte');
 Route::get('pagos/detalle/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoController@show');
 Route::get('consulta_precio', 'PrecioController@getPrice');
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
+Route::resource('citas', 'CitaController');
 
 //REPORTS
 Route::get('reportes', 'ReporteController@index');
@@ -58,5 +60,9 @@ Route::post('ingresos/line-item', 'IngresoController@lineItemSave');
 Route::put('ingresos/line-item/{id}', 'IngresoController@lineItemUpdate');
 Route::delete('ingresos/line-item/{id}', 'IngresoController@lineItemDelete');
 Route::get('ingresos/reporte/{id}', 'IngresoController@reporte');
+
+Route::get('v1/citas/get-all-events', 'CitaController@getEventsCitas');
+Route::get('v1/citas/get-all-events/{idDoctor}', 'CitaController@getEventsCitasPorDoctor');
+Route::get('v1/citas/update-fecha-cita/{fecha}/{id}', 'CitaController@changeFechaCita');
 
 Route::resource('egresos', 'EgresoController');
