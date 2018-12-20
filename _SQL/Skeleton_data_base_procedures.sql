@@ -1629,10 +1629,21 @@ END
 ;;
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all_doctor_id`;
 CREATE PROCEDURE `OP_Citas_get_all_doctor_id`(IN doctorId int)
 BEGIN
   SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
 		FROM citas c
 	WHERE c.idDoctor = doctorId;
+END
+
+-- ----------------------------
+--  Sedes
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Sedes_get_all`;
+CREATE PROCEDURE `OP_Sedes_get_all`()
+BEGIN
+	SELECT id, nombre, direccion
+	FROM sedes;
 END
