@@ -21,6 +21,7 @@ Route::resource('doctores', 'DoctorController');
 Route::resource('pacientes', 'PacienteController');
 Route::resource('tratamientos', 'TratamientoController');
 Route::resource('empresas', 'EmpresaController');
+Route::resource('sedes', 'SedeController');
 Route::resource('proveedores', 'ProveedorController');
 Route::resource('proveedorLineItems', 'ProveedorLineItemController');
 Route::resource('precios', 'PrecioController');
