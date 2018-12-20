@@ -99,9 +99,9 @@ CREATE TABLE `ingresos_detalle` (
   `fecha` date DEFAULT NULL,
   `doctorId` int(11) DEFAULT NULL,
   `margen_ganancia` decimal(10,0) DEFAULT '0',
+	`sedeId` int not null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
 
 -- ----------------------------
 --  Table structure for `pacientes`
@@ -129,6 +129,7 @@ CREATE TABLE `pacientes` (
   `referencia_id` int(11) DEFAULT '1',
   `created_at` timestamp NULL,
   `updated_at` timestamp NULL,
+	`sede_id` int not null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
