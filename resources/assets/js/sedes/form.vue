@@ -51,7 +51,7 @@
 												<div class="d-inline"> Información de Sede </div>
 											</div>
 											<p class="form-description fz-3 pt-3 pr-4">
-												La gestión de sedes es esencial para el manejo de...
+												La gestión de sedes permite separar diversas tareas a lo largo del sistema.
 											</p>
 											<br/>
 											<p class="form-description fz-3 pt-3 pr-4">

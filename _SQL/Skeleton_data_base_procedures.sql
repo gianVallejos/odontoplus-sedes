@@ -829,23 +829,20 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pacientes_add_all`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pacientes_add_all`(IN XNOMBRES VARCHAR(90), IN XAPELLIDOS VARCHAR(90),
-				  													    IN XDNI VARCHAR(8), IN XEMAIL VARCHAR(90),
-																			  IN XDIRECCION VARCHAR(90), IN XFECHA_NACIMIENTO DATE,
-																			  IN XGENERO VARCHAR(25), IN XESTADO VARCHAR(25),
-																			  IN XTELEFONO VARCHAR(50), IN XFAX VARCHAR(50),
-																			  IN XCELULAR VARCHAR(50), IN XCELULAR_AUX VARCHAR(50),
-																				IN XID_EMPRESA INT, IN XID_SEGURO_IND INT,
-																				IN XNOMBRE_APODERADO VARCHAR(150),
-																				IN XCELULAR_APODERADO VARCHAR(150),
-																			  IN XREFERENCIA_ID INT)
+CREATE PROCEDURE `OP_Pacientes_add_all`(IN XNOMBRES           varchar(90), IN XAPELLIDOS varchar(90), IN XDNI varchar(8),
+	                                      IN XEMAIL             varchar(90), IN XDIRECCION varchar(90),
+	                                      IN XFECHA_NACIMIENTO  date, IN XGENERO varchar(25), IN XESTADO varchar(25),
+	                                      IN XTELEFONO          varchar(50), IN XFAX varchar(50), IN XCELULAR varchar(50),
+	                                      IN XCELULAR_AUX       varchar(50), IN XID_EMPRESA int, IN XID_SEGURO_IND int,
+	                                      IN XNOMBRE_APODERADO  varchar(150), IN XCELULAR_APODERADO varchar(150),
+	                                      IN XREFERENCIA_ID     int, IN XSEDE_ID int)
 BEGIN
-  INSERT INTO pacientes(nombres, apellidos, dni, email, direccion, fechanacimiento, genero, estado, telefono, fax,
-                    celular, celular_aux, empresa_id, seguro_ind, nombre_apoderado, celular_apoderado,
-                    referencia_id, created_at, updated_at)
-  VALUES (XNOMBRES, XAPELLIDOS, XDNI, XEMAIL, XDIRECCION, XFECHA_NACIMIENTO, XGENERO, XESTADO, XTELEFONO, XFAX,
-          XCELULAR, XCELULAR_AUX, XID_EMPRESA, XID_SEGURO_IND, XNOMBRE_APODERADO, XCELULAR_APODERADO,
-          XREFERENCIA_ID, NOW(), NOW());
+	INSERT INTO pacientes(nombres, apellidos, dni, email, direccion, fechanacimiento, genero, estado, telefono, fax,
+										celular, celular_aux, empresa_id, seguro_ind, nombre_apoderado, celular_apoderado,
+										referencia_id, created_at, updated_at, sede_id)
+	VALUES (XNOMBRES, XAPELLIDOS, XDNI, XEMAIL, XDIRECCION, XFECHA_NACIMIENTO, XGENERO, XESTADO, XTELEFONO, XFAX,
+					XCELULAR, XCELULAR_AUX, XID_EMPRESA, XID_SEGURO_IND, XNOMBRE_APODERADO, XCELULAR_APODERADO,
+					XREFERENCIA_ID, NOW(), NOW(), XSEDE_ID);
 
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END
@@ -919,7 +916,8 @@ CREATE PROCEDURE `OP_Pacientes_get_all_Id`(IN XID INT)
 BEGIN
 	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
-				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre
+				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id,
+				 pc.sede_id, emp.nombre as empresa_nombre
 	FROM pacientes as pc
 	INNER JOIN empresas as emp on emp.id = pc.empresa_id
 	WHERE pc.id = XID;
@@ -1031,23 +1029,22 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pacientes_update_all_Id`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pacientes_update_all_Id`(IN XNOMBRES VARCHAR(90), IN XAPELLIDOS VARCHAR(90),
-																							IN XDNI VARCHAR(8), IN XEMAIL VARCHAR(90),
-																							IN XDIRECCION VARCHAR(90), IN XFECHA_NACIMIENTO DATE,
-																							IN XGENERO VARCHAR(25), IN XESTADO VARCHAR(25),
-																							IN XTELEFONO VARCHAR(50), IN XFAX VARCHAR(50),
-																							IN XCELULAR VARCHAR(50), IN XCELULAR_AUX VARCHAR(50),
-																							IN XID_EMPRESA INT, IN XID_SEGURO_IND INT,
-																							IN XNOMBRE_APODERADO VARCHAR(150),
-																							IN XCELULAR_APODERADO VARCHAR(150),
-																							IN XREFERENCIA_ID INT, IN XID INT)
+CREATE PROCEDURE `OP_Pacientes_update_all_Id`(IN XNOMBRES          varchar(90), IN XAPELLIDOS varchar(90),
+	                                            IN XDNI              varchar(8), IN XEMAIL varchar(90),
+	                                            IN XDIRECCION        varchar(90), IN XFECHA_NACIMIENTO date,
+	                                            IN XGENERO           varchar(25), IN XESTADO varchar(25),
+	                                            IN XTELEFONO         varchar(50), IN XFAX varchar(50),
+	                                            IN XCELULAR          varchar(50), IN XCELULAR_AUX varchar(50),
+	                                            IN XID_EMPRESA       int, IN XID_SEGURO_IND int,
+	                                            IN XNOMBRE_APODERADO varchar(150), IN XCELULAR_APODERADO varchar(150),
+	                                            IN XREFERENCIA_ID    int, IN XSEDE_ID int, IN XID int)
 BEGIN
-  UPDATE pacientes SET nombres = XNOMBRES, apellidos = XAPELLIDOS, dni = XDNI, email = XEMAIL,
-                       direccion = XDIRECCION, fechanacimiento = XFECHA_NACIMIENTO, genero = XGENERO,
-                       estado = XESTADO, telefono = XTELEFONO, fax = XFAX, celular = XCELULAR,
-                       celular_aux = XCELULAR_AUX, empresa_id = XID_EMPRESA, seguro_ind = XID_SEGURO_IND,
-                       nombre_apoderado = XNOMBRE_APODERADO, celular_apoderado = XCELULAR_APODERADO,
-                      referencia_id = XREFERENCIA_ID, updated_at = NOW()
+	UPDATE pacientes SET nombres = XNOMBRES, apellidos = XAPELLIDOS, dni = XDNI, email = XEMAIL,
+											 direccion = XDIRECCION, fechanacimiento = XFECHA_NACIMIENTO, genero = XGENERO,
+											 estado = XESTADO, telefono = XTELEFONO, fax = XFAX, celular = XCELULAR,
+											 celular_aux = XCELULAR_AUX, empresa_id = XID_EMPRESA, seguro_ind = XID_SEGURO_IND,
+											 nombre_apoderado = XNOMBRE_APODERADO, celular_apoderado = XCELULAR_APODERADO,
+											 referencia_id = XREFERENCIA_ID, updated_at = NOW(), sede_id = XSEDE_ID
 	WHERE pacientes.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
@@ -1647,3 +1644,55 @@ BEGIN
 	SELECT id, nombre, direccion
 	FROM sedes;
 END
+
+DROP PROCEDURE IF EXISTS `OP_Sedes_get_all_id`;
+CREATE PROCEDURE OP_Sedes_get_all_id(IN XID int)
+  BEGIN
+	SELECT se.id, se.nombre, se.direccion
+	FROM sedes se
+  WHERE se.id = XID;
+END;
+
+DROP PROCEDURE IF EXISTS `OP_Sedes_add_all`;
+CREATE PROCEDURE OP_Sedes_add_all(IN XNOMBRE varchar(150), IN XDIRECCION varchar(100))
+  BEGIN
+  INSERT INTO sedes(nombre, direccion)
+    VALUES (XNOMBRE, XDIRECCION);
+
+	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
+END;
+
+DROP PROCEDURE IF EXISTS `OP_Sedes_update_all_Id`;
+CREATE PROCEDURE OP_Sedes_update_all_Id(IN XNOMBRE varchar(150), IN XDIRECCION varchar(100), IN XID int)
+  BEGIN
+  UPDATE sedes SET nombre = XNOMBRE, direccion = XDIRECCION
+    WHERE sedes.id = XID;
+
+	SELECT ROW_COUNT() AS ESTADO;
+END;
+
+-- Revisar otras relaciones
+DROP PROCEDURE IF EXISTS `OP_Sedes_es_borrable_Id`;
+CREATE PROCEDURE OP_Sedes_es_borrable_Id(IN XID int)
+  BEGIN
+	DECLARE sede_status INT;
+
+	SELECT COUNT(*) INTO sede_status
+		FROM pacientes
+	WHERE sede_id = XID;
+
+	IF sede_status = "0" THEN
+		SELECT 1 as CAN_DELETE; -- PUEDE BORRARSE --
+	ELSE
+		SELECT 0 as CAN_DELETE; -- NO SE DEBE BORRAR --
+	END IF;
+END;
+
+DROP PROCEDURE IF EXISTS `OP_Sedes_delete_all`;
+CREATE PROCEDURE OP_Sedes_delete_all(IN XID int)
+  BEGIN
+	DELETE FROM sedes
+		WHERE sedes.id = XID;
+
+	ALTER TABLE sedes AUTO_INCREMENT = 1;
+END;
