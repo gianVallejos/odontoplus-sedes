@@ -62,7 +62,7 @@ class IngresoController extends Controller
         return response()->json(['error'=>$validator->errors()]);
     }
 
-    public function reporte($id){      
+    public function reporte($id){
         $igeneral =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_Id('. $id .')')[0];
         $igeneral = json_encode($igeneral);
         $idetalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_all_Id('. $id .')');
@@ -83,10 +83,12 @@ class IngresoController extends Controller
             $tratamientos = json_encode($tratamientos);
             $doctores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
             $doctores = json_encode($doctores);
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+            $sedes = json_encode($sedes);
             $presupuestos_by_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_presupuestos_Id("'. $id .'")');
             $presupuestos_by_ingreso = json_encode($presupuestos_by_ingreso);
 
-            return view('ingresos.line-item', compact('ingresos', 'ingreso_detalle', 'tratamientos', 'doctores', 'presupuestos_by_ingreso'));
+            return view('ingresos.line-item', compact('ingresos', 'ingreso_detalle', 'tratamientos', 'doctores', 'sedes', 'presupuestos_by_ingreso'));
         }catch(Exception $e){
             echo 'Ha ocurrido un error'; die();
         }
@@ -97,7 +99,7 @@ class IngresoController extends Controller
                 foreach( $request->trats as $trat ){
                     $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
                                                                             $trat['cantidad'] .', '. $trat['monto'] . ', "' .
-                                                                            $request->fecha .'", ' . $request->doctor . ')');
+                                                                            $request->fecha .'", '. $request->sede .','. $request->doctor . ')');
                 }
                 $last_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')')[0];
 

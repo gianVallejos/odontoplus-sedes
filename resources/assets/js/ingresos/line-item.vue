@@ -39,7 +39,8 @@
 					</div>
 				</PanelCard>
 			</b-col>
-			<line-item-detalle :record="recordDetail" :tratamientos="tratamientos" :presupuesto_id="record.presupuestoId" :id="ingreso_id" :url="url" :cur-user="curUser" :doctores="doctores" v-on:calcular-total="actualizarTotal" />
+			<line-item-detalle :record="recordDetail" :ingreso="record" :tratamientos="tratamientos" :presupuesto_id="record.presupuestoId" :id="ingreso_id"
+												 :url="url" :cur-user="curUser" :doctores="doctores" :sedes="sedes" v-on:calcular-total="actualizarTotal" />
 		</b-row>
 
 	</b-container>
@@ -59,6 +60,7 @@
 			'record-detail',
 			'tratamientos',
 			'doctores',
+			'sedes',
 			'presupuestosByIngreso'
 		],
 		components:{
