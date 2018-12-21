@@ -435,15 +435,17 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_Detalle_add_all`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT, IN XMONTO DECIMAL(11, 2), IN XFECHA DATE, IN XDOCTOR INT)
-BEGIN
+CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO int, IN XID_PRECIO int, IN XCANTIDAD int,
+	                                             IN XMONTO      decimal(11, 2), IN XFECHA date, IN XSEDEID int,
+	                                             IN XDOCTOR     int)
+	BEGIN
 		DECLARE MONTO_TOTAL DECIMAL(11, 2);
 		DECLARE XMARGEN DECIMAL(10, 0);
 
 		SELECT margen_ganancia INTO XMARGEN FROM doctors WHERE doctors.id = XDOCTOR;
 
-		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto, fecha, doctorId, margen_ganancia)
-			VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO, XFECHA, XDOCTOR, XMARGEN);
+		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto, fecha, doctorId, margen_ganancia, sedeId)
+			VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO, XFECHA, XDOCTOR, XMARGEN, XSEDEID);
 
 END
 ;;
@@ -470,13 +472,14 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_Detalle_get_all_Id`(IN XID_INGRESO INT)
 BEGIN
 	SELECT idt.id, trat.id as idTratamiento, trat.detalle as tratamiento,
-				 doc.id as idDoctor, CONCAT(doc.nombres, ' ', doc.apellidos) as nombreDoctor,
+				 doc.id as idDoctor, CONCAT(doc.nombres, ' ', doc.apellidos) as nombreDoctor, sed.nombre as nombre_sede,
 				 idt.cantidad * idt.monto as total,
 				 ROUND(IFNULL(SUM(idt.monto * idt.cantidad) * doc.margen_ganancia/100, 0), 2) as mg,
 				 ROUND(IFNULL(SUM(idt.monto * idt.cantidad) - (SUM(idt.monto * idt.cantidad) * doc.margen_ganancia/100), 0), 2) as mg_core,
-				 idt.cantidad, idt.monto, idt.fecha as fecha
+				 idt.cantidad, idt.monto, idt.fecha as fecha, idt.sedeId as sede
 		FROM ingresos
 		INNER JOIN ingresos_detalle as idt on ingresos.id = idt.ingresoId
+		INNER JOIN sedes as sed on sed.id = idt.sedeId
 		INNER JOIN precios on precios.id = idt.precioId
 		INNER JOIN tratamientos as trat on trat.id = precios.idTratamiento
 		LEFT JOIN doctors as doc on doc.id = idt.doctorId
@@ -618,7 +621,7 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_get_all_Id`(IN XID INT)
 BEGIN
 	SELECT LPAD(ingresos.id, 5, '0') as id, LPAD(pacientes.id, 5, '0') as hc, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) as nombrePaciente,
-				 ingresos.created_at as fecha,
+				 ingresos.created_at as fecha, pacientes.sede_id as pacienteSedeId,
 				 IFNULL(SUM(ingresos_detalle.cantidad * ingresos_detalle.monto), 0) as monto_total, prs.id as presupuestoId
 		FROM `ingresos`
 	INNER JOIN pacientes on pacientes.id = ingresos.idPaciente
