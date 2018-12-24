@@ -51,6 +51,7 @@ CREATE TABLE `egresos` (
   `is_deleted` tinyint(4) DEFAULT '0',
   `created_at` timestamp NULL,
   `updated_at` timestamp NULL,
+	`sedeId` int not null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

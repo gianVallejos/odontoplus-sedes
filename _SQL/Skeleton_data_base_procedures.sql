@@ -123,12 +123,12 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_add_all`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_add_all`(IN XFECHA DATE, IN XCANTIDAD INT,
-																				 IN XCONCEPTO VARCHAR(125), IN XTIPO VARCHAR(125),
-																				 IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2))
+CREATE PROCEDURE `OP_Egresos_add_all`(IN XFECHA           date, IN XCANTIDAD int, IN XCONCEPTO varchar(125),
+	                                    IN XTIPO            varchar(125), IN XOBSERVACION varchar(125),
+	                                    IN XPRECIO_UNITARIO decimal(6, 2), IN XSEDEID int)
 BEGIN
-INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, created_at, updated_at)
-  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, NOW(), NOW());
+INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, sedeId, created_at, updated_at)
+  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, XSEDEID,NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -140,13 +140,12 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_add_all_doctor`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_add_all_doctor`(IN XFECHA DATE, IN XCANTIDAD INT,
-																				 IN XCONCEPTO VARCHAR(125), IN XTIPO VARCHAR(125),
-																				 IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2),
-																				 IN XDOCTOR_ID INT)
+CREATE PROCEDURE `OP_Egresos_add_all_doctor`(IN XFECHA           date, IN XCANTIDAD int, IN XCONCEPTO varchar(125),
+	                                           IN XTIPO            varchar(125), IN XOBSERVACION varchar(125),
+	                                           IN XPRECIO_UNITARIO decimal(6, 2), IN XSEDEID int, IN XDOCTOR_ID int)
 BEGIN
-INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, doctorId, created_at, updated_at)
-  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, XDOCTOR_ID, NOW(), NOW());
+INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, doctorId, sedeId, created_at, updated_at)
+  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, XDOCTOR_ID, XSEDEID, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -174,9 +173,10 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Egresos_get_all`()
 BEGIN
 		SELECT egresos.id, fecha, concepto, cantidad, precio_unitario as monto, SUM(cantidad * precio_unitario) as total,
-					 tipo, doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota
+					 tipo, doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota, sedes.nombre as nombre_sede
 			FROM egresos
 		LEFT JOIN doctors on doctors.id = egresos.doctorId
+		INNER JOIN sedes on sedes.id = egresos.sedeId
 		WHERE egresos.is_deleted = 0
 		GROUP BY egresos.id ORDER BY egresos.fecha DESC, egresos.id DESC;
 END
@@ -207,7 +207,7 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Egresos_get_all_Id`(IN XID INT)
 BEGIN
 	SELECT egresos.id, fecha, concepto, cantidad, precio_unitario as monto, SUM(cantidad * precio_unitario) as total, tipo,
-				 doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota
+				 doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota, egresos.sedeId as sedeId
 			FROM egresos
 		LEFT JOIN doctors on doctors.id = egresos.doctorId
 		WHERE egresos.is_deleted = 0 AND egresos.id = XID
@@ -253,15 +253,14 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_update_all_doctor_Id`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_update_all_doctor_Id`(IN XFECHA DATE, IN XCANTIDAD INT,
-																									  IN XCONCEPTO VARCHAR(125), IN XTIPO VARCHAR(125),
-																									  IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2),
-																										IN XDOCTOR_ID INT, IN XID INT)
+CREATE PROCEDURE `OP_Egresos_update_all_doctor_Id`(IN XFECHA           date, IN XCANTIDAD int, IN XCONCEPTO varchar(125),
+	                                                 IN XTIPO            varchar(125), IN XOBSERVACION varchar(125),
+	                                                 IN XPRECIO_UNITARIO decimal(6, 2), IN XDOCTOR_ID int, IN XSEDEID int, IN XID int)
 BEGIN
 	UPDATE egresos
-    SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
-        tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
-        doctorId = XDOCTOR_ID, updated_at = NOW()
+		SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
+				tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
+				doctorId = XDOCTOR_ID, sedeId=XSEDEID, updated_at = NOW()
 		WHERE egresos.id = XID;
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -273,15 +272,14 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_update_all_Id`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_update_all_Id`(IN XFECHA DATE, IN XCANTIDAD INT,
-																						 IN XCONCEPTO VARCHAR(125), IN XTIPO VARCHAR(125),
-																						 IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2),
-																						 IN XID INT)
+CREATE PROCEDURE `OP_Egresos_update_all_Id`(IN XFECHA           date, IN XCANTIDAD int, IN XCONCEPTO varchar(125),
+	                                          IN XTIPO            varchar(125), IN XOBSERVACION varchar(125),
+	                                          IN XPRECIO_UNITARIO decimal(6, 2), IN XSEDEID int, IN XID int)
 BEGIN
 	UPDATE egresos
-    SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
-        tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
-        doctorId = NULL, updated_at = NOW()
+		SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
+				tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
+				doctorId = NULL, sedeId=XSEDEID,updated_at = NOW()
 		WHERE egresos.id = XID;
 	SELECT ROW_COUNT() AS ESTADO;
 END

@@ -52,13 +52,23 @@
 									<b-row>
 										<b-col cols="12" class="pt-3 pb-4">
 											<b-form-row>
-												<b-col>
+												<b-col cols="2">
 												    <b-form-group label="Fecha" label-for="fecha">
 													    <b-form-input id="fecha" type="date" v-model="form.fecha"  :disabled=isDisabled class="required" />
 													    <span v-if="all_errors.fecha" :class="['label label-danger']">{{ all_errors.fecha[0] }}</span>
 												    </b-form-group>
 												</b-col>
-												<b-col cols="4">
+												<b-col cols="3">
+													<b-form-group label="Sede">
+														<b-form-select v-model="form.sede" :disabled=isDisabled class="required" >
+															<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
+																{{ sede.nombre }}
+															</option>
+														</b-form-select>
+														<span v-if="all_errors.sede" :class="['label label-danger']">{{ all_errors.sede[0] }}</span>
+													</b-form-group>
+												</b-col>
+												<b-col cols="3">
 													<b-form-group label="Tipo">
 														<b-form-select v-model="form.tipo" v-on:input="changeDoctorOption"  :disabled=isDisabled class="required">
 															<option v-for="(tipo, index) in tipos" :key="index" :value="tipo.nombre">
@@ -68,7 +78,7 @@
 														<span v-if="all_errors.tipo" :class="['label label-danger']">{{ all_errors.tipo[0] }}</span>
 													</b-form-group>
 												</b-col>
-												<b-col cols="5">
+												<b-col cols="4">
 													<b-form-group label="Doctor">
 														<b-form-select v-model="form.doctor"  :disabled=needDoctor >
 															<option :value="null">Ningun Doctor Seleccionado</option>
@@ -182,12 +192,13 @@
         SpinnerContainer
     },
     props:[
-      	'title',
-      	'url',
-		'doctores',
-		'record',
-		'curUser',
-		'view_mode'
+    	'title',
+    	'url',
+			'doctores',
+			'sedes',
+			'record',
+			'curUser',
+			'view_mode'
     ],
     data(){
       return{
@@ -196,6 +207,7 @@
 			fecha: this.getMyDate(),
 			tipo: 'Empresa',
 			doctor: null,
+			sede: null,
 			cantidad: 1,
 			concepto: '',
 			monto: 0,
@@ -268,13 +280,14 @@
 	    	setControllerDataToForms(){
 	    		this.record_id = this.record.id
 	    		this.form.fecha = this.record.fecha
-				this.form.tipo = this.record.tipo
-				this.form.doctor = this.record.doctorId
-				this.form.cantidad = this.record.cantidad
-				this.form.concepto = this.record.concepto
-				this.form.monto = this.record.monto
-				this.form.total = this.record.total
-				this.form.nota = this.record.nota
+					this.form.tipo = this.record.tipo
+					this.form.doctor = this.record.doctorId
+					this.form.sede = this.record.sedeId
+					this.form.cantidad = this.record.cantidad
+					this.form.concepto = this.record.concepto
+					this.form.monto = this.record.monto
+					this.form.total = this.record.total
+					this.form.nota = this.record.nota
 	    	},
 	    	onGuardarNuevo(){
 	    		var request = { method: 'POST', url: this.url + '/egresos', data: this.form }
@@ -349,13 +362,14 @@
 	    	setFormDataToUser(){
 	    		this.record.id = this.record_id
 	    		this.record.fecha = this.form.fecha
-				this.record.tipo = this.form.tipo
-				this.record.doctorId = this.form.doctor
-				this.record.cantidad = this.form.cantidad
-				this.record.concepto = this.form.concepto
-				this.record.monto = this.form.monto
-				this.record.total = this.form.total
-				this.record.nota = this.form.nota
+					this.record.tipo = this.form.tipo
+					this.record.doctorId = this.form.doctor
+					this.record.sedeId = this.form.sede
+					this.record.cantidad = this.form.cantidad
+					this.record.concepto = this.form.concepto
+					this.record.monto = this.form.monto
+					this.record.total = this.form.total
+					this.record.nota = this.form.nota
 	    	},
 			cleanErrosMessage(){
 				this.all_errors = []
@@ -408,7 +422,7 @@
         if( isNaN(this.form.total) ){
           this.form.total = 0
         }
-				
+
 			},
 			changeDoctorOption(){
 				if( this.form.tipo == 'Pago a Personal' && this.displayStatus != 'show' ){
