@@ -15,8 +15,9 @@ class CitaController extends Controller{
 
     public function index(){
       $doctores = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
+      $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
 
-      return view('citas.index', compact('doctores'));
+      return view('citas.index', compact('doctores', 'sedes'));
     }
 
     public function getEventsCitas(){
@@ -45,8 +46,10 @@ class CitaController extends Controller{
       $pacientes = json_encode($pacientes);
       $doctores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
       $doctores = json_encode($doctores);
+      $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+      $sedes = json_encode($sedes);
 
-      return view('citas.create', compact('pacientes', 'doctores'));
+      return view('citas.create', compact('pacientes', 'doctores', 'sedes'));
     }
 
     public function show($id){
@@ -54,10 +57,12 @@ class CitaController extends Controller{
       $pacientes = json_encode($pacientes);
       $doctores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
       $doctores = json_encode($doctores);
+      $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+      $sedes = json_encode($sedes);
       $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all_id('. $id .')')[0];
       $cita = json_encode($cita);
 
-      return view('citas.show', compact('pacientes', 'doctores', 'cita'));
+      return view('citas.show', compact('pacientes', 'doctores', 'cita', 'sedes'));
     }
 
     public function store(Request $request){
@@ -66,6 +71,7 @@ class CitaController extends Controller{
             'fecha' => 'required|date',
             'desde' => 'required|date_format:H:i',
             'hasta' => 'required|date_format:H:i|after:desde',
+            'sede' => 'required|integer',
             'idPaciente' => 'required|integer',
             'idDoctor' => 'required|integer'
         ]);
@@ -73,7 +79,7 @@ class CitaController extends Controller{
     	if ($validator->passes()) {
             $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_add_all("'. $request->paciente .'", "'. $request->fecha .'", "'.
                                                                                                  $request->desde .'", "'. $request->hasta .'", '.
-                                                                                                 $request->idPaciente .','. $request->idDoctor.')');
+                                                                                                 $request->idPaciente .','. $request->idDoctor.','. $request->sede.')');
             if( $cita[0]->ESTADO > 0 ){
                if ($request->enviarEmail) {
                  self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde);
@@ -93,14 +99,15 @@ class CitaController extends Controller{
             'desde' => 'required',
             'hasta' => 'required|after:desde',
             'idPaciente' => 'required|integer',
-            'idDoctor' => 'required|integer'
+            'idDoctor' => 'required|integer',
+            'sede' => 'required|integer'
         ]);
 
     	if ($validator->passes()) {
 
           $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_update_all('.$id.', "'. $request->paciente . '", "' . $request->fecha .'", "'.
                                                                                                 $request->desde .'", "'. $request->hasta .'",' .
-                                                                                                $request->idPaciente .','. $request->idDoctor.')'   );
+                                                                                                $request->idPaciente .','. $request->idDoctor .','. $request->sede .')');
           if( $cita[0]->ESTADO > 0 ){
             if ($request->enviarEmail) {
               self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde);
