@@ -11,10 +11,23 @@
 					<b-row slot="body">
 						<b-col cols="12">
 							<b-form-row>
-								<b-col xl="2" cols="12">
+								<b-col cols="2">
 									<b-input-group prepend="Año">
 										<b-form-select id="estado" v-model="ingresosVsEgresosChart.year" :options="years" v-on:input="fillingresosVsEgresosChart()" />
 									</b-input-group>
+								</b-col>
+								<b-col cols="4">
+									<div class="float-left input-group">
+										<div class="input-group-prepend">
+											<div class="input-group-text fz-4"> Sede </div>
+										</div>
+										<b-form-select v-model="ingresosVsEgresosChart.sede" v-on:input="fillingresosVsEgresosChart()">
+											<option value=null >Todas las sedes</option>
+											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
+												{{ sede.nombre }}
+											</option>
+										</b-form-select>
+									</div>
 								</b-col>
 							</b-form-row>
 						</b-col>
@@ -127,7 +140,8 @@
 			this.initCharts()
 		},
 		props: [
-			'url'
+			'url',
+			'sedes'
 		],
 		components:{
 			TitleComponent,
@@ -149,7 +163,7 @@
 				chartIsLoading: true,
 				reportesGenerales:{
 					start_date: '',
-					end_date: '',
+					end_date: ''
 				},
 				years: [
 					{ value: "2017", text: "2017" },
@@ -159,7 +173,8 @@
 				],
 				ingresosVsEgresosChart: {
 					data: null,
-					year: null
+					year: null,
+					sede: null
 				},
 				ingresosPacienteChart: {
 					data: null,
@@ -187,14 +202,14 @@
     methods:{
 			initCharts(){
 				this.setDatesToChart(this.getMyDate())
-				this.fillDataCharts()
+				this.fillAllCharts()
 			},
 			setDatesToChart(today){
 				this.ingresosVsEgresosChart.year = today.substring(0,4)
 				this.reportesGenerales.start_date = today.substring(0,4)+'-01-01'
 				this.reportesGenerales.end_date = today
 			},
-			fillDataCharts(){
+			fillAllCharts(){
 				this.fillingresosVsEgresosChart()
 				this.fillReportesGeneralesCharts()
 			},
@@ -227,15 +242,18 @@
 			},
 			fillingresosVsEgresosChart(){
 				var year = this.ingresosVsEgresosChart.year
-				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/'+year }
-				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/'+year }
+				var sede = this.ingresosVsEgresosChart.sede
+				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/' + year + '/' + sede }
+				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/' + year + '/' + sede }
+				console.log(request_ingresos)
+				console.log(request_egresos)
 				if( year != '' ){
 					this.chartIsLoading = true
 					var self = this
 					axios(request_ingresos).then((response) => {
 						let ingresos = response.data.ingresos
             let ingresos_montos = ingresos.map(i => parseInt(i.monto))
-						
+
 						axios(request_egresos).then((response) => {
 							let egresos = response.data.egresos
 	            let egresos_montos = egresos.map(i => parseInt(i.monto))
@@ -437,7 +455,7 @@
 				});
 			},
 
-			fillTratamientosPorDoctorChart(){				
+			fillTratamientosPorDoctorChart(){
 				var request = {
 					method: 'GET',
 					url: this.url + '/reportes/obtener-tratamientos-doctor/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date

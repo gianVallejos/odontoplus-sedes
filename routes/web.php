@@ -38,8 +38,8 @@ Route::get('ganancias/{start}/{end}/{sedeId}', 'GananciaController@gananciasFech
 
 //REPORTS
 Route::get('reportes', 'ReporteController@index');
-Route::get('reportes/obtener-ingresos-mensuales/{year}', 'ReporteController@obtenerIngresosMensuales');
-Route::get('reportes/obtener-egresos-mensuales/{year}', 'ReporteController@obtenerEgresosMensuales');
+Route::get('reportes/obtener-ingresos-mensuales/{year}/{sedeId}', 'ReporteController@obtenerIngresosMensuales');
+Route::get('reportes/obtener-egresos-mensuales/{year}/{sedeId}', 'ReporteController@obtenerEgresosMensuales');
 Route::get('reportes/obtener-ingresos-paciente/{start}/{end}', 'ReporteController@obtenerIngresosPacienteFechas');
 Route::get('reportes/obtener-nuevos-pacientes/{start}/{end}', 'ReporteController@obtenerNuevosPacientesFechas');
 Route::get('reportes/obtener-nuevos-pacientes-anio-actual', 'ReporteController@obtenerNuevosPacientesAnioActual');

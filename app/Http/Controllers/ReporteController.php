@@ -11,16 +11,19 @@ class reporteController extends Controller{
     }
 
     public function index(){
-        return view('reportes.index');
+        $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        $sedes = json_encode($sedes);
+
+        return view('reportes.index', compact('sedes'));
     }
 
-    public function obtenerIngresosMensuales($year){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_ingresos_mensuales_anio("'. $year .'")');
+    public function obtenerIngresosMensuales($year, $sedeId){
+        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_ingresos_mensuales_anio("'. $year .'",'. $sedeId .')');
         return response()->json(['ingresos' => $data ]);
     }
 
-    public function obtenerEgresosMensuales($year){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_get_egresos_mensuales_anio("'. $year . '")');
+    public function obtenerEgresosMensuales($year, $sedeId){
+        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_get_egresos_mensuales_anio("'. $year .'",'. $sedeId .')');
         return response()->json(['egresos' => $data ]);
     }
 

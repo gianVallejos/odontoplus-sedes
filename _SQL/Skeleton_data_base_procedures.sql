@@ -221,8 +221,8 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_get_egresos_mensuales_anio`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_get_egresos_mensuales_anio`(IN anio varchar(4))
-BEGIN
+CREATE PROCEDURE `OP_Egresos_get_egresos_mensuales_anio`(IN anio varchar(4), IN sede_id int)
+  BEGIN
 	SET lc_time_names = 'es_ES';
 	SELECT m.MONTH as mes, COALESCE(AMOUNT,0) as monto
 	FROM
@@ -242,6 +242,7 @@ BEGIN
 	( SELECT MONTH(e.fecha) as MONTH, SUM(e.cantidad * e.precio_unitario) as AMOUNT
 		FROM egresos as e
 		WHERE YEAR(e.fecha ) = anio
+		AND (sede_id IS NULL OR e.sedeId = sede_id)
 		GROUP BY (MONTH(e.fecha))) AS e ON m.MONTH = e.MONTH
 	ORDER BY m.MONTH;
 END
@@ -653,7 +654,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ingresos_mensuales_anio`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_ingresos_mensuales_anio`(IN anio varchar(4))
+CREATE PROCEDURE `OP_Ingresos_get_ingresos_mensuales_anio`(IN anio varchar(4), IN sede_id int)
 BEGIN
 	SET lc_time_names = 'es_ES';
 	SELECT m.MONTH as mes, COALESCE(AMOUNT,0) as monto
@@ -674,6 +675,7 @@ BEGIN
 	( SELECT MONTH(idt.fecha) as MONTH, SUM(idt.cantidad * idt.monto) as AMOUNT
 		FROM ingresos_detalle as idt
 		WHERE YEAR(idt.fecha ) = anio
+		AND (sede_id IS NULL OR idt.sedeId = sede_id)
 		GROUP BY (MONTH(idt.fecha)) ) AS i ON m.MONTH = i.MONTH
 	ORDER BY m.MONTH;
 
