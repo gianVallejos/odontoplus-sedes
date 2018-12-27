@@ -611,6 +611,23 @@ END
 ;;
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ganancias_sede_fechas`;
+CREATE PROCEDURE `OP_Ingresos_get_ganancias_sede_fechas`(IN sede_id int, IN start_date date, IN end_date date)
+  BEGIN
+    SELECT idt.id, LPAD(ing.idPaciente, 5, '00000') as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento,
+					 idt.cantidad, idt.monto, (idt.cantidad * idt.monto) as total, sd.nombre as nombre_sede,
+           FORMAT((idt.margen_ganancia/100 * idt.cantidad * idt.monto), 2) as doctor, DATE_FORMAT(idt.fecha, "%d-%m-%Y") as fecha
+    	 FROM ingresos_detalle idt
+    INNER JOIN ingresos ing ON ing.id = idt.ingresoId
+    INNER JOIN doctors dr ON dr.id = idt.doctorId
+    INNER JOIN precios pr ON pr.id = idt.precioId
+    INNER JOIN tratamientos tr ON tr.id = pr.idTratamiento
+    INNER JOIN sedes sd ON sd.id = idt.sedeId
+			WHERE ( sede_id IS NULL OR idt.sedeId = sede_id )
+			AND idt.fecha BETWEEN start_date AND end_date;
+
+END;
+
 -- ----------------------------
 --  Procedure definition for `OP_Ingresos_get_all_Id`
 -- ----------------------------
