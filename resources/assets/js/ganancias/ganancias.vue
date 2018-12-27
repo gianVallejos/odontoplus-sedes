@@ -1,5 +1,5 @@
 <template>
-  <b-container v-if="curUser.rolid == 1">    
+  <b-container v-if="curUser.rolid == 1">
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Reporte de Ganancias" :items="breadcrumb" />
@@ -31,7 +31,6 @@
 											</b-btn>
 									</b-col>
 								</b-form-row>
-
 
 								</div>
 							</div>
@@ -172,7 +171,7 @@
 			},
 			goToPDFView(){
 				if( this.validForm() ){
-					window.open(this.url + '/reportes/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin, '_blank')
+					window.open(this.url + '/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin, '_blank')
 				}
 				else{
 					this.toastFunction('El periodo de fechas es inválido.', 'error')
@@ -184,7 +183,7 @@
 			refreshIngresosTable(){
 
 				if( this.validForm() ){
-					var request = { method: 'GET', url: this.url + '/reportes/gananciasJSON/'+this.form.fechaInicio+'/'+this.form.fechaFin }
+					var request = { method: 'GET', url: this.url + '/gananciasJSON/'+this.form.fechaInicio+'/'+this.form.fechaFin }
 					this.$refs.spinnerContainerRef.showSpinner()
           axios(request).then((response) => {
 						this.gananciasRecords = JSON.parse(response.data.ingresos)

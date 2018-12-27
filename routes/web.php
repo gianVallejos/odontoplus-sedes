@@ -32,6 +32,9 @@ Route::get('pagos/detalle/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoControll
 Route::get('consulta_precio', 'PrecioController@getPrice');
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
 Route::resource('citas', 'CitaController');
+Route::get('ganancias', 'GananciaController@index');
+Route::get('ganancias/{start}/{end}', 'GananciaController@gananciasFechas');
+Route::get('gananciasJSON/{start}/{end}', 'GananciaController@gananciasFechasJSON');
 
 //REPORTS
 Route::get('reportes', 'ReporteController@index');
@@ -45,10 +48,6 @@ Route::get('reportes/obtener-ingresos-doctor/{start}/{end}', 'ReporteController@
 Route::get('reportes/obtener-pagos-doctor/{start}/{end}', 'ReporteController@obtenerPagosPorDoctorFechas');
 Route::get('reportes/obtener-tratamientos/{start}/{end}', 'ReporteController@obtenerTratamientosFechas');
 Route::get('reportes/obtener-tratamientos-doctor/{start}/{end}', 'ReporteController@obtenerTratamientosPorDoctorFechas');
-
-Route::get('reportes/ganancias', 'ReporteController@ganancias');
-Route::get('reportes/ganancias/{start}/{end}', 'ReporteController@gananciasFechas');
-Route::get('reportes/gananciasJSON/{start}/{end}', 'ReporteController@gananciasFechasJSON');
 
 //APIS
 Route::resource('presupuestos', 'PresupuestoController');

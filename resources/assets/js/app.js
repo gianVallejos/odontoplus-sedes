@@ -51,8 +51,8 @@ import Precios from './precios/index.vue'
 import Pagos from './pagos/index.vue'
 import PagosForm from './pagos/form.vue'
 import PagosReporte from './pagos/reporte.vue'
-import Ganancias from './reportes/ganancias.vue'
-import GananciasReporte from './reportes/ganancias_reporte.vue'
+import Ganancias from './ganancias/ganancias.vue'
+import GananciasReporte from './ganancias/ganancias_reporte.vue'
 
 import Mixin from './mixins/permisos.js'
 
