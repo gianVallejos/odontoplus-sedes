@@ -899,7 +899,7 @@ BEGIN
 	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
 				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id,
-				 emp.nombre as empresa_nombre, sed.nombre as sede_nombre
+				 emp.nombre as empresa_nombre, pc.sede_id, sed.nombre as sede_nombre
 		FROM pacientes as pc
 	INNER JOIN sedes as sed on sed.id = pc.sede_id
 	INNER JOIN empresas as emp on emp.id = pc.empresa_id
@@ -1544,11 +1544,11 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Citas_add_all`;
 DELIMITER ;;
-CREATE  PROCEDURE `OP_Citas_add_all`(IN XTITULO varchar(200), IN XFECHA date, IN XDESDE TIME, IN XHASTA TIME,
-                                  IN XIDPACIENTE INT, IN XIDDOCTOR INT)
+CREATE  PROCEDURE `OP_Citas_add_all`(IN XTITULO     varchar(200), IN XFECHA date, IN XDESDE time, IN XHASTA time,
+                                   	 IN XIDPACIENTE int, IN XIDDOCTOR int, IN XIDSEDE int)
 BEGIN
-  INSERT INTO citas(titulo, fecha, desde, hasta, idPaciente, idDoctor)
-			VALUES (XTITULO, XFECHA, XDESDE, XHASTA, XIDPACIENTE, XIDDOCTOR);
+	INSERT INTO citas(titulo, fecha, desde, hasta, idPaciente, idDoctor, idSede)
+			VALUES (XTITULO, XFECHA, XDESDE, XHASTA, XIDPACIENTE, XIDDOCTOR, XIDSEDE);
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END
 ;;
@@ -1576,9 +1576,10 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all`;
 DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_get_all`()
 BEGIN
-  SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
-				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
-		FROM citas c;
+	SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
+				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede
+		FROM citas c
+	INNER JOIN  sedes sed ON sed.id = c.idSede;
 END
 ;;
 DELIMITER ;
@@ -1590,7 +1591,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all_id`;
 DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_get_all_id`(IN XID INT)
 BEGIN
-  SELECT c.id as idEvent, c.titulo as title, c.idDoctor as idDoctor, c.idPaciente as idPaciente,
+	SELECT c.id as idEvent, c.titulo as title, c.idDoctor as idDoctor, c.idPaciente as idPaciente, idSede as idSede,
 				 c.fecha as fecha, c.desde as start, c.hasta as end
 		FROM citas c
 	WHERE c.id = XID;
@@ -1603,10 +1604,11 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Citas_update_all`;
 DELIMITER ;;
-CREATE  PROCEDURE `OP_Citas_update_all`(IN XID INT, IN XTITULO varchar(200), IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME,
- IN XIDPACIENTE INT, IN XIDDOCTOR INT)
+CREATE  PROCEDURE `OP_Citas_update_all`(IN XID    int, IN XTITULO varchar(200), IN XFECHA date, IN XDESDE time,
+                                      	IN XHASTA time, IN XIDPACIENTE int, IN XIDDOCTOR int, IN XIDSEDE int)
 BEGIN
-  UPDATE citas SET titulo = XTITULO, fecha = XFECHA, desde = XDESDE, hasta = XHASTA, idPaciente = XIDPACIENTE, idDoctor = XIDDOCTOR
+	UPDATE citas SET titulo = XTITULO, fecha = XFECHA, desde = XDESDE, hasta = XHASTA, idPaciente = XIDPACIENTE,
+									 idDoctor = XIDDOCTOR, idSede = XIDSEDE
 		WHERE citas.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
@@ -1630,7 +1632,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `OP_Citas_get_all_doctor_id`;
 CREATE PROCEDURE `OP_Citas_get_all_doctor_id`(IN doctorId int)
 BEGIN
-  SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
+	SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, c.idSede, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
 		FROM citas c
 	WHERE c.idDoctor = doctorId;

@@ -7,6 +7,7 @@ CREATE TABLE `citas` (
   `hasta` time DEFAULT NULL,
   `idPaciente` int(11) DEFAULT NULL,
   `idDoctor` int(11) DEFAULT NULL,
+	`idSede` int not null,
   `fecha` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
