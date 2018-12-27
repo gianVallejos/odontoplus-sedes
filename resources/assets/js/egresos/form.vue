@@ -61,6 +61,7 @@
 												<b-col cols="3">
 													<b-form-group label="Sede">
 														<b-form-select v-model="form.sede" :disabled=isDisabled class="required" >
+															<option value=null> Ninguna Sede Seleccionada</option>
 															<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
 																{{ sede.nombre }}
 															</option>
