@@ -29,7 +29,7 @@
             			<b-col cols="4">
             				<b-form-group label="Sede">
             					<b-form-select v-model="form.sede">
-            						<option value=null >Todas las sedes</option>
+            						<option value = null >Todas las sedes</option>
             						<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
             							{{ sede.nombre }}
             						</option>
@@ -197,10 +197,8 @@
 				alert(this.form)
 			},
 			refreshIngresosTable(){
-
 				if( this.validForm() ){
 					var request = { method: 'GET', url: this.url + '/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin + '/' + this.form.sede }
-					console.log(request)
 					this.$refs.spinnerContainerRef.showSpinner()
           axios(request).then((response) => {
 						this.gananciasRecords = JSON.parse(response.data.ingresos)
@@ -209,7 +207,7 @@
 					});
 				}
 				else{
-					this.toastFunction('El periodo de fechas es inválido.', 'error')
+					this.toastFunction('El periodo de fechas o sede son inválidos.', 'error')
 				}
 
 			},
@@ -228,7 +226,7 @@
 					this.all_errors.fechaFin = ['Rango de fechas inválido']
 					this.all_errors.fechaInicio = ['Rango de fechas inválido']
 				}
-				if(isNaN(this.form.sede) && this.form.sede != null ){
+				if( isNaN(this.form.sede) && this.form.sede != null && this.form.sede != "null" ){
 					this.all_errors.sede = ['La sede seleccionada es inválida']
 				}
 				return Object.keys(this.all_errors).length === 0
