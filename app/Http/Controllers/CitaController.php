@@ -20,14 +20,8 @@ class CitaController extends Controller{
       return view('citas.index', compact('doctores', 'sedes'));
     }
 
-    public function getEventsCitas(){
-      $citas = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all()');
-
-      return response()->json($citas);
-    }
-
-    public function getEventsCitasPorDoctor($idDoctor){
-      $citas = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all_doctor_id('. $idDoctor .')');
+    public function getEventsFiltered($idDoctor, $idSede){
+      $citas = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_get_all_by_doctor_sede('. $idDoctor .','. $idSede .')');
 
       return response()->json($citas);
     }

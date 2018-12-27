@@ -1648,6 +1648,16 @@ BEGIN
 	FROM sedes;
 END
 
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
+CREATE PROCEDURE OP_Citas_get_all_by_doctor_sede(IN doctorId int, IN sedeId int)
+BEGIN
+	SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, c.idSede, fecha,
+				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
+		FROM citas c
+	WHERE ( doctorId IS NULL OR c.idDoctor = doctorId )
+		AND ( sedeId IS NULL OR c.idSede = sedeId);
+END;
+
 DROP PROCEDURE IF EXISTS `OP_Sedes_get_all_id`;
 CREATE PROCEDURE OP_Sedes_get_all_id(IN XID int)
   BEGIN
