@@ -27,38 +27,38 @@ class reporteController extends Controller{
         return response()->json(['egresos' => $data ]);
     }
 
-    public function obtenerIngresosPacienteFechas($start, $end){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_ingresos_por_paciente_fechas("'. $start .'", "'. $end .'")');
+    public function obtenerIngresosPacienteFechas($start, $end, $sedeId){
+        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_ingresos_por_paciente_fechas("'. $start .'", "'. $end .'",'. $sedeId .')');
         return response()->json(['ingresos' => $data ]);
     }
 
-    public function obtenerNuevosPacientesFechas($start, $end){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_pacientes_creados_por_mes_fechas("'. $start .'", "'. $end .'")');
+    public function obtenerNuevosPacientesFechas($start, $end, $sedeId){
+        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_pacientes_creados_por_mes_fechas("'. $start .'", "'. $end .'",'. $sedeId .')');
         return response()->json(['nuevos_pacientes' => $data ]);
     }
 
-    public function obtenerPacientesPorCanalFechas($start, $end){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_pacientes_por_canal_fechas("'. $start .'", "'. $end .'")');
+    public function obtenerPacientesPorCanalFechas($start, $end, $sedeId){
+        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_pacientes_por_canal_fechas("'. $start .'", "'. $end .'",'. $sedeId .')');
         return response()->json(['pacientes_canal' => $data ]);
     }
 
-    public function obtenerIngresosPorDoctorFechas($start, $end){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_ingresos_por_doctor_fechas("'. $start .'", "'. $end .'")');
+    public function obtenerIngresosPorDoctorFechas($start, $end, $sedeId){
+        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_ingresos_por_doctor_fechas("'. $start .'", "'. $end .'",'. $sedeId .')');
         return response()->json(['records' => $data ]);
     }
 
-    public function obtenerPagosPorDoctorFechas($start, $end){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_get_pagos_por_doctor_fechas("'. $start .'", "'. $end .'")');
+    public function obtenerPagosPorDoctorFechas($start, $end, $sedeId){
+        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_get_pagos_por_doctor_fechas("'. $start .'", "'. $end .'",'. $sedeId .')');
         return response()->json(['records' => $data ]);
     }
 
-    public function obtenerTratamientosFechas($start, $end){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamientos_get_tratamientos_destacados_fechas("'. $start .'", "'. $end .'")');
+    public function obtenerTratamientosFechas($start, $end, $sedeId){
+        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamientos_get_tratamientos_destacados_fechas("'. $start .'", "'. $end .'",'. $sedeId .')');
         return response()->json(['tratamientos' => $data ]);
     }
 
-    public function obtenerTratamientosPorDoctorFechas($start, $end){
-        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamientos_get_tratamientos_por_doctor_fechas("'. $start .'", "'. $end .'")');
+    public function obtenerTratamientosPorDoctorFechas($start, $end, $sedeId){
+        $data = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamientos_get_tratamientos_por_doctor_fechas("'. $start .'", "'. $end .'",'. $sedeId .')');
         return response()->json(['records' => $data ]);
     }
 

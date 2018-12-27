@@ -678,7 +678,6 @@ BEGIN
 		AND (sede_id IS NULL OR idt.sedeId = sede_id)
 		GROUP BY (MONTH(idt.fecha)) ) AS i ON m.MONTH = i.MONTH
 	ORDER BY m.MONTH;
-
 END
 ;;
 DELIMITER ;
@@ -724,14 +723,15 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ingresos_por_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_ingresos_por_doctor_fechas`(IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Ingresos_get_ingresos_por_doctor_fechas`(IN start_date date, IN end_date date, IN xsede_id int)
 BEGIN
 	SET lc_time_names = 'es_ES';
-  SELECT dr.nombres, dr.apellidos, FORMAT(IFNULL(SUM((1 - dr.margen_ganancia/100) * idt.cantidad * idt.monto), 0),2) as ingreso
-  FROM ingresos_detalle idt
-  INNER JOIN doctors dr ON dr.id = idt.doctorId
+	SELECT dr.nombres, dr.apellidos, FORMAT(IFNULL(SUM((1 - dr.margen_ganancia/100) * idt.cantidad * idt.monto), 0),2) as ingreso
+	FROM ingresos_detalle idt
+	INNER JOIN doctors dr ON dr.id = idt.doctorId
 	WHERE idt.fecha BETWEEN start_date AND end_date
-  GROUP BY dr.id
+	AND (xsede_id IS NULL OR idt.sedeId = xsede_id)
+	GROUP BY dr.id
 	ORDER By ingreso ASC;
 END
 ;;
@@ -742,12 +742,13 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ingresos_por_paciente_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_ingresos_por_paciente_fechas`(IN XINI date, IN XFIN date)
-BEGIN
+CREATE PROCEDURE `OP_Ingresos_get_ingresos_por_paciente_fechas`(IN XINI date, IN XFIN date, IN XSEDEID int)
+  BEGIN
 	SELECT SUBSTRING(CONCAT(pacientes.nombres, " ", pacientes.apellidos), 1, 25) as nombre, SUM(idt.cantidad * idt.monto) as monto
 		FROM ingresos INNER JOIN pacientes on pacientes.id = ingresos.idPaciente
 	INNER JOIN ingresos_detalle as idt on idt.ingresoId = ingresos.id
 	WHERE idt.fecha BETWEEN XINI AND XFIN
+  AND (XSEDEID IS NULL OR idt.sedeId = XSEDEID)
 	GROUP BY (ingresos.idPaciente) ORDER BY monto DESC LIMIT 10;
 END
 ;;
@@ -1014,12 +1015,14 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pacientes_get_pacientes_creados_por_mes_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pacientes_get_pacientes_creados_por_mes_fechas`(IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Pacientes_get_pacientes_creados_por_mes_fechas`(IN start_date date, IN end_date date,
+                                                                   IN xsede_id   int)
 BEGIN
 	SET lc_time_names = 'es_ES';
 	SELECT MONTHNAME(p.created_at) mes, COUNT(p.Id) cantidad
 	FROM pacientes p
 	WHERE p.created_at BETWEEN start_date AND end_date
+  AND (xsede_id IS NULL OR p.sede_id = xsede_id)
 	GROUP BY MONTHNAME(p.created_at)
 	ORDER BY MONTH(p.created_at);
 END
@@ -1031,13 +1034,14 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pacientes_get_pacientes_por_canal_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pacientes_get_pacientes_por_canal_fechas`(IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Pacientes_get_pacientes_por_canal_fechas`(IN start_date date, IN end_date date, IN xsede_id int)
 BEGIN
 	SET lc_time_names = 'es_ES';
 	SELECT r.nombre canal, COUNT(p.Id) cantidad
 	FROM pacientes p
 	INNER JOIN referencias r ON p.referencia_id = r.id
 	WHERE p.created_at BETWEEN start_date AND end_date
+  AND (xsede_id IS NULL OR p.sede_id = xsede_id)
 	GROUP BY r.id
 	ORDER By cantidad DESC;
 END
@@ -1119,13 +1123,14 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pagos_get_pagos_por_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pagos_get_pagos_por_doctor_fechas`(IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Pagos_get_pagos_por_doctor_fechas`(IN start_date date, IN end_date date, IN xsede_id int)
 BEGIN
 	SET lc_time_names = 'es_ES';
   SELECT dr.nombres, dr.apellidos, FORMAT(IFNULL(SUM(dr.margen_ganancia/100 * idt.cantidad * idt.monto), 0),2) as pago
   FROM ingresos_detalle idt
   INNER JOIN doctors dr ON dr.id = idt.doctorId
 	WHERE idt.fecha BETWEEN start_date AND end_date
+  AND (xsede_id IS NULL OR idt.sedeId = xsede_id)
   GROUP BY dr.id
 	ORDER By pago;
 END
@@ -1456,8 +1461,8 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Tratamientos_get_tratamientos_destacados_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_destacados_fechas`(IN XINI date, IN XEND date)
-BEGIN
+CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_destacados_fechas`(IN XINI date, IN XEND date, IN xsede_id int)
+  BEGIN
 	SELECT CONCAT(SUBSTRING(tratamientos.detalle, 1, 25),"... - S/.", sum(ingresos_detalle.cantidad * ingresos_detalle.monto)) as tratamiento,
 				 count(tratamientos.detalle) as numero
 	FROM ingresos
@@ -1465,6 +1470,7 @@ BEGIN
 		INNER JOIN precios on precios.id = ingresos_detalle.precioId
 		INNER JOIN tratamientos on tratamientos.id = precios.idTratamiento
 	WHERE ingresos_detalle.fecha BETWEEN XINI AND XEND
+	AND (xsede_id IS NULL OR ingresos_detalle.sedeId = xsede_id)
 	GROUP BY (tratamientos.id) ORDER BY count(tratamientos.id) DESC LIMIT 5;
 END
 ;;
@@ -1475,8 +1481,9 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Tratamientos_get_tratamientos_por_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_por_doctor_fechas`(IN start_date date, IN end_date date)
-BEGIN
+CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_por_doctor_fechas`(IN start_date date, IN end_date date,
+                                                                    IN xsede_id   int)
+  BEGIN
 	SET lc_time_names = 'es_ES';
   SELECT dr.nombres, dr.apellidos, COUNT(idt.id) as nro_tratamientos
   FROM ingresos_detalle idt
@@ -1484,6 +1491,7 @@ BEGIN
   INNER JOIN doctors dr ON dr.id = idt.doctorId
   INNER JOIN tratamientos tr ON tr.id = idt.precioId
 	WHERE idt.fecha BETWEEN start_date AND end_date
+  AND (xsede_id IS NULL OR idt.sedeId = xsede_id)
   GROUP BY dr.id
 	ORDER By nro_tratamientos DESC;
 END

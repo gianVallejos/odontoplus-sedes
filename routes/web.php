@@ -40,14 +40,14 @@ Route::get('ganancias/{start}/{end}/{sedeId}', 'GananciaController@gananciasFech
 Route::get('reportes', 'ReporteController@index');
 Route::get('reportes/obtener-ingresos-mensuales/{year}/{sedeId}', 'ReporteController@obtenerIngresosMensuales');
 Route::get('reportes/obtener-egresos-mensuales/{year}/{sedeId}', 'ReporteController@obtenerEgresosMensuales');
-Route::get('reportes/obtener-ingresos-paciente/{start}/{end}', 'ReporteController@obtenerIngresosPacienteFechas');
-Route::get('reportes/obtener-nuevos-pacientes/{start}/{end}', 'ReporteController@obtenerNuevosPacientesFechas');
+Route::get('reportes/obtener-ingresos-paciente/{start}/{end}/{sedeId}', 'ReporteController@obtenerIngresosPacienteFechas');
+Route::get('reportes/obtener-nuevos-pacientes/{start}/{end}/{sedeId}', 'ReporteController@obtenerNuevosPacientesFechas');
 Route::get('reportes/obtener-nuevos-pacientes-anio-actual', 'ReporteController@obtenerNuevosPacientesAnioActual');
-Route::get('reportes/obtener-pacientes-canal/{start}/{end}', 'ReporteController@obtenerPacientesPorCanalFechas');
-Route::get('reportes/obtener-ingresos-doctor/{start}/{end}', 'ReporteController@obtenerIngresosPorDoctorFechas');
-Route::get('reportes/obtener-pagos-doctor/{start}/{end}', 'ReporteController@obtenerPagosPorDoctorFechas');
-Route::get('reportes/obtener-tratamientos/{start}/{end}', 'ReporteController@obtenerTratamientosFechas');
-Route::get('reportes/obtener-tratamientos-doctor/{start}/{end}', 'ReporteController@obtenerTratamientosPorDoctorFechas');
+Route::get('reportes/obtener-pacientes-canal/{start}/{end}/{sedeId}', 'ReporteController@obtenerPacientesPorCanalFechas');
+Route::get('reportes/obtener-ingresos-doctor/{start}/{end}/{sedeId}', 'ReporteController@obtenerIngresosPorDoctorFechas');
+Route::get('reportes/obtener-pagos-doctor/{start}/{end}/{sedeId}', 'ReporteController@obtenerPagosPorDoctorFechas');
+Route::get('reportes/obtener-tratamientos/{start}/{end}/{sedeId}', 'ReporteController@obtenerTratamientosFechas');
+Route::get('reportes/obtener-tratamientos-doctor/{start}/{end}/{sedeId}', 'ReporteController@obtenerTratamientosPorDoctorFechas');
 
 //APIS
 Route::resource('presupuestos', 'PresupuestoController');
