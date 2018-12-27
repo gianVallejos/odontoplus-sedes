@@ -33,8 +33,8 @@ Route::get('consulta_precio', 'PrecioController@getPrice');
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
 Route::resource('citas', 'CitaController');
 Route::get('ganancias', 'GananciaController@index');
-Route::get('ganancias/{start}/{end}', 'GananciaController@gananciasFechas');
-Route::get('gananciasJSON/{start}/{end}', 'GananciaController@gananciasFechasJSON');
+Route::get('ganancias/reporte/{start}/{end}/{sedeId}', 'GananciaController@gananciasFechas');
+Route::get('ganancias/{start}/{end}/{sedeId}', 'GananciaController@gananciasFechasJSON');
 
 //REPORTS
 Route::get('reportes', 'ReporteController@index');

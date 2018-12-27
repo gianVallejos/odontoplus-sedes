@@ -10,31 +10,44 @@
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
             <!-- User Interface controls -->
             <b-row class="pb-3">
-							<div class="col-md-6">
-								<div class="input-group d-inline-block">
-								<b-form-row>
-									<b-col cols="4">
-										<b-form-group label="Desde:" label-for="fechainicio" class="mb-0">
-											<b-input id="fechainicio" type="date" v-model="form.fechaInicio" />
-											<span v-if="all_errors.fechaInicio" :class="['label label-danger']">{{ all_errors.fechaInicio[0] }}</span>
-										</b-form-group>
-									</b-col>
-									<b-col cols="4">
-										<b-form-group label="Hasta:" label-for="fechafin" class="mb-0">
-											<b-input id="fechafin" type="date" v-model="form.fechaFin" />
-											<span v-if="all_errors.fechaFin" :class="['label label-danger']">{{ all_errors.fechaFin[0] }}</span>
-									  </b-form-group>
-									</b-col>
-									<b-col cols="4" class="pt-4 mt-1">
-											<b-btn variant="primary" v-on:click.prevent="refreshIngresosTable()" >
-												<i class="fas fa-search"></i>&nbsp;&nbsp;Buscar
-											</b-btn>
-									</b-col>
-								</b-form-row>
+            	<div class="col-md-9">
+            		<div class="input-group d-inline-block">
+            		<b-form-row>
+            			<b-col cols="3">
+            				<b-form-group label="Desde:" label-for="fechainicio" class="mb-0">
+            					<b-input id="fechainicio" type="date" v-model="form.fechaInicio" />
+            					<span v-if="all_errors.fechaInicio" :class="['label label-danger']">{{ all_errors.fechaInicio[0] }}</span>
+            				</b-form-group>
+            			</b-col>
+            			<b-col cols="3">
+            				<b-form-group label="Hasta:" label-for="fechafin" class="mb-0">
+            					<b-input id="fechafin" type="date" v-model="form.fechaFin" />
+            					<span v-if="all_errors.fechaFin" :class="['label label-danger']">{{ all_errors.fechaFin[0] }}</span>
+            			  </b-form-group>
+            			</b-col>
 
-								</div>
-							</div>
-							<div class="col-md-6 pt-4 mt-1">
+            			<b-col cols="4">
+            				<b-form-group label="Sede">
+            					<b-form-select v-model="form.sede">
+            						<option value=null >Todas las sedes</option>
+            						<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
+            							{{ sede.nombre }}
+            						</option>
+            					</b-form-select>
+            					<span v-if="all_errors.sede" :class="['label label-danger']">{{ all_errors.sede[0] }}</span>
+            				</b-form-group>
+            			</b-col>
+
+            			<b-col cols="2" class="pt-4 mt-1">
+            					<b-btn variant="primary" v-on:click.prevent="refreshIngresosTable()" >
+            						<i class="fas fa-search"></i>&nbsp;&nbsp;Buscar
+            					</b-btn>
+            			</b-col>
+            		</b-form-row>
+
+            		</div>
+            	</div>
+							<div class="col-md-3 pt-4 mt-1">
 								<div class="float-right d-inline-block">
 									<b-button-group>
 										<b-button variant="primary" v-on:click.prevent="goToPDFView()" >
@@ -115,24 +128,27 @@
 		},
     props:[
       'url',
-      'curUser'
+      'curUser',
+			'sedes'
     ],
     data(){
 			return{
         fields: [
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-					{ key: 'nombres', label: 'Doctor', sortable: true, sortDirection: 'desc' },
-					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
-					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
-					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
-					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
-					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-center', sortDirection: 'desc'}
+					{ key: 'nombres', label: 'Doctor', sortable: true },
+					{ key: 'tratamiento', label: 'Tratamiento', sortable: true },
+					{ key: 'nombre_sede', label: 'Sede', sortable: true },
+					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center' },
+					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center' },
+					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-center' },
+					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-center'}
 				],
 				gananciasRecords: [ ],
 				form: {
 					fechaInicio:'',
-					fechaFin:''
+					fechaFin:'',
+					sede: null
 				},
 		all_errors: [],
         currentPage: 1,
@@ -171,7 +187,7 @@
 			},
 			goToPDFView(){
 				if( this.validForm() ){
-					window.open(this.url + '/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin, '_blank')
+					window.open(this.url + '/ganancias/reporte/' + this.form.fechaInicio + '/' + this.form.fechaFin + '/' + this.form.sede, '_blank')
 				}
 				else{
 					this.toastFunction('El periodo de fechas es inválido.', 'error')
@@ -183,7 +199,8 @@
 			refreshIngresosTable(){
 
 				if( this.validForm() ){
-					var request = { method: 'GET', url: this.url + '/gananciasJSON/'+this.form.fechaInicio+'/'+this.form.fechaFin }
+					var request = { method: 'GET', url: this.url + '/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin + '/' + this.form.sede }
+					console.log(request)
 					this.$refs.spinnerContainerRef.showSpinner()
           axios(request).then((response) => {
 						this.gananciasRecords = JSON.parse(response.data.ingresos)
@@ -210,6 +227,9 @@
 				if( this.form.fechaInicio != '' && this.form.fechaFin != '' && this.form.fechaInicio > this.form.fechaFin){
 					this.all_errors.fechaFin = ['Rango de fechas inválido']
 					this.all_errors.fechaInicio = ['Rango de fechas inválido']
+				}
+				if(isNaN(this.form.sede) && this.form.sede != null ){
+					this.all_errors.sede = ['La sede seleccionada es inválida']
 				}
 				return Object.keys(this.all_errors).length === 0
 			},
