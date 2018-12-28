@@ -2,6 +2,6 @@
 
 @section('content')
 
-	<Dashboard url='{{ route("home") }}' :pacientes="{{ $pacientes }}" :user='{{ Auth::user() }}' />
+	<Dashboard url='{{ route("home") }}' :pacientes="{{ $pacientes }}" :sedes="{{ $sedes }}" :user='{{ Auth::user() }}' />
 
 @endsection
