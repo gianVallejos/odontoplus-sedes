@@ -129,7 +129,8 @@
 					{ key: 'index', label: '#' },
 				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
-				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
+						{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
+				    { key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
 				    { key: 'cantidad', label: 'Cantidad', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
 				    { key: 'monto', label: 'Monto', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
 				    { key: 'total', label: 'Total', 'class': 'text-center', sortable: true, sortDirection: 'desc' }

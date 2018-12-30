@@ -261,6 +261,20 @@ CREATE TABLE `tratamientos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+
+DROP TABLE IF EXISTS `sedes`;
+CREATE Table `sedes` (
+	id int(11) not null auto_increment,
+	nombre varchar(150) not null,
+	ciudad varchar(150) not null,
+	direccion varchar(100) not null,
+	telefono varchar(200) null,
+	celular varchar(200) not null,
+	celular_aux varchar(200) null,
+	email varchar(200) not null,
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
 -- ----------------------------
 -- Records of tratamientos
 -- ----------------------------

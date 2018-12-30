@@ -1626,6 +1626,17 @@ END
 ;;
 DELIMITER ;
 
+
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
+CREATE PROCEDURE OP_Citas_get_all_by_doctor_sede(IN doctorId int, IN sedeId int)
+BEGIN
+	SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, c.idSede, fecha,
+				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
+		FROM citas c
+	WHERE ( doctorId IS NULL OR c.idDoctor = doctorId )
+		AND ( sedeId IS NULL OR c.idSede = sedeId);
+END;
+
 -- ----------------------------
 --  Procedure definition for `OP_Citas_update_all`
 -- ----------------------------
@@ -1675,22 +1686,21 @@ BEGIN
 	FROM sedes;
 END
 
-DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
-CREATE PROCEDURE OP_Citas_get_all_by_doctor_sede(IN doctorId int, IN sedeId int)
-BEGIN
-	SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, c.idSede, fecha,
-				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
-		FROM citas c
-	WHERE ( doctorId IS NULL OR c.idDoctor = doctorId )
-		AND ( sedeId IS NULL OR c.idSede = sedeId);
-END;
-
 DROP PROCEDURE IF EXISTS `OP_Sedes_get_all_id`;
 CREATE PROCEDURE OP_Sedes_get_all_id(IN XID int)
   BEGIN
 	SELECT se.id, se.nombre, se.direccion
 	FROM sedes se
   WHERE se.id = XID;
+END;
+
+DROP PROCEDURE IF EXISTS `OP_Sedes_get_all_by_paciente_id`;
+CREATE PROCEDURE `OP_Sedes_get_all_by_paciente_id`(IN XPACIENTEID int)
+BEGIN
+	SELECT se.id, se.nombre, se.ciudad, se.direccion, se.telefono, se.celular, se.celular_aux, se.email
+		FROM sedes se
+		INNER JOIN pacientes pc ON pc.sede_id = se.id
+  WHERE pc.id = XPACIENTEID;
 END;
 
 DROP PROCEDURE IF EXISTS `OP_Sedes_add_all`;
