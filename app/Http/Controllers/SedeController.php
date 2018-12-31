@@ -12,7 +12,12 @@ class SedeController extends Controller{
 
     public static $validation_rules = [
         'nombre' => 'required|string|max:150',
-        'direccion' => 'nullable|string|max:100'
+        'ciudad' => 'required|string|max:150',
+        'direccion' => 'required|string|max:100',
+        'telefono' => 'nullable|string|max:200',
+        'celular' => 'required|string|max:200',
+        'celular_aux' => 'nullable|string|max:200',
+        'email' => 'nullable|email|string|max:200'
     ];
 
     public function __construct(){
@@ -35,11 +40,19 @@ class SedeController extends Controller{
         return view('sedes.show', compact('sede'));
     }
 
+    public function edit($id){
+        $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('.$id.')')[0];
+        $sede = json_encode($sede);
+        return view('sedes.edit', compact('sede'));
+    }
+
     public function store(Request $request){
         $validator = Validator::make($request->all(), self::$validation_rules );
 
         if ($validator->passes()) {
-            $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_add_all("'. $request->nombre .'", "'. $request->direccion . '")');
+            $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_add_all("'. $request->nombre .'", "'. $request->ciudad .'","'.
+                                                                    $request->direccion .'","'. $request->telefono .'","'. $request->celular .'","'.
+                                                                    $request->calular_aux .'","'. $request->email .'")');
             if( $sede[0]->ESTADO > 0 ){
                 return response()->json(['success' => 'created']);
             }
@@ -56,7 +69,9 @@ class SedeController extends Controller{
         $validator = Validator::make($request->all(), self::$validation_rules );
 
         if ($validator->passes()) {
-            $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_update_all_Id("'. $request->nombre .'", "'. $request->direccion . '", '. $id .')');
+            $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_update_all_Id('. $id .',"'. $request->nombre .'", "'. $request->ciudad .'","'.
+                                                                        $request->direccion .'","'. $request->telefono .'","'. $request->celular .'","'.
+                                                                        $request->calular_aux .'","'. $request->email .'")');
             if( $sede[0]->ESTADO > 0 ){
                 return response()->json(['success' => 'updated']);
             }else{

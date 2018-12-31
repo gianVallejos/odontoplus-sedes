@@ -271,7 +271,7 @@ CREATE Table `sedes` (
 	telefono varchar(200) null,
 	celular varchar(200) not null,
 	celular_aux varchar(200) null,
-	email varchar(200) not null,
+	email varchar(200) null,
 	PRIMARY KEY (`id`)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 

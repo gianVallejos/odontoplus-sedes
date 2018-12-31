@@ -51,7 +51,7 @@
 												<div class="d-inline"> Información de Sede </div>
 											</div>
 											<p class="form-description fz-3 pt-3 pr-4">
-												La gestión de sedes permite separar diversas tareas a lo largo del sistema.
+												La gestión de sedes permite agrupar diversas tareas a lo largo del sistema según las sedes registradas.
 											</p>
 											<br/>
 											<p class="form-description fz-3 pt-3 pr-4">
@@ -64,11 +64,36 @@
 														:disabled=isDisabled placeholder="Nombre" autocomplete="off"/>
 													<span v-if="all_errors.nombre" :class="['label label-danger']">{{ all_errors.nombre[0] }}</span>
 										    </b-form-group>
+												<b-form-group label="Ciudad" label-for="ciudad">
+													<b-form-input id="ciudad" type="text"	v-model="form.ciudad" class="required"
+														:disabled=isDisabled placeholder="Ciudad" autocomplete="off"/>
+													<span v-if="all_errors.ciudad" :class="['label label-danger']">{{ all_errors.ciudad[0] }}</span>
+												</b-form-group>
 										    <b-form-group label="Dirección" label-for="direccion">
-											    <b-form-input id="direccion" type="text"	v-model="form.direccion"
+											    <b-form-input id="direccion" type="text"	v-model="form.direccion" class="required"
 														:disabled=isDisabled placeholder="Dirección" autocomplete="off"/>
 													<span v-if="all_errors.direccion" :class="['label label-danger']">{{ all_errors.direccion[0] }}</span>
 										    </b-form-group>
+												<b-form-group label="Teléfono" label-for="telefono">
+													<b-form-input id="telefono" type="text"	v-model="form.telefono"
+														:disabled=isDisabled placeholder="Teléfono" autocomplete="off"/>
+													<span v-if="all_errors.telefono" :class="['label label-danger']">{{ all_errors.telefono[0] }}</span>
+												</b-form-group>
+												<b-form-group label="Celular" label-for="celular">
+													<b-form-input id="celular" type="text"	v-model="form.celular" class="required"
+														:disabled=isDisabled placeholder="Celular" autocomplete="off"/>
+													<span v-if="all_errors.celular" :class="['label label-danger']">{{ all_errors.celular[0] }}</span>
+												</b-form-group>
+												<b-form-group label="Celular Auxiliar" label-for="celular_aux">
+													<b-form-input id="celular_aux" type="text"	v-model="form.celular_aux"
+														:disabled=isDisabled placeholder="Celular Auxiliar" autocomplete="off"/>
+													<span v-if="all_errors.celular_aux" :class="['label label-danger']">{{ all_errors.celular_aux[0] }}</span>
+												</b-form-group>
+												<b-form-group label="Email" label-for="email">
+													<b-form-input id="email" type="text"	v-model="form.email"
+														:disabled=isDisabled placeholder="Email" autocomplete="off"/>
+													<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
+												</b-form-group>
 										</b-col>
 									</b-row>
 							</div>
@@ -141,7 +166,12 @@
       return{
         form: {
 					nombre: '',
-					direccion: ''
+					ciudad: '',
+					direccion: '',
+					telefono: '',
+					celular: '',
+					celular_aux: '',
+					email: ''
 		},
 		displayStatus: '',
         isDisabled: false,
@@ -187,8 +217,13 @@
 	    	},
 	    	setControllerDataToForms(){
 	    		this.record_id = this.record.id
-	    		this.form.nombre = this.record.nombre
+					this.form.nombre = this.record.nombre
+	    		this.form.ciudad = this.record.ciudad
 					this.form.direccion = this.record.direccion
+					this.form.telefono = this.record.telefono
+					this.form.celular = this.record.celular
+					this.form.celular_aux = this.record.celular_aux
+					this.form.email = this.record.email
 	    	},
 	    	onGuardarNuevo(){
 	    		var request = { method: 'POST', url: this.url + '/sedes', data: this.form }
@@ -260,11 +295,16 @@
 				this.cleanErrosMessage()
 				this.setEmptyPasswordFields()
 			},
-	    	setFormDataToUser(){
-	    		this.record.id = this.record_id
-	    		this.record.nombre = this.form.nombre
+			setFormDataToUser(){
+				this.record.id = this.record_id
+				this.record.nombre = this.form.nombre
+				this.record.ciudad = this.form.ciudad
 				this.record.direccion = this.form.direccion
-	    	},
+				this.record.telefono = this.form.telefono
+				this.record.celular = this.form.celular
+				this.record.celular_aux = this.form.celular_aux
+				this.record.email = this.form.email
+			},
 			cleanErrosMessage(){
 				this.all_errors = []
 			},

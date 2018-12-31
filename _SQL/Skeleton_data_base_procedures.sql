@@ -1682,14 +1682,14 @@ END
 DROP PROCEDURE IF EXISTS `OP_Sedes_get_all`;
 CREATE PROCEDURE `OP_Sedes_get_all`()
 BEGIN
-	SELECT id, nombre, direccion
+	SELECT id, nombre, ciudad, direccion, telefono, celular, celular_aux, email
 	FROM sedes;
 END
 
 DROP PROCEDURE IF EXISTS `OP_Sedes_get_all_id`;
 CREATE PROCEDURE OP_Sedes_get_all_id(IN XID int)
-  BEGIN
-	SELECT se.id, se.nombre, se.direccion
+BEGIN
+	SELECT se.id, se.nombre, se.ciudad, se.direccion, se.telefono, se.celular, se.celular_aux, se.email
 	FROM sedes se
   WHERE se.id = XID;
 END;
@@ -1704,18 +1704,23 @@ BEGIN
 END;
 
 DROP PROCEDURE IF EXISTS `OP_Sedes_add_all`;
-CREATE PROCEDURE OP_Sedes_add_all(IN XNOMBRE varchar(150), IN XDIRECCION varchar(100))
+CREATE PROCEDURE `OP_Sedes_add_all`(IN XNOMBRE varchar(150),   IN XCIUDAD varchar(150),  IN XDIRECCION varchar(100),
+	                                  IN XTELEFONO varchar(200), IN XCELULAR varchar(200), IN XCELAUX varchar(200),
+	                                  IN XEMAIL varchar(200))
   BEGIN
-  INSERT INTO sedes(nombre, direccion)
-    VALUES (XNOMBRE, XDIRECCION);
+  INSERT INTO sedes(nombre, ciudad, direccion, telefono, celular, celular_aux, email)
+    VALUES (XNOMBRE, XCIUDAD, XDIRECCION, XTELEFONO, XCELULAR, XCELAUX, XEMAIL);
 
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END;
 
 DROP PROCEDURE IF EXISTS `OP_Sedes_update_all_Id`;
-CREATE PROCEDURE OP_Sedes_update_all_Id(IN XNOMBRE varchar(150), IN XDIRECCION varchar(100), IN XID int)
-  BEGIN
-  UPDATE sedes SET nombre = XNOMBRE, direccion = XDIRECCION
+CREATE PROCEDURE OP_Sedes_update_all_Id(IN XID int, IN XNOMBRE varchar(150),  IN XCIUDAD varchar(150),
+                                        IN XDIRECCION varchar(100), IN XTELEFONO varchar(200), IN XCELULAR varchar(200),
+                                        IN XCELAUX varchar(200), IN XEMAIL varchar(200))
+BEGIN
+  UPDATE sedes SET nombre = XNOM	BRE,  ciudad = XCIUDAD, direccion = XDIRECCION, telefono = XTELEFONO,
+                   celular = XCELULAR, celular_aux = XCELAUX, email = XEMAIL
     WHERE sedes.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;

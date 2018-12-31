@@ -100,7 +100,11 @@
         fields: [
           { key: 'actions', label: '', 'class': 'action-width' },
           { key: 'nombre', label: 'Nombre', sortable: true, sortDirection: 'desc' },
-          { key: 'direccion', label: 'Dirección', sortable: true, sortDirection: 'desc' }
+					{ key: 'ciudad', label: 'Ciuadad', sortable: true, sortDirection: 'desc' },
+					{ key: 'direccion', label: 'Dirección', sortable: true, sortDirection: 'desc' },
+					{ key: 'telefono', label: 'Teléfono', sortable: true, sortDirection: 'desc' },
+					{ key: 'celular', label: 'Celular', sortable: true, sortDirection: 'desc' },
+          { key: 'email', label: 'Email', sortable: true, sortDirection: 'desc' }
         ],
         currentPage: 1,
         perPage: 10,
