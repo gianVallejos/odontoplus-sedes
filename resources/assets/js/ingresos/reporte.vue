@@ -8,7 +8,7 @@
 					</div>
 					<div class="pr-descripcion-logo">
 						<span v-if="cliente.direccion != null">
-							{{ cliente.direccion }} {{ cliente.ciudad }} - Perú <br />
+							{{ cliente.direccion }} {{ cliente.ciudad }} - Perú<br/>
 						</span>
 						<span v-if="cliente.email != null">
 							{{ cliente.email }} <br />
