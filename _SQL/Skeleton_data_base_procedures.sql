@@ -919,10 +919,11 @@ BEGIN
 	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
 				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id,
-				 emp.nombre as empresa_nombre, pc.sede_id, sed.nombre as sede_nombre
+				 emp.nombre as empresa_nombre, pc.sede_id, sed.nombre as sede_nombre, ing.id as ingresoId
 		FROM pacientes as pc
 	INNER JOIN sedes as sed on sed.id = pc.sede_id
 	INNER JOIN empresas as emp on emp.id = pc.empresa_id
+	INNER JOIN ingresos as ing on ing.idPaciente = pc.id
 		ORDER BY pc.id DESC;
 END
 ;;
