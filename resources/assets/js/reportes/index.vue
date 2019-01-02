@@ -11,23 +11,10 @@
 					<b-row slot="body">
 						<b-col cols="12">
 							<b-form-row>
-								<b-col cols="2">
+								<b-col xl="2" cols="12">
 									<b-input-group prepend="Año">
 										<b-form-select id="estado" v-model="ingresosVsEgresosChart.year" :options="years" v-on:input="fillingresosVsEgresosChart()" />
 									</b-input-group>
-								</b-col>
-								<b-col cols="4">
-									<div class="float-left input-group">
-										<div class="input-group-prepend">
-											<div class="input-group-text fz-4"> Sede </div>
-										</div>
-										<b-form-select v-model="ingresosVsEgresosChart.sede" v-on:input="fillingresosVsEgresosChart()">
-											<option value=null >Todas las sedes</option>
-											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
-												{{ sede.nombre }}
-											</option>
-										</b-form-select>
-									</div>
 								</b-col>
 							</b-form-row>
 						</b-col>
@@ -47,27 +34,17 @@
 				<PanelCard>
 					<span slot="heading">Estadísticas Generales</span>
 					<b-row slot="body">
-						<b-col cols="12">
+						<b-col cols="7">
 							<div class="pb-4">
 								<b-form-row>
-									<b-col cols="3">
+									<b-col cols="5">
 										<b-input-group prepend="Desde:">
 											<b-input id="start_date" type="date" v-model="reportesGenerales.start_date" />
 										</b-input-group>
 									</b-col>
-									<b-col cols="3">
+									<b-col cols="6">
 										<b-input-group prepend="Hasta:">
-											<b-form-input id="end_date" type="date" v-model="reportesGenerales.end_date" />
-										</b-input-group>
-									</b-col>
-									<b-col cols="4">
-										<b-input-group prepend="Sede">
-											<b-form-select v-model="reportesGenerales.sede" >
-												<option value=null >Todas las sedes</option>
-												<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
-													{{ sede.nombre }}
-												</option>
-											</b-form-select>
+											<b-form-input id="ing_doctor_end" type="date" v-model="reportesGenerales.end_date" />
 											<b-input-group-append>
 												<b-btn variant="primary" v-on:click.prevent="fillReportesGeneralesCharts()" >
 													<i class="fas fa-search"></i>
@@ -150,8 +127,7 @@
 			this.initCharts()
 		},
 		props: [
-			'url',
-			'sedes'
+			'url'
 		],
 		components:{
 			TitleComponent,
@@ -174,7 +150,6 @@
 				reportesGenerales:{
 					start_date: '',
 					end_date: '',
-					sede: null
 				},
 				years: [
 					{ value: "2017", text: "2017" },
@@ -184,8 +159,7 @@
 				],
 				ingresosVsEgresosChart: {
 					data: null,
-					year: null,
-					sede: null
+					year: null
 				},
 				ingresosPacienteChart: {
 					data: null,
@@ -213,14 +187,14 @@
     methods:{
 			initCharts(){
 				this.setDatesToChart(this.getMyDate())
-				this.fillAllCharts()
+				this.fillDataCharts()
 			},
 			setDatesToChart(today){
 				this.ingresosVsEgresosChart.year = today.substring(0,4)
 				this.reportesGenerales.start_date = today.substring(0,4)+'-01-01'
 				this.reportesGenerales.end_date = today
 			},
-			fillAllCharts(){
+			fillDataCharts(){
 				this.fillingresosVsEgresosChart()
 				this.fillReportesGeneralesCharts()
 			},
@@ -253,18 +227,15 @@
 			},
 			fillingresosVsEgresosChart(){
 				var year = this.ingresosVsEgresosChart.year
-				var sede = this.ingresosVsEgresosChart.sede
-				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/' + year + '/' + sede }
-				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/' + year + '/' + sede }
-				console.log(request_ingresos)
-				console.log(request_egresos)
+				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/'+year }
+				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/'+year }
 				if( year != '' ){
 					this.chartIsLoading = true
 					var self = this
 					axios(request_ingresos).then((response) => {
 						let ingresos = response.data.ingresos
             let ingresos_montos = ingresos.map(i => parseInt(i.monto))
-
+						
 						axios(request_egresos).then((response) => {
 							let egresos = response.data.egresos
 	            let egresos_montos = egresos.map(i => parseInt(i.monto))
@@ -301,8 +272,7 @@
 			fillIngresosPorPacientesChart(){
 				var request = {
 					method: 'GET',
-					url: this.url + '/reportes/obtener-ingresos-paciente/' + this.reportesGenerales.start_date + '/' +
-					 		 this.reportesGenerales.end_date + '/' + this.reportesGenerales.sede
+					url: this.url + '/reportes/obtener-ingresos-paciente/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
 				var self = this
@@ -330,8 +300,7 @@
 			fillNuevosPacientesChart(){
 				var request = {
 					method: 'GET',
-					url: this.url + '/reportes/obtener-nuevos-pacientes/' + this.reportesGenerales.start_date + '/' +
-					 		 this.reportesGenerales.end_date + '/' + this.reportesGenerales.sede
+					url: this.url + '/reportes/obtener-nuevos-pacientes/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
 				var self = this
@@ -359,8 +328,7 @@
 			fillPacientesCanalChart(){
 				var request = {
 					method: 'GET',
-					url: this.url + '/reportes/obtener-pacientes-canal/' + this.reportesGenerales.start_date + '/' +
-					 		 this.reportesGenerales.end_date + '/' + this.reportesGenerales.sede
+					url: this.url + '/reportes/obtener-pacientes-canal/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
 				var self = this
@@ -388,8 +356,7 @@
 			fillPagosDoctorChart(){
 				var request = {
 					method: 'GET',
-					url: this.url + '/reportes/obtener-pagos-doctor/' + this.reportesGenerales.start_date + '/' +
-					 		 this.reportesGenerales.end_date + '/' + this.reportesGenerales.sede
+					url: this.url + '/reportes/obtener-pagos-doctor/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
 				var self = this
@@ -418,8 +385,7 @@
 			fillIngresosDoctorChart(){
 				var request = {
 					method: 'GET',
-					url: this.url + '/reportes/obtener-ingresos-doctor/' + this.reportesGenerales.start_date + '/' +
-					 		 this.reportesGenerales.end_date + '/' + this.reportesGenerales.sede
+					url: this.url + '/reportes/obtener-ingresos-doctor/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
 				var self = this
@@ -447,8 +413,7 @@
 			fillTratamientosChart(){
 				var request = {
 					method: 'GET',
-					url: this.url + '/reportes/obtener-tratamientos/' + this.reportesGenerales.start_date + '/' +
-					 		 this.reportesGenerales.end_date + '/' + this.reportesGenerales.sede
+					url: this.url + '/reportes/obtener-tratamientos/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
 				var self = this
@@ -472,11 +437,10 @@
 				});
 			},
 
-			fillTratamientosPorDoctorChart(){
+			fillTratamientosPorDoctorChart(){				
 				var request = {
 					method: 'GET',
-					url: this.url + '/reportes/obtener-tratamientos-doctor/' + this.reportesGenerales.start_date + '/' +
-					 		 this.reportesGenerales.end_date + '/' + this.reportesGenerales.sede
+					url: this.url + '/reportes/obtener-tratamientos-doctor/'+this.reportesGenerales.start_date+'/'+this.reportesGenerales.end_date
 				}
 				this.$refs.spinnerContainerRef.showSpinner()
 				var self = this

@@ -82,22 +82,11 @@
     										</b-form-select>
     									</b-form-group>
                       <b-form-row>
-                        <b-col cols="6">
+                        <b-col cols="12">
                           <b-form-group label="Fecha:">
                             <b-form-input type="date" v-model="form.fecha" class="required" :disabled=isDisabled />
                             <span v-if="all_errors.fecha" :class="['label label-danger']">{{ all_errors.fecha[0] }}</span>
                           </b-form-group>
-												</b-col>
-												<b-col cols="6">
-													<b-form-group label="Seleccionar Sede" label-for="sede">
-		    										<b-form-select v-model="form.sede" class="required" :disabled=isDisabled >
-		    											<option :value="null">Ninguna Sede Seleccionada</option>
-		    											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
-		    												{{ sede.nombre }}
-		    											</option>
-		    										</b-form-select>
-														<span v-if="all_errors.sede" :class="['label label-danger']">{{ all_errors.sede[0] }}</span>
-		    									</b-form-group>
 												</b-col>
 												<b-col cols="6">
                           <b-form-group label="Desde:" label-for="desde">
@@ -194,7 +183,7 @@
                 </template>
                 <template slot="actions" slot-scope="row" class="md-2">
                     <div class="actions-table" style="color: #d1d1d1">
-                      <a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos, row.item.sede_id)" href="#" class="action">Seleccionar</a>
+                      <a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="action">Seleccionar</a>
                     </div>
                 </template>
             </b-table>
@@ -226,7 +215,7 @@
     mounted() {
     	this.initActualView()
     },
-    name: 'Cita-Form',
+    name: 'Doctor-Form',
     components: {
       PanelCard,
       TitleComponent,
@@ -239,8 +228,7 @@
     		'curUser',
     		'view_mode',
         'pacientes',
-        'doctores',
-				'sedes'
+        'doctores'
     ],
     data(){
       return{
@@ -252,14 +240,13 @@
     				desde: '09:00',
             hasta: '10:00',
             idDoctor: null,
-						sede: null,
 						enviarEmail: true
     		},
     		record_id: '',
     		all_errors: [],
             breadcrumb: [
               { text: 'Inicio', href: this.url },
-              { text: 'Citas', href: this.url+'/citas' },
+              { text: 'Citas', href: this.url+'/doctores' },
               { text: this.title, active: true },
     		],
     		displayStatus: '',
@@ -319,12 +306,13 @@
 		},
     	onDisplayNuevo(){
     		this.displayStatus = 'new'
-				this.setEnableForm()
+			this.setEnableForm()
     	},
     	onDisplayDetalle(){
     		this.displayStatus = 'show'
 			this.setDisableForm()
 			this.setControllerDataToForms()
+
     	},
     	onDisplayModificar(){
     		this.displayStatus = 'edit'
@@ -343,8 +331,7 @@
         this.form.fecha =  this.record.fecha
         this.form.desde =  this.record.start
         this.form.hasta =  this.record.end
-				this.form.idDoctor =  this.record.idDoctor
-        this.form.sede =  this.record.idSede
+        this.form.idDoctor =  this.record.idDoctor
     	},
     	onGuardarNuevo(){
     		var request = { method: 'POST', url: this.url + '/citas', data: this.form }
@@ -408,50 +395,61 @@
 		afterSuccessGuardar(){
 			this.displayStatus = 'show'
 			this.setDisableForm()
-			this.setFormDataToRecord()
+			this.setFormDataToUser()
 			this.cleanErrosMessage()
+			this.setEmptyPasswordFields()
 		},
-    setFormDataToRecord(){
-    	this.record_id = this.record_id
-			this.record.idPaciente = this.form.idPaciente
-			this.record.title = this.form.paciente
-			this.record.fecha = this.form.fecha
-			this.record.start = this.form.desde
-			this.record.end = this.form.hasta
-			this.record.idDoctor = this.form.idDoctor
-			this.record.idSede = this.form.sede
-    },
+    	setFormDataToUser(){
+    		this.record_id = this.record_id
+    		this.record.nombres = this.form.nombres
+			this.record.apellidos = this.form.apellidos
+			this.record.dni = this.form.dni
+			this.record.email = this.form.email
+			this.record.direccion = this.form.direccion
+			this.record.telefono = this.form.telefono
+			this.record.celular = this.form.celular
+			this.record.margen_ganancia = this.form.margen_ganancia
+			this.record.genero = this.form.genero
+			this.record.estado = this.form.estado
+			this.record.celular_aux = this.form.celular_aux
+			this.record.fechanacimiento = this.form.fechanacimiento
+    	},
 		cleanErrosMessage(){
 			this.all_errors = []
+		},
+		setEmptyPasswordFields(){
+			this.form.password = ''
+			this.form.confirm_password = ''
 		},
 		redireccionarToIndex(){ //Btn Regresar
 			window.location.href = this.url + '/citas'
 		},
-  	onRegresar(){
-  		this.redireccionarToIndex()
-  	},
-		hideModal(){
-			this.$refs.myModalRef.hide()
-		},
+    	onRegresar(){
+    		this.redireccionarToIndex()
+    	},
+			hideModal(){
+				this.$refs.myModalRef.hide()
+			},
 		onCancelarModificar(){
 			this.displayStatus = 'show'
 			this.setControllerDataToForms()
 			this.setDisableForm()
 			this.cleanErrosMessage()
+			this.setEmptyPasswordFields()
 		},
 		onCancelarNuevo(){
 			this.redireccionarToIndex()
 		},
     onFiltered (filteredItems) {
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
-    },
-    agregarPaciente(id, nombres, apellidos, sedeId){
-      this.form.idPaciente = id
-      this.form.paciente = nombres + ' ' + apellidos
-			this.form.sede = sedeId
-      this.$refs.myModalRef.hide()
-    },
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
+      },
+      agregarPaciente(id, nombres, apellidos){
+        //alert(id)
+        this.form.idPaciente = id
+        this.form.paciente = nombres + ' ' + apellidos
+        this.$refs.myModalRef.hide()
+      },
 		toastFunction(msg, type){
 		 	this.$swal({
 					type: type,
@@ -459,7 +457,7 @@
 					toast: true,
 					position: 'top',
 					showConfirmButton: false,
-  				timer: 3000
+  					timer: 3000
 			})
 		},
     toastFunctionRedirect(title, msg, type){

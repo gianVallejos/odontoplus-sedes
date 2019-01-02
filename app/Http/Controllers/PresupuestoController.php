@@ -80,14 +80,14 @@ class PresupuestoController extends Controller{
         $pres_detalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuesto_Detalles_by_Id("'. $id .'")');
         $act_empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_empresa_Id('. $pres_general->idPaciente .')')[0]->empresa_id;
         $precios =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_all_by_empresa_Id('. $act_empresa .')');
-        $paciente_sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_by_paciente_id("'. $pres_general->idPaciente .'")')[0];
 
         $pres_general = json_encode($pres_general);
         $pres_detalle = json_encode($pres_detalle);
         $precios = json_encode($precios);
-        $paciente_sede = json_encode($paciente_sede);
 
-        $view = view($this->path . '.reporte', compact('pres_general', 'pres_detalle', 'precios', 'paciente_sede'));
+        $cliente = CurBD::getCurrentClienteData();
+
+        $view = view($this->path . '.reporte', compact('pres_general', 'pres_detalle', 'precios', 'cliente'));
 
         return $view;
     }

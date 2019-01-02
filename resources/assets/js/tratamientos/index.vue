@@ -29,7 +29,7 @@
 							</div>
 							<div class="col-md-6">
 								<div class="float-right d-inline-block" v-if="curUser.rolid == 1">
-									<b-button-group>
+									<b-button-group>                    
 										<b-button :href="url+'/tratamientos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
 										</b-button>

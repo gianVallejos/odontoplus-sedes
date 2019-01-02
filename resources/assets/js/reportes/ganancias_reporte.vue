@@ -142,12 +142,11 @@
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc', class: 'text-center' },
 					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
-					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
-					{ key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
-					{ key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', class: 'text-center' },
-					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'text-center' },
-					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'text-center' },
-					{ key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
+				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
+				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', class: 'text-center' },
+				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'text-center' },
+				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'text-center' },
+				    { key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],
 			}
 		},

@@ -1,5 +1,5 @@
 <template>
-  <b-container id="container-template">
+  <b-container id="container-template">    
     <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<div class="col-md-12">
@@ -185,14 +185,6 @@
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
-											<b-form-group label="Sede:" label-for="sede_id">
-												<b-form-select v-model="form.sede_id" :disabled=isDisabled class="required">
-													<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
-														{{ sede.nombre }}
-													</option>
-												</b-form-select>
-												<span v-if="all_errors.sede_id" :class="['label label-danger']">{{ all_errors.sede_id[0] }}</span>
-											</b-form-group>
 											  <b-form-group label="Empresa:" label-for="empresa_id">
 										     	<b-form-select v-model="form.empresa_id" :disabled=isDisabled>
   													<option v-for="(empresa, index) in empresas" :key="index" :value="empresa.id">
@@ -308,8 +300,7 @@
     props:[
       	'title',
       	'url',
-				'empresas',
-      	'sedes',
+      	'empresas',
         'referencias',
     		'paciente',
     		'curUser',
@@ -336,7 +327,6 @@
   				fax: '',
   				celular: '',
   				celular_aux: '',
-					sede_id: '',
   				empresa_id: '1',
   				seguro_ind: 0,
           referencia_id: '1',
@@ -448,8 +438,7 @@
   			this.form.seguro_ind = this.paciente.seguro_ind
         this.form.referencia_id = this.paciente.referencia_id
   			this.form.nombre_apoderado  = this.paciente.nombre_apoderado
-				this.form.celular_apoderado = this.paciente.celular_apoderado
-  			this.form.sede_id = this.paciente.sede_id
+  			this.form.celular_apoderado = this.paciente.celular_apoderado
     	},
     	onGuardarNuevo(){
     		var request = { method: 'POST', url: this.url + '/pacientes', data: this.form }
@@ -550,8 +539,7 @@
   			this.paciente.seguro_ind = this.form.seguro_ind
         this.paciente.referencia_id = this.form.referencia_id
   			this.paciente.nombre_apoderado = this.form.nombre_apoderado
-				this.paciente.celular_apoderado	 = this.form.celular_apoderado
-  			this.paciente.sede_id	 = this.form.sede_id
+  			this.paciente.celular_apoderado	 = this.form.celular_apoderado
     	},
   		cleanErrosMessage(){
   			this.all_errors = []
