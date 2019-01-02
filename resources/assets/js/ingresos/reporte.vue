@@ -7,17 +7,17 @@
 						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
 					</div>
 					<div class="pr-descripcion-logo">
-						<span v-if="cliente.direccion != null">
-							{{ cliente.direccion }} {{ cliente.ciudad }} - Perú<br/>
+						<span v-if="paciente_sede.direccion != null">
+							{{ paciente_sede.direccion }} {{ paciente_sede.ciudad }} - Perú<br/>
 						</span>
-						<span v-if="cliente.email != null">
-							{{ cliente.email }} <br />
+						<span v-if="paciente_sede.email != null">
+							{{ paciente_sede.email }} <br />
 						</span>
-						<span v-if="cliente.telefono != null">
-							{{ cliente.telefono }} <br />
+						<span v-if="paciente_sede.telefono != null">
+							{{ paciente_sede.telefono }} <br />
 						</span>
-	    			<span v-if="cliente.celular != null">
-							{{ cliente.celular }} <span v-if="cliente.celular_aux != null"> - </span> {{ cliente.celular_aux }}
+	    			<span v-if="paciente_sede.celular != null">
+							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != null"> - </span> {{ paciente_sede.celular_aux }}
 						</span>
 					</div>
 				</div>
@@ -120,7 +120,7 @@
 			'igeneral',
 			'idetalle',
 			'curUser',
-			'cliente'
+			'paciente_sede'
 		],
 		data(){
 			return{

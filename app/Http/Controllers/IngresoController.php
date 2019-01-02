@@ -64,12 +64,13 @@ class IngresoController extends Controller
 
     public function reporte($id){
         $igeneral =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_Id('. $id .')')[0];
-        $igeneral = json_encode($igeneral);
         $idetalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_all_Id('. $id .')');
+        $paciente_sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id("'. $igeneral->pacienteSedeId .'")')[0];
+        $igeneral = json_encode($igeneral);
         $idetalle = json_encode($idetalle);
-        $cliente = CurBD::getCurrentClienteData();
+        $paciente_sede = json_encode($paciente_sede);
 
-        return view($this->path . '.reporte', compact('igeneral', 'idetalle', 'cliente'));
+        return view($this->path . '.reporte', compact('igeneral', 'idetalle', 'paciente_sede'));
     }
 
     public function lineItem($id){
