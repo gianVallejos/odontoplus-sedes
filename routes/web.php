@@ -21,6 +21,7 @@ Route::resource('doctores', 'DoctorController');
 Route::resource('pacientes', 'PacienteController');
 Route::resource('tratamientos', 'TratamientoController');
 Route::resource('empresas', 'EmpresaController');
+Route::resource('sedes', 'SedeController');
 Route::resource('proveedores', 'ProveedorController');
 Route::resource('proveedorLineItems', 'ProveedorLineItemController');
 Route::resource('precios', 'PrecioController');
@@ -31,23 +32,22 @@ Route::get('pagos/detalle/{idDoctor}/{fechaInicial}/{fechaFinal}', 'PagoControll
 Route::get('consulta_precio', 'PrecioController@getPrice');
 Route::get('pacientes/{id}/{flag}', 'PacienteController@show');
 Route::resource('citas', 'CitaController');
+Route::get('ganancias', 'GananciaController@index');
+Route::get('ganancias/reporte/{start}/{end}/{sedeId}', 'GananciaController@reporte');
+Route::get('ganancias/{start}/{end}/{sedeId}', 'GananciaController@gananciasFechasJSON');
 
 //REPORTS
 Route::get('reportes', 'ReporteController@index');
-Route::get('reportes/obtener-ingresos-mensuales/{year}', 'ReporteController@obtenerIngresosMensuales');
-Route::get('reportes/obtener-egresos-mensuales/{year}', 'ReporteController@obtenerEgresosMensuales');
-Route::get('reportes/obtener-ingresos-paciente/{start}/{end}', 'ReporteController@obtenerIngresosPacienteFechas');
-Route::get('reportes/obtener-nuevos-pacientes/{start}/{end}', 'ReporteController@obtenerNuevosPacientesFechas');
+Route::get('reportes/obtener-ingresos-mensuales/{year}/{sedeId}', 'ReporteController@obtenerIngresosMensuales');
+Route::get('reportes/obtener-egresos-mensuales/{year}/{sedeId}', 'ReporteController@obtenerEgresosMensuales');
+Route::get('reportes/obtener-ingresos-paciente/{start}/{end}/{sedeId}', 'ReporteController@obtenerIngresosPacienteFechas');
+Route::get('reportes/obtener-nuevos-pacientes/{start}/{end}/{sedeId}', 'ReporteController@obtenerNuevosPacientesFechas');
 Route::get('reportes/obtener-nuevos-pacientes-anio-actual', 'ReporteController@obtenerNuevosPacientesAnioActual');
-Route::get('reportes/obtener-pacientes-canal/{start}/{end}', 'ReporteController@obtenerPacientesPorCanalFechas');
-Route::get('reportes/obtener-ingresos-doctor/{start}/{end}', 'ReporteController@obtenerIngresosPorDoctorFechas');
-Route::get('reportes/obtener-pagos-doctor/{start}/{end}', 'ReporteController@obtenerPagosPorDoctorFechas');
-Route::get('reportes/obtener-tratamientos/{start}/{end}', 'ReporteController@obtenerTratamientosFechas');
-Route::get('reportes/obtener-tratamientos-doctor/{start}/{end}', 'ReporteController@obtenerTratamientosPorDoctorFechas');
-
-Route::get('reportes/ganancias', 'ReporteController@ganancias');
-Route::get('reportes/ganancias/{start}/{end}', 'ReporteController@gananciasFechas');
-Route::get('reportes/gananciasJSON/{start}/{end}', 'ReporteController@gananciasFechasJSON');
+Route::get('reportes/obtener-pacientes-canal/{start}/{end}/{sedeId}', 'ReporteController@obtenerPacientesPorCanalFechas');
+Route::get('reportes/obtener-ingresos-doctor/{start}/{end}/{sedeId}', 'ReporteController@obtenerIngresosPorDoctorFechas');
+Route::get('reportes/obtener-pagos-doctor/{start}/{end}/{sedeId}', 'ReporteController@obtenerPagosPorDoctorFechas');
+Route::get('reportes/obtener-tratamientos/{start}/{end}/{sedeId}', 'ReporteController@obtenerTratamientosFechas');
+Route::get('reportes/obtener-tratamientos-doctor/{start}/{end}/{sedeId}', 'ReporteController@obtenerTratamientosPorDoctorFechas');
 
 //APIS
 Route::resource('presupuestos', 'PresupuestoController');
@@ -61,8 +61,7 @@ Route::put('ingresos/line-item/{id}', 'IngresoController@lineItemUpdate');
 Route::delete('ingresos/line-item/{id}', 'IngresoController@lineItemDelete');
 Route::get('ingresos/reporte/{id}', 'IngresoController@reporte');
 
-Route::get('v1/citas/get-all-events', 'CitaController@getEventsCitas');
-Route::get('v1/citas/get-all-events/{idDoctor}', 'CitaController@getEventsCitasPorDoctor');
+Route::get('v1/citas/get-all-events/{idDoctor}/{idSede}', 'CitaController@getEventsFiltered');
 Route::get('v1/citas/update-fecha-cita/{fecha}/{id}', 'CitaController@changeFechaCita');
 
 Route::resource('egresos', 'EgresoController');

@@ -107,7 +107,7 @@
 	import PanelCard from '../widgets/panel/panel-component.vue'
 	import axios from 'axios'
 
-	export default{		
+	export default{
 		props: [
 			'url',
 			'egresos',
@@ -129,7 +129,8 @@
 				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 				    { key: 'concepto', label: 'Concepto', sortable: true, sortDirection: 'desc' },
 				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
-				    { key: 'tipo', label: 'Tipo', sortable: true, sortDirection: 'desc' },
+						{ key: 'tipo', label: 'Tipo', sortable: true, sortDirection: 'desc' },
+				    { key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
 				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc' },
 				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc' }

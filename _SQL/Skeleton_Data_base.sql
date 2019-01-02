@@ -7,6 +7,7 @@ CREATE TABLE `citas` (
   `hasta` time DEFAULT NULL,
   `idPaciente` int(11) DEFAULT NULL,
   `idDoctor` int(11) DEFAULT NULL,
+	`idSede` int not null,
   `fecha` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -51,6 +52,7 @@ CREATE TABLE `egresos` (
   `is_deleted` tinyint(4) DEFAULT '0',
   `created_at` timestamp NULL,
   `updated_at` timestamp NULL,
+	`sedeId` int not null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -99,9 +101,9 @@ CREATE TABLE `ingresos_detalle` (
   `fecha` date DEFAULT NULL,
   `doctorId` int(11) DEFAULT NULL,
   `margen_ganancia` decimal(10,0) DEFAULT '0',
+	`sedeId` int not null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
 
 -- ----------------------------
 --  Table structure for `pacientes`
@@ -129,6 +131,7 @@ CREATE TABLE `pacientes` (
   `referencia_id` int(11) DEFAULT '1',
   `created_at` timestamp NULL,
   `updated_at` timestamp NULL,
+	`sede_id` int not null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
@@ -257,6 +260,20 @@ CREATE TABLE `tratamientos` (
   `updated_at` timestamp NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+DROP TABLE IF EXISTS `sedes`;
+CREATE Table `sedes` (
+	id int(11) not null auto_increment,
+	nombre varchar(150) not null,
+	ciudad varchar(150) not null,
+	direccion varchar(100) not null,
+	telefono varchar(200) null,
+	celular varchar(200) not null,
+	celular_aux varchar(200) null,
+	email varchar(200) null,
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of tratamientos
