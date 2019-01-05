@@ -71,7 +71,7 @@
 	 							 	</a>
 	 						</li>
 							<li class="li-dropdown" style="width: 132px;" v-if="user.rolid == 1">
-									<a :href="url + '/ganancias'" v-bind:class="[(whoIsActiveDetail == 'ganancias') ? 'active' : '']">
+									<a :href="url + '/reportes/ganancias'" v-bind:class="[(whoIsActiveDetail == 'ganancias') ? 'active' : '']">
 										<i class="fas fa-hand-holding-usd"></i>Ganancias Totales
 									</a>
 							</li>

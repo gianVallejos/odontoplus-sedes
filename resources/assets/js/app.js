@@ -33,8 +33,6 @@ import Doctores from './doctores/index.vue'
 import DoctorForm from './doctores/form.vue'
 import Tratamientos from './tratamientos/index.vue'
 import TratamientoForm from './tratamientos/form.vue'
-import Sedes from './sedes/index.vue'
-import SedeForm from './sedes/form.vue'
 import Empresas from './empresas/index.vue'
 import EmpresaForm from './empresas/form.vue'
 import Proveedores from './proveedores/index.vue'
@@ -51,8 +49,8 @@ import Precios from './precios/index.vue'
 import Pagos from './pagos/index.vue'
 import PagosForm from './pagos/form.vue'
 import PagosReporte from './pagos/reporte.vue'
-import Ganancias from './ganancias/index.vue'
-import GananciasReporte from './ganancias/ganancias_reporte.vue'
+import Ganancias from './reportes/ganancias.vue'
+import GananciasReporte from './reportes/ganancias_reporte.vue'
 
 import Mixin from './mixins/permisos.js'
 
@@ -69,7 +67,6 @@ const app = new Vue({
 			IngresosIndex, IngresoForm, IngresoLineItem, IngresoReporte,
 			Tratamientos, TratamientoForm,
 			Empresas, EmpresaForm,
-			Sedes, SedeForm,
 			Proveedores, ProveedorForm, ProveedorLineItems,
 			EgresosIndex, EgresoForm,
 			Precios,

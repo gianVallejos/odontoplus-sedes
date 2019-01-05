@@ -127,8 +127,7 @@
 				    { key: 'id', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'dni', label: 'DNI', sortable: true, sortDirection: 'desc' },
 				    { key: 'celular', label: 'Celular', sortable: true, sortDirection: 'desc' },
-						{ key: 'telefono', label: 'Teléfono', sortable: true, sortDirection: 'desc' },
-				    { key: 'sede_nombre', label: 'Sede', sortable: true, sortDirection: 'desc' },
+				    { key: 'telefono', label: 'Teléfono', sortable: true, sortDirection: 'desc' },
 				    { key: 'empresa_nombre', label: 'Empresa', sortable: true, sortDirection: 'desc' }
 			    ],
 			    currentPage: 1,

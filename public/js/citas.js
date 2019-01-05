@@ -1,31 +1,23 @@
 $(document).ready(function() {
     // page is now ready, initialize the calendar
     var events = {
-      url: global_url + '/v1/citas/get-all-events/null/null',
-      error: function() { alert('Ha ocurrido un error al intentar cargar las citas.'); },
+      url: global_url + '/v1/citas/get-all-events',
+      error: function() { alert('...'); },
       color: '#0aab8a',
       textColor: '#f3f3f3'
     };
 
     $("select[name='id_doctor']").change(function(){
-      var doctorId = $(this).val() == 'all' ? null : $(this).val();
-      var sedeId = $("select[name='id_sede']").val() == 'all' ? null : $("select[name='id_sede']").val();
-      reloadCalendar(doctorId, sedeId)
-    });
-
-    $("select[name='id_sede']").change(function(){
-      var sedeId = $(this).val() == 'all' ? null : $(this).val();
-      var doctorId = $("select[name='id_doctor']").val() == 'all' ? null : $("select[name='id_doctor']").val();
-      reloadCalendar(doctorId, sedeId)
-    });
-
-    function reloadCalendar(doctorId, sedeId) {
-      events.url = global_url + '/v1/citas/get-all-events/'+ doctorId +'/' + sedeId
-      console.log(events.url);
+      if ($(this).val() == 'all') {
+        events.url = global_url + '/v1/citas/get-all-events'
+      }
+      else {
+        events.url = global_url + '/v1/citas/get-all-events/' + $(this).val();
+      }
       $('#calendar').fullCalendar('removeEventSources');
       $('#calendar').fullCalendar('addEventSource', events);
       $('#calendar').fullCalendar('refetchEvents');
-    }
+    });
 
     $('#calendar').fullCalendar({
       eventSources: [ events ],

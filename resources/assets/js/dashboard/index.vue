@@ -67,25 +67,12 @@
 				<PanelCard v-if="isAdmin()">
 					<span slot="heading">Ingresos vs. Egresos</span>
 					<b-row slot="body" class="px-3 pb-3">
-						<b-col cols="12" class="pb-3">
+						<b-col xl="12" cols="12">
 							<b-form-row>
-								<b-col cols="3">
+								<b-col xl="3" cols="12">
 									<b-input-group prepend="Año">
 										<b-form-select id="yead" v-model="ingresosVSegresosChart.year" :options="years" v-on:input="fillIngresosVSegresosChart()" />
 									</b-input-group>
-								</b-col>
-								<b-col cols="6">
-									<div class="float-left input-group">
-										<div class="input-group-prepend">
-											<div class="input-group-text fz-4"> Sede </div>
-										</div>
-										<b-form-select v-model="ingresosVSegresosChart.sede" v-on:input="fillIngresosVSegresosChart()">
-											<option value=null >Todas las sedes</option>
-											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
-												{{ sede.nombre }}
-											</option>
-										</b-form-select>
-									</div>
 								</b-col>
 							</b-form-row>
 						</b-col>
@@ -203,7 +190,6 @@
 		props: [
 			'url',
 			'pacientes',
-			'sedes',
 			'user'
 		],
 		components:{
@@ -316,8 +302,7 @@
 				],
 				ingresosVSegresosChart: {
 					data: null,
-					year: null,
-					sede: null
+					year: null
 				},
 				nuevosPacientesChart: {
 					data: null
@@ -386,9 +371,8 @@
 			},
 			fillIngresosVSegresosChart(){
 				var year = this.ingresosVSegresosChart.year
-				var sede = this.ingresosVSegresosChart.sede
-				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/' + year + '/' + sede }
-				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/' + year + '/' + sede }
+				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/' + year }
+				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/' + year }
 				if( year != ''){
 					this.chartIsLoading = true
 					var self = this

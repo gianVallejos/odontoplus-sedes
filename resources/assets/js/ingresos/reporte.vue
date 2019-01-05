@@ -7,14 +7,14 @@
 						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
 					</div>
 					<div class="pr-descripcion-logo">
-						<span v-if="paciente_sede.direccion != null">
-							{{ paciente_sede.direccion }} {{ paciente_sede.ciudad }} - Perú<br/>
+						<span v-if="cliente.direccion != null">
+							{{ cliente.direccion }} {{ cliente.ciudad }} - Perú <br />
 						</span>
-						<span v-if="paciente_sede.email != null">
-							{{ paciente_sede.email }} <br />
+						<span v-if="cliente.email != null">
+							{{ cliente.email }} <br />
 						</span>
-						<span v-if="paciente_sede.telefono != null">
-							{{ paciente_sede.telefono }} <br />
+						<span v-if="cliente.telefono != null">
+							{{ cliente.telefono }} <br />
 						</span>
 	    			<span v-if="paciente_sede.celular != null">
 							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != ''"> - </span> {{ paciente_sede.celular_aux }}
@@ -120,7 +120,7 @@
 			'igeneral',
 			'idetalle',
 			'curUser',
-			'paciente_sede'
+			'cliente'
 		],
 		data(){
 			return{
@@ -129,8 +129,7 @@
 					{ key: 'index', label: '#' },
 				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
-						{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
-				    { key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
+				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
 				    { key: 'cantidad', label: 'Cantidad', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
 				    { key: 'monto', label: 'Monto', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
 				    { key: 'total', label: 'Total', 'class': 'text-center', sortable: true, sortDirection: 'desc' }

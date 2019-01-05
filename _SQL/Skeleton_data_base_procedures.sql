@@ -123,12 +123,12 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_add_all`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_add_all`(IN XFECHA           date, IN XCANTIDAD int, IN XCONCEPTO varchar(125),
-	                                    IN XTIPO            varchar(125), IN XOBSERVACION varchar(125),
-	                                    IN XPRECIO_UNITARIO decimal(6, 2), IN XSEDEID int)
+CREATE PROCEDURE `OP_Egresos_add_all`(IN XFECHA DATE, IN XCANTIDAD INT,
+																				 IN XCONCEPTO VARCHAR(125), IN XTIPO VARCHAR(125),
+																				 IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2))
 BEGIN
-INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, sedeId, created_at, updated_at)
-  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, XSEDEID,NOW(), NOW());
+INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, created_at, updated_at)
+  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -140,12 +140,13 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_add_all_doctor`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_add_all_doctor`(IN XFECHA           date, IN XCANTIDAD int, IN XCONCEPTO varchar(125),
-	                                           IN XTIPO            varchar(125), IN XOBSERVACION varchar(125),
-	                                           IN XPRECIO_UNITARIO decimal(6, 2), IN XSEDEID int, IN XDOCTOR_ID int)
+CREATE PROCEDURE `OP_Egresos_add_all_doctor`(IN XFECHA DATE, IN XCANTIDAD INT,
+																				 IN XCONCEPTO VARCHAR(125), IN XTIPO VARCHAR(125),
+																				 IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2),
+																				 IN XDOCTOR_ID INT)
 BEGIN
-INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, doctorId, sedeId, created_at, updated_at)
-  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, XDOCTOR_ID, XSEDEID, NOW(), NOW());
+INSERT INTO egresos(fecha, cantidad, concepto, tipo, observacion, precio_unitario, doctorId, created_at, updated_at)
+  VALUES (XFECHA, XCANTIDAD, XCONCEPTO, XTIPO, XOBSERVACION, XPRECIO_UNITARIO, XDOCTOR_ID, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -173,10 +174,9 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Egresos_get_all`()
 BEGIN
 		SELECT egresos.id, fecha, concepto, cantidad, precio_unitario as monto, SUM(cantidad * precio_unitario) as total,
-					 tipo, doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota, sedes.nombre as nombre_sede
+					 tipo, doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota
 			FROM egresos
 		LEFT JOIN doctors on doctors.id = egresos.doctorId
-		INNER JOIN sedes on sedes.id = egresos.sedeId
 		WHERE egresos.is_deleted = 0
 		GROUP BY egresos.id ORDER BY egresos.fecha DESC, egresos.id DESC;
 END
@@ -207,7 +207,7 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Egresos_get_all_Id`(IN XID INT)
 BEGIN
 	SELECT egresos.id, fecha, concepto, cantidad, precio_unitario as monto, SUM(cantidad * precio_unitario) as total, tipo,
-				 doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota, egresos.sedeId as sedeId
+				 doctors.apellidos as doctor, doctors.id as doctorId, observacion as nota
 			FROM egresos
 		LEFT JOIN doctors on doctors.id = egresos.doctorId
 		WHERE egresos.is_deleted = 0 AND egresos.id = XID
@@ -221,8 +221,8 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_get_egresos_mensuales_anio`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_get_egresos_mensuales_anio`(IN anio varchar(4), IN sede_id int)
-  BEGIN
+CREATE PROCEDURE `OP_Egresos_get_egresos_mensuales_anio`(IN anio varchar(4))
+BEGIN
 	SET lc_time_names = 'es_ES';
 	SELECT m.MONTH as mes, COALESCE(AMOUNT,0) as monto
 	FROM
@@ -242,7 +242,6 @@ CREATE PROCEDURE `OP_Egresos_get_egresos_mensuales_anio`(IN anio varchar(4), IN 
 	( SELECT MONTH(e.fecha) as MONTH, SUM(e.cantidad * e.precio_unitario) as AMOUNT
 		FROM egresos as e
 		WHERE YEAR(e.fecha ) = anio
-		AND (sede_id IS NULL OR e.sedeId = sede_id)
 		GROUP BY (MONTH(e.fecha))) AS e ON m.MONTH = e.MONTH
 	ORDER BY m.MONTH;
 END
@@ -254,14 +253,15 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_update_all_doctor_Id`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_update_all_doctor_Id`(IN XFECHA           date, IN XCANTIDAD int, IN XCONCEPTO varchar(125),
-	                                                 IN XTIPO            varchar(125), IN XOBSERVACION varchar(125),
-	                                                 IN XPRECIO_UNITARIO decimal(6, 2), IN XDOCTOR_ID int, IN XSEDEID int, IN XID int)
+CREATE PROCEDURE `OP_Egresos_update_all_doctor_Id`(IN XFECHA DATE, IN XCANTIDAD INT,
+																									  IN XCONCEPTO VARCHAR(125), IN XTIPO VARCHAR(125),
+																									  IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2),
+																										IN XDOCTOR_ID INT, IN XID INT)
 BEGIN
 	UPDATE egresos
-		SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
-				tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
-				doctorId = XDOCTOR_ID, sedeId=XSEDEID, updated_at = NOW()
+    SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
+        tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
+        doctorId = XDOCTOR_ID, updated_at = NOW()
 		WHERE egresos.id = XID;
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -273,14 +273,15 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Egresos_update_all_Id`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Egresos_update_all_Id`(IN XFECHA           date, IN XCANTIDAD int, IN XCONCEPTO varchar(125),
-	                                          IN XTIPO            varchar(125), IN XOBSERVACION varchar(125),
-	                                          IN XPRECIO_UNITARIO decimal(6, 2), IN XSEDEID int, IN XID int)
+CREATE PROCEDURE `OP_Egresos_update_all_Id`(IN XFECHA DATE, IN XCANTIDAD INT,
+																						 IN XCONCEPTO VARCHAR(125), IN XTIPO VARCHAR(125),
+																						 IN XOBSERVACION VARCHAR(125), IN XPRECIO_UNITARIO DECIMAL(6, 2),
+																						 IN XID INT)
 BEGIN
 	UPDATE egresos
-		SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
-				tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
-				doctorId = NULL, sedeId=XSEDEID,updated_at = NOW()
+    SET fecha = XFECHA, cantidad = XCANTIDAD, concepto = XCONCEPTO,
+        tipo = XTIPO, observacion = XOBSERVACION, precio_unitario = XPRECIO_UNITARIO,
+        doctorId = NULL, updated_at = NOW()
 		WHERE egresos.id = XID;
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -434,17 +435,15 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_Detalle_add_all`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO int, IN XID_PRECIO int, IN XCANTIDAD int,
-	                                             IN XMONTO      decimal(11, 2), IN XFECHA date, IN XSEDEID int,
-	                                             IN XDOCTOR     int)
-	BEGIN
+CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT, IN XMONTO DECIMAL(11, 2), IN XFECHA DATE, IN XDOCTOR INT)
+BEGIN
 		DECLARE MONTO_TOTAL DECIMAL(11, 2);
 		DECLARE XMARGEN DECIMAL(10, 0);
 
 		SELECT margen_ganancia INTO XMARGEN FROM doctors WHERE doctors.id = XDOCTOR;
 
-		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto, fecha, doctorId, margen_ganancia, sedeId)
-			VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO, XFECHA, XDOCTOR, XMARGEN, XSEDEID);
+		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto, fecha, doctorId, margen_ganancia)
+			VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO, XFECHA, XDOCTOR, XMARGEN);
 
 END
 ;;
@@ -471,14 +470,13 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_Detalle_get_all_Id`(IN XID_INGRESO INT)
 BEGIN
 	SELECT idt.id, trat.id as idTratamiento, trat.detalle as tratamiento,
-				 doc.id as idDoctor, CONCAT(doc.nombres, ' ', doc.apellidos) as nombreDoctor, sed.nombre as nombre_sede,
+				 doc.id as idDoctor, CONCAT(doc.nombres, ' ', doc.apellidos) as nombreDoctor,
 				 idt.cantidad * idt.monto as total,
 				 ROUND(IFNULL(SUM(idt.monto * idt.cantidad) * doc.margen_ganancia/100, 0), 2) as mg,
 				 ROUND(IFNULL(SUM(idt.monto * idt.cantidad) - (SUM(idt.monto * idt.cantidad) * doc.margen_ganancia/100), 0), 2) as mg_core,
-				 idt.cantidad, idt.monto, idt.fecha as fecha, idt.sedeId as sede
+				 idt.cantidad, idt.monto, idt.fecha as fecha
 		FROM ingresos
 		INNER JOIN ingresos_detalle as idt on ingresos.id = idt.ingresoId
-		INNER JOIN sedes as sed on sed.id = idt.sedeId
 		INNER JOIN precios on precios.id = idt.precioId
 		INNER JOIN tratamientos as trat on trat.id = precios.idTratamiento
 		LEFT JOIN doctors as doc on doc.id = idt.doctorId
@@ -639,7 +637,7 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_get_all_Id`(IN XID INT)
 BEGIN
 	SELECT LPAD(ingresos.id, 5, '0') as id, LPAD(pacientes.id, 5, '0') as hc, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) as nombrePaciente,
-				 ingresos.created_at as fecha, pacientes.sede_id as pacienteSedeId,
+				 ingresos.created_at as fecha,
 				 IFNULL(SUM(ingresos_detalle.cantidad * ingresos_detalle.monto), 0) as monto_total, prs.id as presupuestoId
 		FROM `ingresos`
 	INNER JOIN pacientes on pacientes.id = ingresos.idPaciente
@@ -656,7 +654,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ingresos_mensuales_anio`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_ingresos_mensuales_anio`(IN anio varchar(4), IN sede_id int)
+CREATE PROCEDURE `OP_Ingresos_get_ingresos_mensuales_anio`(IN anio varchar(4))
 BEGIN
 	SET lc_time_names = 'es_ES';
 	SELECT m.MONTH as mes, COALESCE(AMOUNT,0) as monto
@@ -677,9 +675,9 @@ BEGIN
 	( SELECT MONTH(idt.fecha) as MONTH, SUM(idt.cantidad * idt.monto) as AMOUNT
 		FROM ingresos_detalle as idt
 		WHERE YEAR(idt.fecha ) = anio
-		AND (sede_id IS NULL OR idt.sedeId = sede_id)
 		GROUP BY (MONTH(idt.fecha)) ) AS i ON m.MONTH = i.MONTH
 	ORDER BY m.MONTH;
+
 END
 ;;
 DELIMITER ;
@@ -725,15 +723,14 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ingresos_por_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_ingresos_por_doctor_fechas`(IN start_date date, IN end_date date, IN xsede_id int)
+CREATE PROCEDURE `OP_Ingresos_get_ingresos_por_doctor_fechas`(IN start_date date, IN end_date date)
 BEGIN
 	SET lc_time_names = 'es_ES';
-	SELECT dr.nombres, dr.apellidos, FORMAT(IFNULL(SUM((1 - dr.margen_ganancia/100) * idt.cantidad * idt.monto), 0),2) as ingreso
-	FROM ingresos_detalle idt
-	INNER JOIN doctors dr ON dr.id = idt.doctorId
+  SELECT dr.nombres, dr.apellidos, FORMAT(IFNULL(SUM((1 - dr.margen_ganancia/100) * idt.cantidad * idt.monto), 0),2) as ingreso
+  FROM ingresos_detalle idt
+  INNER JOIN doctors dr ON dr.id = idt.doctorId
 	WHERE idt.fecha BETWEEN start_date AND end_date
-	AND (xsede_id IS NULL OR idt.sedeId = xsede_id)
-	GROUP BY dr.id
+  GROUP BY dr.id
 	ORDER By ingreso ASC;
 END
 ;;
@@ -744,13 +741,12 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ingresos_por_paciente_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_ingresos_por_paciente_fechas`(IN XINI date, IN XFIN date, IN XSEDEID int)
-  BEGIN
+CREATE PROCEDURE `OP_Ingresos_get_ingresos_por_paciente_fechas`(IN XINI date, IN XFIN date)
+BEGIN
 	SELECT SUBSTRING(CONCAT(pacientes.nombres, " ", pacientes.apellidos), 1, 25) as nombre, SUM(idt.cantidad * idt.monto) as monto
 		FROM ingresos INNER JOIN pacientes on pacientes.id = ingresos.idPaciente
 	INNER JOIN ingresos_detalle as idt on idt.ingresoId = ingresos.id
 	WHERE idt.fecha BETWEEN XINI AND XFIN
-  AND (XSEDEID IS NULL OR idt.sedeId = XSEDEID)
 	GROUP BY (ingresos.idPaciente) ORDER BY monto DESC LIMIT 10;
 END
 ;;
@@ -852,20 +848,23 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pacientes_add_all`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pacientes_add_all`(IN XNOMBRES           varchar(90), IN XAPELLIDOS varchar(90), IN XDNI varchar(8),
-	                                      IN XEMAIL             varchar(90), IN XDIRECCION varchar(90),
-	                                      IN XFECHA_NACIMIENTO  date, IN XGENERO varchar(25), IN XESTADO varchar(25),
-	                                      IN XTELEFONO          varchar(50), IN XFAX varchar(50), IN XCELULAR varchar(50),
-	                                      IN XCELULAR_AUX       varchar(50), IN XID_EMPRESA int, IN XID_SEGURO_IND int,
-	                                      IN XNOMBRE_APODERADO  varchar(150), IN XCELULAR_APODERADO varchar(150),
-	                                      IN XREFERENCIA_ID     int, IN XSEDE_ID int)
+CREATE PROCEDURE `OP_Pacientes_add_all`(IN XNOMBRES VARCHAR(90), IN XAPELLIDOS VARCHAR(90),
+				  													    IN XDNI VARCHAR(8), IN XEMAIL VARCHAR(90),
+																			  IN XDIRECCION VARCHAR(90), IN XFECHA_NACIMIENTO DATE,
+																			  IN XGENERO VARCHAR(25), IN XESTADO VARCHAR(25),
+																			  IN XTELEFONO VARCHAR(50), IN XFAX VARCHAR(50),
+																			  IN XCELULAR VARCHAR(50), IN XCELULAR_AUX VARCHAR(50),
+																				IN XID_EMPRESA INT, IN XID_SEGURO_IND INT,
+																				IN XNOMBRE_APODERADO VARCHAR(150),
+																				IN XCELULAR_APODERADO VARCHAR(150),
+																			  IN XREFERENCIA_ID INT)
 BEGIN
-	INSERT INTO pacientes(nombres, apellidos, dni, email, direccion, fechanacimiento, genero, estado, telefono, fax,
-										celular, celular_aux, empresa_id, seguro_ind, nombre_apoderado, celular_apoderado,
-										referencia_id, created_at, updated_at, sede_id)
-	VALUES (XNOMBRES, XAPELLIDOS, XDNI, XEMAIL, XDIRECCION, XFECHA_NACIMIENTO, XGENERO, XESTADO, XTELEFONO, XFAX,
-					XCELULAR, XCELULAR_AUX, XID_EMPRESA, XID_SEGURO_IND, XNOMBRE_APODERADO, XCELULAR_APODERADO,
-					XREFERENCIA_ID, NOW(), NOW(), XSEDE_ID);
+  INSERT INTO pacientes(nombres, apellidos, dni, email, direccion, fechanacimiento, genero, estado, telefono, fax,
+                    celular, celular_aux, empresa_id, seguro_ind, nombre_apoderado, celular_apoderado,
+                    referencia_id, created_at, updated_at)
+  VALUES (XNOMBRES, XAPELLIDOS, XDNI, XEMAIL, XDIRECCION, XFECHA_NACIMIENTO, XGENERO, XESTADO, XTELEFONO, XFAX,
+          XCELULAR, XCELULAR_AUX, XID_EMPRESA, XID_SEGURO_IND, XNOMBRE_APODERADO, XCELULAR_APODERADO,
+          XREFERENCIA_ID, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END
@@ -920,12 +919,12 @@ CREATE PROCEDURE `OP_Pacientes_get_all`()
 BEGIN
 	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
-				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id,
-				 emp.nombre as empresa_nombre, pc.sede_id, sed.nombre as sede_nombre, ing.id as ingresoId
+				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre, ingresos.id as ingresoId,
+				 presupuestos.id as presupuestosId
 		FROM pacientes as pc
-	INNER JOIN sedes as sed on sed.id = pc.sede_id
 	INNER JOIN empresas as emp on emp.id = pc.empresa_id
-	INNER JOIN ingresos as ing on ing.idPaciente = pc.id
+	INNER JOIN ingresos on ingresos.idPaciente = pc.id
+	LEFT JOIN presupuestos on presupuestos.idPaciente = pc.id
 		ORDER BY pc.id DESC;
 END
 ;;
@@ -940,8 +939,7 @@ CREATE PROCEDURE `OP_Pacientes_get_all_Id`(IN XID INT)
 BEGIN
 	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
-				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id,
-				 pc.sede_id, emp.nombre as empresa_nombre
+				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre
 	FROM pacientes as pc
 	INNER JOIN empresas as emp on emp.id = pc.empresa_id
 	WHERE pc.id = XID;
@@ -1018,14 +1016,12 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pacientes_get_pacientes_creados_por_mes_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pacientes_get_pacientes_creados_por_mes_fechas`(IN start_date date, IN end_date date,
-                                                                   IN xsede_id   int)
+CREATE PROCEDURE `OP_Pacientes_get_pacientes_creados_por_mes_fechas`(IN start_date date, IN end_date date)
 BEGIN
 	SET lc_time_names = 'es_ES';
 	SELECT MONTHNAME(p.created_at) mes, COUNT(p.Id) cantidad
 	FROM pacientes p
 	WHERE p.created_at BETWEEN start_date AND end_date
-  AND (xsede_id IS NULL OR p.sede_id = xsede_id)
 	GROUP BY MONTHNAME(p.created_at)
 	ORDER BY MONTH(p.created_at);
 END
@@ -1037,14 +1033,13 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pacientes_get_pacientes_por_canal_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pacientes_get_pacientes_por_canal_fechas`(IN start_date date, IN end_date date, IN xsede_id int)
+CREATE PROCEDURE `OP_Pacientes_get_pacientes_por_canal_fechas`(IN start_date date, IN end_date date)
 BEGIN
 	SET lc_time_names = 'es_ES';
 	SELECT r.nombre canal, COUNT(p.Id) cantidad
 	FROM pacientes p
 	INNER JOIN referencias r ON p.referencia_id = r.id
 	WHERE p.created_at BETWEEN start_date AND end_date
-  AND (xsede_id IS NULL OR p.sede_id = xsede_id)
 	GROUP BY r.id
 	ORDER By cantidad DESC;
 END
@@ -1056,22 +1051,23 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pacientes_update_all_Id`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pacientes_update_all_Id`(IN XNOMBRES          varchar(90), IN XAPELLIDOS varchar(90),
-	                                            IN XDNI              varchar(8), IN XEMAIL varchar(90),
-	                                            IN XDIRECCION        varchar(90), IN XFECHA_NACIMIENTO date,
-	                                            IN XGENERO           varchar(25), IN XESTADO varchar(25),
-	                                            IN XTELEFONO         varchar(50), IN XFAX varchar(50),
-	                                            IN XCELULAR          varchar(50), IN XCELULAR_AUX varchar(50),
-	                                            IN XID_EMPRESA       int, IN XID_SEGURO_IND int,
-	                                            IN XNOMBRE_APODERADO varchar(150), IN XCELULAR_APODERADO varchar(150),
-	                                            IN XREFERENCIA_ID    int, IN XSEDE_ID int, IN XID int)
+CREATE PROCEDURE `OP_Pacientes_update_all_Id`(IN XNOMBRES VARCHAR(90), IN XAPELLIDOS VARCHAR(90),
+																							IN XDNI VARCHAR(8), IN XEMAIL VARCHAR(90),
+																							IN XDIRECCION VARCHAR(90), IN XFECHA_NACIMIENTO DATE,
+																							IN XGENERO VARCHAR(25), IN XESTADO VARCHAR(25),
+																							IN XTELEFONO VARCHAR(50), IN XFAX VARCHAR(50),
+																							IN XCELULAR VARCHAR(50), IN XCELULAR_AUX VARCHAR(50),
+																							IN XID_EMPRESA INT, IN XID_SEGURO_IND INT,
+																							IN XNOMBRE_APODERADO VARCHAR(150),
+																							IN XCELULAR_APODERADO VARCHAR(150),
+																							IN XREFERENCIA_ID INT, IN XID INT)
 BEGIN
-	UPDATE pacientes SET nombres = XNOMBRES, apellidos = XAPELLIDOS, dni = XDNI, email = XEMAIL,
-											 direccion = XDIRECCION, fechanacimiento = XFECHA_NACIMIENTO, genero = XGENERO,
-											 estado = XESTADO, telefono = XTELEFONO, fax = XFAX, celular = XCELULAR,
-											 celular_aux = XCELULAR_AUX, empresa_id = XID_EMPRESA, seguro_ind = XID_SEGURO_IND,
-											 nombre_apoderado = XNOMBRE_APODERADO, celular_apoderado = XCELULAR_APODERADO,
-											 referencia_id = XREFERENCIA_ID, updated_at = NOW(), sede_id = XSEDE_ID
+  UPDATE pacientes SET nombres = XNOMBRES, apellidos = XAPELLIDOS, dni = XDNI, email = XEMAIL,
+                       direccion = XDIRECCION, fechanacimiento = XFECHA_NACIMIENTO, genero = XGENERO,
+                       estado = XESTADO, telefono = XTELEFONO, fax = XFAX, celular = XCELULAR,
+                       celular_aux = XCELULAR_AUX, empresa_id = XID_EMPRESA, seguro_ind = XID_SEGURO_IND,
+                       nombre_apoderado = XNOMBRE_APODERADO, celular_apoderado = XCELULAR_APODERADO,
+                      referencia_id = XREFERENCIA_ID, updated_at = NOW()
 	WHERE pacientes.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
@@ -1126,14 +1122,13 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Pagos_get_pagos_por_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Pagos_get_pagos_por_doctor_fechas`(IN start_date date, IN end_date date, IN xsede_id int)
+CREATE PROCEDURE `OP_Pagos_get_pagos_por_doctor_fechas`(IN start_date date, IN end_date date)
 BEGIN
 	SET lc_time_names = 'es_ES';
   SELECT dr.nombres, dr.apellidos, FORMAT(IFNULL(SUM(dr.margen_ganancia/100 * idt.cantidad * idt.monto), 0),2) as pago
   FROM ingresos_detalle idt
   INNER JOIN doctors dr ON dr.id = idt.doctorId
 	WHERE idt.fecha BETWEEN start_date AND end_date
-  AND (xsede_id IS NULL OR idt.sedeId = xsede_id)
   GROUP BY dr.id
 	ORDER By pago;
 END
@@ -1464,8 +1459,8 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Tratamientos_get_tratamientos_destacados_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_destacados_fechas`(IN XINI date, IN XEND date, IN xsede_id int)
-  BEGIN
+CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_destacados_fechas`(IN XINI date, IN XEND date)
+BEGIN
 	SELECT CONCAT(SUBSTRING(tratamientos.detalle, 1, 25),"... - S/.", sum(ingresos_detalle.cantidad * ingresos_detalle.monto)) as tratamiento,
 				 count(tratamientos.detalle) as numero
 	FROM ingresos
@@ -1473,7 +1468,6 @@ CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_destacados_fechas`(IN XINI da
 		INNER JOIN precios on precios.id = ingresos_detalle.precioId
 		INNER JOIN tratamientos on tratamientos.id = precios.idTratamiento
 	WHERE ingresos_detalle.fecha BETWEEN XINI AND XEND
-	AND (xsede_id IS NULL OR ingresos_detalle.sedeId = xsede_id)
 	GROUP BY (tratamientos.id) ORDER BY count(tratamientos.id) DESC LIMIT 5;
 END
 ;;
@@ -1484,9 +1478,8 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Tratamientos_get_tratamientos_por_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_por_doctor_fechas`(IN start_date date, IN end_date date,
-                                                                    IN xsede_id   int)
-  BEGIN
+CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_por_doctor_fechas`(IN start_date date, IN end_date date)
+BEGIN
 	SET lc_time_names = 'es_ES';
   SELECT dr.nombres, dr.apellidos, COUNT(idt.id) as nro_tratamientos
   FROM ingresos_detalle idt
@@ -1494,7 +1487,6 @@ CREATE PROCEDURE `OP_Tratamientos_get_tratamientos_por_doctor_fechas`(IN start_d
   INNER JOIN doctors dr ON dr.id = idt.doctorId
   INNER JOIN tratamientos tr ON tr.id = idt.precioId
 	WHERE idt.fecha BETWEEN start_date AND end_date
-  AND (xsede_id IS NULL OR idt.sedeId = xsede_id)
   GROUP BY dr.id
 	ORDER By nro_tratamientos DESC;
 END
@@ -1574,11 +1566,11 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Citas_add_all`;
 DELIMITER ;;
-CREATE  PROCEDURE `OP_Citas_add_all`(IN XTITULO     varchar(200), IN XFECHA date, IN XDESDE time, IN XHASTA time,
-                                   	 IN XIDPACIENTE int, IN XIDDOCTOR int, IN XIDSEDE int)
+CREATE  PROCEDURE `OP_Citas_add_all`(IN XTITULO varchar(200), IN XFECHA date, IN XDESDE TIME, IN XHASTA TIME,
+                                  IN XIDPACIENTE INT, IN XIDDOCTOR INT)
 BEGIN
-	INSERT INTO citas(titulo, fecha, desde, hasta, idPaciente, idDoctor, idSede)
-			VALUES (XTITULO, XFECHA, XDESDE, XHASTA, XIDPACIENTE, XIDDOCTOR, XIDSEDE);
+  INSERT INTO citas(titulo, fecha, desde, hasta, idPaciente, idDoctor)
+			VALUES (XTITULO, XFECHA, XDESDE, XHASTA, XIDPACIENTE, XIDDOCTOR);
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END
 ;;
@@ -1606,10 +1598,9 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all`;
 DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_get_all`()
 BEGIN
-	SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
-				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede
-		FROM citas c
-	INNER JOIN  sedes sed ON sed.id = c.idSede;
+  SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
+				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
+		FROM citas c;
 END
 ;;
 DELIMITER ;
@@ -1621,7 +1612,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all_id`;
 DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_get_all_id`(IN XID INT)
 BEGIN
-	SELECT c.id as idEvent, c.titulo as title, c.idDoctor as idDoctor, c.idPaciente as idPaciente, idSede as idSede,
+  SELECT c.id as idEvent, c.titulo as title, c.idDoctor as idDoctor, c.idPaciente as idPaciente,
 				 c.fecha as fecha, c.desde as start, c.hasta as end
 		FROM citas c
 	WHERE c.id = XID;
@@ -1647,11 +1638,10 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Citas_update_all`;
 DELIMITER ;;
-CREATE  PROCEDURE `OP_Citas_update_all`(IN XID    int, IN XTITULO varchar(200), IN XFECHA date, IN XDESDE time,
-                                      	IN XHASTA time, IN XIDPACIENTE int, IN XIDDOCTOR int, IN XIDSEDE int)
+CREATE  PROCEDURE `OP_Citas_update_all`(IN XID INT, IN XTITULO varchar(200), IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME,
+ IN XIDPACIENTE INT, IN XIDDOCTOR INT)
 BEGIN
-	UPDATE citas SET titulo = XTITULO, fecha = XFECHA, desde = XDESDE, hasta = XHASTA, idPaciente = XIDPACIENTE,
-									 idDoctor = XIDDOCTOR, idSede = XIDSEDE
+  UPDATE citas SET titulo = XTITULO, fecha = XFECHA, desde = XDESDE, hasta = XHASTA, idPaciente = XIDPACIENTE, idDoctor = XIDDOCTOR
 		WHERE citas.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
@@ -1676,7 +1666,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all_doctor_id`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_get_all_doctor_id`(IN doctorId int)
 BEGIN
-	SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, c.idSede, fecha,
+  SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
 		FROM citas c
 	WHERE c.idDoctor = doctorId;
