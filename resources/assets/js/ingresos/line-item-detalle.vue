@@ -32,7 +32,8 @@
 											empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 							<template slot="actions" slot-scope="row">
 						        <div class="actions-table" v-if="curUser.rolid == 1">
-						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento, row.item.cantidad, row.item.monto )" class="action">Modificar</a>
+						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento,
+																															row.item.cantidad, row.item.monto, row.item.sede )" class="action">Modificar</a>
 						        	<a v-on:click="eliminarIngresoDetalle(row.item.id)" class="action">Eliminar</a>
 						        </div>
 						    </template>
@@ -75,14 +76,24 @@
 					<b-col rows="12">
 						<div class="pt-3 pb-3 pl-2 pr-2" >
 							<b-form-row>
-								<b-col cols="3">
+								<b-col cols="2">
 									<b-form-group label="Fecha" label-for="fecha">
 										<b-form-input id="fecha" type="date" v-model="form.fecha"
 											    			   :disabled=isDisabled autocomplete="off" class="required" />
 										<span v-if="allerros.fecha" :class="['label label-danger']">{{ allerros.fecha[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col cols="9">
+								<b-col cols="3">
+									<b-form-group label="Sede">
+										<b-form-select v-model="form.sede" :disabled=isModificarIngreso class="required" >
+											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
+												{{ sede.nombre }}
+											</option>
+										</b-form-select>
+										<span v-if="allerros.sede" :class="['label label-danger']">{{ allerros.sede[0] }}</span>
+									</b-form-group>
+								</b-col>
+								<b-col cols="7">
 									<b-form-group label="Doctor">
 										<b-form-select v-model="form.doctor" :disabled=isModificarIngreso class="required" >
 											<option :value="null">Ningun Doctor Seleccionado</option>
@@ -222,9 +233,11 @@
 	export default{
 		props:[
 			'url',
+			'ingreso',
 			'record',
 			'tratamientos',
 			'doctores',
+			'sedes',
 			'id',
 			'curUser',
 			'presupuesto_id'
@@ -239,7 +252,8 @@
 						{ key: 'actions', label: '', 'class': 'td-with-action' },
 						{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 						{ key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', 'class': 'td-width' },
-				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', 'class': 'td-width-trat' },
+						{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', 'class': 'td-width-trat' },
+				    { key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
 				    { key: 'cantidad', label: 'Cant.', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
@@ -280,6 +294,7 @@
 						monto: 0,
 						total: 0,
 						fecha: this.getMyDate(),
+						sede: null,
 						doctor: null
 			    },
 			    ingresoDetalleId: ''
@@ -295,6 +310,7 @@
 		   this.currentPagePac = 1
 		  },
 		  agregarTratamiento(){
+			 this.form.sede = this.ingreso.pacienteSedeId
 		   this.isAddTratamiento = true
 		   this.isModificarIngreso = false
 		  },
@@ -344,6 +360,7 @@
 
 				this.form.fecha = this.getMyDate()
 				this.form.doctor = null
+				this.form.sede = this.ingreso.pacienteSedeId
 				this.allerros = ''
 			},
 			agregarIngresoATabla(element){
@@ -489,7 +506,7 @@
 					}
 				})
 			},
-			modificarIngresoDetalle(ingresoDetalleId, fecha, doctorId, tratamiento, cantidad, monto){
+			modificarIngresoDetalle(ingresoDetalleId, fecha, doctorId, tratamiento, cantidad, monto, sedeId){
 					this.form.trats[0].id = 0
 					this.form.trats[0].precioId = this.getIdTratamientoByNombre(tratamiento)
 			    this.form.trats[0].tratamiento = tratamiento
@@ -498,6 +515,7 @@
 					this.form.trats[0].total = this.redondearADos(parseFloat(cantidad) * parseFloat(monto))
 					this.form.fecha = fecha
 					this.form.doctor = doctorId
+					this.form.sede = sedeId
 					this.isAddTratamiento = true
 					this.isModificarIngreso = true
 					this.ingresoDetalleId = ingresoDetalleId

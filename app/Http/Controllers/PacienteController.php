@@ -34,10 +34,12 @@ class PacienteController extends Controller
     public function create(){
         $empresas =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
         $empresas = json_encode($empresas);
+        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        $sedes = json_encode($sedes);
         $referencias =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Referencias_get_all()');
         $referencias = json_encode($referencias);
 
-        return view($this->path . '.create', compact('empresas', 'referencias'));
+        return view($this->path . '.create', compact('empresas', 'referencias', 'sedes'));
     }
 
     public function show($id){
@@ -45,10 +47,12 @@ class PacienteController extends Controller
         $paciente = json_encode($paciente);
         $empresas =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
         $empresas = json_encode($empresas);
+        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        $sedes = json_encode($sedes);
         $referencias =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Referencias_get_all()');
         $referencias = json_encode($referencias);
 
-        return view($this->path . '.show', compact('empresas', 'paciente', 'referencias'));
+        return view($this->path . '.show', compact('empresas', 'paciente', 'referencias', 'sedes'));
     }
 
     public function edit($id){
@@ -56,10 +60,12 @@ class PacienteController extends Controller
         $paciente = json_encode($paciente);
         $empresas =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
         $empresas = json_encode($empresas);
+        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        $sedes = json_encode($sedes);
         $referencias =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Referencias_get_all()');
         $referencias = json_encode($referencias);
 
-        return view($this->path . '.edit', compact('empresas', 'paciente', 'referencias'));
+        return view($this->path . '.edit', compact('empresas', 'paciente', 'referencias', 'sedes'));
     }
 
     public function store(Request $request){
@@ -82,6 +88,7 @@ class PacienteController extends Controller
                                     'referencia_id' => 'nullable',
                                     'nombre_apoderado' => 'nullable|string|max:150',
                                     'celular_apoderado' => 'nullable|string|max:150',
+                                    'sede_id' => 'required',
                                 ] );
         $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){
             return $input->fechanacimiento > self::getEighteenYearsFromNow();
@@ -93,7 +100,7 @@ class PacienteController extends Controller
                                                                . '", "' . $request->direccion .'", "'. $request->fechanacimiento .'", "'. $request->genero
                                                                .'", "'. $request->estado .'", "'. $request->telefono . '", "' . $request->fax . '", "' . $request->celular
                                                                . '", "'. $request->celular_aux . '", ' . $request->empresa_id . ', ' . $request->seguro_ind
-                                                               . ', "' . $request->nombre_apoderado . '", "' . $request->celular_apoderado . '", ' . $request->referencia_id .')');
+                                                               . ', "' . $request->nombre_apoderado . '", "' . $request->celular_apoderado . '", ' . $request->referencia_id . ', ' . $request->sede_id.')');
 
             if( $paciente[0]->ESTADO > 0 ){
               $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_add_all("'. $paciente[0]->LAST_ID .'")');
@@ -133,6 +140,7 @@ class PacienteController extends Controller
                         'referencia_id' => 'nullable',
                         'nombre_apoderado' => 'nullable|string|max:150',
                         'celular_apoderado' => 'nullable|string|max:150',
+                        'sede_id' => 'required',
                     ] );
         $validator->sometimes(['nombre_apoderado', 'celular_apoderado'], 'required', function($input){
             return $input->fechanacimiento > self::getEighteenYearsFromNow();
@@ -144,7 +152,7 @@ class PacienteController extends Controller
                                                                       .'", "'. $request->estado .'", "'. $request->telefono . '", "' . $request->fax . '", "' . $request->celular
                                                                       . '", "'. $request->celular_aux . '", ' . $request->empresa_id . ', ' . $request->seguro_ind
                                                                       . ', "' . $request->nombre_apoderado . '", "' . $request->celular_apoderado
-                                                                      . '", ' . $request->referencia_id .', '. $id .')');
+                                                                      . '", ' . $request->referencia_id . ', ' . $request->sede_id .', '. $id .')');
             if( $paciente[0]->ESTADO > 0 ){
               return response()->json(['success' => 'updated']);
             }else{
