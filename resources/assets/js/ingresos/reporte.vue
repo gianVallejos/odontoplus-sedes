@@ -17,7 +17,7 @@
 							{{ paciente_sede.telefono }} <br />
 						</span>
 	    			<span v-if="paciente_sede.celular != null">
-							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != null"> - </span> {{ paciente_sede.celular_aux }}
+							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != ''"> - </span> {{ paciente_sede.celular_aux }}
 						</span>
 					</div>
 				</div>
