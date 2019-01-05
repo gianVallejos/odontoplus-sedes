@@ -1739,7 +1739,7 @@ CREATE PROCEDURE `OP_Sedes_update_all_Id`(IN XID int, IN XNOMBRE varchar(150),  
                                         IN XDIRECCION varchar(100), IN XTELEFONO varchar(200), IN XCELULAR varchar(200),
                                         IN XCELAUX varchar(200), IN XEMAIL varchar(200))
 BEGIN
-  UPDATE sedes SET nombre = XNOM	BRE,  ciudad = XCIUDAD, direccion = XDIRECCION, telefono = XTELEFONO,
+  UPDATE sedes SET nombre = XNOMBRE,  ciudad = XCIUDAD, direccion = XDIRECCION, telefono = XTELEFONO,
                    celular = XCELULAR, celular_aux = XCELAUX, email = XEMAIL
     WHERE sedes.id = XID;
 
