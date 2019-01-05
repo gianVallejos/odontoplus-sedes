@@ -1,4 +1,3 @@
-
 create table if not exists citas
 (
 	id int auto_increment
@@ -193,7 +192,7 @@ create table if not exists sedes
 	ciudad varchar(150) not null,
 	direccion varchar(100) not null,
 	telefono varchar(200) null,
-	celular varchar(200) not null,
+	celular varchar(200) null,
 	celular_aux varchar(200) null,
 	email varchar(200) null,
 	constraint sede_id_uindex
@@ -210,6 +209,7 @@ create table if not exists tratamientos
 	id int auto_increment
 		primary key,
 	detalle varchar(120) not null,
+	costo_variable decimal(10,2) default '0.00' not null,
 	is_active tinyint default '1' null,
 	is_deleted tinyint default '0' null,
 	created_at timestamp null,
@@ -1315,16 +1315,16 @@ END
 
 create procedure OP_Tratamiento_get_all_id (IN XID int)
 BEGIN
-  SELECT t.id, t.detalle, t.is_active
+  SELECT t.id, t.detalle, t.costo_variable, t.is_active
   FROM tratamientos t
   WHERE t.id = XID AND t.is_deleted = '0';
 END
 ;
 
-create procedure OP_Tratamientos_add_all (IN XDETALLE varchar(120))
+create procedure OP_Tratamientos_add_all (IN XDETALLE varchar(120), IN XCOSTOVARIABLE decimal(10,2))
 BEGIN
-  INSERT INTO tratamientos (detalle, created_at, updated_at)
-  VALUES (XDETALLE, NOW(), NOW());
+  INSERT INTO tratamientos (detalle, costo_variable, created_at, updated_at)
+  VALUES (XDETALLE, XCOSTOVARIABLE, NOW(), NOW());
 
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END
@@ -1332,7 +1332,7 @@ END
 
 create procedure OP_Tratamientos_get_all ()
 BEGIN
-  SELECT t.id, t.detalle, t.is_active
+  SELECT t.id, t.detalle, t.costo_variable, t.is_active
   FROM tratamientos t
   WHERE t.is_deleted = '0' ORDER BY t.id DESC;
 END
@@ -1379,10 +1379,10 @@ BEGIN
 END
 ;
 
-create procedure OP_Tratamientos_update_all_id (IN XID int, IN XDETALLE varchar(120))
+create procedure OP_Tratamientos_update_all_id (IN XID int, IN XDETALLE varchar(120), IN XCOSTOVARIABLE decimal(10,2))
 BEGIN
   UPDATE tratamientos
-	   SET detalle = XDETALLE, updated_at = NOW()
+	   SET detalle = XDETALLE, costo_variable=XCOSTOVARIABLE, updated_at = NOW()
 	WHERE id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
