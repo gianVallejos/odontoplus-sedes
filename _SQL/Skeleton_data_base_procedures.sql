@@ -613,6 +613,7 @@ END
 DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ganancias_sede_fechas`;
+DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_get_ganancias_sede_fechas`(IN sede_id int, IN start_date date, IN end_date date)
   BEGIN
     SELECT idt.id, LPAD(ing.idPaciente, 5, '00000') as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento,
@@ -627,8 +628,9 @@ CREATE PROCEDURE `OP_Ingresos_get_ganancias_sede_fechas`(IN sede_id int, IN star
 			WHERE ( sede_id IS NULL OR idt.sedeId = sede_id )
 			AND idt.fecha BETWEEN start_date AND end_date;
 
-END;
-
+END
+;;
+DELIMITER ;
 -- ----------------------------
 --  Procedure definition for `OP_Ingresos_get_all_Id`
 -- ----------------------------
@@ -1629,15 +1631,17 @@ DELIMITER ;
 
 
 DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
-CREATE PROCEDURE OP_Citas_get_all_by_doctor_sede(IN doctorId int, IN sedeId int)
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_get_all_by_doctor_sede`(IN doctorId int, IN sedeId int)
 BEGIN
 	SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, c.idSede, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end
 		FROM citas c
 	WHERE ( doctorId IS NULL OR c.idDoctor = doctorId )
 		AND ( sedeId IS NULL OR c.idSede = sedeId);
-END;
-
+END
+;;
+DELIMITER ;
 -- ----------------------------
 --  Procedure definition for `OP_Citas_update_all`
 -- ----------------------------
@@ -1669,6 +1673,7 @@ END
 DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Citas_get_all_doctor_id`;
+DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_get_all_doctor_id`(IN doctorId int)
 BEGIN
 	SELECT c.id as idEvent, c.titulo as title, c.idPaciente, c.idDoctor, c.idSede, fecha,
@@ -1676,35 +1681,46 @@ BEGIN
 		FROM citas c
 	WHERE c.idDoctor = doctorId;
 END
-
+;;
+DELIMITER ;
 -- ----------------------------
 --  Sedes
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Sedes_get_all`;
+DELIMITER ;;
 CREATE PROCEDURE `OP_Sedes_get_all`()
 BEGIN
 	SELECT id, nombre, ciudad, direccion, telefono, celular, celular_aux, email
 	FROM sedes;
 END
+;;
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Sedes_get_all_id`;
+DELIMITER ;;
 CREATE PROCEDURE OP_Sedes_get_all_id(IN XID int)
 BEGIN
 	SELECT se.id, se.nombre, se.ciudad, se.direccion, se.telefono, se.celular, se.celular_aux, se.email
 	FROM sedes se
   WHERE se.id = XID;
-END;
+END
+;;
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Sedes_get_all_by_paciente_id`;
+DELIMITER ;;
 CREATE PROCEDURE `OP_Sedes_get_all_by_paciente_id`(IN XPACIENTEID int)
 BEGIN
 	SELECT se.id, se.nombre, se.ciudad, se.direccion, se.telefono, se.celular, se.celular_aux, se.email
 		FROM sedes se
 		INNER JOIN pacientes pc ON pc.sede_id = se.id
   WHERE pc.id = XPACIENTEID;
-END;
+END
+;;
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Sedes_add_all`;
+DELIMITER ;;
 CREATE PROCEDURE `OP_Sedes_add_all`(IN XNOMBRE varchar(150),   IN XCIUDAD varchar(150),  IN XDIRECCION varchar(100),
 	                                  IN XTELEFONO varchar(200), IN XCELULAR varchar(200), IN XCELAUX varchar(200),
 	                                  IN XEMAIL varchar(200))
@@ -1713,10 +1729,13 @@ CREATE PROCEDURE `OP_Sedes_add_all`(IN XNOMBRE varchar(150),   IN XCIUDAD varcha
     VALUES (XNOMBRE, XCIUDAD, XDIRECCION, XTELEFONO, XCELULAR, XCELAUX, XEMAIL);
 
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
-END;
+END
+;;
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Sedes_update_all_Id`;
-CREATE PROCEDURE OP_Sedes_update_all_Id(IN XID int, IN XNOMBRE varchar(150),  IN XCIUDAD varchar(150),
+DELIMITER ;;
+CREATE PROCEDURE `OP_Sedes_update_all_Id`(IN XID int, IN XNOMBRE varchar(150),  IN XCIUDAD varchar(150),
                                         IN XDIRECCION varchar(100), IN XTELEFONO varchar(200), IN XCELULAR varchar(200),
                                         IN XCELAUX varchar(200), IN XEMAIL varchar(200))
 BEGIN
@@ -1725,11 +1744,14 @@ BEGIN
     WHERE sedes.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
-END;
+END
+;;
+DELIMITER ;
 
 -- Revisar otras relaciones
 DROP PROCEDURE IF EXISTS `OP_Sedes_es_borrable_Id`;
-CREATE PROCEDURE OP_Sedes_es_borrable_Id(IN XID int)
+DELIMITER ;;
+CREATE PROCEDURE `OP_Sedes_es_borrable_Id`(IN XID int)
   BEGIN
 	DECLARE sede_status INT;
 
@@ -1742,13 +1764,18 @@ CREATE PROCEDURE OP_Sedes_es_borrable_Id(IN XID int)
 	ELSE
 		SELECT 0 as CAN_DELETE; -- NO SE DEBE BORRAR --
 	END IF;
-END;
+END
+;;
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Sedes_delete_all`;
-CREATE PROCEDURE OP_Sedes_delete_all(IN XID int)
+DELIMITER ;;
+CREATE PROCEDURE `OP_Sedes_delete_all`(IN XID int)
   BEGIN
 	DELETE FROM sedes
 		WHERE sedes.id = XID;
 
 	ALTER TABLE sedes AUTO_INCREMENT = 1;
-END;
+END
+;;
+DELIMITER ;
