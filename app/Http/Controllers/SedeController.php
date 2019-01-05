@@ -15,7 +15,7 @@ class SedeController extends Controller{
         'ciudad' => 'required|string|max:150',
         'direccion' => 'required|string|max:100',
         'telefono' => 'nullable|string|max:200',
-        'celular' => 'required|string|max:200',
+        'celular' => 'nullable|string|max:200',
         'celular_aux' => 'nullable|string|max:200',
         'email' => 'nullable|email|string|max:200'
     ];

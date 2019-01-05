@@ -64,23 +64,23 @@
 														:disabled=isDisabled placeholder="Nombre" autocomplete="off"/>
 													<span v-if="all_errors.nombre" :class="['label label-danger']">{{ all_errors.nombre[0] }}</span>
 										    </b-form-group>
-												<b-form-group label="Ciudad" label-for="ciudad">
-													<b-form-input id="ciudad" type="text"	v-model="form.ciudad" class="required"
-														:disabled=isDisabled placeholder="Ciudad" autocomplete="off"/>
-													<span v-if="all_errors.ciudad" :class="['label label-danger']">{{ all_errors.ciudad[0] }}</span>
-												</b-form-group>
 										    <b-form-group label="Dirección" label-for="direccion">
 											    <b-form-input id="direccion" type="text"	v-model="form.direccion" class="required"
 														:disabled=isDisabled placeholder="Dirección" autocomplete="off"/>
 													<span v-if="all_errors.direccion" :class="['label label-danger']">{{ all_errors.direccion[0] }}</span>
 										    </b-form-group>
+												<b-form-group label="Ciudad" label-for="ciudad">
+													<b-form-input id="ciudad" type="text"	v-model="form.ciudad" class="required"
+														:disabled=isDisabled placeholder="Ciudad" autocomplete="off"/>
+													<span v-if="all_errors.ciudad" :class="['label label-danger']">{{ all_errors.ciudad[0] }}</span>
+												</b-form-group>
 												<b-form-group label="Teléfono" label-for="telefono">
 													<b-form-input id="telefono" type="text"	v-model="form.telefono"
 														:disabled=isDisabled placeholder="Teléfono" autocomplete="off"/>
 													<span v-if="all_errors.telefono" :class="['label label-danger']">{{ all_errors.telefono[0] }}</span>
 												</b-form-group>
 												<b-form-group label="Celular" label-for="celular">
-													<b-form-input id="celular" type="text"	v-model="form.celular" class="required"
+													<b-form-input id="celular" type="text"	v-model="form.celular"
 														:disabled=isDisabled placeholder="Celular" autocomplete="off"/>
 													<span v-if="all_errors.celular" :class="['label label-danger']">{{ all_errors.celular[0] }}</span>
 												</b-form-group>

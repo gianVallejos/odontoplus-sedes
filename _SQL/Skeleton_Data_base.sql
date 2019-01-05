@@ -269,7 +269,7 @@ CREATE Table `sedes` (
 	ciudad varchar(150) not null,
 	direccion varchar(100) not null,
 	telefono varchar(200) null,
-	celular varchar(200) not null,
+	celular varchar(200) null,
 	celular_aux varchar(200) null,
 	email varchar(200) null,
 	PRIMARY KEY (`id`)

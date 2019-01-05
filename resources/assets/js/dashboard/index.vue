@@ -288,7 +288,7 @@
 							subname: 'Ver ',
 							name: 'Ganancias Totales',
 							color: 'modificar',
-							url: this.url + '/reportes/ganancias',
+							url: this.url + '/ganancias',
 							for_admin: true
 						},
 
