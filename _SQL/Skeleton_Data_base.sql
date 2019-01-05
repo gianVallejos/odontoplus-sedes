@@ -305,3 +305,8 @@ INSERT INTO `tratamientos` VALUES ('28', 'Incrustacion Metal', '1', '0', '2018-1
 INSERT INTO `tratamientos` VALUES ('29', 'Resina Compuesta', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('30', 'Resina Compleja', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('31', 'Sellantes por pieza dental', '2018-11-27', '1', '0', '2018-11-27');
+
+-- ----------------------------
+-- Records of sedes
+-- ----------------------------
+INSERT INTO `sedes` VALUES ('1', 'Odontoplus Sede', 'Cajamarca', 'Dirección Ejemplo', 'Teléfono Ejemplo', 'Celular', 'Celular Aux.', 'sede@Odontoplus.pe');
