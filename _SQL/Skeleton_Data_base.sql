@@ -337,7 +337,7 @@ INSERT INTO `tratamientos` VALUES ('31', 'Sellantes por pieza dental', '2018-11-
 -- ----------------------------
 -- Records of sedes
 -- ----------------------------
-INSERT INTO `sedes` VALUES ('1', 'Odontoplus Sede', 'Cajamarca', 'Dirección Ejemplo', 'Teléfono Ejemplo', 'Celular', 'Celular Aux.', 'sede@Odontoplus.pe');
+INSERT INTO `sedes` VALUES ('1', 'Odontoplus Principal', 'Cajamarca', 'Av. Miguel Grau 656', '', '982780954', '', 'contacto@Odontoplus.pe');
 -- ----------------------------
 -- Records of sillones
 -- ----------------------------

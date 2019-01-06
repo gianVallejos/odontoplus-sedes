@@ -7,16 +7,16 @@
 						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
 					</div>
 					<div class="pr-descripcion-logo">
-						<span v-if="paciente_sede.direccion != null">
+						<span v-if="paciente_sede.direccion != ''">
 							{{ paciente_sede.direccion }} {{ paciente_sede.ciudad }} - Perú<br/>
 						</span>
-						<span v-if="paciente_sede.email != null">
+						<span v-if="paciente_sede.email != ''">
 							{{ paciente_sede.email }} <br />
 						</span>
-						<span v-if="paciente_sede.telefono != null">
+						<span v-if="paciente_sede.telefono != ''">
 							{{ paciente_sede.telefono }} <br />
 						</span>
-	    			<span v-if="paciente_sede.celular != null">
+	    			<span v-if="paciente_sede.celular != ''">
 							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != ''"> - </span> {{ paciente_sede.celular_aux }}
 						</span>
 					</div>
@@ -35,6 +35,10 @@
 							<tr>
 								<td class="pr-title">PACIENTE: </td>
 								<td colspan="3">{{ igeneral.nombrePaciente }}</td>
+							</tr>
+							<tr>
+								<td class="pr-title">SEDE: </td>
+								<td colspan="3">{{ igeneral.pacienteSedeNombre }}</td>
 							</tr>
 							<tr>
 								<td class="pr-title" >TOTAL: </td>

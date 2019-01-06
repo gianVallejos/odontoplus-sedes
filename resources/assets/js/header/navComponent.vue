@@ -78,43 +78,38 @@
 
 		        </ul>
 		      </li>
-		      <li class="item dropdown"  v-bind:class="[(whoIsActive == 'tratamientos') ? 'active' : '']">
-		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-		        	<i class="fas fa-tooth"></i>Tratamientos
-		        	<i class="fa fa-angle-down lnr"></i>
-			    	</a>
-		        <ul class="dropdown-menu">
-		          	<li class="li-dropdown" style="width: 160px;" >
-		          		<a :href="url + '/tratamientos'" v-bind:class="[(whoIsActiveDetail == 'tratamientos') ? 'active' : '']">
-		          			<i class="fas fa-list-ul"></i>Lista de Tratamientos
-		          		</a>
-		          	</li>
-		          	<li class="li-dropdown" style="width: 160px;" >
-		          		<a :href="url + '/precios'" v-bind:class="[(whoIsActiveDetail == 'precios') ? 'active' : '']">
-		          			<i class="fas fa-dollar-sign"></i>Precio de Tratamientos
-		          		</a>
-		          	</li>
-		          	<li class="li-dropdown">
-			          	<a :href="url + '/empresas'" v-bind:class="[(whoIsActiveDetail == 'empresas') ? 'active' : '']">
-			          		<i class="fas fa-building"></i>Empresas
-			          	</a>
-		        		</li>
-								<li class="li-dropdown">
-									<a :href="url + '/sedes'" v-bind:class="[(whoIsActiveDetail == 'sedes') ? 'active' : '']">
-										<i class="fas fa-building"></i>Sedes
-									</a>
-								</li>
-		        	<!--li class="li-dropdown">
-			          	<a :href="url + '/proveedores'">
-			          		<i class="fas fa-flask"></i>Proveedores
-			          	</a>
-		        	</li-->
-		        </ul>
-		      </li>
 					<li class="item" v-bind:class="[(whoIsActive == 'citas') ? 'active' : '']">
 		      	<a :href="url + '/citas'">
 		      		<i class="fas fa-calendar-alt"></i> Citas
 		      	</a>
+		      </li>
+					<li class="item dropdown"  v-if="user.rolid == 1" v-bind:class="[(whoIsActive == 'adicional') ? 'active' : '']">
+		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+		        	<i class="fas fa-plus"></i>
+		        	<i class="fa fa-angle-down lnr"></i>
+		    	</a>
+		        <ul class="dropdown-menu">
+							<li class="li-dropdown" style="width: 160px;" >
+								<a :href="url + '/tratamientos'" v-bind:class="[(whoIsActiveDetail == 'tratamientos') ? 'active' : '']">
+									<i class="fas fa-tooth"></i>Tratamientos
+								</a>
+							</li>
+							<li class="li-dropdown" style="width: 160px;" >
+								<a :href="url + '/precios'" v-bind:class="[(whoIsActiveDetail == 'precios') ? 'active' : '']">
+									<i class="fas fa-dollar-sign"></i>Precios
+								</a>
+							</li>
+							<li class="li-dropdown">
+								<a :href="url + '/empresas'" v-bind:class="[(whoIsActiveDetail == 'empresas') ? 'active' : '']">
+									<i class="fas fa-building"></i>Empresas
+								</a>
+							</li>
+							<li class="li-dropdown">
+								<a :href="url + '/sedes'" v-bind:class="[(whoIsActiveDetail == 'sedes') ? 'active' : '']">
+									<i class="fas fa-bezier-curve"></i>Sedes
+								</a>
+							</li>
+		        </ul>
 		      </li>
 
 		    </ul>
@@ -168,14 +163,17 @@
 						this.whoIsActive = 'informes'
 						this.whoIsActiveDetail = 'reportes'
 				}else if( this.curUrl.includes('tratamientos') ){
-						this.whoIsActive = 'tratamientos'
+						this.whoIsActive = 'adicional'
 						this.whoIsActiveDetail = 'tratamientos'
 				}else if( this.curUrl.includes('precios') ){
-						this.whoIsActive = 'tratamientos'
+						this.whoIsActive = 'adicional'
 						this.whoIsActiveDetail = 'precios'
 				}else if( this.curUrl.includes('empresas') ){
-						this.whoIsActive = 'tratamientos'
+						this.whoIsActive = 'adicional'
 						this.whoIsActiveDetail = 'empresas'
+				}else if( this.curUrl.includes('/sedes') ){
+						this.whoIsActive = 'adicional'
+						this.whoIsActiveDetail = 'sedes'
 				}else if( this.curUrl.includes('citas') ){
 						this.whoIsActive = 'citas'
 				}else{

@@ -52,7 +52,7 @@ return [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'port' => '3306',
-            'database' => 'op_main_bd_v3_2',
+            'database' => 'op_sedes_bd',
             'username' => 'root',
             'password' => '',
             'unix_socket' => env('DB_SOCKET', ''),

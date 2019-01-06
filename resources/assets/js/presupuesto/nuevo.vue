@@ -30,7 +30,7 @@
 										<span>Empresa:</span><div class="d-inline-block texto">{{ paciente.empresa }}</div>
 									</b-col>
 									<b-col cols="6 pb-2">
-										<span>Sede:</span><div class="d-inline-block texto">Cajamarca</div>
+										<span>Sede:</span><div class="d-inline-block texto">{{ paciente.sede_nombre }}</div>
 									</b-col>
 							</b-row>
 						</div>
@@ -398,11 +398,11 @@
 							this.$refs.spinnerContainerRef.hideSpinner()
 							this.isSuccess = true
 							this.toastFunctionRedirect('<span style="#fff; font-size: 1em">Éxito</span>', 'Presupuesto guardado correctamente', 'success')
-						}						
+						}
 				}).catch((error) => {
 						this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
 						this.$refs.spinnerContainerRef.hideSpinner()
-          })					
+          })
 			},
 			esResina(value){
 	            if( value <= 5 ) return true;
@@ -549,7 +549,7 @@
 					this.tratamientos.push({pieza, seccion, secUno: null, secDos: null, opcion: this.opcion, monto: this.precios[ind_sec_tabla].monto})
 					this.mostrarTratamientosEnTabla()
 				}
-				
+
 	        },
 	        despintarSeccionDiente(seccion, pieza){
 	        	var sec = 'pz' + pieza
