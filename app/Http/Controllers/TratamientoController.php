@@ -40,7 +40,8 @@ class TratamientoController extends Controller{
     public function store(Request $request){
     	$validator = Validator::make($request->all(), [
             'detalle' => 'required|string|max:120',
-            'precio_estandar' => 'required|numeric|between:0,99999999.99'
+            'precio_estandar' => 'required|numeric|between:0,99999999.99',
+            'costo_variable' => 'required|numeric|max:'. ($request->precio_estandar) .'|between:0,99999999.99'
         ]);
 
     	if ($validator->passes()) {
@@ -49,7 +50,7 @@ class TratamientoController extends Controller{
                 $tratamiento = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamientos_add_all("'.$request->detalle.'")');
 
                 if ( $tratamiento[0]->ESTADO > 0 && $tratamiento[0]->LAST_ID != 0) {
-                  $pricesInserted = self::insertCompaniesStandardPrices($tratamiento[0]->LAST_ID, $request->precio_estandar);
+                  $pricesInserted = self::insertCompaniesStandardPrices($tratamiento[0]->LAST_ID, $request->precio_estandar, $request->costo_variable);
                 }
 
                 if($pricesInserted){
@@ -66,11 +67,11 @@ class TratamientoController extends Controller{
         return response()->json(['error'=>$validator->errors()]);
     }
 
-    public function insertCompaniesStandardPrices($treatmentId, $price){
+    public function insertCompaniesStandardPrices($treatmentId, $price, $costo_variable){
         $companies = DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
 
         foreach ($companies as $company) {
-            $precio = DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_add_all('.$company->id.','.$treatmentId.','.$price.')');
+            $precio = DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_add_all('.$company->id.','.$treatmentId.','.$price.', '. $costo_variable .')');
             if($precio[0]->ESTADO == 0) return false;
         }
         return true;

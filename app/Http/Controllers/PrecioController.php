@@ -30,11 +30,12 @@ class PrecioController extends Controller{
 
     public function update(Request $request, $id){
     	$validator = Validator::make($request->all(), [
-            'monto' => 'required|numeric|between:0,99999999.99'
+            'monto' => 'required|numeric|between:0,99999999.99',
+            'costo_variable' => 'required|numeric|between:0,99999999.99'
         ]);
 
     	if ($validator->passes()) {
-          $precio =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_update_monto_Id('. $request->monto .', '. $id .')');
+          $precio =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_update_monto_Id('. $request->monto .', '. $request->costo_variable .', '. $id .')');
           if( $precio[0]->ESTADO > 0 ){
               return response()->json(['success' => 'success']);
           }else{
