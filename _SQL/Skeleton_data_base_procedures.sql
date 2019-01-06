@@ -434,19 +434,17 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_Detalle_add_all`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT,
-																							 IN XMONTO DECIMAL(11, 2), IN XCOSTO_VARIABLE DECIMAL(10, 2),
-																							 IN XFECHA DATE, IN XDOCTOR INT, IN XCODIGO VARCHAR(120),
-																							 IN XTIPO_PAGO INT, IN XID_SEDE INT)
+CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO int, IN XID_PRECIO int, IN XCANTIDAD int,
+	                                             IN XMONTO      decimal(11, 2), IN XFECHA date, IN XSEDEID int,
+	                                             IN XDOCTOR     int)
 	BEGIN
 		DECLARE MONTO_TOTAL DECIMAL(11, 2);
 		DECLARE XMARGEN DECIMAL(10, 0);
 
 		SELECT margen_ganancia INTO XMARGEN FROM doctors WHERE doctors.id = XDOCTOR;
 
-		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto, costo_variable, fecha, doctorId, margen_ganancia, codigo, tipo_pago, sedeId)
-				VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO, XCOSTO_VARIABLE, XFECHA, XDOCTOR, XMARGEN, XCODIGO, XTIPO_PAGO, XID_SEDE);
-
+		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto, fecha, doctorId, margen_ganancia, sedeId)
+			VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO, XFECHA, XDOCTOR, XMARGEN, XSEDEID);
 
 END
 ;;
@@ -473,9 +471,8 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_Detalle_get_all_Id`(IN XID_INGRESO INT)
 BEGIN
 	SELECT idt.id, trat.id as idTratamiento, trat.detalle as tratamiento,
-				 doc.id as idDoctor, CONCAT(doc.nombres, ' ', doc.apellidos) as nombreDoctor,
-				 idt.codigo, idt.tipo_pago, idt.sedeId as sede, sed.nombre as nombre_sede,
-				 idt.cantidad * idt.monto as total, idt.codigo, idt.tipo_pago, idt.sedeId as sede, sed.nombre as nombre_sede,
+				 doc.id as idDoctor, CONCAT(doc.nombres, ' ', doc.apellidos) as nombreDoctor, sed.nombre as nombre_sede,
+				 idt.cantidad * idt.monto as total,
 				 ROUND(IFNULL(SUM(idt.monto * idt.cantidad) * doc.margen_ganancia/100, 0), 2) as mg,
 				 ROUND(IFNULL(SUM(idt.monto * idt.cantidad) - (SUM(idt.monto * idt.cantidad) * doc.margen_ganancia/100), 0), 2) as mg_core,
 				 idt.cantidad, idt.monto, idt.fecha as fecha, idt.sedeId as sede
@@ -527,14 +524,11 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_Detalle_update_all`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_Detalle_update_all`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT,
-																									IN XMONTO DECIMAL(11, 2), IN XFECHA DATE, IN XDOCTOR INT,
-																									IN XCODIGO VARCHAR(120), IN XTIPO_PAGO INT, IN XID_SEDE INT,
-																									IN XID INT)
+CREATE PROCEDURE `OP_Ingresos_Detalle_update_all`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT, IN XMONTO DECIMAL(11, 2), IN XID INT, IN XFECHA DATE, IN XDOCTOR INT)
 BEGIN
 		DECLARE MONTO_TOTAL DECIMAL(11, 2);
 
-		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO, fecha = XFECHA, doctorId = XDOCTOR, codigo = XCODIGO, tipo_pago = XTIPO_PAGO, sedeId = XID_SEDE
+		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO, fecha = XFECHA, doctorId = XDOCTOR
 		WHERE ingresos_detalle.id = XID;
 
 END
@@ -1172,10 +1166,10 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Precios_add_all`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Precios_add_all`(IN empresaId int, IN tratamientoId int, IN precio decimal, IN XCOSTO_VARIABLE DECIMAL(10, 2))
+CREATE PROCEDURE `OP_Precios_add_all`(IN empresaId int, IN tratamientoId int, IN precio decimal)
 BEGIN
-	INSERT INTO precios (idEmpresa, idTratamiento, monto, costo_variable, created_at, updated_at) values (empresaId, tratamientoId, precio, XCOSTO_VARIABLE, NOW(), NOW());
-	SELECT ROW_COUNT() AS ESTADO;
+  INSERT INTO precios (idEmpresa, idTratamiento, monto, created_at, updated_at) values (empresaId, tratamientoId, precio, NOW(), NOW());
+  SELECT ROW_COUNT() AS ESTADO;
 END
 ;;
 DELIMITER ;
@@ -1218,7 +1212,7 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Precios_get_all_standard`()
 BEGIN
 	SELECT precios.id, precios.idTratamiento AS id_tratamiento, tratamientos.detalle AS tratamiento,
-         precios.idEmpresa AS id_empresa, precios.monto AS monto, precios.costo_variable as costo_variable
+         precios.idEmpresa AS id_empresa, precios.monto AS monto
   FROM precios
 		INNER JOIN tratamientos on precios.idTratamiento = tratamientos.id
 		INNER JOIN empresas on precios.idEmpresa = empresas.id
@@ -1235,9 +1229,7 @@ DROP PROCEDURE IF EXISTS `OP_Precios_get_by_empresa_tratamiento_Id`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Precios_get_by_empresa_tratamiento_Id`(IN empresaId INT, IN tratamientoId INT)
 BEGIN
-	SELECT precios.id, precios.idTratamiento AS id_tratamiento,
-				 precios.idEmpresa AS id_empresa, precios.monto AS monto,
-				 precios.costo_variable as costo_variable
+	SELECT precios.id, precios.idTratamiento AS id_tratamiento, precios.idEmpresa AS id_empresa, precios.monto AS monto
   FROM precios
   WHERE precios.idEmpresa = empresaId AND precios.idTratamiento = tratamientoId;
 END
@@ -1249,9 +1241,9 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Precios_update_monto_Id`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Precios_update_monto_Id`(IN XMONTO DECIMAL(10, 2), IN XCOSTO_VARIABLE DECIMAL(10, 2), IN XID INT)
+CREATE PROCEDURE `OP_Precios_update_monto_Id`(IN XMONTO DECIMAL(10, 2), IN XID INT)
 BEGIN
-	UPDATE precios SET monto = XMONTO, costo_variable = XCOSTO_VARIABLE, updated_at = NOW() WHERE precios.id = XID;
+	UPDATE precios SET monto = XMONTO, updated_at = NOW() WHERE precios.id = XID;
 	SELECT ROW_COUNT() AS ESTADO;
 END
 ;;
@@ -1664,10 +1656,10 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `OP_Citas_update_all`;
 DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_update_all`(IN XID    int, IN XIDPACIENTE int,  IN XTRATAMIENTO VARCHAR(200), IN XFECHA date, IN XDESDE time,
-                                      	IN XHASTA time, IN XIDPACIENTE int, IN XIDDOCTOR int, IN XIDSEDE int,  IN XSILLON INT)
+                                      	IN XHASTA time, IN XIDDOCTOR int, IN XIDSEDE int,  IN XSILLON INT)
 BEGIN
-	UPDATE citas SET titulo = XTITULO, fecha = XFECHA, desde = XDESDE, hasta = XHASTA, idPaciente = XIDPACIENTE,
-									 idDoctor = XIDDOCTOR, idSede = XIDSEDE
+	UPDATE citas SET fecha = XFECHA, desde = XDESDE, hasta = XHASTA, idPaciente = XIDPACIENTE, tratamiento = XTRATAMIENTO,
+									 idDoctor = XIDDOCTOR, idSede = XIDSEDE, idSillon = XSILLON
 		WHERE citas.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
@@ -1699,7 +1691,6 @@ BEGIN
 END
 ;;
 DELIMITER ;
-
 -- ----------------------------
 --  Sedes
 -- ----------------------------
