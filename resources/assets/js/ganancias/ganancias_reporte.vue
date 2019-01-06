@@ -36,7 +36,7 @@
 							<td>{{igeneral.fechaFinal}}</td>
 						</tr>
 						<tr>
-							<td class="pr-title">TOTAL: </td>
+							<td class="pr-title">TOTAL EMP: </td>
 							<td colspan="3">S/ {{ igeneral.totales.total }}</td>
 						</tr>
 					</table>
@@ -83,6 +83,12 @@
 					</template>
 					<template slot="total" slot-scope="row">
 						S/. {{ row.value }}
+					</template>
+					<template slot="total_empresa" slot-scope="row">
+						S/. {{ row.item.total_empresa }}
+					</template>
+					<template slot="costo_variable" slot-scope="row">
+						S/. {{ row.item.costo_variable }}
 					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
@@ -143,10 +149,11 @@
 					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc', class: 'text-center' },
 					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
 					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
-					{ key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
 					{ key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', class: 'text-center' },
 					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'text-center' },
 					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'text-center' },
+          { key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-center' },
+          { key: 'total_empresa', label: 'Total Emp.', sortable: true, 'class': 'text-center' },
 					{ key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],
 			}

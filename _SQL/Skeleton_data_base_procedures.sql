@@ -473,7 +473,7 @@ CREATE PROCEDURE `OP_Ingresos_Detalle_get_all_Id`(IN XID_INGRESO INT)
 BEGIN
 	SELECT idt.id, trat.id as idTratamiento, trat.detalle as tratamiento,
 				 doc.id as idDoctor, CONCAT(doc.nombres, ' ', doc.apellidos) as nombreDoctor,
-				 idt.cantidad * idt.monto as total, idt.codigo, idt.tipo_pago, idt.sedeId as sede, sed.nombre as nombre_sede,
+				 idt.cantidad * idt.monto as total, idt.codigo, idt.tipo_pago, tp.nombre as tipo_pago_nombre, idt.sedeId as sede, sed.nombre as nombre_sede,
 				 ROUND(IFNULL(SUM(idt.monto * idt.cantidad) * doc.margen_ganancia/100, 0), 2) as mg,
 				 ROUND(IFNULL(SUM(idt.monto * idt.cantidad) - (SUM(idt.monto * idt.cantidad) * doc.margen_ganancia/100), 0), 2) as mg_core,
 				 idt.cantidad, idt.monto, idt.fecha as fecha, idt.sedeId as sede
@@ -482,6 +482,7 @@ BEGIN
 		INNER JOIN sedes as sed on sed.id = idt.sedeId
 		INNER JOIN precios on precios.id = idt.precioId
 		INNER JOIN tratamientos as trat on trat.id = precios.idTratamiento
+		LEFT JOIN tipo_pago as tp on tp.id = idt.tipo_pago
 		LEFT JOIN doctors as doc on doc.id = idt.doctorId
 	WHERE idt.ingresoId = XID_INGRESO AND ingresos.is_deleted = 0
 	GROUP BY idt.id

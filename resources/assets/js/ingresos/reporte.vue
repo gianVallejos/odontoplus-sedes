@@ -131,13 +131,15 @@
 				logoUrl: '',
 				fields: [
 					{ key: 'index', label: '#' },
-				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
-						{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
-				    { key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
-				    { key: 'cantidad', label: 'Cantidad', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
-				    { key: 'monto', label: 'Monto', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
-				    { key: 'total', label: 'Total', 'class': 'text-center', sortable: true, sortDirection: 'desc' }
+					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
+					{ key: 'codigo', label: 'Código', sortable: true, sortDirection: 'desc' },
+					{ key: 'tipo_pago_nombre', label: 'Pago', sortable: true, sortDirection: 'desc' },
+					{ key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
+					{ key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', 'class': 'td-width' },
+					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', 'class': 'td-width-trat' },
+					{ key: 'cantidad', label: 'Cant.', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', 'class': 'text-center' }
 			    ]
 			}
 		},

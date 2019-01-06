@@ -70,7 +70,7 @@
 	@endif
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/app.js?v=1.3.31') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.3.32') }}"></script>
 
 
 </body>

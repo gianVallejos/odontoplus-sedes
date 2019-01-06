@@ -45,6 +45,10 @@
 								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>
 							</tr>
 							<tr class="hide-print">
+								<td class="pr-title">TOTAL EMP: </td>
+								<td colspan="3">S/ {{ igeneral.totales.total_ganancia }}</td>
+							</tr>
+							<tr class="hide-print">
 								<td class="pr-title">TOTAL: </td>
 								<td colspan="3">S/ {{ igeneral.totales.total }}</td>
 							</tr>
@@ -93,11 +97,14 @@
 					<template slot="monto" slot-scope="row" class="hide-print">
 						S/. {{ row.item.monto }}
 					</template>
+					<template slot="costo_variable" slot-scope="row" class="hide-print">
+						S/. {{ row.item.costo_variable }}
+					</template>
 					<template slot="total" slot-scope="row">
 						S/. {{ row.item.total }}
 					</template>
 					<template slot="empresa" slot-scope="row">
-						S/. {{ calculateEmpresaAmount(row.item.total, row.item.doctor)}}
+						S/. {{ calculateEmpresaAmount(row.item.total_empresa, row.item.doctor)}}
 					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
@@ -110,6 +117,14 @@
 				</div>
 				<div class="d-inline-block" style="width: 150px">
 					S/ {{ igeneral.totales.total_doctor }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" >
+					<span>Total Emp: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_ganancia }}
 				</div>
 			</b-col>
 			<b-col cols="12" class="text-right monto-class hide-print">
@@ -173,6 +188,7 @@
 					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
 					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
 					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
+					{ key: 'costo_variable', label: 'C.V.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
 					{ key: 'empresa', label: 'Total Emp.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
 					{ key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],

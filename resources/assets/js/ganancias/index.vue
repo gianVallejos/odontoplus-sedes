@@ -85,12 +85,18 @@
 							<template slot="total" slot-scope="row">
 								S/. {{ row.item.total }}
 							</template>
+              <template slot="total_empresa" slot-scope="row">
+								S/. {{ row.item.total_empresa }}
+							</template>
+              <template slot="costo_variable" slot-scope="row">
+								S/. {{ row.item.costo_variable }}
+							</template>
 
 							<template slot="doctor" slot-scope="row">
 								S/. {{ row.item.doctor }}
 							</template>
 							<template slot="ganancia" slot-scope="row">
-								S/. {{ redondearADos(row.item.total - row.item.doctor) }}
+								S/. {{ redondearADos(row.item.total_empresa - row.item.doctor) }}
 							</template>
             </b-table>
 
@@ -142,6 +148,8 @@
 					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center' },
 					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center' },
 					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-center' },
+          { key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-center' },
+          { key: 'total_empresa', label: 'Total Emp.', sortable: true, 'class': 'text-center' },
 					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-center'}
 				],
 				gananciasRecords: [ ],
