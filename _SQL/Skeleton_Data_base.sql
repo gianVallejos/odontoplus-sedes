@@ -1,4 +1,20 @@
 -- ----------------------------
+-- Table structure for tipo_pago
+-- ----------------------------
+DROP TABLE IF EXISTS `tipo_pago`;
+CREATE TABLE `tipo_pago` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tipo_pago
+-- ----------------------------
+INSERT INTO `tipo_pago` VALUES ('1', 'Efectivo');
+INSERT INTO `tipo_pago` VALUES ('2', 'Tarjeta Débito');
+INSERT INTO `tipo_pago` VALUES ('3', 'Tarjeta Crédito');
+-- ----------------------------
 --  Table structure for `ingresos_detalle`
 -- ----------------------------
 DROP TABLE IF EXISTS `ingresos_detalle`;
