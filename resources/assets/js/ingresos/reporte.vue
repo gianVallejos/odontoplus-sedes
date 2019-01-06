@@ -37,6 +37,10 @@
 								<td colspan="3">{{ igeneral.nombrePaciente }}</td>
 							</tr>
 							<tr>
+								<td class="pr-title">SEDE: </td>
+								<td colspan="3">{{ igeneral.pacienteSedeNombre }}</td>
+							</tr>
+							<tr>
 								<td class="pr-title" >TOTAL: </td>
 								<td colspan="3">S/ {{ igeneral.monto_total }}</td>
 							</tr>

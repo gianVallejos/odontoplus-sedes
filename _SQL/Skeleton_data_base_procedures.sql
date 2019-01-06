@@ -1370,9 +1370,10 @@ DROP PROCEDURE IF EXISTS `OP_Presupuestos_get_pacientes`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Presupuestos_get_pacientes`(IN XID_PACIENTES INT)
 BEGIN
-	SELECT LPAD(pacientes.id, 5, '0') as id, pacientes.nombres, pacientes.apellidos, empresas.nombre as empresa, pacientes.empresa_id
+	SELECT LPAD(pacientes.id, 5, '0') as id, pacientes.nombres, pacientes.apellidos, empresas.nombre as empresa, pacientes.empresa_id, sedes.id as sede_id, sedes.nombre as sede_nombre
 		FROM pacientes
 		INNER JOIN empresas on empresas.id = pacientes.empresa_id
+		INNER JOIN sedes on sedes.id = pacientes.sede_id
 	WHERE pacientes.id = XID_PACIENTES;
 END
 ;;
