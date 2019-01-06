@@ -71,6 +71,11 @@
 											    			  :disabled=isDisabled placeholder="Precio Estandar" autocomplete="off"/>
 													<span v-if="all_errors.precio_estandar" :class="['label label-danger']">{{ all_errors.precio_estandar[0] }}</span>
 										    </b-form-group>
+                        <b-form-group label="Costo Variable" label-for="costo_variable" v-if="displayStatus == 'new'">
+											    <b-form-input id="costo_variable" type="number" step="0.1" class="required" v-model="form.costo_variable"
+											    			  :disabled=isDisabled placeholder="Costo Variable" autocomplete="off"/>
+													<span v-if="all_errors.costo_variable" :class="['label label-danger']">{{ all_errors.costo_variable[0] }}</span>
+										    </b-form-group>
 										</b-col>
 									</b-row>
 							</div>
@@ -143,7 +148,8 @@
       return{
         form: {
 				detalle: '',
-				precio_estandar: ''
+				precio_estandar: 0.00,
+        costo_variable: 0.00
 		},
 		record_id: '',
 		all_errors: [],

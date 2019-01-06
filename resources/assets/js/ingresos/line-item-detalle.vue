@@ -33,7 +33,7 @@
 							<template slot="actions" slot-scope="row">
 						        <div class="actions-table" v-if="curUser.rolid == 1">
 						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento,
-																															row.item.cantidad, row.item.monto, row.item.sede )" class="action">Modificar</a>
+																															row.item.cantidad, row.item.monto, row.item.codigo, row.item.tipo_pago, row.item.sede )" class="action">Modificar</a>
 						        	<a v-on:click="eliminarIngresoDetalle(row.item.id)" class="action">Eliminar</a>
 						        </div>
 						    </template>
@@ -83,9 +83,22 @@
 										<span v-if="allerros.fecha" :class="['label label-danger']">{{ allerros.fecha[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col cols="3">
+								<b-col cols="2">
+									<b-form-group label="Código" label-for="codigo">
+										<b-form-input id="codigo" type="text" v-model="form.codigo" placeholder="Código de Boleta/Factura"
+																	 :disabled=isDisabled autocomplete="off" />
+										<span v-if="allerros.codigo" :class="['label label-danger']">{{ allerros.codigo[0] }}</span>
+									</b-form-group>
+								</b-col>
+								<b-col cols="2">
+									<b-form-group label="Tipo de Pago" label-for="tipo_pago">
+										<b-form-select id="tipo_pago" v-model="form.tipo_pago" :options="tipo_pago.options" :disabled=isDisabled />
+										<span v-if="allerros.tipo_pago" :class="['label label-danger']">{{ allerros.tipo_pago[0] }}</span>
+									</b-form-group>
+								</b-col>
+								<b-col cols="2">
 									<b-form-group label="Sede">
-										<b-form-select v-model="form.sede" :disabled=isModificarIngreso class="required" >
+										<b-form-select v-model="form.sede" class="required" >
 											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
 												{{ sede.nombre }}
 											</option>
@@ -93,7 +106,7 @@
 										<span v-if="allerros.sede" :class="['label label-danger']">{{ allerros.sede[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col cols="7">
+								<b-col cols="4">
 									<b-form-group label="Doctor">
 										<b-form-select v-model="form.doctor" :disabled=isModificarIngreso class="required" >
 											<option :value="null">Ningun Doctor Seleccionado</option>
@@ -202,7 +215,7 @@
 									</template>
 									<template slot="actions" slot-scope="row" class="md-2">
 									    <div class="actions-table" style="color: #d1d1d1">
-									       <a v-on:click.prevent="agregarTratamientoFromModal(row.item.id, row.item.detalle, row.item.monto)" href="#" class="action">Seleccionar</a>
+									       <a v-on:click.prevent="agregarTratamientoFromModal(row.item.id, row.item.detalle, row.item.monto, row.item.costo_variable)" href="#" class="action">Seleccionar</a>
 									    </div>
 									</template>
 							</b-table>
@@ -253,7 +266,6 @@
 						{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 						{ key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', 'class': 'td-width' },
 						{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', 'class': 'td-width-trat' },
-				    { key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
 				    { key: 'cantidad', label: 'Cant.', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
@@ -278,6 +290,13 @@
 				    { key: 'monto', label: 'Monto', 'class': 'text-center' },
 				    { key: 'actions', label: '', sortable: false }
 			    ],
+	    		tipo_pago: {
+	    			options: [
+	    						  {value: "1", text: "Efectivo"},
+	    						  {value: "2", text: "Tarjeta Débito"},
+	                  {value: "3", text: "Tarjeta Crédito"}
+	    			]
+	    		},
 			    currentPagePac: 1,
 			   	perPagePac: 7,
 			    totalRowsPac: 0,
@@ -289,12 +308,14 @@
 					trat_id_general: null,
 			    form: {
 			    	ingresoId: this.id,
-						trats: [{id: 0, precioId: '', tratamiento: '', cantidad: 1, monto: 0, total: 0}],
+						codigo: '',
+						tipo_pago: 1,
+						trats: [{id: 0, precioId: '', tratamiento: '', cantidad: 1, monto: 0, costo_variable: 0, total: 0}],
 						cantidad: 1,
 						monto: 0,
 						total: 0,
 						fecha: this.getMyDate(),
-						sede: null,
+						sede: this.ingreso.pacienteSedeId,
 						doctor: null
 			    },
 			    ingresoDetalleId: ''
@@ -333,11 +354,12 @@
 				this.form.trats = []
 				this.form.trats = [{id: 0, precioId: '', tratamiento: '', cantidad: 1, monto: 0, total: 0}]
 			},
-			agregarTratamientoFromModal(id, tratamiento, monto){
+			agregarTratamientoFromModal(id, tratamiento, monto, costo_variable){
 				if( this.trat_id_general != null ){
 					this.form.trats[this.trat_id_general].precioId = id
 					this.form.trats[this.trat_id_general].tratamiento = tratamiento
 					this.form.trats[this.trat_id_general].monto = monto
+					this.form.trats[this.trat_id_general].costo_variable = costo_variable
 					this.calculateTotal(this.trat_id_general)
 					this.hideModal()
 				}else{
@@ -360,7 +382,9 @@
 
 				this.form.fecha = this.getMyDate()
 				this.form.doctor = null
-				this.form.sede = this.ingreso.pacienteSedeId
+				this.form.codigo = ''
+				this.form.tipo_pago = 1
+				this.form.sede = 1
 				this.allerros = ''
 			},
 			agregarIngresoATabla(element){
@@ -451,6 +475,9 @@
 																	  total: this.redondearADos(this.form.trats[0].total),
 																	  idDoctor: this.form.doctor,
 																	  nombreDoctor: this.getDoctorName(this.form.doctor),
+																		sede: this.form.sede,
+																		codigo: this.form.codigo,
+																		tipo_pago: this.form.tipo_pago,
 																	  mg: this.redondearADos(response.data.mg),
 																	  mg_core: this.redondearADos(response.data.mg_core)
 																	})
@@ -506,7 +533,7 @@
 					}
 				})
 			},
-			modificarIngresoDetalle(ingresoDetalleId, fecha, doctorId, tratamiento, cantidad, monto, sedeId){
+			modificarIngresoDetalle(ingresoDetalleId, fecha, doctorId, tratamiento, cantidad, monto, codigo, tipo_pago, sedeId){
 					this.form.trats[0].id = 0
 					this.form.trats[0].precioId = this.getIdTratamientoByNombre(tratamiento)
 			    this.form.trats[0].tratamiento = tratamiento
@@ -515,6 +542,8 @@
 					this.form.trats[0].total = this.redondearADos(parseFloat(cantidad) * parseFloat(monto))
 					this.form.fecha = fecha
 					this.form.doctor = doctorId
+					this.form.codigo = codigo
+					this.form.tipo_pago = tipo_pago
 					this.form.sede = sedeId
 					this.isAddTratamiento = true
 					this.isModificarIngreso = true
