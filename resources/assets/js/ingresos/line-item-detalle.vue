@@ -244,9 +244,6 @@
 	import axios from 'axios'
 
 	export default{
-		mounted(){
-			console.log(this.tratamientos)
-		},
 		props:[
 			'url',
 			'ingreso',
