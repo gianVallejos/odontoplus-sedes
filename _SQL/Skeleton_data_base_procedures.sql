@@ -1135,7 +1135,7 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Pagos_get_pagos_por_doctor_fechas`(IN start_date date, IN end_date date, IN xsede_id int)
 BEGIN
 	SET lc_time_names = 'es_ES';
-  SELECT dr.nombres, dr.apellidos, FORMAT(IFNULL(SUM(dr.margen_ganancia/100 * idt.cantidad * (idt.monto-idt.margen_ganancia)), 0),2) as pago
+  SELECT dr.nombres, dr.apellidos, FORMAT(IFNULL(SUM(dr.margen_ganancia/100 * idt.cantidad * (idt.monto-idt.costo_variable)), 0),2) as pago
   FROM ingresos_detalle idt
   INNER JOIN doctors dr ON dr.id = idt.doctorId
 	WHERE idt.fecha BETWEEN start_date AND end_date
