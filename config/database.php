@@ -52,7 +52,7 @@ return [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'port' => '3306',
-            'database' => 'op_odontoplus_bd',
+            'database' => 'op_main_bd_v3_2',
             'username' => 'root',
             'password' => '',
             'unix_socket' => env('DB_SOCKET', ''),

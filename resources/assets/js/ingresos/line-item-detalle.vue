@@ -244,6 +244,9 @@
 	import axios from 'axios'
 
 	export default{
+		mounted(){
+			console.log(this.tratamientos)
+		},
 		props:[
 			'url',
 			'ingreso',
@@ -348,11 +351,11 @@
 				this.$refs.tratamientosModal.hide()
 			},
 			addTrat(){
-				this.form.trats.push({id: this.form.trats.length, precioId: '', tratamiento: '', cantidad: 1, monto: 0, total: 0})
+				this.form.trats.push({id: this.form.trats.length, precioId: '', tratamiento: '', cantidad: 1, monto: 0, costo_variable: 0, total: 0})
 			},
 			removeTrat(){
 				this.form.trats = []
-				this.form.trats = [{id: 0, precioId: '', tratamiento: '', cantidad: 1, monto: 0, total: 0}]
+				this.form.trats = [{id: 0, precioId: '', tratamiento: '', cantidad: 1, monto: 0, costo_variable: 0, total: 0}]
 			},
 			agregarTratamientoFromModal(id, tratamiento, monto, costo_variable){
 				if( this.trat_id_general != null ){
@@ -360,6 +363,7 @@
 					this.form.trats[this.trat_id_general].tratamiento = tratamiento
 					this.form.trats[this.trat_id_general].monto = monto
 					this.form.trats[this.trat_id_general].costo_variable = costo_variable
+					console.log(JSON.stringify(this.form))
 					this.calculateTotal(this.trat_id_general)
 					this.hideModal()
 				}else{
@@ -407,18 +411,19 @@
 					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
 					var request = { method: 'POST', url: this.url + '/ingresos/line-item', data: this.form }
 					this.$refs.spinnerContainerRef.showSpinner()
+					var _self = this
 					axios(request).then((response) => {
 						if(response.data.success){
-							this.toastFunctionRedirect('Éxito', 'Los tratamientos han sido agregado correctamente.', 'success')
-							this.$refs.spinnerContainerRef.hideSpinner()
+							_self.toastFunctionRedirect('Éxito', 'Los tratamientos han sido agregado correctamente.', 'success')
+							_self.$refs.spinnerContainerRef.hideSpinner()
 						}
 						else if (response.data.error){
-							this.allerros = response.data.error
-							this.toastFunction(mssgOnFail, 'error')
-							this.$refs.spinnerContainerRef.hideSpinner()
+							_self.allerros = response.data.error
+							_self.toastFunction(mssgOnFail, 'error')
+							_self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
-						this.$refs.spinnerContainerRef.hideSpinner()
+						_self.$refs.spinnerContainerRef.hideSpinner()
 					})
 				}
 			},
