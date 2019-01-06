@@ -48,47 +48,33 @@
 
 							<div class="pt-4 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4">
-											<div class="form-title">
-												<i class="fas fa-user"></i>
-												<div class="d-inline"> Información de Cita</div>
-											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información siguiente es útil para agendar una cita con un paciente.
-											</p>
-											<br/>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
-										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
-                      <b-form-group label="Seleccionar Paciente" label-for="pacientes">
-                        <b-input-group>
-                              <b-form-input id="pacientes" type="text" v-model="form.paciente" placeholder="Ningun Paciente Seleccionado" class="required" disabled />
-                              <b-input-group-append>
-                              <b-btn class="pl-3 pr-3" variant="success" v-b-modal.exampleModal v-if="displayStatus != 'show'">
-                                <i class="fas fa-search"></i>
-                              </b-btn>
-                            </b-input-group-append>
-                        </b-input-group>
-                        <span v-if="all_errors.paciente" :class="['label label-danger']">{{ all_errors.paciente[0] }}</span>
-                      </b-form-group>
-                      <b-form-group label="Seleccionar Doctor" label-for="apellidos">
-    										<b-form-select v-model="form.idDoctor" class="required" :disabled=isDisabled>
-    											<option :value="null">Ningun Doctor Seleccionado</option>
-    											<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
-    												{{ doctor.nombres }} {{ doctor.apellidos}}
-    											</option>
-    										</b-form-select>
-    									</b-form-group>
+										<b-col cols="12" class="pt-3 pb-4">
                       <b-form-row>
-                        <b-col cols="6">
-                          <b-form-group label="Fecha:">
-                            <b-form-input type="date" v-model="form.fecha" class="required" :disabled=isDisabled />
-                            <span v-if="all_errors.fecha" :class="['label label-danger']">{{ all_errors.fecha[0] }}</span>
+                        <b-col cols="4">
+                          <b-form-group label="Seleccionar Paciente" label-for="pacientes">
+                            <b-input-group>
+                                  <b-form-input id="pacientes" type="text" v-model="form.paciente" placeholder="Ningun Paciente Seleccionado" class="required" disabled />
+                                  <b-input-group-append>
+                                  <b-btn class="pl-3 pr-3" variant="success" v-b-modal.exampleModal v-if="displayStatus != 'show'">
+                                    <i class="fas fa-search"></i>
+                                  </b-btn>
+                                </b-input-group-append>
+                            </b-input-group>
+                            <span v-if="all_errors.paciente" :class="['label label-danger']">{{ all_errors.paciente[0] }}</span>
                           </b-form-group>
-												</b-col>
-												<b-col cols="6">
+                        </b-col>
+                        <b-col cols="4">
+                          <b-form-group label="Seleccionar Doctor">
+        										<b-form-select v-model="form.idDoctor" class="required" :disabled=isDisabled>
+        											<option :value="null">Ningun Doctor Seleccionado</option>
+        											<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
+        												{{ doctor.nombres }} {{ doctor.apellidos}}
+        											</option>
+        										</b-form-select>
+                            <span v-if="all_errors.idDoctor" :class="['label label-danger']">{{ all_errors.idDoctor[0] }}</span>
+        									</b-form-group>
+                        </b-col>
+												<b-col cols="4">
 													<b-form-group label="Seleccionar Sede" label-for="sede">
 		    										<b-form-select v-model="form.sede" class="required" :disabled=isDisabled >
 		    											<option :value="null">Ninguna Sede Seleccionada</option>
@@ -99,14 +85,38 @@
 														<span v-if="all_errors.sede" :class="['label label-danger']">{{ all_errors.sede[0] }}</span>
 		    									</b-form-group>
 												</b-col>
-												<b-col cols="6">
+                      </b-form-row>
+                      <b-form-row>
+                        <b-col cols="4">
+                          <b-form-group label="Tratamiento" label-for="tratamiento">
+  											    <b-form-input id="tratamiento" type="text" v-model="form.tratamiento" placeholder="Tratamiento" class="required" :disabled=isDisabled autocomplete="off"  />
+  											    <span v-if="all_errors.tratamiento" :class="['label label-danger']">{{ all_errors.tratamiento[0] }}</span>
+  										    </b-form-group>
+                        </b-col>
+                        <b-col cols="2">
+                          <b-form-group label="Seleccionar Sillón" label-for="apellidos">
+        										<b-form-select v-model="form.sillon" class="required" :disabled=isDisabled>
+        											<option v-for="(sillon, index) in sillons" :key="index" :value="sillon.id">
+        												{{ sillon.nombre }}
+        											</option>
+        										</b-form-select>
+                            <span v-if="all_errors.sillon" :class="['label label-danger']">{{ all_errors.sillon[0] }}</span>
+        									</b-form-group>
+                        </b-col>
+                        <b-col cols="2">
+                          <b-form-group label="Fecha:">
+                            <b-form-input type="date" v-model="form.fecha" class="required" :disabled=isDisabled />
+                            <span v-if="all_errors.fecha" :class="['label label-danger']">{{ all_errors.fecha[0] }}</span>
+                          </b-form-group>
+												</b-col>
+												<b-col cols="2">
                           <b-form-group label="Desde:" label-for="desde">
                             <b-form-input type="time" v-model="form.desde" class="required"
                                     :disabled=isDisabled />
                             <span v-if="all_errors.desde" :class="['label label-danger']">{{ all_errors.desde[0] }}</span>
                           </b-form-group>
 												</b-col>
-											    <b-col cols="6">
+											    <b-col cols="2">
                             <b-form-group label="Hasta:" label-for="hasta">
     											    <b-form-input type="time" v-model="form.hasta" class="required"
     											    			  :disabled=isDisabled />
@@ -114,11 +124,15 @@
     										    </b-form-group>
 												</b-col>
 											</b-form-row>
-											<b-form-group label-for="enviar_email">
-												<b-form-checkbox id="enviar_email" v-model="form.enviarEmail" :disabled=isDisabled>
-													Enviar email de notificación a paciente.
-												</b-form-checkbox>
-											</b-form-group>
+                      <b-form-row>
+                        <b-col cols="12">
+    											<b-form-group label-for="enviar_email">
+    												<b-form-checkbox id="enviar_email" v-model="form.enviarEmail" :disabled=isDisabled>
+    													Enviar email de notificación a paciente.
+    												</b-form-checkbox>
+    											</b-form-group>
+                        </b-col>
+                      </b-form-row>
 										</b-col>
 									</b-row>
 
@@ -194,7 +208,7 @@
                 </template>
                 <template slot="actions" slot-scope="row" class="md-2">
                     <div class="actions-table" style="color: #d1d1d1">
-                      <a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos, row.item.sede_id)" href="#" class="action">Seleccionar</a>
+                      <a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="action">Seleccionar</a>
                     </div>
                 </template>
             </b-table>
@@ -226,11 +240,11 @@
     mounted() {
     	this.initActualView()
     },
-    name: 'Cita-Form',
+    name: 'Doctor-Form',
     components: {
       PanelCard,
       TitleComponent,
-      SpinnerContainer
+      SpinnerContainer,
     },
     props:[
       	'title',
@@ -240,7 +254,8 @@
     		'view_mode',
         'pacientes',
         'doctores',
-				'sedes'
+				'sedes',
+        'sillons'
     ],
     data(){
       return{
@@ -248,13 +263,16 @@
         form: {
             idPaciente: '',
             paciente: '',
+            tratamiento: '',
+            sillon: 1,
             fecha: this.getMyDate(),
     				desde: '09:00',
             hasta: '10:00',
             idDoctor: null,
 						sede: null,
-						enviarEmail: true
+						enviarEmail: false
     		},
+        global_date: this.getMyDate(),
     		record_id: '',
     		all_errors: [],
             breadcrumb: [
@@ -280,6 +298,15 @@
       }
     },
     methods:{
+    fechaSeleccionada(){
+      var fullDate = new Date(this.global_date)
+      var day = fullDate.getDate()
+      var month = fullDate.getMonth() + 1
+      var year = fullDate.getFullYear()
+      this.form.fecha = year + '/' + month + '/' + day
+      // alert(day + ' ' + month + ' ' + year)
+      // alert(this.form.fecha )
+    },
 		initActualView(){
 			this.displayStatus = this.view_mode
 		    if( this.displayStatus == 'new' ){
@@ -319,12 +346,13 @@
 		},
     	onDisplayNuevo(){
     		this.displayStatus = 'new'
-				this.setEnableForm()
+			this.setEnableForm()
     	},
     	onDisplayDetalle(){
     		this.displayStatus = 'show'
 			this.setDisableForm()
 			this.setControllerDataToForms()
+
     	},
     	onDisplayModificar(){
     		this.displayStatus = 'edit'
@@ -337,14 +365,17 @@
     		this.isDisabled = true
     	},
     	setControllerDataToForms(){
+        console.log('fecha: ' + this.record.fecha)
     		this.record_id = this.record.idEvent
         this.form.idPaciente =  this.record.idPaciente
         this.form.paciente =  this.record.title
         this.form.fecha =  this.record.fecha
         this.form.desde =  this.record.start
         this.form.hasta =  this.record.end
-				this.form.idDoctor =  this.record.idDoctor
-        this.form.sede =  this.record.idSede
+        this.form.idDoctor =  this.record.idDoctor
+        this.form.tratamiento =  this.record.tratamiento
+        this.form.sillon =  this.record.idSillon
+				this.form.sede =  this.record.idSede
     	},
     	onGuardarNuevo(){
     		var request = { method: 'POST', url: this.url + '/citas', data: this.form }
@@ -410,8 +441,9 @@
 			this.setDisableForm()
 			this.setFormDataToRecord()
 			this.cleanErrosMessage()
+			this.setEmptyPasswordFields()
 		},
-    setFormDataToRecord(){
+		setFormDataToRecord(){
     	this.record_id = this.record_id
 			this.record.idPaciente = this.form.idPaciente
 			this.record.title = this.form.paciente
@@ -420,38 +452,44 @@
 			this.record.end = this.form.hasta
 			this.record.idDoctor = this.form.idDoctor
 			this.record.idSede = this.form.sede
+			this.record.idSillon = this.form.sillon
     },
 		cleanErrosMessage(){
 			this.all_errors = []
 		},
+		setEmptyPasswordFields(){
+			this.form.password = ''
+			this.form.confirm_password = ''
+		},
 		redireccionarToIndex(){ //Btn Regresar
 			window.location.href = this.url + '/citas'
 		},
-  	onRegresar(){
-  		this.redireccionarToIndex()
-  	},
-		hideModal(){
-			this.$refs.myModalRef.hide()
-		},
+    	onRegresar(){
+    		this.redireccionarToIndex()
+    	},
+			hideModal(){
+				this.$refs.myModalRef.hide()
+			},
 		onCancelarModificar(){
 			this.displayStatus = 'show'
 			this.setControllerDataToForms()
 			this.setDisableForm()
 			this.cleanErrosMessage()
+			this.setEmptyPasswordFields()
 		},
 		onCancelarNuevo(){
 			this.redireccionarToIndex()
 		},
     onFiltered (filteredItems) {
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
-    },
-    agregarPaciente(id, nombres, apellidos, sedeId){
-      this.form.idPaciente = id
-      this.form.paciente = nombres + ' ' + apellidos
-			this.form.sede = sedeId
-      this.$refs.myModalRef.hide()
-    },
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
+      },
+      agregarPaciente(id, nombres, apellidos){
+        //alert(id)
+        this.form.idPaciente = id
+        this.form.paciente = nombres + ' ' + apellidos
+        this.$refs.myModalRef.hide()
+      },
 		toastFunction(msg, type){
 		 	this.$swal({
 					type: type,
@@ -459,7 +497,7 @@
 					toast: true,
 					position: 'top',
 					showConfirmButton: false,
-  				timer: 3000
+  					timer: 3000
 			})
 		},
     toastFunctionRedirect(title, msg, type){

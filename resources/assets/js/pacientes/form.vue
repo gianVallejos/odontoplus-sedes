@@ -187,6 +187,7 @@
 										<b-col cols="6" class="pt-3 pb-4">
 											<b-form-group label="Sede:" label-for="sede_id">
 												<b-form-select v-model="form.sede_id" :disabled=isDisabled class="required">
+													<option :value="null">Ninguna Sede Seleccionada</option>
 													<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
 														{{ sede.nombre }}
 													</option>
@@ -336,7 +337,7 @@
   				fax: '',
   				celular: '',
   				celular_aux: '',
-					sede_id: '',
+					sede_id: null,
   				empresa_id: '1',
   				seguro_ind: 0,
           referencia_id: '1',

@@ -1,4 +1,16 @@
+	-- ----------------------------
+	--  Table structure for `sillons`
+	-- ----------------------------
+DROP TABLE IF EXISTS `sillons`;
+CREATE TABLE `sillons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
+-- ----------------------------
+--  Table structure for `citas`
+-- ----------------------------
 DROP TABLE IF EXISTS `citas`;
 CREATE TABLE `citas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -310,3 +322,7 @@ INSERT INTO `tratamientos` VALUES ('31', 'Sellantes por pieza dental', '2018-11-
 -- Records of sedes
 -- ----------------------------
 INSERT INTO `sedes` VALUES ('1', 'Odontoplus Sede', 'Cajamarca', 'Dirección Ejemplo', 'Teléfono Ejemplo', 'Celular', 'Celular Aux.', 'sede@Odontoplus.pe');
+-- ----------------------------
+-- Records of sillones
+-- ----------------------------
+INSERT INTO `sillons` VALUES ('1','Sillón 1'), ('2','Sillón 2'), ('3','Sillón 3'), ('4','Sillón 4'), ('5','Sillón 5');
