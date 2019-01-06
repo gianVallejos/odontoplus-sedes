@@ -644,12 +644,13 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_get_all_Id`(IN XID INT)
 BEGIN
 	SELECT LPAD(ingresos.id, 5, '0') as id, LPAD(pacientes.id, 5, '0') as hc, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) as nombrePaciente,
-				 ingresos.created_at as fecha, pacientes.sede_id as pacienteSedeId,
+				 ingresos.created_at as fecha, pacientes.sede_id as pacienteSedeId, sedes.nombre as pacienteSedeNombre,
 				 IFNULL(SUM(ingresos_detalle.cantidad * ingresos_detalle.monto), 0) as monto_total, prs.id as presupuestoId
 		FROM `ingresos`
 	INNER JOIN pacientes on pacientes.id = ingresos.idPaciente
 	LEFt JOIN ingresos_detalle on ingresos_detalle.ingresoId = ingresos.id
 	LEFT JOIN presupuestos as prs on prs.idPaciente = ingresos.idPaciente
+	INNER JOIN sedes on sedes.id = pacientes.sede_id
 		WHERE ingresos.id = XID AND ingresos.is_deleted = 0
 	ORDER BY ingresos.id DESC;
 END
