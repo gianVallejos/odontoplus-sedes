@@ -71,7 +71,7 @@ create table `password_resets`
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Clientes_get_all_byUserId`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Clientes_get_all_byUserId`(IN XID_USER INT)
+CREATE  PROCEDURE `OP_Clientes_get_all_byUserId`(IN XID_USER INT)
 BEGIN
 	SELECT nombre_comercial as nombre, direccion, ciudad, email, telefono, celular, celular_aux FROM clientes WHERE clientes.id = XID_USER;
 END
@@ -83,7 +83,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_add_all`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_add_all`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
+CREATE  PROCEDURE `OP_Usuarios_add_all`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
 																		 IN XPASSWORD VARCHAR(255), IN XROLID TINYINT, IN XIS_ACTIVE TINYINT, IN XSCHEMA VARCHAR(255), IN XID_CLIENTE INT)
 BEGIN
 	INSERT INTO users (name, email, password, rolid, is_active, users.schema, clienteId, created_at, updated_at)
@@ -98,7 +98,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_delete_all`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_delete_all`(IN XID INT, IN XSCHEMA VARCHAR(255), IN XIS_ACTIVE TINYINT)
+CREATE  PROCEDURE `OP_Usuarios_delete_all`(IN XID INT, IN XSCHEMA VARCHAR(255), IN XIS_ACTIVE TINYINT)
 BEGIN
 	UPDATE users SET is_active = XIS_ACTIVE
 		WHERE users.id = XID AND users.schema = XSCHEMA;
@@ -112,7 +112,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_get_all`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_get_all`(IN XSCHEMA VARCHAR(255))
+CREATE  PROCEDURE `OP_Usuarios_get_all`(IN XSCHEMA VARCHAR(255))
 BEGIN
   SELECT u.id, u.name, u.email, u.is_active, u.created_at, r.nombre AS rol
 		FROM users u
@@ -127,7 +127,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_get_all_id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_get_all_id`(IN XID INT, IN XSCHEMA VARCHAR(255))
+CREATE  PROCEDURE `OP_Usuarios_get_all_id`(IN XID INT, IN XSCHEMA VARCHAR(255))
 BEGIN
   SELECT u.id, u.name, u.email, u.is_active, u.created_at, u.rolid, u.is_active
 		FROM users u
@@ -141,7 +141,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_update_all`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_update_all`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
+CREATE  PROCEDURE `OP_Usuarios_update_all`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
 																				IN XPASSWORD VARCHAR(255), IN XROLID TINYINT,
 																				IN XIS_ACTIVE TINYINT, IN XID INT, IN XSCHEMA VARCHAR(255), IN XID_CLIENTE INT)
 BEGIN
@@ -160,7 +160,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_update_no_pass`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_update_no_pass`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
+CREATE  PROCEDURE `OP_Usuarios_update_no_pass`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
 																						IN XROLID TINYINT,
 																						IN XIS_ACTIVE TINYINT, IN XID INT, IN XSCHEMA VARCHAR(255), IN XID_CLIENTE INT)
 BEGIN
