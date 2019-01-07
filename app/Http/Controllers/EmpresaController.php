@@ -12,7 +12,7 @@ class EmpresaController extends Controller{
 
     public static $validation_rules = [
         'nombre' => 'required|string|max:120',
-        'ruc' => 'nullable|digits:12'
+        'ruc' => 'nullable|digits:11'
     ];
 
     public function __construct(){
