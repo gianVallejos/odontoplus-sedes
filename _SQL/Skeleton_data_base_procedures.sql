@@ -1191,7 +1191,7 @@ BEGIN
 	select trat.id, trat.detalle, emprc.monto from precios as emprc
 		inner join empresas as emp on emp.id = emprc.idEmpresa
     inner join tratamientos as trat on trat.id = emprc.idTratamiento
-  where emp.id = XID_EMPRESA order by idTratamiento;
+  where emp.id = XID_EMPRESA AND trat.is_deleted = 0 order by idTratamiento;
 END
 ;;
 DELIMITER ;
@@ -1206,7 +1206,7 @@ BEGIN
 	select trat.id, trat.detalle, emprc.monto from precios as emprc
 		inner join empresas as emp on emp.id = emprc.idEmpresa
     inner join tratamientos as trat on trat.id = emprc.idTratamiento
-  where emp.id = XID_EMPRESA and trat.id > 7 and trat.id != 29 and trat.id != 30 order by idTratamiento;
+  where emp.id = XID_EMPRESA and trat.id > 7 and trat.id != 29 and trat.id != 30 and trat.is_deleted = 0 order by idTratamiento;
 END
 ;;
 DELIMITER ;
@@ -1223,7 +1223,7 @@ BEGIN
   FROM precios
 		INNER JOIN tratamientos on precios.idTratamiento = tratamientos.id
 		INNER JOIN empresas on precios.idEmpresa = empresas.id
-  WHERE precios.idEmpresa = 1
+  WHERE precios.idEmpresa = 1 AND tratamientos.is_deleted = 0
   ORDER BY tratamientos.id;
 END
 ;;

@@ -224,13 +224,11 @@ INSERT INTO `precios` VALUES ('19', '1', '20', '0.00', '2018-11-27 16:33:46', '2
 INSERT INTO `precios` VALUES ('20', '1', '21', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
 INSERT INTO `precios` VALUES ('21', '1', '22', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
 INSERT INTO `precios` VALUES ('22', '1', '23', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
-INSERT INTO `precios` VALUES ('23', '1', '26', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
-INSERT INTO `precios` VALUES ('24', '1', '27', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
-INSERT INTO `precios` VALUES ('25', '1', '28', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
-INSERT INTO `precios` VALUES ('26', '1', '29', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
-INSERT INTO `precios` VALUES ('27', '1', '30', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
-INSERT INTO `precios` VALUES ('28', '1', '31', '0.00', '2018-11-27 16:33:12', '2018-11-27 16:33:12', '0.00');
-INSERT INTO `precios` VALUES ('29', '1', '31', '0.00', '2018-11-27 16:33:14', '2018-11-27 16:33:14', '0.00');
+INSERT INTO `precios` VALUES ('23', '1', '27', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('24', '1', '28', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('25', '1', '29', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('26', '1', '30', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('27', '1', '31', '0.00', '2018-11-27 16:33:12', '2018-11-27 16:33:12', '0.00');
 
 -- ----------------------------
 --  Table structure for `presupuestos`
@@ -326,7 +324,7 @@ INSERT INTO `tratamientos` VALUES ('2', 'Resina Simple Vestibular', '1', '0', '2
 INSERT INTO `tratamientos` VALUES ('3', 'Resina Simple Mesial', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('4', 'Resina Simple Distal', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('5', 'Resina Simple Palatino', '1', '0', '2018-11-27', '2018-11-27');
-INSERT INTO `tratamientos` VALUES ('6', 'Ionomero', '2018-11-27', '1', '0', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('6', 'Ionomero', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('7', 'Resina Simple Oclusal', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('8', 'Corona Fenestrada', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('9', 'Corona Metal Porcelana', '1', '0', '2018-11-27', '2018-11-27');
@@ -348,7 +346,7 @@ INSERT INTO `tratamientos` VALUES ('27', 'Incrustacion de Porcelana', '1', '0', 
 INSERT INTO `tratamientos` VALUES ('28', 'Incrustacion Metal', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('29', 'Resina Compuesta', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('30', 'Resina Compleja', '1', '0', '2018-11-27', '2018-11-27');
-INSERT INTO `tratamientos` VALUES ('31', 'Sellantes por pieza dental', '2018-11-27', '1', '0', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('31', 'Sellantes por pieza dental', '1', '0', '2018-11-27', '2018-11-27');
 
 -- ----------------------------
 -- Records of sedes
