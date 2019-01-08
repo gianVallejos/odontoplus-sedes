@@ -1320,6 +1320,7 @@ BEGIN
 	SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pre.idDoctor, pre.descuento,
 				 CONCAT(pc.nombres, ' ', pc.apellidos) AS nombrePaciente,
 				 CONCAT(dc.nombres, ' ', dc.apellidos) AS nombreDoctor,
+				 sedes.nombre as nombreSede,
 				 emp.nombre as empresa,
 				 ingresos.id as ingresosId
 		FROM presupuestos as pre
@@ -1327,6 +1328,7 @@ BEGIN
 	INNER JOIN doctors AS dc ON dc.id = pre.idDoctor
 	INNER JOIN empresas as emp ON emp.id = pc.empresa_id
 	INNER JOIN ingresos ON ingresos.idPaciente = pre.idPaciente
+	INNER JOIN sedes ON sedes.id = pc.sede_id
 	WHERE pre.id = XID;
 END
 ;;

@@ -11,13 +11,16 @@
 						<span v-if="paciente_sede.direccion != null">
 							{{ paciente_sede.direccion }} {{ paciente_sede.ciudad }} - Perú <br />
 						</span>
-						<span v-if="paciente_sede.email != null">
+						<span v-if="paciente_sede.email != ''">
 							{{ paciente_sede.email }} <br />
 						</span>
-						<span v-if="paciente_sede.telefono != null">
-							TEL. {{ paciente_sede.telefono }} <br />
+						<span v-if="paciente_sede.telefono != ''">
+							{{ paciente_sede.telefono }} <br />
 						</span>
-	    			<span v-if="paciente_sede.celular != null">
+	    			<span v-if="paciente_sede.celular != ''">
+							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != ''"> - </span> {{ paciente_sede.celular_aux }}
+						</span>
+						<span v-if="paciente_sede.celular != ''">
 							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != ''"> - </span> {{ paciente_sede.celular_aux }}
 						</span>
 					</div>
@@ -40,6 +43,10 @@
 							<tr>
 								<td class="pr-title">EMPRESA: </td>
 								<td>{{ pgeneral.empresa }}</td>
+							</tr>
+							<tr>
+								<td class="pr-title">SEDE: </td>
+								<td>{{ pgeneral.nombreSede }}</td>
 							</tr>
 							<tr>
 								<td class="pr-title">DOCTOR: </td>
