@@ -592,8 +592,9 @@ BEGIN
 	IF doctor_id = 0 THEN
 
     SELECT idt.id, LPAD(ing.idPaciente, 5, '00000') as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento,
-					 idt.cantidad, idt.monto, (idt.cantidad * (idt.monto-idt.costo_variable)) as total,
-           FORMAT((idt.margen_ganancia/100 * idt.cantidad * (idt.monto-idt.costo_variable)), 2) as doctor, DATE_FORMAT(idt.fecha, "%d-%m-%Y") as fecha
+					 idt.cantidad, idt.monto, idt.costo_variable, (idt.cantidad * idt.monto) as total, (idt.cantidad * (idt.monto - idt.costo_variable)) as total_empresa,
+           FORMAT((idt.margen_ganancia/100 * idt.cantidad * (idt.monto-idt.costo_variable)), 2) as doctor,
+					 DATE_FORMAT(idt.fecha, "%d-%m-%Y") as fecha
     FROM ingresos_detalle idt
     INNER JOIN ingresos ing ON ing.id = idt.ingresoId
     INNER JOIN doctors dr ON dr.id = idt.doctorId
@@ -604,8 +605,9 @@ BEGIN
 	ELSE
 
     SELECT idt.id, LPAD(ing.idPaciente, 5, '00000') as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento,
-           idt.cantidad, idt.monto, (idt.cantidad * (idt.monto-idt.costo_variable)) as total,
-           FORMAT((idt.margen_ganancia/100 * idt.cantidad * (idt.monto-idt.costo_variable)),2) as doctor, DATE_FORMAT(idt.fecha, "%d-%m-%Y") as fecha
+           idt.cantidad, idt.monto, idt.costo_variable, (idt.cantidad * idt.monto) as total, (idt.cantidad * (idt.monto - idt.costo_variable)) as total_empresa,
+           FORMAT((idt.margen_ganancia/100 * idt.cantidad * (idt.monto-idt.costo_variable)),2) as doctor,
+					 DATE_FORMAT(idt.fecha, "%d-%m-%Y") as fecha
     FROM ingresos_detalle idt
     INNER JOIN ingresos ing ON ing.id = idt.ingresoId
     INNER JOIN doctors dr ON dr.id = idt.doctorId
@@ -622,8 +624,8 @@ DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ganancias_sede_fechas`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_get_ganancias_sede_fechas`(IN sede_id int, IN start_date date, IN end_date date)
   BEGIN
-    SELECT idt.id, LPAD(ing.idPaciente, 5, '00000') as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento,
-					 idt.cantidad, idt.monto, (idt.cantidad * (idt.monto - idt.costo_variable)) as total, sd.nombre as nombre_sede,
+    SELECT idt.id, LPAD(ing.idPaciente, 5, '00000') as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento, idt.costo_variable,
+					 idt.cantidad, idt.monto, (idt.cantidad * (idt.monto - idt.costo_variable)) as total, (idt.cantidad * (idt.monto - idt.costo_variable)) as total_empresa, sd.nombre as nombre_sede,
            FORMAT((idt.margen_ganancia/100 * idt.cantidad * (idt.monto - idt.costo_variable)), 2) as doctor, DATE_FORMAT(idt.fecha, "%d-%m-%Y") as fecha
     	 FROM ingresos_detalle idt
     INNER JOIN ingresos ing ON ing.id = idt.ingresoId

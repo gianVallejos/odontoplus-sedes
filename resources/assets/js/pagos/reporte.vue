@@ -189,7 +189,6 @@
 					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
 					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
 					{ key: 'costo_variable', label: 'C.V.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
-					{ key: 'empresa', label: 'Total Emp.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
 					{ key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],
 				displayStatus: ''
