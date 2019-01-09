@@ -53,6 +53,7 @@ CREATE TABLE `users` (
   `is_deleted` tinyint(1) DEFAULT '0',
   `schema` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `clienteId` int(11) DEFAULT NULL,
+  `sede_id` int(11) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -179,4 +180,4 @@ DELIMITER ;
 -- ----------------------------
 INSERT INTO `clientes` VALUES ('1','Odontoplus',NULL,NULL,'Cajamarca','Av. Miguel Grau 656',NULL,'943 598585','982 780954','contacto@odontoplus.com');
 INSERT INTO `roles` VALUES ('1','Administrador','Administrador'), ('2','Colaborador','Usuario Invitado');
-INSERT INTO `users` VALUES ('1','Admin','admin@odontoplus.pe','$2y$10$U74ylBqdic.7idkr.hWgP.bZMU77dZz4s0ksFsvPkPjxH4I9npCkm','RegYwGNCwnau0fRlk0L3VFbtaT62QMj2Ym3hJfnPPpAfW7YsNuHnUHJcyV2T','2018-11-27 15:51:31','2018-11-27 15:51:31','1','1','0','1_ODONTOPLUS_CAJ','1');
+INSERT INTO `users` VALUES ('1','Admin','admin@odontoplus.pe','$2y$10$U74ylBqdic.7idkr.hWgP.bZMU77dZz4s0ksFsvPkPjxH4I9npCkm','RegYwGNCwnau0fRlk0L3VFbtaT62QMj2Ym3hJfnPPpAfW7YsNuHnUHJcyV2T','2018-11-27 15:51:31','2018-11-27 15:51:31','1','1','0','1_ODONTOPLUS_CAJ','1', '1');
