@@ -302,14 +302,14 @@
 						}
 				],
 				pacienteFields: [
-			    { key: 'id', label: 'Historia', class: 'text-center' },
+			    { key: 'codigo', label: 'Historia', class: 'text-center' },
 			    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
 			    { key: 'actions', label: '', sortable: false }
 		    ],
 				pacienteFieldsOP: [
 					{ key: 'actions', label: '', class: 'at-width', sortable: false },
 					{ key: 'nombres', label: 'Nombres de Paciente' },
-					{ key: 'id', label: 'Historia' },
+					{ key: 'codigo', label: 'Historia' },
 					{ key: 'dni', label: 'DNI' },
 					{ key: 'celular', label: 'Celular' },
 					{ key: 'telefono', label: 'Teléfono' }

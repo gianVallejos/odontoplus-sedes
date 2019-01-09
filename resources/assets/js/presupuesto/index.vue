@@ -117,7 +117,7 @@
 			    fields: [
 				    { key: 'actions', label: '', 'class': 'action-td-width text-center' },
 				    { key: 'id', label: 'Nro', class: 'text-center' },
-				    { key: 'idPaciente', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+				    { key: 'codigo', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },
 				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' }

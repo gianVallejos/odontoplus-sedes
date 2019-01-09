@@ -926,7 +926,7 @@ DROP PROCEDURE IF EXISTS `OP_Pacientes_get_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Pacientes_get_all`()
 BEGIN
-	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
+	SELECT pc.id, pc.codigo, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
 				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id,
 				 emp.nombre as empresa_nombre, pc.sede_id, sed.nombre as sede_nombre, ing.id as ingresoId
@@ -976,7 +976,7 @@ DROP PROCEDURE IF EXISTS `OP_Pacientes_get_for_search`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Pacientes_get_for_search`()
 BEGIN
-	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
+	SELECT pc.id, pc.codigo, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
 				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id, emp.nombre as empresa_nombre, ingresos.id as ingresoId,
 				 presupuestos.id as presupuestosId
@@ -1322,7 +1322,7 @@ DROP PROCEDURE IF EXISTS `OP_Presupuestos_get_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Presupuestos_get_all`()
 BEGIN
-	SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pre.idDoctor, pre.descuento,
+	SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pc.codigo, pre.idDoctor, pre.descuento,
 				 CONCAT(pc.nombres, ' ', pc.apellidos) AS nombrePaciente,
 				 CONCAT(dc.nombres, ' ', dc.apellidos) AS nombreDoctor,
 				 ingresos.id as ingresosId
@@ -1342,7 +1342,7 @@ DROP PROCEDURE IF EXISTS `OP_Presupuestos_get_by_Id`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Presupuestos_get_by_Id`(IN XID INT)
 BEGIN
-	SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pre.idDoctor, pre.descuento,
+	SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pc.codigo, pre.idDoctor, pre.descuento,
 				 CONCAT(pc.nombres, ' ', pc.apellidos) AS nombrePaciente,
 				 CONCAT(dc.nombres, ' ', dc.apellidos) AS nombreDoctor,
 				 sedes.nombre as nombreSede,
