@@ -1095,7 +1095,7 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Pacientes_generar_codigo`(IN XID_SEDE INT)
 BEGIN
 	DECLARE id_paciente INT;
-	DECLARE id_usuario INT;
+	DECLARE sede_nombre VARCHAR(200);
 
 	SET id_paciente := (SELECT count(id) FROM pacientes);
 
@@ -1103,9 +1103,9 @@ BEGIN
 		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-00001') AS codigo
 			FROM sedes WHERE id = XID_SEDE;
 	ELSE
-		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-', LPAD(pacientes.id + 1, 5, '0')) AS codigo
-			FROM pacientes
-		INNER JOIN sedes on sedes.id = pacientes.sede_id;
+		SET sede_nombre := (SELECT nombre FROM sedes WHERE id = XID_SEDE);
+		SELECT CONCAT(UPPER(SUBSTRING(sede_nombre, 1, 3)), '-', LPAD((pacientes.id + 1), 5, '0')) AS codigo
+			FROM pacientes ORDER BY pacientes.id DESC LIMIT 1;
 	END IF;
 END
 ;;

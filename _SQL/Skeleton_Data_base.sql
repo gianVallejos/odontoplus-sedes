@@ -163,10 +163,11 @@ CREATE TABLE `pacientes` (
   `celular_apoderado` varchar(150) DEFAULT NULL,
   `is_deleted` tinyint(4) DEFAULT '0',
   `referencia_id` int(11) DEFAULT '1',
-  `created_at` timestamp NULL,
-  `updated_at` timestamp NULL,
-	`sede_id` int not null,
-  PRIMARY KEY (`id`)
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `sede_id` int(11) NOT NULL,
+  `codigo` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`,`codigo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
