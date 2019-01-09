@@ -18,7 +18,7 @@
 							{{ cliente.telefono }} <br />
 						</span>
 	    			<span v-if="cliente.celular != null">
-							{{ cliente.celular }} <span v-if="cliente.celular_aux != ''"> - </span> {{ cliente.celular_aux }}
+							{{ cliente.celular }} <span v-if="cliente.celular_aux != null"> - </span> {{ cliente.celular_aux }}
 						</span>
 					</div>
 				</div>
