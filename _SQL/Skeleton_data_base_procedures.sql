@@ -569,7 +569,7 @@ DROP PROCEDURE IF EXISTS `OP_Ingresos_get_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_get_all`()
 BEGIN
-	SELECT ingresos.id as id, pacientes.id as hc, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) as nombrePaciente,
+	SELECT ingresos.id as id, pacientes.codigo as hc, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) as nombrePaciente,
 			 ingresos.created_at as fecha,
 			 IFNULL(SUM(idt.cantidad * idt.monto), 0) as monto_total, prs.id as presupuestoId
 		FROM `ingresos`
@@ -644,7 +644,8 @@ DROP PROCEDURE IF EXISTS `OP_Ingresos_get_all_Id`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_get_all_Id`(IN XID INT)
 BEGIN
-	SELECT LPAD(ingresos.id, 5, '0') as id, LPAD(pacientes.id, 5, '0') as hc, CONCAT(pacientes.nombres, ' ', pacientes.apellidos) as nombrePaciente,
+	SELECT LPAD(ingresos.id, 5, '0') as id, LPAD(pacientes.id, 5, '0') as hc, pacientes.codigo as codigo,
+				 CONCAT(pacientes.nombres, ' ', pacientes.apellidos) as nombrePaciente,
 				 ingresos.created_at as fecha, pacientes.sede_id as pacienteSedeId, sedes.nombre as pacienteSedeNombre,
 				 IFNULL(SUM(ingresos_detalle.cantidad * ingresos_detalle.monto), 0) as monto_total, prs.id as presupuestoId
 		FROM `ingresos`
@@ -865,14 +866,14 @@ CREATE PROCEDURE `OP_Pacientes_add_all`(IN XNOMBRES           varchar(90), IN XA
 	                                      IN XTELEFONO          varchar(50), IN XFAX varchar(50), IN XCELULAR varchar(50),
 	                                      IN XCELULAR_AUX       varchar(50), IN XID_EMPRESA int, IN XID_SEGURO_IND int,
 	                                      IN XNOMBRE_APODERADO  varchar(150), IN XCELULAR_APODERADO varchar(150),
-	                                      IN XREFERENCIA_ID     int, IN XSEDE_ID int)
+	                                      IN XREFERENCIA_ID     int, IN XSEDE_ID int, IN XCODIGO VARCHAR(200))
 BEGIN
 	INSERT INTO pacientes(nombres, apellidos, dni, email, direccion, fechanacimiento, genero, estado, telefono, fax,
 										celular, celular_aux, empresa_id, seguro_ind, nombre_apoderado, celular_apoderado,
-										referencia_id, created_at, updated_at, sede_id)
+										referencia_id, created_at, updated_at, sede_id, codigo)
 	VALUES (XNOMBRES, XAPELLIDOS, XDNI, XEMAIL, XDIRECCION, XFECHA_NACIMIENTO, XGENERO, XESTADO, XTELEFONO, XFAX,
 					XCELULAR, XCELULAR_AUX, XID_EMPRESA, XID_SEGURO_IND, XNOMBRE_APODERADO, XCELULAR_APODERADO,
-					XREFERENCIA_ID, NOW(), NOW(), XSEDE_ID);
+					XREFERENCIA_ID, NOW(), NOW(), XSEDE_ID, XCODIGO);
 
 	SELECT ROW_COUNT() AS ESTADO, LAST_INSERT_ID() AS LAST_ID;
 END
@@ -945,7 +946,7 @@ DROP PROCEDURE IF EXISTS `OP_Pacientes_get_all_Id`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Pacientes_get_all_Id`(IN XID INT)
 BEGIN
-	SELECT pc.id, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
+	SELECT pc.id, pc.codigo, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
 				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id,
 				 pc.sede_id, emp.nombre as empresa_nombre
@@ -1082,6 +1083,30 @@ BEGIN
 	WHERE pacientes.id = XID;
 
 	SELECT ROW_COUNT() AS ESTADO;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Pagos_add_all`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Pacientes_generar_codigo`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Pacientes_generar_codigo`(IN XID_SEDE INT)
+BEGIN
+	DECLARE id_paciente INT;
+	DECLARE id_usuario INT;
+
+	SET id_paciente := (SELECT count(id) FROM pacientes);
+
+	IF(id_paciente = 0) THEN
+		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-00001') AS codigo
+			FROM sedes WHERE id = XID_SEDE;
+	ELSE
+		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-', LPAD(pacientes.id + 1, 5, '0')) AS codigo
+			FROM pacientes
+		INNER JOIN sedes on sedes.id = pacientes.sede_id;
+	END IF;
 END
 ;;
 DELIMITER ;
@@ -1375,7 +1400,7 @@ DROP PROCEDURE IF EXISTS `OP_Presupuestos_get_pacientes`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Presupuestos_get_pacientes`(IN XID_PACIENTES INT)
 BEGIN
-	SELECT LPAD(pacientes.id, 5, '0') as id, pacientes.nombres, pacientes.apellidos, empresas.nombre as empresa, pacientes.empresa_id, sedes.id as sede_id, sedes.nombre as sede_nombre
+	SELECT LPAD(pacientes.id, 5, '0') as id, pacientes.codigo, pacientes.nombres, pacientes.apellidos, empresas.nombre as empresa, pacientes.empresa_id, sedes.id as sede_id, sedes.nombre as sede_nombre
 		FROM pacientes
 		INNER JOIN empresas on empresas.id = pacientes.empresa_id
 		INNER JOIN sedes on sedes.id = pacientes.sede_id

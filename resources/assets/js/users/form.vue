@@ -72,6 +72,14 @@
 													<b-form-input id="email" type="email" class="required" v-model="form.email" :disabled=isDisabled placeholder="Email" required autocomplete="off"/>
 													<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
 										    </b-form-group>
+                        <b-form-group label="Sede:" label-for="sede_id">
+  												<b-form-select v-model="form.sede_id" :disabled=isDisabled >
+  													<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
+  														{{ sede.nombre }}
+  													</option>
+  												</b-form-select>
+  												<span v-if="all_errors.sede_id" :class="['label label-danger']">{{ all_errors.sede_id[0] }}</span>
+  											</b-form-group>
 										    <b-form-group :label="displayStatus == 'edit' ? 'Nueva contraseña' : 'Contraseña'" label-for="password" >
 													<b-form-input id="password" type="password" class="required" v-model="form.password" :disabled=isDisabled placeholder="********" required autocomplete="off" maxlength="20"/>
 													<span v-if="all_errors.password" :class="['label label-danger']">{{ all_errors.password[0] }}</span>
@@ -175,15 +183,17 @@
     props:[
       	'title',
       	'url',
-		'user',
-		'curUser',
-		'view_mode'
+    		'user',
+        'sedes',
+    		'curUser',
+    		'view_mode'
     ],
     data(){
       return{
         form: {
     			name: '',
     			email: '',
+          sede_id: 1,
     			password: '',
     			confirm_password: '',
     			rolid: 2,
@@ -235,6 +245,7 @@
     		this.record_id = this.user.id
 			this.form.name = this.user.name
 			this.form.email = this.user.email
+      this.form.sede_id = this.user.sede_id
 			this.form.rolid = this.user.rolid
 			this.form.is_active = (this.user.is_active == '1' ? true : false)
     	},
@@ -307,6 +318,7 @@
     	setFormDataToUser(){
 			this.user.name = this.form.name
 			this.user.email = this.form.email
+      this.user.sede_id = this.form.sede_id
 			this.user.rolid = this.form.rolid
 			this.user.is_active = this.form.is_active
     	},

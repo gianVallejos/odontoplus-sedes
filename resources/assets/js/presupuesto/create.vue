@@ -77,8 +77,15 @@
 							             	@filtered="onFiltered"
 														empty-text="No existen campos para mostrar"
 														empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
-										<template slot="nombres" slot-scope="row">
+											<template slot="codigo" slot-scope="row">
+												<a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="link-color">
+													{{ row.value }}
+												</a>
+											</template>
+											<template slot="nombres" slot-scope="row">
+												<a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="link-color">
 									    		{{ row.value }} {{ row.item.apellidos }}
+												</a>
 									    </template>
 									    <template slot="actions" slot-scope="row" class="md-2">
 									        <div class="actions-table" style="color: #d1d1d1">
@@ -136,7 +143,7 @@
 			    },
 			    allerros: [],
 			    fields: [
-				    { key: 'id', label: 'Nro Historia', class: 'text-center' },
+				    { key: 'codigo', label: 'Nro Historia', class: 'text-center' },
 				    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
 				    { key: 'actions', label: '', sortable: false },
 			    ],

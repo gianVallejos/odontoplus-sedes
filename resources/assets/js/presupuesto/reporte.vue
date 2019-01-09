@@ -29,7 +29,7 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5>PRESUPUESTO NRO {{ pgeneral.id }} - HC {{ pgeneral.idPaciente }}</h5>
+						<h5>PRESUPUESTO NRO {{ pgeneral.id }} | {{ pgeneral.codigo }}</h5>
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 							<tr>

@@ -61,6 +61,10 @@
 											</p>
 										</b-col>
 										<b-col cols="6" class="pt-3 pb-4">
+                        <b-form-group label="Historia" label-for="codigo">
+                          <b-form-input id="codigo" type="text" v-model="form.codigo" placeholder="Nro Historia" class="required" disabled autocomplete="off"   />
+                          <span v-if="all_errors.codigo" :class="['label label-danger']">{{ all_errors.codigo[0] }}</span>
+                        </b-form-group>
 										    <b-form-group label="Nombres" label-for="nombres">
 											    <b-form-input id="nombres" type="text" v-model="form.nombres" placeholder="Nombres" class="required" :disabled=isDisabled autocomplete="off"   />
 											    <span v-if="all_errors.nombres" :class="['label label-danger']">{{ all_errors.nombres[0] }}</span>
@@ -310,6 +314,7 @@
       	'url',
 				'empresas',
       	'sedes',
+        'codigo',
         'referencias',
     		'paciente',
     		'curUser',
@@ -324,6 +329,7 @@
       return{
       	myDate: new Date(),
         form: {
+          codigo: this.codigo,
   				nombres: '',
   				apellidos: '',
   				dni: '',
@@ -432,6 +438,7 @@
     	},
     	setControllerDataToForms(){
     		this.record_id = this.paciente.id
+        this.form.codigo = this.paciente.codigo
     		this.form.nombres  = this.paciente.nombres
   			this.form.apellidos  = this.paciente.apellidos
   			this.form.dni  = this.paciente.dni
@@ -534,6 +541,7 @@
   		},
     	setFormDataToUser(){
     		this.paciente.id = this.record_id
+        this.paciente.codigo = this.form.codigo
     		this.paciente.nombres = this.form.nombres
   			this.paciente.apellidos = this.form.apellidos
   			this.paciente.dni = this.form.dni

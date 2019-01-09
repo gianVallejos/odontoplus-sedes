@@ -16,6 +16,10 @@ class CurBD{
         $cliente = DB::select('call OP_Clientes_get_all_byUserId('. \Auth::user()->clienteId .')')[0];
         return json_encode($cliente);
     }
+
+    public static function getCurrentSede(){
+      return \Auth::user()->sede_id;
+    }
 }
 
  ?>

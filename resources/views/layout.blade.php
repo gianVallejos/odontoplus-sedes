@@ -17,7 +17,7 @@
 	<link rel="stylesheet" href="{{ asset('css/all.min.css?v=1.0.2') }}">
 	<link rel="stylesheet" href="{{ asset('css/fonts.css?v=1.0.2') }}">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link rel="stylesheet" href="{{ asset('css/odontoplus.css?v=1.0.39') }}">
+	<link rel="stylesheet" href="{{ asset('css/odontoplus.css?v=1.0.41') }}">
 	<link rel="stylesheet" href="{{ asset('css/header.css?v=1.0.3') }}">
 	<link rel="stylesheet" href="{{ asset('css/dashboard.css?v=1.0.1') }}">
 	<link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
@@ -70,7 +70,7 @@
 	@endif
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/app.js?v=1.3.34') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.3.35') }}"></script>
 
 
 </body>

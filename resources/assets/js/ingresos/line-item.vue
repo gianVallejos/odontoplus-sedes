@@ -12,7 +12,7 @@
 						<b-row>
 							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
 								<span class="title-sec">Nro Historia:</span>
-								<div class="d-inline-block texto"> {{ record.hc }}</div>
+								<div class="d-inline-block texto"> {{ record.codigo }}</div>
 							</b-col>
 							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
 								<span class="title-sec">Creado en:</span>

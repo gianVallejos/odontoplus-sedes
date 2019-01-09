@@ -32,6 +32,8 @@ class PacienteController extends Controller
     }
 
     public function create(){
+        $codigo = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_generar_codigo('. CurBD::getCurrentSede() .')')[0]->codigo;
+        $codigo = json_encode($codigo);
         $empresas =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
         $empresas = json_encode($empresas);
         $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
@@ -39,7 +41,7 @@ class PacienteController extends Controller
         $referencias =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Referencias_get_all()');
         $referencias = json_encode($referencias);
 
-        return view($this->path . '.create', compact('empresas', 'referencias', 'sedes'));
+        return view($this->path . '.create', compact('empresas', 'referencias', 'sedes', 'codigo'));
     }
 
     public function show($id){
@@ -71,6 +73,7 @@ class PacienteController extends Controller
     public function store(Request $request){
         //print_r($request->all()); die();
         $validator = Validator::make($request->all(), [
+                                    'codigo' => 'required|unique:'.CurBD::getCurrentSchema().'.pacientes|string|max:200',
                                     'nombres' => 'required|string|max:90',
                                     'apellidos' => 'required|string|max:90',
                                     'dni' => 'required|unique:'.CurBD::getCurrentSchema().'.pacientes|digits:8',
@@ -100,7 +103,7 @@ class PacienteController extends Controller
                                                                . '", "' . $request->direccion .'", "'. $request->fechanacimiento .'", "'. $request->genero
                                                                .'", "'. $request->estado .'", "'. $request->telefono . '", "' . $request->fax . '", "' . $request->celular
                                                                . '", "'. $request->celular_aux . '", ' . $request->empresa_id . ', ' . $request->seguro_ind
-                                                               . ', "' . $request->nombre_apoderado . '", "' . $request->celular_apoderado . '", ' . $request->referencia_id . ', ' . $request->sede_id.')');
+                                                               . ', "' . $request->nombre_apoderado . '", "' . $request->celular_apoderado . '", ' . $request->referencia_id . ', ' . $request->sede_id.', "'. $request->codigo .'")');
 
             if( $paciente[0]->ESTADO > 0 ){
               $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_add_all("'. $paciente[0]->LAST_ID .'")');
@@ -123,6 +126,7 @@ class PacienteController extends Controller
     public function update(Request $request, $id){
 
         $validator = Validator::make($request->all(), [
+                        'codigo' => 'required|string|max:200',
                         'nombres' => 'required|string|max:90',
                         'apellidos' => 'required|string|max:90',
                         'dni' => 'required|digits:8',

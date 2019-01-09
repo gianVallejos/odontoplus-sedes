@@ -18,7 +18,7 @@
 										</div>
 									</b-col>
 									<b-col cols="6 pb-2">
-										<span>Nro Historia:</span><div class="d-inline-block texto">{{ paciente.id }}</div>
+										<span>Nro Historia:</span><div class="d-inline-block texto">{{ paciente.codigo }}</div>
 									</b-col>
 									<b-col cols="6 pb-2">
 										<span>Paciente:</span><div class="d-inline-block texto">{{ paciente.nombres }} {{ paciente.apellidos }}</div>
