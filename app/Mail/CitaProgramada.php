@@ -15,16 +15,18 @@ class CitaProgramada extends Mailable
     public $fecha;
     public $hora_inicio;
     public $cliente;
+    public $direccion;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($nombre_paciente, $fecha, $hora_inicio, $cliente){
+    public function __construct($nombre_paciente, $fecha, $hora_inicio, $cliente, $direccion){
         $this->nombre_paciente = $nombre_paciente;
         $this->fecha = $fecha;
         $this->hora_inicio = $hora_inicio;
         $this->cliente = $cliente;
+        $this->direccion = $direccion;
     }
 
     /**

@@ -82,7 +82,8 @@ class CitaController extends Controller{
                                                                                                  $request->idPaciente .','. $request->idDoctor.','. $request->sede.','. $request->sillon.')');
             if( $cita[0]->ESTADO > 0 ){
                if ($request->enviarEmail) {
-                 self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde);
+                 $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('. $request->sede .')')[0];
+                 self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde, $sedes->direccion);
                }
                return response()->json(['success' => 'created']);
             }else{
@@ -111,7 +112,8 @@ class CitaController extends Controller{
                                                                                                $request->desde .'", "'. $request->hasta .'",'. $request->idDoctor.','. $request->sede.','. $request->sillon .')');
           if( $cita[0]->ESTADO > 0 ){
             if ($request->enviarEmail) {
-              self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde);
+              $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('. $request->sede .')')[0];
+              self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde, $sedes->direccion);
             }
             return response()->json(['success' => 'updated']);
           }else{
@@ -126,12 +128,11 @@ class CitaController extends Controller{
         return response()->json(['success' => 'deleted']);
     }
 
-    public function sendNotificationEmail($idPaciente, $fecha, $hora_inicio){
+    public function sendNotificationEmail($idPaciente, $fecha, $hora_inicio, $direccion){
       $cliente = json_decode(CurBD::getCurrentClienteData());
-      $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all_Id('. $idPaciente .')')[0];
-
+      $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all_Id('. $idPaciente .')')[0];      
       if ($paciente->email != '') {
-        Mail::to($paciente->email)->send(new CitaProgramada($paciente->nombres, $fecha, $hora_inicio, $cliente));
+        Mail::to($paciente->email)->send(new CitaProgramada($paciente->nombres, $fecha, $hora_inicio, $cliente, $direccion));
       }
     }
 
