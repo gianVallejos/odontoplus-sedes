@@ -1099,15 +1099,14 @@ BEGIN
 	DECLARE id_paciente INT;
 	DECLARE sede_nombre VARCHAR(200);
 
-	SET id_paciente := (SELECT count(id) FROM pacientes);
+	SET id_paciente := (SELECT id FROM pacientes WHERE sede_id = XID_SEDE ORDER BY pacientes.id DESC LIMIT 1);
 
-	IF(id_paciente = 0) THEN
+	IF(id_paciente is NULL) THEN
 		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-00001') AS codigo
 			FROM sedes WHERE id = XID_SEDE;
 	ELSE
-		SET sede_nombre := (SELECT nombre FROM sedes WHERE id = XID_SEDE);
-		SELECT CONCAT(UPPER(SUBSTRING(sede_nombre, 1, 3)), '-', LPAD((pacientes.id + 1), 5, '0')) AS codigo
-			FROM pacientes ORDER BY pacientes.id DESC LIMIT 1;
+		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-', LPAD((id_paciente+ 1), 5, '0')) AS codigo
+			FROM sedes WHERE id = XID_SEDE;
 	END IF;
 END
 ;;
