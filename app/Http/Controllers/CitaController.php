@@ -65,21 +65,25 @@ class CitaController extends Controller{
 
     public function store(Request $request){
     	$validator = Validator::make($request->all(), [
-            'paciente' => 'required|string|max:200',
+            'paciente' => 'nullable|string|max:200',
             'fecha' => 'required|date',
             'desde' => 'required|date_format:H:i',
             'hasta' => 'required|date_format:H:i|after:desde',
             'tratamiento' => 'required|string|max:200',
             'sillon' => 'required|integer',
             'sede' => 'required|integer',
-            'idPaciente' => 'required|integer',
-            'idDoctor' => 'required|integer'
+            'idPaciente' => 'nullable|integer',
+            'idDoctor' => 'required|integer',
+            'nota' => 'nullable|string|max:200'
         ]);
 
     	if ($validator->passes()) {
+            if( $request->idPaciente == null ){
+              $request->idPaciente = 0;
+            }
             $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_add_all("'. $request->paciente. '","' . $request->tratamiento . '", "'. $request->fecha .'", "'.
-                                                                                                 $request->desde .'", "'. $request->hasta .'", '.
-                                                                                                 $request->idPaciente .','. $request->idDoctor.','. $request->sede.','. $request->sillon.')');
+                                                                                                 $request->desde .'", "'. $request->hasta .'", "'.
+                                                                                                 $request->idPaciente .'",'. $request->idDoctor.','. $request->sede.','. $request->sillon.', "'. $request->nota .'")');
             if( $cita[0]->ESTADO > 0 ){
                if ($request->enviarEmail) {
                  $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('. $request->sede .')')[0];
@@ -95,21 +99,25 @@ class CitaController extends Controller{
 
     public function update(Request $request, $id){
       $validator = Validator::make($request->all(), [
-            'paciente' => 'required|string|max:200',
+            'paciente' => 'nullable|string|max:200',
             'fecha' => 'required|date',
             'desde' => 'required',
             'hasta' => 'required|after:desde',
             'tratamiento' => 'required|string|max:200',
             'sillon' => 'required|integer',
-            'idPaciente' => 'required|integer',
+            'idPaciente' => 'nullable|integer',
             'idDoctor' => 'required|integer',
-            'sede' => 'required|integer'
+            'sede' => 'required|integer',
+            'nota' => 'nullable|string|max:200'
         ]);
 
     	if ($validator->passes()) {
-
-          $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_update_all('.$id.','. $request->idPaciente. ',"' . $request->tratamiento . '", "'. $request->fecha .'", "'.
-                                                                                               $request->desde .'", "'. $request->hasta .'",'. $request->idDoctor.','. $request->sede.','. $request->sillon .')');
+          if( $request->idPaciente == null ){
+            $request->idPaciente = 0;
+          }
+          $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_update_all('.$id.',"'. $request->idPaciente. '","' . $request->tratamiento . '", "'. $request->fecha .'", "'.
+                                                                                               $request->desde .'", "'. $request->hasta .'",'. $request->idDoctor.','. $request->sede.','.
+                                                                                               $request->sillon .', "'. $request->nota .' ")');
           if( $cita[0]->ESTADO > 0 ){
             if ($request->enviarEmail) {
               $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('. $request->sede .')')[0];
@@ -130,7 +138,7 @@ class CitaController extends Controller{
 
     public function sendNotificationEmail($idPaciente, $fecha, $hora_inicio, $direccion){
       $cliente = json_decode(CurBD::getCurrentClienteData());
-      $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all_Id('. $idPaciente .')')[0];      
+      $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all_Id('. $idPaciente .')')[0];
       if ($paciente->email != '') {
         Mail::to($paciente->email)->send(new CitaProgramada($paciente->nombres, $fecha, $hora_inicio, $cliente, $direccion));
       }

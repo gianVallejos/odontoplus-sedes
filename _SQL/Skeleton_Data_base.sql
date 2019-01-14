@@ -59,6 +59,7 @@ CREATE TABLE `citas` (
   `fecha` date DEFAULT NULL,
   `tratamiento` varchar(200) DEFAULT NULL,
   `idSillon` int(11) DEFAULT '1',
+  `nota` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
