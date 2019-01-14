@@ -53,7 +53,7 @@
                         <b-col cols="4">
                           <b-form-group label="Seleccionar Paciente" label-for="pacientes">
                             <b-input-group>
-                                  <b-form-input id="pacientes" type="text" v-model="form.paciente" placeholder="Ningun Paciente Seleccionado" class="required" disabled />
+                                  <b-form-input id="pacientes" type="text" v-model="form.paciente" placeholder="Ningun Paciente Seleccionado" disabled />
                                   <b-input-group-append>
                                   <b-btn class="pl-3 pr-3" variant="success" v-b-modal.exampleModal v-if="displayStatus != 'show'">
                                     <i class="fas fa-search"></i>
@@ -77,7 +77,6 @@
 												<b-col cols="4">
 													<b-form-group label="Seleccionar Sede" label-for="sede">
 		    										<b-form-select v-model="form.sede" class="required" :disabled=isDisabled >
-		    											<option :value="null">Ninguna Sede Seleccionada</option>
 		    											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
 		    												{{ sede.nombre }}
 		    											</option>
@@ -87,13 +86,13 @@
 												</b-col>
                       </b-form-row>
                       <b-form-row>
-                        <b-col cols="4">
+                        <b-col cols="6">
                           <b-form-group label="Tratamiento" label-for="tratamiento">
   											    <b-form-input id="tratamiento" type="text" v-model="form.tratamiento" placeholder="Tratamiento" class="required" :disabled=isDisabled autocomplete="off"  />
   											    <span v-if="all_errors.tratamiento" :class="['label label-danger']">{{ all_errors.tratamiento[0] }}</span>
   										    </b-form-group>
                         </b-col>
-                        <b-col cols="2">
+                        <b-col cols="6">
                           <b-form-group label="Seleccionar Sillón" label-for="apellidos">
         										<b-form-select v-model="form.sillon" class="required" :disabled=isDisabled>
         											<option v-for="(sillon, index) in sillons" :key="index" :value="sillon.id">
@@ -102,6 +101,12 @@
         										</b-form-select>
                             <span v-if="all_errors.sillon" :class="['label label-danger']">{{ all_errors.sillon[0] }}</span>
         									</b-form-group>
+                        </b-col>
+                        <b-col cols="6">
+                          <b-form-group label="Nota" label-for="nota">
+                            <b-form-input id="nota" type="text" v-model="form.nota" placeholder="Nota" :disabled=isDisabled autocomplete="off"  />
+                            <span v-if="all_errors.nota" :class="['label label-danger']">{{ all_errors.nota[0] }}</span>
+                          </b-form-group>
                         </b-col>
                         <b-col cols="2">
                           <b-form-group label="Fecha:">
@@ -276,8 +281,9 @@
     				desde: '09:00',
             hasta: '10:00',
             idDoctor: null,
-						sede: null,
-						enviarEmail: false
+						sede: 1,
+						enviarEmail: false,
+            nota: ''
     		},
         global_date: this.getMyDate(),
     		record_id: '',
@@ -383,6 +389,7 @@
         this.form.tratamiento =  this.record.tratamiento
         this.form.sillon =  this.record.idSillon
 				this.form.sede =  this.record.idSede
+        this.form.nota =  this.record.nota
     	},
     	onGuardarNuevo(){
     		var request = { method: 'POST', url: this.url + '/citas', data: this.form }
@@ -460,6 +467,7 @@
 			this.record.idDoctor = this.form.idDoctor
 			this.record.idSede = this.form.sede
 			this.record.idSillon = this.form.sillon
+      this.record.nota = this.form.nota
     },
 		cleanErrosMessage(){
 			this.all_errors = []
