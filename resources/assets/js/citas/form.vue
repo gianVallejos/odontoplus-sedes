@@ -26,6 +26,9 @@
 									<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
+                  <b-button variant="secondary" v-on:click.prevent="onRegresar">
+										<i class="fas fa-calendar-alt"></i>&nbsp;Ver Calendario
+									</b-button>
 								</div>
 								<div v-if="displayStatus == 'show'">
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
@@ -173,6 +176,9 @@
 									</b-button>
 									<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
+									</b-button>
+                  <b-button variant="secondary" v-on:click.prevent="onRegresar" >
+										<i class="fas fa-calendar-alt"></i>&nbsp;Ver Calendario
 									</b-button>
 								</div>
 							</div>
@@ -434,6 +440,8 @@
 						}else if( response.data.success == 'updated' ){
 							self.toastFunction('La cita ha sido modificada correctamente.', 'success')
 							self.afterSuccessGuardar()
+						}else if (response.data.success = 'no_valido' ){
+							self.toastFunction('Ya existe una cita que interfiere con la fecha, horarios y sillón de esta nueva cita.', 'warning')
 						}else if (response.data.success = 'deleted' ){
 							self.form.is_active = !self.form.is_active
 							self.toastFunctionRedirect('Éxito', 'La cita ha sido eliminada correctamente.', 'success')

@@ -33,7 +33,7 @@ $(document).ready(function() {
       monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
       dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
       dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
-      editable: true,
+      // editable: true,
       eventDrop: function(event, delta, revertFunc) {
         var date = new Date(event.start)
         var fecha = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()

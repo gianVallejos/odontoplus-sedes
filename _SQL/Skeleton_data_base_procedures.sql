@@ -17,6 +17,23 @@ END
 ;;
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS `OP_Citas_is_validate_range`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_is_validate_range`(IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME, IN XID_SILLON INT, IN XSEDE INT)
+BEGIN
+	DECLARE COUNT_NRO INT;
+	-- ES_VALIDO: 1(Válido), 0(No Válido) --
+  SELECT COUNT(*) INTO COUNT_NRO FROM citas WHERE ((desde <= XDESDE AND XDESDE < hasta) OR (desde < XHASTA AND XHASTA <= hasta) OR (XDESDE <= desde AND XHASTA >= hasta))
+				 AND fecha = XFECHA AND idSillon = XID_SILLON AND idSede = XSEDE;
+	IF(COUNT_NRO = 0 ) THEN
+		SELECT 1 AS ES_VALIDO;
+	ELSE
+		SELECT 0 AS ES_VALIDO;
+	END IF;
+END
+;;
+DELIMITER ;
+
 -- ----------------------------
 --  Procedure definition for `OP_Doctors_delete_all_Id`
 -- ----------------------------
@@ -1645,8 +1662,8 @@ DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_get_all`()
 BEGIN
 	SELECT c.id as idEvent, CONCAT('S', idSillon, ' ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Doctor: ',
-         dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
-				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede
+				 dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon, ' - ', sed.nombre) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
+				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
 		FROM citas c
 	LEFT JOIN  sedes sed ON sed.id = c.idSede
 	LEFT JOIN pacientes as pc on pc.id = c.idPaciente

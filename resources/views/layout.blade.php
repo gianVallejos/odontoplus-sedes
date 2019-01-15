@@ -66,11 +66,11 @@
 	<script src="{{ asset('js/moment.min.js?v=1.0.1') }}"></script>
 	@if( str_contains(\Request::route()->getName(), 'citas') )
 		<script src="{{ asset('js/fullcalendar.min.js?v=1.0.1') }}"></script>
-		<script src="{{ asset('js/citas.js?v=1.0.8') }}"></script>
+		<script src="{{ asset('js/citas.js?v=1.0.9') }}"></script>
 	@endif
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/app.js?v=1.3.39') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.3.41') }}"></script>
 
 
 </body>
