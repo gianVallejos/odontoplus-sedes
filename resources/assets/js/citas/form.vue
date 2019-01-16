@@ -440,9 +440,9 @@
 						}else if( response.data.success == 'updated' ){
 							self.toastFunction('La cita ha sido modificada correctamente.', 'success')
 							self.afterSuccessGuardar()
-						}else if (response.data.success = 'no_valido' ){
+						}else if (response.data.success == 'no_valido' ){
 							self.toastFunction('Ya existe una cita que interfiere con la fecha, horarios y sillón de esta nueva cita.', 'warning')
-						}else if (response.data.success = 'deleted' ){
+						}else if (response.data.success == 'deleted' ){
 							self.form.is_active = !self.form.is_active
 							self.toastFunctionRedirect('Éxito', 'La cita ha sido eliminada correctamente.', 'success')
 						}
