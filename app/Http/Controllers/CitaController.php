@@ -117,14 +117,14 @@ class CitaController extends Controller{
             'nota' => 'nullable|string|max:200'
         ]);
 
-    	if ($validator->passese()) {
-        /*
-        $es_valido = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_is_validate_range("'. $request->fecha .'", "'. $request->desde .'", "'.
-                                                                                                              $request->hasta .'", '. $request->sillon .', '. $request->sede .')');
+    	if ($validator->passes()) {
+        $es_valido = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_is_validate_range_Id("'. $request->fecha .'", "'. $request->desde .'", "'.
+                                                                                                               $request->hasta .'", '. $request->sillon .', '. $request->sede .', '. $id .')');
+
+        // print_r($es_valido); die();
         if( $es_valido[0]->ES_VALIDO == 0 ){ //Si la cita no es válida
             return response()->json(['success' => 'no_valido']);
         }else{
-        */
             if( $request->idPaciente == null ){
               $request->idPaciente = 0;
             }
@@ -140,7 +140,7 @@ class CitaController extends Controller{
             }else{
               return response()->json(['error'=> 'Ha ocurrido un error']);
             }
-        // }
+        }
       }
       return response()->json(['error'=>$validator->errors()]);
     }

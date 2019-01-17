@@ -17,6 +17,27 @@ END
 ;;
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS `OP_Citas_is_validate_range_Id`;
+CREATE PROCEDURE `OP_Citas_is_validate_range_Id`(IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME, IN XID_SILLON INT, IN XSEDE INT, IN XID INT)
+BEGIN
+	DECLARE NOT_CHANGED INT;
+	DECLARE COUNT_NRO INT;
+	-- NOT_CHANGED: 1(No ha cambiado), 0 (Ha cambiado)
+	SELECT COUNT(*) INTO NOT_CHANGED FROM citas WHERE citas.id = XID AND fecha = XFECHA AND desde = XDESDE AND hasta = XHASTA AND idSillon = XID_SILLON AND idSede = XSEDE;
+
+	IF( NOT_CHANGED = 0 ) THEN
+		-- ES_VALIDO: 1(Válido), 0(No Válido) --
+		SELECT COUNT(*) INTO COUNT_NRO FROM citas WHERE ((desde <= XDESDE AND XDESDE < hasta) OR (desde < XHASTA AND XHASTA <= hasta) OR (XDESDE <= desde AND XHASTA >= hasta)) AND fecha = XFECHA AND idSillon = XID_SILLON AND idSede = XSEDE;
+		IF(COUNT_NRO = 0 ) THEN
+			SELECT 1 AS ES_VALIDO;
+		ELSE
+			SELECT 0 AS ES_VALIDO;
+		END IF;
+	ELSE
+		SELECT 1 AS ES_VALIDO;
+	END IF;
+END
+
 DROP PROCEDURE IF EXISTS `OP_Citas_is_validate_range`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_is_validate_range`(IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME, IN XID_SILLON INT, IN XSEDE INT)
@@ -1678,7 +1699,7 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_get_all_by_doctor_sede`(IN doctorId int, IN sedeId int)
 BEGIN
 	SELECT c.id as idEvent, CONCAT('S', idSillon, ' ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Doctor: ',
-         dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
+         dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon,  ' - ', sed.nombre) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
 		FROM citas c
 		LEFT JOIN  sedes sed ON sed.id = c.idSede
