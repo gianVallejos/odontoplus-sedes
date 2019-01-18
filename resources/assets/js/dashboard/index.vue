@@ -161,8 +161,11 @@
 										:empty-text="emptyMessage"
 										responsive
 										empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
+							<template slot="codigo" slot-scope="row">
+									<a v-on:click.prevent="nuevoIngresoByIdPaciente(row.item.ingresoId)" href="#" class="link-color" >{{ row.value }}</a>
+							</template>
 							<template slot="nombres" slot-scope="row">
-									{{ row.value }} {{ row.item.apellidos }}
+									<a v-on:click.prevent="nuevoIngresoByIdPaciente(row.item.ingresoId)" href="#" class="link-color" >{{ row.value }} {{ row.item.apellidos }}</a>
 							</template>
 							<template slot="actions" slot-scope="row" class="md-2">
 									<div class="actions-table" style="color: #d1d1d1">
