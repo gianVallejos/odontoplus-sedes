@@ -207,8 +207,11 @@
 							      @filtered="onFilteredPac"
 							      empty-text="No existen campos para mostrar"
 										empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
+									<template slot="id" slot-scope="row">
+											<a v-on:click.prevent="agregarTratamientoFromModal(row.item.id, row.item.detalle, row.item.monto, row.item.costo_variable)" href="#" class="link-color">{{ row.value }}</a>
+									</template>
 									<template slot="detalle" slot-scope="row">
-									    {{ row.value }}
+										 <a v-on:click.prevent="agregarTratamientoFromModal(row.item.id, row.item.detalle, row.item.monto, row.item.costo_variable)" href="#" class="link-color">{{ row.value }}</a>
 									</template>
 									<template slot="monto" slot-scope="row">
 									    S/ {{ row.value }}

@@ -215,10 +215,14 @@
 								empty-filtered-text="No existen pacientes que coincidan con la búsqueda"
 					>
 						<template slot="index" slot-scope="row">
-					      {{ row.index + 1 }}
+							<a href="#" @click.prevent="middlewareTratamientoResinaFromModal(row.item.id, actual_pieza)" class="link-color">
+								  {{ row.index + 1 }}
+							</a>
 					    </template>
 						<template slot="detalle" slot-scope="row">
-							{{ row.value }}
+							<a href="#" @click.prevent="middlewareTratamientoResinaFromModal(row.item.id, actual_pieza)" class="link-color">
+									{{ row.value }}
+							</a>
 						</template>
 						<template slot="monto" slot-scope="row">
 							S/ {{ row.value }}
