@@ -1,7 +1,7 @@
 <template>
-	<div class="barra">
-		<div class="container">
-			<button class="navbar-toggler mt-2 mb-2 pt-2 pb-2" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	<div class="barra navbar-expand-lg">
+		<div class="container pt-2 pb-2 pt-lg-0 pb-lg-0">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		    <i class="fas fa-bars"></i>
 		  </button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">

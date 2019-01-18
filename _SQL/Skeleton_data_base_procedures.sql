@@ -18,6 +18,7 @@ END
 DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Citas_is_validate_range_Id`;
+DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_is_validate_range_Id`(IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME, IN XID_SILLON INT, IN XSEDE INT, IN XID INT)
 BEGIN
 	DECLARE NOT_CHANGED INT;
@@ -37,6 +38,8 @@ BEGIN
 		SELECT 1 AS ES_VALIDO;
 	END IF;
 END
+;;
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Citas_is_validate_range`;
 DELIMITER ;;
@@ -1137,13 +1140,13 @@ BEGIN
 	DECLARE id_paciente INT;
 	DECLARE sede_nombre VARCHAR(200);
 
-	SET id_paciente := (SELECT id FROM pacientes WHERE sede_id = XID_SEDE ORDER BY pacientes.id DESC LIMIT 1);
+	SET id_paciente := (SELECT COUNT(id) FROM pacientes WHERE sede_id = XID_SEDE ORDER BY pacientes.id DESC LIMIT 1);
 
 	IF(id_paciente is NULL) THEN
 		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-00001') AS codigo
 			FROM sedes WHERE id = XID_SEDE;
 	ELSE
-		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-', LPAD((id_paciente+ 1), 5, '0')) AS codigo
+		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-', LPAD((id_paciente + 1), 5, '0')) AS codigo
 			FROM sedes WHERE id = XID_SEDE;
 	END IF;
 END
