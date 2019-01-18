@@ -11,25 +11,25 @@
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						<div class="presupuesto-top">
 							<b-row>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Fecha:</span>
 										<div class="d-inline-block texto">
 											{{ fechahora }}
 										</div>
 									</b-col>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Nro Historia:</span><div class="d-inline-block texto">{{ paciente.codigo }}</div>
 									</b-col>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Paciente:</span><div class="d-inline-block texto">{{ paciente.nombres }} {{ paciente.apellidos }}</div>
 									</b-col>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Doctor:</span><div class="d-inline-block texto">{{ doctor.nombres }} {{ doctor.apellidos }}</div>
 									</b-col>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Empresa:</span><div class="d-inline-block texto">{{ paciente.empresa }}</div>
 									</b-col>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Sede:</span><div class="d-inline-block texto">{{ paciente.sede_nombre }}</div>
 									</b-col>
 							</b-row>

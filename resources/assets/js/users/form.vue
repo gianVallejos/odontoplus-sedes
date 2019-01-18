@@ -49,7 +49,7 @@
 
 							<div class="pt-4 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-user"></i>
 												<div class="d-inline"> Información General </div>
@@ -63,7 +63,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 										    <b-form-group label="Nombres" label-for="nombres">
 											    <b-form-input id="nombres" type="text" class="required" v-model="form.name" :disabled=isDisabled placeholder="Nombres" required autocomplete="off"/>
 													<span v-if="all_errors.name" :class="['label label-danger']">{{ all_errors.name[0] }}</span>
@@ -92,7 +92,7 @@
 									</b-row>
 
 									<b-row v-if="curUser.rolid == 1">
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-shield-alt"></i>
 												<div class="d-inline">Privilegios de Usuario</div>
@@ -103,7 +103,7 @@
 												<br />Colaborador (Restrincciones en reportes y eliminación de datos)
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" md="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 												<b-form-group label="Rol">
 													<b-form-radio-group id="rol_id" v-model="form.rolid" :disabled=isDisabled name="radioSubComponent">
 														<b-form-radio value=2>Colaborador</b-form-radio>

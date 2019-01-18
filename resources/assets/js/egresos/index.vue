@@ -50,11 +50,13 @@
 					             :sort-by.sync="sortBy"
 					             :sort-desc.sync="sortDesc"
 					             :sort-direction="sortDirection"
+											 stacked="md"
+											 responsive = true
 					             @filtered="onFiltered"
 					             empty-text="No existen campos para mostrar"
 											 empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 							<template slot="actions" slot-scope="row" class="md-2">
-						        <div class="actions-table text-center" style="color: #d1d1d1">
+						        <div class="actions-table text-left text-lg-center" style="color: #d1d1d1">
 						        	<a :href="url+'/egresos/'+ row.item.id"  class="action">Ver Egreso</a>
 						        	<span v-if="curUser.rolid == 1">
 							        	|
@@ -128,9 +130,9 @@
 				    { key: 'actions', label: '', 'class': 'action-width text-left' },
 				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 				    { key: 'concepto', label: 'Concepto', sortable: true, sortDirection: 'desc' },
-				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
-						{ key: 'tipo', label: 'Tipo', sortable: true, sortDirection: 'desc' },
-				    { key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
+				    { key: 'doctor', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'd-none d-lg-table-cell' },
+						{ key: 'tipo', label: 'Tipo', sortable: true, sortDirection: 'desc', class: 'd-none d-lg-table-cell' },
+				    { key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc', class: 'd-none d-lg-table-cell' },
 				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc' },
 				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc' }

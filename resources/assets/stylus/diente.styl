@@ -48,12 +48,12 @@
     &.corona
         border: 2px solid yellow
     &.exodoncia::before
-        content: 'X'  
+        content: 'X'
         color: #da2a26
     &.palito::before
         content: ''
         border-left: 4px solid black
-        margin-top: 1px  
+        margin-top: 1px
     &.carilla::before
         content: '\00D8'
         color: #ffd900
@@ -68,7 +68,7 @@
         margin-left: 1px
     &.sellante::before
         content: 'S'
-        
+
 .ionomero
     background #73a5b6
     border 1px solid black
@@ -92,11 +92,11 @@
   .middle:hover,
   .ionomero:hover
     background #da2a26
-    
+
 .diente-section, .middle, .ionomero
     &.noEditable
         cursor: auto
-        
+
 .diente-section, .middle, .ionomero
     &.noEditable
         &:hover
@@ -104,7 +104,7 @@
 
 .left-wrap
     width 573px
-    
+
 .od-right-border
     border-right: 1px solid rgba(0, 0, 0, .1)
 
@@ -123,3 +123,18 @@
             color: auto
 
 @page { margin: 0; }
+
+@media (max-width: 992px)
+  .diente
+    width: 40px
+    height: 40px
+  .ionomero
+    width: 30px
+    height: 30px
+    top: 12px
+  .diente-section
+    width: 18px
+    height: 18px
+  .middle
+    height: 20px
+    width: 20px

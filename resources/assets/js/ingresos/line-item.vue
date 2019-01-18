@@ -10,19 +10,19 @@
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 
 						<b-row>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-6 col-lg-6">
 								<span class="title-sec">Nro Historia:</span>
 								<div class="d-inline-block texto"> {{ record.codigo }}</div>
 							</b-col>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-6 col-lg-6">
 								<span class="title-sec">Creado en:</span>
 								<div class="d-inline-block texto"> {{ record.fecha }}</div>
 							</b-col>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-6 col-lg-6">
 								<span class="title-sec">Paciente:</span>
 								<div class="d-inline-block texto"> {{ record.nombrePaciente }}</div>
 							</b-col>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-6 col-lg-6">
 								<span class="title-sec">Total:</span>
 								<div class="d-inline-block texto"> S/ {{ mydata.monto_total }}</div>
 							</b-col>

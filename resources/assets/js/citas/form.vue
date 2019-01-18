@@ -53,7 +53,7 @@
 									<b-row>
 										<b-col cols="12" class="pt-3 pb-4">
                       <b-form-row>
-                        <b-col cols="4">
+                        <b-col cols="6" lg="4">
                           <b-form-group label="Seleccionar Paciente" label-for="pacientes">
                             <b-input-group>
                                   <b-form-input id="pacientes" type="text" v-model="form.paciente" placeholder="Ningun Paciente Seleccionado" disabled />
@@ -66,7 +66,7 @@
                             <span v-if="all_errors.paciente" :class="['label label-danger']">{{ all_errors.paciente[0] }}</span>
                           </b-form-group>
                         </b-col>
-                        <b-col cols="4">
+                        <b-col cols="6" lg="4">
                           <b-form-group label="Seleccionar Doctor">
         										<b-form-select v-model="form.idDoctor" class="required" :disabled=isDisabled>
         											<option :value="null">Ningun Doctor Seleccionado</option>
@@ -77,7 +77,7 @@
                             <span v-if="all_errors.idDoctor" :class="['label label-danger']">{{ all_errors.idDoctor[0] }}</span>
         									</b-form-group>
                         </b-col>
-												<b-col cols="4">
+												<b-col cols="12" lg="4">
 													<b-form-group label="Seleccionar Sede" label-for="sede">
 		    										<b-form-select v-model="form.sede" class="required" :disabled=isDisabled >
 		    											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
@@ -105,26 +105,26 @@
                             <span v-if="all_errors.sillon" :class="['label label-danger']">{{ all_errors.sillon[0] }}</span>
         									</b-form-group>
                         </b-col>
-                        <b-col cols="6">
+                        <b-col cols="12" lg="6">
                           <b-form-group label="Nota" label-for="nota">
                             <b-form-input id="nota" type="text" v-model="form.nota" placeholder="Nota" :disabled=isDisabled autocomplete="off"  />
                             <span v-if="all_errors.nota" :class="['label label-danger']">{{ all_errors.nota[0] }}</span>
                           </b-form-group>
                         </b-col>
-                        <b-col cols="2">
+                        <b-col cols="4" lg="2">
                           <b-form-group label="Fecha:">
                             <b-form-input type="date" v-model="form.fecha" class="required" :disabled=isDisabled />
                             <span v-if="all_errors.fecha" :class="['label label-danger']">{{ all_errors.fecha[0] }}</span>
                           </b-form-group>
 												</b-col>
-												<b-col cols="2">
+												<b-col cols="4" lg="2">
                           <b-form-group label="Desde:" label-for="desde">
                             <b-form-input type="time" v-model="form.desde" class="required"
                                     :disabled=isDisabled />
                             <span v-if="all_errors.desde" :class="['label label-danger']">{{ all_errors.desde[0] }}</span>
                           </b-form-group>
 												</b-col>
-											    <b-col cols="2">
+											    <b-col cols="4" lg="2">
                             <b-form-group label="Hasta:" label-for="hasta">
     											    <b-form-input type="time" v-model="form.hasta" class="required"
     											    			  :disabled=isDisabled />

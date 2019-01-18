@@ -45,7 +45,7 @@
 
 							<div class="pt-4 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
 											<div class="form-title">
 												<i class="far fa-building"></i>
 												<div class="d-inline"> Información de Sede </div>
@@ -58,7 +58,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 										    <b-form-group label="Nombre" label-for="nombre">
 											    <b-form-input id="nombre" type="text" class="required" v-model="form.nombre"
 														:disabled=isDisabled placeholder="Nombre" autocomplete="off"/>

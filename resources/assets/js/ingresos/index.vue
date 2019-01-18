@@ -30,6 +30,7 @@
 						</div>
 
 						<b-table show-empty
+								 stacked="md"
 								 :items="ingresos"
 								 :fields="fields"
 								 :current-page="currentPage"
@@ -39,6 +40,7 @@
 					             :sort-desc.sync="sortDesc"
 					             :sort-direction="sortDirection"
 					             @filtered="onFiltered"
+											 responsive
 					             empty-text="No existen campos para mostrar"
 											 empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 							<template slot="actions" slot-scope="row" class="md-2">
@@ -98,8 +100,8 @@
 			    	{ text: 'Ingresos', active: true}
 			    ],
 			    fields: [
-				    { key: 'actions', label: '', 'class': 'action-width text-center' },
-				    { key: 'hc', label: 'HC', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+				    { key: 'actions', label: 'Acción', 'class': 'action-width text-left text-md-center' },
+				    { key: 'hc', label: 'HC', sortable: true, sortDirection: 'desc', 'class': 'text-left text-md-center' },
 				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },
 				    { key: 'monto_total', label: 'Monto Total', sortable: true, sortDirection: 'desc' },
 				    { key: 'fecha', label: 'Fecha de Creación', sortable: true, sortDirection: 'desc' }
