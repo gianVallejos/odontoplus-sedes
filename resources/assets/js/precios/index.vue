@@ -203,7 +203,7 @@
             toast: true,
             position: 'top',
             showConfirmButton: false,
-              timer: 3500
+              timer: 4000
         })
       },
       totalCurrentPages(){

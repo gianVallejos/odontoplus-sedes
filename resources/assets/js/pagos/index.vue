@@ -89,7 +89,7 @@
   import TitleComponent from '../widgets/titulo/index.vue'
 	import axios from 'axios'
 
-  export default{    
+  export default{
     name: 'Pagos',
     components:{
 			PanelCard,
@@ -150,12 +150,12 @@
 				self = this
 				if(request){
 					axios(request).then((response) => {
-						if(response.data.success){							
+						if(response.data.success){
 							if (response.data.success = 'deleted' ){
                 this.removeRecordFromTable(record_id)
                 self.toastFunctionRedirect('Éxito', 'El Pago ha sido eliminado correctamente.', 'success')
 							}
-						}else if (response.data.error){							
+						}else if (response.data.error){
 							self.toastFunction(error_msg, 'error')
             }
 					}).catch(function (error) {
@@ -201,7 +201,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-							timer: 3000
+							timer: 4000
 				})
       },
       redireccionarToIndex(){ //Btn Regresar
