@@ -10,23 +10,23 @@
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
             <!-- User Interface controls -->
             <b-row class="pb-3">
-            	<div class="col-md-9">
+            	<div class="col-lg-9 col-md-12">
             		<div class="input-group d-inline-block">
             		<b-form-row>
-            			<b-col cols="3">
+            			<b-col cols="6" lg="3">
             				<b-form-group label="Desde:" label-for="fechainicio" class="mb-0">
             					<b-input id="fechainicio" type="date" v-model="form.fechaInicio" />
             					<span v-if="all_errors.fechaInicio" :class="['label label-danger']">{{ all_errors.fechaInicio[0] }}</span>
             				</b-form-group>
             			</b-col>
-            			<b-col cols="3">
+            			<b-col cols="6" lg="3">
             				<b-form-group label="Hasta:" label-for="fechafin" class="mb-0">
             					<b-input id="fechafin" type="date" v-model="form.fechaFin" />
             					<span v-if="all_errors.fechaFin" :class="['label label-danger']">{{ all_errors.fechaFin[0] }}</span>
             			  </b-form-group>
             			</b-col>
 
-            			<b-col cols="4">
+            			<b-col cols="9" lg="4" class="pt-lg-0 pt-3">
             				<b-form-group label="Sede">
             					<b-form-select v-model="form.sede">
             						<option value = null >Todas las sedes</option>
@@ -38,7 +38,7 @@
             				</b-form-group>
             			</b-col>
 
-            			<b-col cols="2" class="pt-4 mt-1">
+            			<b-col cols="3" lg="2" class="pt-4 mt-lg-1 mt-4">
             					<b-btn variant="primary" v-on:click.prevent="refreshIngresosTable()" >
             						<i class="fas fa-search"></i>&nbsp;&nbsp;Buscar
             					</b-btn>
@@ -47,8 +47,8 @@
 
             		</div>
             	</div>
-							<div class="col-md-3 pt-4 mt-1">
-								<div class="float-right d-inline-block">
+							<div class="col-lg-3 col-md-12 pt-lg-4 mt-lg-1 pt-0 mt-0">
+								<div class="float-none float-lg-right d-inline-block text-center text-lg-right" style="width: 100%">
 									<b-button-group>
 										<b-button variant="primary" v-on:click.prevent="goToPDFView()" >
 											<i class="fas fa-file-alt"></i>&nbsp; Reporte
@@ -69,6 +69,7 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
+                    responsive = true
                     @filtered="onFiltered"
                     empty-text="No existen campos para mostrar"
                     empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
@@ -142,15 +143,15 @@
         fields: [
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-					{ key: 'nombres', label: 'Doctor', sortable: true },
-					{ key: 'tratamiento', label: 'Tratamiento', sortable: true },
-					{ key: 'nombre_sede', label: 'Sede', sortable: true },
-					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center' },
-					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center' },
-					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-center' },
-          { key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-center' },
-          { key: 'total_empresa', label: 'Total Emp.', sortable: true, 'class': 'text-center' },
-					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-center'}
+					{ key: 'nombres', label: 'Doctor', sortable: true, class: 'd-none d-lg-table-cell' },
+					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, class: 'd-none d-lg-table-cell' },
+					{ key: 'nombre_sede', label: 'Sede', sortable: true, class: 'd-none d-lg-table-cell' },
+					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-left text-lg-center' },
+					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-left text-lg-center' },
+					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-left text-lg-center' },
+          { key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-left text-lg-center' },
+          { key: 'total_empresa', label: 'Total Emp.', sortable: true, 'class': 'text-left text-lg-center' },
+					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-left text-lg-center'}
 				],
 				gananciasRecords: [ ],
 				form: {

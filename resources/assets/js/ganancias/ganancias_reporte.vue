@@ -211,7 +211,7 @@
 		}
 	}
 </script>
-<style>
+<style lang="stylus">
 	table.data-general{
 		width: 520px;
 		font-size: 1.15em;
@@ -307,4 +307,17 @@
 	.td-trat-width{
 		width: 185px;
 	}
+	
+	@media (max-width: 992px)
+		table
+			&.data-general
+				width: 330px;
+				font-size: 1.15em;
+				font-family: 'Rubik', sans-serif;
+				border: 2px solid #f3f3f3;
+				tr
+					td
+						font-size: .8em
+		.pr-title
+			font-size: .8em
 </style>

@@ -28,6 +28,8 @@
 					            :sort-desc.sync="sortDesc"
 					            :sort-direction="sortDirection"
 					            @filtered="onFiltered"
+											responsive
+											stacked="md"
 					            empty-text="No existen campos para mostrar"
 											empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 							<template slot="actions" slot-scope="row">
@@ -74,29 +76,29 @@
 
 				<b-row  v-if="isAddTratamiento">
 					<b-col rows="12">
-						<div class="pt-3 pb-3 pl-2 pr-2" >
+						<div class="pt-0 pt-lg-3 pb-3 pl-2 pr-2" >
 							<b-form-row>
-								<b-col cols="2">
+								<b-col cols="6" lg="2">
 									<b-form-group label="Fecha" label-for="fecha">
 										<b-form-input id="fecha" type="date" v-model="form.fecha"
 											    			   :disabled=isDisabled autocomplete="off" class="required" />
 										<span v-if="allerros.fecha" :class="['label label-danger']">{{ allerros.fecha[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col cols="2">
+								<b-col cols="6" lg="2">
 									<b-form-group label="Código" label-for="codigo">
 										<b-form-input id="codigo" type="text" v-model="form.codigo" placeholder="Código de Boleta/Factura"
 																	 :disabled=isDisabled autocomplete="off" />
 										<span v-if="allerros.codigo" :class="['label label-danger']">{{ allerros.codigo[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col cols="2">
+								<b-col cols="6" lg="2">
 									<b-form-group label="Tipo de Pago" label-for="tipo_pago">
 										<b-form-select id="tipo_pago" v-model="form.tipo_pago" :options="tipo_pago.options" :disabled=isDisabled />
 										<span v-if="allerros.tipo_pago" :class="['label label-danger']">{{ allerros.tipo_pago[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col cols="2">
+								<b-col cols="6" lg="2">
 									<b-form-group label="Sede">
 										<b-form-select v-model="form.sede" class="required" >
 											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
@@ -106,7 +108,7 @@
 										<span v-if="allerros.sede" :class="['label label-danger']">{{ allerros.sede[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col cols="4">
+								<b-col cols="12" lg="4">
 									<b-form-group label="Doctor">
 										<b-form-select v-model="form.doctor" :disabled=isModificarIngreso class="required" >
 											<option :value="null">Ningun Doctor Seleccionado</option>
@@ -204,6 +206,8 @@
 									 :sort-by.sync="sortByPac"
 									 :sort-desc.sync="sortDescPac"
 									 :sort-direction="sortDirectionPac"
+									 	stacked="md"
+										responsive
 							      @filtered="onFilteredPac"
 							      empty-text="No existen campos para mostrar"
 										empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
@@ -262,16 +266,16 @@
 		data(){
 			return{
 				fields: [
-						{ key: 'actions', label: '', 'class': 'td-with-action' },
+						{ key: 'actions', label: 'Acción', 'class': 'td-with-action' },
 						{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-						{ key: 'codigo', label: 'Código', sortable: true, sortDirection: 'desc' },
-						{ key: 'tipo_pago_nombre', label: 'Pago', sortable: true, sortDirection: 'desc' },
+						{ key: 'codigo', label: 'Código', sortable: true, sortDirection: 'desc', class: 'd-none d-lg-table-cell' },
+						{ key: 'tipo_pago_nombre', label: 'Pago', sortable: true, class: 'd-none d-lg-block', sortDirection: 'desc' },
 						{ key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
-						{ key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', 'class': 'td-width' },
+						{ key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', 'class': 'td-width d-none d-lg-table-cell' },
 						{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', 'class': 'td-width-trat' },
-						{ key: 'cantidad', label: 'Cant.', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
-						{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
-						{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+						{ key: 'cantidad', label: 'Cant.', sortable: true, sortDirection: 'desc', 'class': 'text-left text-lg-center' },
+						{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', 'class': 'text-left text-lg-center' },
+						{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', 'class': 'text-left text-lg-center' },
 				    // { key: (this.curUser.rolid == 1) ? 'mg' : ''	, label: 'Doctor', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
 				    // { key: (this.curUser.rolid == 1) ? 'mg_core' : ''	, label: 'Empresa', sortable: true, sortDirection: 'desc', 'class': 'text-center' }
 			    ],
@@ -288,9 +292,9 @@
 			    isAddTratamiento: false,
 			    isModificarIngreso: false,
 			    fieldsPac: [
-					{ key: 'id', label: 'Nro', class: 'text-center' },
+					{ key: 'id', label: 'Nro', class: 'text-left text-md-center' },
 				    { key: 'detalle', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
-				    { key: 'monto', label: 'Monto', 'class': 'text-center' },
+				    { key: 'monto', label: 'Monto', 'class': 'text-left text-md-center' },
 				    { key: 'actions', label: '', sortable: false }
 			    ],
 	    		tipo_pago: {
@@ -621,7 +625,7 @@
 
 	}
 </script>
-<style>
+<style lang="stylus">
 	.td-with-action{
 		width: 78px
 	}
@@ -631,4 +635,12 @@
 	.td-width-trat{
 		width: 180px
 	}
+	@media (max-width: 992px)
+		.td-with-action
+			width: auto!important
+		.td-width
+			width: auto!important
+		.td-width-trat
+			width: auto!important
+		
 </style>

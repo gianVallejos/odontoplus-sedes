@@ -9,7 +9,7 @@
 					<span slot="heading">Nuevo Pago </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						<b-row>
-							<b-col cols="6" class="pt-1 pb-4">
+							<b-col cols="6" class="pt-1 pb-4 d-none d-lg-block">
 								<div class="form-title">
 									<i class="fas fa-file-invoice-dollar"></i>
 									<div class="d-inline"> Nuevo Pago </div>
@@ -22,7 +22,7 @@
 									<span class="help-required"> &nbsp; Campos obligatorios. </span>
 								</p>
 							</b-col>
-							<b-col cols="6" class="pt-1 pb-4">
+							<b-col cols="12" lg="6" class="pt-1 pb-4">
 								<b-form>
                    <b-form-row>
                     <b-col cols="6">

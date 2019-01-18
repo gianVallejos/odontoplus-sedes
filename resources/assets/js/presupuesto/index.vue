@@ -43,6 +43,7 @@
 
 
 						<b-table show-empty
+									stacked="md"
 								 :items="mydata"
 								 :fields="fields"
 								 :current-page="currentPage"
@@ -53,6 +54,7 @@
 					             :sort-direction="sortDirection"
 					             @filtered="onFiltered"
 					             empty-text="No existen campos para mostrar"
+											 responsive
 											 empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 							<template slot="actions" slot-scope="row" class="md-2">
 						        <div class="actions-table" style="color: #d1d1d1">
@@ -115,9 +117,9 @@
 			    	{ text: 'Presupuestos', active: true}
 			    ],
 			    fields: [
-				    { key: 'actions', label: '', 'class': 'action-td-width text-center' },
-				    { key: 'id', label: 'Nro', class: 'text-center' },
-				    { key: 'codigo', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+				    { key: 'actions', label: 'Acción', 'class': 'action-td-width' },
+				    { key: 'id', label: 'Nro', class: 'text-left text-md-center' },
+				    { key: 'codigo', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-left text-md-center' },
 				    { key: 'nombrePaciente', label: 'Paciente', sortable: true, sortDirection: 'desc' },
 				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc' },
 				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' }
@@ -148,4 +150,8 @@
 <style lang="stylus">
 	.action-td-width
 		width: 186px!important
+		
+	@media (max-width: 992px)	
+		.action-td-width
+			width: auto!important
 </style>

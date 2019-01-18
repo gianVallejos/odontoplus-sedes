@@ -52,13 +52,13 @@
 									<b-row>
 										<b-col cols="12" class="pt-3 pb-4">
 											<b-form-row>
-												<b-col cols="2">
+												<b-col cols="6" lg="2">
 												    <b-form-group label="Fecha" label-for="fecha">
 													    <b-form-input id="fecha" type="date" v-model="form.fecha"  :disabled=isDisabled class="required" />
 													    <span v-if="all_errors.fecha" :class="['label label-danger']">{{ all_errors.fecha[0] }}</span>
 												    </b-form-group>
 												</b-col>
-												<b-col cols="3">
+												<b-col cols="6" lg="3">
 													<b-form-group label="Sede">
 														<b-form-select v-model="form.sede" :disabled=isDisabled class="required" >
 															<option value=null> Ninguna Sede Seleccionada</option>
@@ -69,7 +69,7 @@
 														<span v-if="all_errors.sede" :class="['label label-danger']">{{ all_errors.sede[0] }}</span>
 													</b-form-group>
 												</b-col>
-												<b-col cols="3">
+												<b-col cols="6" lg="3">
 													<b-form-group label="Tipo">
 														<b-form-select v-model="form.tipo" v-on:input="changeDoctorOption"  :disabled=isDisabled class="required">
 															<option v-for="(tipo, index) in tipos" :key="index" :value="tipo.nombre">
@@ -79,7 +79,7 @@
 														<span v-if="all_errors.tipo" :class="['label label-danger']">{{ all_errors.tipo[0] }}</span>
 													</b-form-group>
 												</b-col>
-												<b-col cols="4">
+												<b-col cols="6" lg="4">
 													<b-form-group label="Doctor">
 														<b-form-select v-model="form.doctor"  :disabled=needDoctor >
 															<option :value="null">Ningun Doctor Seleccionado</option>
