@@ -24,6 +24,8 @@
 											:items=pacientes
 											:filter="filterPacientesOdontoplus"
 											:fields="pacienteFieldsOP"
+											responsive
+											stacked="md"
 											empty-text="No existen campos para mostrar"
 											empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 								<template slot="actions" slot-scope="row">
@@ -43,7 +45,7 @@
 			</b-col>
 			<b-col cols="12" class="pt-3">
 				<div class="row">
-					<div class="col-lg-3 col-md-4 col-sm-6 col-12" v-for="item in items">
+					<div class="col-lg-3 col-md-6 col-sm-6 col-12" v-for="item in items">
 						<div class="dashbox" :class="item.color" v-on:click="openDashboxUrl(item.url, item.show_modal)" v-if="item.for_admin == false || user.rolid == 1" >
 							<b-container>
 								<b-row>
@@ -63,7 +65,7 @@
 					</div>
 				</div>
 			</b-col>
-			<b-col class="pt-3" :cols="isAdmin() ? '9' : '12'">
+			<b-col class="pt-3" cols="12" :lg="isAdmin() ? '9' : '12'">
 				<PanelCard v-if="isAdmin()">
 					<span slot="heading">Ingresos vs. Egresos</span>
 					<b-row slot="body" class="px-3 pb-3">
@@ -111,12 +113,12 @@
 				</PanelCard>
 
 			</b-col>
-			<b-col class="pt-3" cols="3" v-if="isAdmin()">
+			<b-col class="pt-3 d-none d-lg-block" cols="3" v-if="isAdmin()">
 				<div v-for="item in itemsMedium" class="mb-2">
 						<DashboxMed :iconUrl="item.iconUrl" :subname="item.subname" :name="item.name" :color="item.color" :url="item.url" :for_admin="item.for_admin" :user="user" />
 				</div>
 			</b-col>
-			<b-col class="pt-2 mt-2" cols="12">
+			<b-col class="pt-2 mt-2 d-none d-lg-block" cols="12">
 					<PanelCard>
 						<div slot="body" class="text-center">
 								<a :href="url + '/doctores/create'" class="sub-link">Nuevo Doctor</a>
@@ -157,6 +159,7 @@
 										:sort-direction="sortDirection"
 									 	@filtered="onFilteredPacientes"
 										:empty-text="emptyMessage"
+										responsive
 										empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 							<template slot="nombres" slot-scope="row">
 									{{ row.value }} {{ row.item.apellidos }}
@@ -307,7 +310,7 @@
 			    { key: 'actions', label: '', sortable: false }
 		    ],
 				pacienteFieldsOP: [
-					{ key: 'actions', label: '', class: 'at-width', sortable: false },
+					{ key: 'actions', label: 'Acción', class: 'at-width', sortable: false },
 					{ key: 'nombres', label: 'Nombres de Paciente' },
 					{ key: 'codigo', label: 'Historia' },
 					{ key: 'dni', label: 'DNI' },
@@ -499,4 +502,9 @@
 			padding-right: 0px
 	.chart-area
 		height: 350px
+		
+	@media (max-width: 992px)
+		.at-width
+			width: auto
+			
 </style>

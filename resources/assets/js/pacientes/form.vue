@@ -48,7 +48,7 @@
 
 							<div class="pt-4 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="6" class="pt-3 pb-0 pb-lg-4 d-none d-lg-bock">
 											<div class="form-title">
 												<i class="fas fa-child"></i>
 												<div class="d-inline"> Información General </div>
@@ -60,7 +60,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
                         <b-form-group label="Historia" label-for="codigo">
                           <b-form-input id="codigo" type="text" v-model="form.codigo" placeholder="Nro Historia" class="required" disabled autocomplete="off"   />
                           <span v-if="all_errors.codigo" :class="['label label-danger']">{{ all_errors.codigo[0] }}</span>
@@ -79,7 +79,7 @@
 										    </b-form-group>
 										</b-col>
 
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="6" class="pt-3 pb-3 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-briefcase-medical"></i>
 												<div class="d-inline"> Información del Paciente </div>
@@ -91,7 +91,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
                         <b-form-row>
                           <b-col cols="9">
     										    <b-form-group label="Fecha de Nacimiento" label-for="fechanacimiento">
@@ -122,7 +122,7 @@
 											</b-form-row>
 										</b-col>
 
-										<b-col cols="6">
+										<b-col cols="6" class="d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-address-book"></i>
 												<div class="d-inline"> Información de Contacto </div>
@@ -136,7 +136,7 @@
 											</p>
 										</b-col>
 
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 											<b-form-group label="Email" label-for="email">
 												<b-form-input id="email" type="email" v-model="form.email" placeholder="Email" :disabled=isDisabled autocomplete="off" />
 												<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
@@ -175,7 +175,7 @@
 											</b-form-row>
 										</b-col>
 
-										<b-col cols="6">
+										<b-col cols="6" class="d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-building"></i>
 												<div class="d-inline"> Información Externa </div>
@@ -188,7 +188,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 											<b-form-group label="Sede:" label-for="sede_id">
 												<b-form-select v-model="form.sede_id" :disabled=isDisabled class="required">
 													<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
@@ -224,7 +224,7 @@
 										    </b-form-group>
 										</b-col>
 
-										<b-col cols="6">
+										<b-col cols="6" class="d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-address-card"></i>
 												<div class="d-inline"> Información de Apoderado </div>
@@ -236,7 +236,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 											<b-form-group label="Nombre de Apoderado:" label-for="nombre_apoderado">
 									    		<b-form-input id="nombre_apoderado" type="text" v-model="form.nombre_apoderado" placeholder="Nombre de Apoderado" :disabled=isDisabled autocomplete="off" />
 									    		<span v-if="all_errors.nombre_apoderado" :class="['label label-danger']">{{ all_errors.nombre_apoderado[0] }}</span>

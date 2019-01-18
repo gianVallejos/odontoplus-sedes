@@ -2,7 +2,7 @@
 	<b-container v-if="curUser.rolid == 1">
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2 mt-0">
-			<b-col cols="4" class="text-left" >
+			<b-col cols="6" lg="4" class="text-left" >
 				<div class="pr-logo-layout">
 					<div class="pr-logo">
 						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
@@ -23,7 +23,7 @@
 					</div>
 				</div>
 			</b-col>
-			<b-col cols="8" class="text-right">
+			<b-col cols="6" lg="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
 						<h5>RECIBO DE PAGO</h5>
@@ -292,7 +292,7 @@
 		}
 	}
 </script>
-<style>
+<style lang="stylus">
 	table.data-general{
 		width: 520px;
 		font-size: 1.15em;
@@ -395,4 +395,17 @@
 	.td-trat-width{
 		width: 200px;
 	}
+	
+	@media (max-width: 992px)
+		table
+			&.data-general
+				width: 330px;
+				font-size: 1.15em;
+				font-family: 'Rubik', sans-serif;
+				border: 2px solid #f3f3f3;
+				tr
+					td
+						font-size: .8em
+		.pr-title
+			font-size: .8em
 </style>

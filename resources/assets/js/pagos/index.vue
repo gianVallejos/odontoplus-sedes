@@ -51,6 +51,8 @@
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
                     @filtered="onFiltered"
+                    stacked="md"
+                    responsive
                     empty-text="No existen campos para mostrar"
                     empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 
@@ -101,7 +103,7 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: '', 'class': 'action-width' },
+          { key: 'actions', label: 'Acción', 'class': 'action-width' },
           { key: 'nombres', label: 'Doctor', sortable: true, sortDirection: 'desc' },
           { key: 'fecha_inicio', label: 'Fecha de Inicio', sortable: true, sortDirection: 'desc' },
           { key: 'fecha_fin', label: 'Fecha Fin', sortable: true, sortDirection: 'desc' },

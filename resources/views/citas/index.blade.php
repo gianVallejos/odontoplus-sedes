@@ -23,7 +23,7 @@
     		<div class="card-body pt-3 pb-3 pl-3 pr-3">
           <div class="row pb-3">
 
-            <div class="col-md-5 pl-4 pt-2 pb-4">
+            <div class="col-lg-5 col-md-6 pl-4 pt-2 pb-4">
               <div class="float-left input-group">
                 <div class="input-group-prepend">
                   <div class="input-group-text fz-4"> Doctor </div>
@@ -37,7 +37,7 @@
               </div>
             </div>
 
-            <div class="col-md-4 pt-2 pb-4">
+            <div class="col-lg-4 col-md-6 pt-2 pb-4">
               <div class="float-left input-group">
                 <div class="input-group-prepend">
                   <div class="input-group-text fz-4"> Sede </div>

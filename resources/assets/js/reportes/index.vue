@@ -11,12 +11,12 @@
 					<b-row slot="body">
 						<b-col cols="12">
 							<b-form-row>
-								<b-col cols="2">
+								<b-col cols="4" lg="2">
 									<b-input-group prepend="Año">
 										<b-form-select id="estado" v-model="ingresosVsEgresosChart.year" :options="years" v-on:input="fillingresosVsEgresosChart()" />
 									</b-input-group>
 								</b-col>
-								<b-col cols="4">
+								<b-col cols="6">
 									<div class="float-left input-group">
 										<div class="input-group-prepend">
 											<div class="input-group-text fz-4"> Sede </div>
@@ -50,17 +50,17 @@
 						<b-col cols="12">
 							<div class="pb-4">
 								<b-form-row>
-									<b-col cols="3">
+									<b-col cols="6" lg="3">
 										<b-input-group prepend="Desde:">
 											<b-input id="start_date" type="date" v-model="reportesGenerales.start_date" />
 										</b-input-group>
 									</b-col>
-									<b-col cols="3">
+									<b-col cols="6" lg="3">
 										<b-input-group prepend="Hasta:">
 											<b-form-input id="end_date" type="date" v-model="reportesGenerales.end_date" />
 										</b-input-group>
 									</b-col>
-									<b-col cols="4">
+									<b-col cols="12" lg="4" class="pt-2 pt-lg-0">
 										<b-input-group prepend="Sede">
 											<b-form-select v-model="reportesGenerales.sede" >
 												<option value=null >Todas las sedes</option>

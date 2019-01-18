@@ -49,6 +49,7 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
+                    responsive
                     @filtered="onFiltered"
                     empty-text="No existen campos para mostrar"
                     empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
@@ -112,12 +113,12 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: '', 'class': 'action-width' },
+          { key: 'actions', label: 'Acción', 'class': 'action-width' },
           { key: 'nombres', label: 'Nombres', sortable: true, sortDirection: 'desc' },
           { key: 'dni', label: 'DNI', sortable: true },
-          { key: 'email', label: 'Email', sortable: true },
-          { key: 'celular', label: 'Celular', sortable: true },
-          { key: (this.curUser.rolid == 1) ? 'margen_ganancia' : '', label: 'Margen de Ganancia', sortable: true, 'class': 'text-center' }
+          { key: 'email', label: 'Email', class: 'd-none d-lg-table-cell', sortable: true },
+          { key: 'celular', label: 'Celular', class: 'd-none d-lg-table-cell', sortable: true },
+          { key: (this.curUser.rolid == 1) ? 'margen_ganancia' : '', label: 'Margen de Ganancia', sortable: true, 'class': 'text-left text-md-center' }
         ],
         currentPage: 1,
         perPage: 10,

@@ -49,10 +49,12 @@
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
                     @filtered="onFiltered"
+                    stacked="md"
+                    responsive
                     empty-text="No existen campos para mostrar"
                     empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table text-center" style="color: #d1d1d1">
+                  <div class="actions-table text-left text-lg-center" style="color: #d1d1d1">
                     <a :href="url+'/sedes/'+ row.item.id" class="action" >Ver Sede</a>
                     <span v-if="curUser.rolid == 1">|</span>
                     <a :href="url+'/sedes/'+ row.item.id+'/edit'" class="action" v-if="curUser.rolid == 1">Modificar</a>
@@ -98,13 +100,13 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: '', 'class': 'action-width' },
+          { key: 'actions', label: 'Acción', 'class': 'action-width' },
           { key: 'nombre', label: 'Nombre', sortable: true, sortDirection: 'desc' },
 					{ key: 'ciudad', label: 'Ciuadad', sortable: true, sortDirection: 'desc' },
 					{ key: 'direccion', label: 'Dirección', sortable: true, sortDirection: 'desc' },
-					{ key: 'telefono', label: 'Teléfono', sortable: true, sortDirection: 'desc' },
+					{ key: 'telefono', label: 'Teléfono', sortable: true, class: 'd-none d-lg-table-cell', sortDirection: 'desc' },
 					{ key: 'celular', label: 'Celular', sortable: true, sortDirection: 'desc' },
-          { key: 'email', label: 'Email', sortable: true, sortDirection: 'desc' }
+          { key: 'email', label: 'Email', sortable: true, class: 'd-none d-lg-table-cell', sortDirection: 'desc' }
         ],
         currentPage: 1,
         perPage: 10,
