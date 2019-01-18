@@ -145,7 +145,7 @@
 			    },
 			    allerros: [],
 			    fields: [
-				    { key: 'codigo', label: 'Nro Historia', class: 'text-center' },
+				    { key: 'codigo', label: 'Nro Historia', class: 'text-left text-lg-center' },
 				    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
 				    { key: 'actions', label: '', sortable: false },
 			    ],
