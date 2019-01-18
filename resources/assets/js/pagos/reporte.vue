@@ -260,7 +260,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-						timer: 3000
+						timer: 4000
 				})
 			},
 			toastFunctionRedirect(title, msg, type){
@@ -395,7 +395,7 @@
 	.td-trat-width{
 		width: 200px;
 	}
-	
+
 	@media (max-width: 992px)
 		table
 			&.data-general

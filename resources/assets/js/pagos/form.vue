@@ -4,7 +4,7 @@
 			<b-col cols="12">
 				<TitleComponent titulo="Pagos" :items="breadcrumb" />
 			</b-col>
-			<b-col cols="12" class="pt-1">				
+			<b-col cols="12" class="pt-1">
 				<PanelCard>
 					<span slot="heading">Nuevo Pago </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
@@ -166,7 +166,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-	  					timer: 3000
+	  					timer: 4000
 				})
 			}
 		}

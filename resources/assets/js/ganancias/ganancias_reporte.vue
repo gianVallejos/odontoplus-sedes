@@ -201,7 +201,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-							timer: 3000
+							timer: 4000
 				})
 			},
 			onCerrar(){
@@ -307,7 +307,7 @@
 	.td-trat-width{
 		width: 185px;
 	}
-	
+
 	@media (max-width: 992px)
 		table
 			&.data-general

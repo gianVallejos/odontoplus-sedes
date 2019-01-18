@@ -467,7 +467,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-							timer: 3000
+							timer: 4000
 				})
       }
 		}
@@ -505,9 +505,9 @@
 			padding-right: 0px
 	.chart-area
 		height: 350px
-		
+
 	@media (max-width: 992px)
 		.at-width
 			width: auto
-			
+
 </style>
