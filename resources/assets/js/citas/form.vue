@@ -14,10 +14,10 @@
 							<!--input type="hidden" name="_token" :value="csrf"-->
 							<div class="text-center">
 								<div v-if="displayStatus != 'show'">
-									<b-button v-if="displayStatus == 'edit'" type="submit" variant="success" v-on:click.prevent="onGuardarModificar">
+									<b-button v-if="displayStatus == 'edit'" type="submit" :disabled=btnStatus variant="success" v-on:click.prevent="onGuardarModificar">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
-									<b-button v-if="displayStatus == 'new'" type="submit" variant="success" v-on:click.prevent="onGuardarNuevo">
+									<b-button v-if="displayStatus == 'new'" type="submit" :disabled=btnStatus variant="success" v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
 									<b-button v-if="displayStatus == 'edit'" variant="warning" v-on:click.prevent="onCancelarModificar">
@@ -34,7 +34,7 @@
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
-									<b-button variant="danger" v-on:click.prevent="onEliminar(
+									<b-button variant="danger" :disabled=btnStatus v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
 							   				  v-if="curUser.rolid == 1">
@@ -151,7 +151,7 @@
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
 										<i class="fas fa-edit"></i>&nbsp; Modificar
 									</b-button>
-									<b-button variant="danger" v-on:click.prevent="onEliminar(
+									<b-button variant="danger" :disabled=btnStatus v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
 							   				  v-if="curUser.rolid == 1">
@@ -165,10 +165,10 @@
 									</b-button>
 								</div>
 								<div v-if="displayStatus != 'show'">
-									<b-button v-if="displayStatus == 'edit'" variant="success" v-on:click.prevent="onGuardarModificar">
+									<b-button v-if="displayStatus == 'edit'" variant="success" :disabled=btnStatus v-on:click.prevent="onGuardarModificar">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
-									<b-button v-if="displayStatus == 'new'" variant="success" v-on:click.prevent="onGuardarNuevo">
+									<b-button v-if="displayStatus == 'new'" variant="success" :disabled=btnStatus v-on:click.prevent="onGuardarNuevo">
 										<i class="fas fa-save"></i>&nbsp; Guardar
 									</b-button>
 									<b-button v-if="displayStatus == 'edit'" variant="warning" v-on:click.prevent="onCancelarModificar">
@@ -301,6 +301,7 @@
     		],
     		displayStatus: '',
         isDisabled: false,
+        btnStatus: false,
         fields: [
           { key: 'codigo', label: 'Nro Historia', class: 'text-center' },
           { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
@@ -430,6 +431,7 @@
     	},
 		onSubmit(request, error_msg) {
 			self = this
+      this.btnStatus = true
 			if(request){
         self.$refs.spinnerContainerRef.showSpinner()
 				axios(request).then((response) => {
@@ -452,9 +454,11 @@
 							self.toastFunction(error_msg, 'error')
               self.$refs.spinnerContainerRef.hideSpinner()
 					}
+          self.btnStatus = false
 				}).catch(function (error) {
 					self.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe.', 'error')
           self.$refs.spinnerContainerRef.hideSpinner()
+          self.btnStatus = false
 				});
 			}
 		},
