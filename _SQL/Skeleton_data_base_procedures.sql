@@ -972,11 +972,11 @@ BEGIN
 	SELECT pc.id, pc.codigo, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
 				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id,
-				 emp.nombre as empresa_nombre, pc.sede_id, sed.nombre as sede_nombre, ing.id as ingresoId
+				 emp.nombre as empresa_nombre, pc.sede_id, sed.nombre as sede_nombre, ingresos.id as ingresoId
 		FROM pacientes as pc
 	INNER JOIN sedes as sed on sed.id = pc.sede_id
+	INNER JOIN ingresos on ingresos.id = pc.id
 	INNER JOIN empresas as emp on emp.id = pc.empresa_id
-	INNER JOIN ingresos as ing on ing.idPaciente = pc.id
 		ORDER BY pc.id DESC;
 END
 ;;
@@ -1025,7 +1025,7 @@ BEGIN
 				 presupuestos.id as presupuestosId
 		FROM pacientes as pc
 	INNER JOIN empresas as emp on emp.id = pc.empresa_id
-	INNER JOIN ingresos on ingresos.idPaciente = pc.id
+	INNER JOIN ingresos on ingresos.id = pc.id
 	LEFT JOIN presupuestos on presupuestos.idPaciente = pc.id
 		ORDER BY pc.id DESC;
 END
