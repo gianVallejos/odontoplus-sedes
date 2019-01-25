@@ -45,7 +45,7 @@
 
 							<div class="pt-4 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-tooth"></i>
 												<div class="d-inline"> Información de Tratamiento</div>
@@ -60,7 +60,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 										    <b-form-group label="Nombre de Tratamiento" label-for="detalle">
 											    <b-form-input id="detalle" type="text" class="required" v-model="form.detalle"
 											    			  :disabled=isDisabled placeholder="Nombre de Tratamiento" autocomplete="off"/>
@@ -70,6 +70,11 @@
 											    <b-form-input id="precio_estandar" type="number" step="0.1" class="required" v-model="form.precio_estandar"
 											    			  :disabled=isDisabled placeholder="Precio Estandar" autocomplete="off"/>
 													<span v-if="all_errors.precio_estandar" :class="['label label-danger']">{{ all_errors.precio_estandar[0] }}</span>
+										    </b-form-group>
+                        <b-form-group label="Costo Variable" label-for="costo_variable" v-if="displayStatus == 'new'">
+											    <b-form-input id="costo_variable" type="number" step="0.1" class="required" v-model="form.costo_variable"
+											    			  :disabled=isDisabled placeholder="Costo Variable" autocomplete="off"/>
+													<span v-if="all_errors.costo_variable" :class="['label label-danger']">{{ all_errors.costo_variable[0] }}</span>
 										    </b-form-group>
 										</b-col>
 									</b-row>
@@ -143,7 +148,8 @@
       return{
         form: {
 				detalle: '',
-				precio_estandar: ''
+				precio_estandar: 0.00,
+        costo_variable: 0.00
 		},
 		record_id: '',
 		all_errors: [],
@@ -311,7 +317,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-	  					timer: 3000
+	  					timer: 4000
 				})
 			},
       toastFunctionRedirect(title, msg, type){

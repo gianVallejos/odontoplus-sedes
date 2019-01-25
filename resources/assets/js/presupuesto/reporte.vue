@@ -8,17 +8,20 @@
 						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
 					</div>
 					<div class="pr-descripcion-logo">
-						<span v-if="cliente.direccion != null">
-							{{ cliente.direccion }} {{ cliente.ciudad }} - Perú <br />
+						<span v-if="paciente_sede.direccion != null">
+							{{ paciente_sede.direccion }} {{ paciente_sede.ciudad }} - Perú <br />
 						</span>
-						<span v-if="cliente.email != null">
-							{{ cliente.email }} <br />
+						<span v-if="paciente_sede.email != ''">
+							{{ paciente_sede.email }} <br />
 						</span>
-						<span v-if="cliente.telefono != null">
-							{{ cliente.telefono }} <br />
+						<span v-if="paciente_sede.telefono != ''">
+							{{ paciente_sede.telefono }} <br />
 						</span>
-	    			<span v-if="cliente.celular != null">
-							{{ cliente.celular }} <span v-if="cliente.celular_aux != null"> - </span> {{ cliente.celular_aux }}
+	    			<span v-if="paciente_sede.celular != ''">
+							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != ''"> - </span> {{ paciente_sede.celular_aux }}
+						</span>
+						<span v-if="paciente_sede.celular != ''">
+							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != ''"> - </span> {{ paciente_sede.celular_aux }}
 						</span>
 					</div>
 				</div>
@@ -26,7 +29,7 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5>PRESUPUESTO NRO {{ pgeneral.id }} - HC {{ pgeneral.idPaciente }}</h5>
+						<h5>PRESUPUESTO NRO {{ pgeneral.id }} | {{ pgeneral.codigo }}</h5>
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 							<tr>
@@ -40,6 +43,10 @@
 							<tr>
 								<td class="pr-title">EMPRESA: </td>
 								<td>{{ pgeneral.empresa }}</td>
+							</tr>
+							<tr>
+								<td class="pr-title">SEDE: </td>
+								<td>{{ pgeneral.nombreSede }}</td>
 							</tr>
 							<tr>
 								<td class="pr-title">DOCTOR: </td>
@@ -237,7 +244,7 @@
 			'pgeneral',
 			'pdetalle',
 			'precios',
-			'cliente'
+			'paciente_sede'
 		],
 		data(){
 			return{
@@ -561,7 +568,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-	  					timer: 3000
+	  					timer: 4000
 				})
 			},
 			toastFunctionRedirect(title, msg, type){

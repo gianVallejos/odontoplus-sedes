@@ -36,7 +36,7 @@
 							<td>{{igeneral.fechaFinal}}</td>
 						</tr>
 						<tr>
-							<td class="pr-title">TOTAL: </td>
+							<td class="pr-title">TOTAL EMP: </td>
 							<td colspan="3">S/ {{ igeneral.totales.total }}</td>
 						</tr>
 					</table>
@@ -83,6 +83,12 @@
 					</template>
 					<template slot="total" slot-scope="row">
 						S/. {{ row.value }}
+					</template>
+					<template slot="total_empresa" slot-scope="row">
+						S/. {{ row.item.total_empresa }}
+					</template>
+					<template slot="costo_variable" slot-scope="row">
+						S/. {{ row.item.costo_variable }}
 					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
@@ -142,11 +148,13 @@
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc', class: 'text-center' },
 					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
-				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
-				    { key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', class: 'text-center' },
-				    { key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'text-center' },
-				    { key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'text-center' },
-				    { key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
+					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
+					{ key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', class: 'text-center' },
+					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'text-center' },
+					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'text-center' },
+          { key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-center' },
+          { key: 'total_empresa', label: 'Total Emp.', sortable: true, 'class': 'text-center' },
+					{ key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],
 			}
 		},
@@ -193,7 +201,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-							timer: 3000
+							timer: 4000
 				})
 			},
 			onCerrar(){
@@ -203,7 +211,7 @@
 		}
 	}
 </script>
-<style>
+<style lang="stylus">
 	table.data-general{
 		width: 520px;
 		font-size: 1.15em;
@@ -299,4 +307,17 @@
 	.td-trat-width{
 		width: 185px;
 	}
+
+	@media (max-width: 992px)
+		table
+			&.data-general
+				width: 330px;
+				font-size: 1.15em;
+				font-family: 'Rubik', sans-serif;
+				border: 2px solid #f3f3f3;
+				tr
+					td
+						font-size: .8em
+		.pr-title
+			font-size: .8em
 </style>

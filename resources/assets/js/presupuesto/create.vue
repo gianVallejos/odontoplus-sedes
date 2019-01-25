@@ -9,7 +9,7 @@
 					<span slot="heading">Crear Presupuestos </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						<b-row>
-							<b-col cols="6" class="pt-1 pb-4">
+							<b-col cols="6" class="pt-1 pb-4 d-none d-lg-block">
 								<div class="form-title">
 									<i class="fas fa-file-invoice-dollar"></i>
 									<div class="d-inline"> Crear Presupuesto </div>
@@ -19,7 +19,7 @@
 									<br /><br />Al seleccionar "nuevo presupuesto", le aparecerá un odontograma interactivo, en donde podrá agregar los tratamientos de la historia clínica a cotizar.
 								</p>
 							</b-col>
-							<b-col cols="6" class="pt-1 pb-4">
+							<b-col cols="12" lg="6" class="pt-0 pt-lg-1 pb-0 pb-lg-4">
 								<b-form>
 									<b-form-group label="Seleccionar Paciente" label-for="pacientes">
 										<b-input-group>
@@ -74,11 +74,20 @@
 														:sort-by.sync="sortBy"
 														:sort-desc.sync="sortDesc"
 														:sort-direction="sortDirection"
+														responsive
+														stacked="md"
 							             	@filtered="onFiltered"
 														empty-text="No existen campos para mostrar"
 														empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
-										<template slot="nombres" slot-scope="row">
+											<template slot="codigo" slot-scope="row">
+												<a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="link-color">
+													{{ row.value }}
+												</a>
+											</template>
+											<template slot="nombres" slot-scope="row">
+												<a v-on:click.prevent="agregarPaciente(row.item.id, row.item.nombres, row.item.apellidos)" href="#" class="link-color">
 									    		{{ row.value }} {{ row.item.apellidos }}
+												</a>
 									    </template>
 									    <template slot="actions" slot-scope="row" class="md-2">
 									        <div class="actions-table" style="color: #d1d1d1">
@@ -136,7 +145,7 @@
 			    },
 			    allerros: [],
 			    fields: [
-				    { key: 'id', label: 'Nro Historia', class: 'text-center' },
+				    { key: 'codigo', label: 'Nro Historia', class: 'text-left text-lg-center' },
 				    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
 				    { key: 'actions', label: '', sortable: false },
 			    ],
@@ -180,7 +189,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-	  					timer: 3000
+	  					timer: 4000
 				})
 			}
 		}

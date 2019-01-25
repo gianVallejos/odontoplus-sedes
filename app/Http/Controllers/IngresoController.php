@@ -17,7 +17,9 @@ class IngresoController extends Controller
 
     public static $validation_line_item_rules = [
         'fecha' => 'required|date',
-        'doctor' => 'required'
+        'doctor' => 'required',
+        'codigo' => 'nullable|string|max:120',
+        'tipo_pago' => 'required|string|max:120',
     ];
 
     private $path = 'ingresos';
@@ -62,14 +64,15 @@ class IngresoController extends Controller
         return response()->json(['error'=>$validator->errors()]);
     }
 
-    public function reporte($id){      
+    public function reporte($id){
         $igeneral =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_Id('. $id .')')[0];
-        $igeneral = json_encode($igeneral);
         $idetalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_all_Id('. $id .')');
+        $paciente_sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id("'. $igeneral->pacienteSedeId .'")')[0];
+        $igeneral = json_encode($igeneral);
         $idetalle = json_encode($idetalle);
-        $cliente = CurBD::getCurrentClienteData();
+        $paciente_sede = json_encode($paciente_sede);
 
-        return view($this->path . '.reporte', compact('igeneral', 'idetalle', 'cliente'));
+        return view($this->path . '.reporte', compact('igeneral', 'idetalle', 'paciente_sede'));
     }
 
     public function lineItem($id){
@@ -83,10 +86,12 @@ class IngresoController extends Controller
             $tratamientos = json_encode($tratamientos);
             $doctores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
             $doctores = json_encode($doctores);
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+            $sedes = json_encode($sedes);
             $presupuestos_by_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_presupuestos_Id("'. $id .'")');
             $presupuestos_by_ingreso = json_encode($presupuestos_by_ingreso);
 
-            return view('ingresos.line-item', compact('ingresos', 'ingreso_detalle', 'tratamientos', 'doctores', 'presupuestos_by_ingreso'));
+            return view('ingresos.line-item', compact('ingresos', 'ingreso_detalle', 'tratamientos', 'doctores', 'sedes', 'presupuestos_by_ingreso'));
         }catch(Exception $e){
             echo 'Ha ocurrido un error'; die();
         }
@@ -96,8 +101,9 @@ class IngresoController extends Controller
             try{
                 foreach( $request->trats as $trat ){
                     $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
-                                                                            $trat['cantidad'] .', '. $trat['monto'] . ', "' .
-                                                                            $request->fecha .'", ' . $request->doctor . ')');
+                                                                            $trat['cantidad'] .', '. $trat['monto'] . ', ' . $trat['costo_variable'] . ', "' .
+                                                                            $request->fecha .'", '. $request->doctor . ', "'.
+                                                                            $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .')');
                 }
                 $last_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')')[0];
 
@@ -124,8 +130,9 @@ class IngresoController extends Controller
             try{
                 foreach( $request->trats as $trat ){
                     $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_update_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
-                                                                               $trat['cantidad'] .', '. $trat['monto'] .', '. $id  .', "'.
-                                                                               $request->fecha .'", '. $request->doctor .')');
+                                                                               $trat['cantidad'] .', '. $trat['monto'] .', "'.
+                                                                               $request->fecha .'", '. $request->doctor . ', "'.
+                                                                            $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .', '. $id .')');
                 }
 
                 $total_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')')[0];

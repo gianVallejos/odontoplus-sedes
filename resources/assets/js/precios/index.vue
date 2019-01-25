@@ -34,13 +34,14 @@
 
             <!-- Main table element -->
             <div class="scrollable">
-              <table class="table">
+              <table class="table table-responsive">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Tratamiento</th>
                     <th scope="col" class="text-center" v-if="$root.autorizadoVerEmpresa(curUser.schema, curUser.rolid)">Empresa</th>
                     <th scope="col" class="text-center">Monto</th>
+                    <th scope="col" class="text-center">Costo Variable</th>
                     <th scope="col"></th>
                   </tr>
                 </thead>
@@ -60,8 +61,15 @@
                         <b-form-input :ref="'monto-'+index" class="small" type="text" v-model="item.monto"></b-form-input>
                       </b-input-group>
                       <div class="text-center">
-                      <span v-if="all_errors.index == index" :class="['label label-danger']">{{ all_errors.monto[0] }}</span>
-
+                        <span v-if="all_errors.index == index" :class="['label label-danger']">{{ all_errors.monto[0] }}</span>
+                      </div>
+                    </td>
+                    <td width="170">
+                      <b-input-group class="small" prepend="S/.">
+                        <b-form-input :ref="'cv-'+index" class="small" type="text" v-model="item.costo_variable"></b-form-input>
+                      </b-input-group>
+                      <div class="text-center">
+                        <span v-if="all_errors.index == index" :class="['label label-danger']">{{ all_errors.costo_variable[0] }}</span>
                       </div>
                     </td>
                     <td width="120" v-if="curUser.rolid == 1">
@@ -143,6 +151,7 @@
           if(response.data.price){
             this.prices[ind].id = response.data.price[0].id
             this.$refs['monto-'+index][0].$el.value = response.data.price[0].monto
+            this.$refs['cv-'+index][0].$el.value = response.data.price[0].costo_variable
             this.$refs.spinnerContainerRef.hideSpinner()
           }else{
             this.$refs.spinnerContainerRef.hideSpinner()
@@ -156,20 +165,26 @@
         this.cleanErrosMessage()
         var id = this.prices[this.buscarPosicion(item.tratamiento)].id
         var amount = this.$refs['monto-'+index][0].$el.value
-        var request = { method: 'PUT', url: this.url+'/precios/'+ id, data: { monto: amount } }
-        this.$refs.spinnerContainerRef.showSpinner()
-        axios(request).then((response) => {
-          if(response.data.success){
-              this.toastFunctionRedirect('Éxito', 'El precio ha sido actualizado correctamente.', 'success')
+        var costo_variable = this.$refs['cv-'+index][0].$el.value
+        if( parseFloat(costo_variable) <= parseFloat(amount) ){
+          var request = { method: 'PUT', url: this.url+'/precios/'+ id, data: { monto: amount, costo_variable: costo_variable } }
+          this.$refs.spinnerContainerRef.showSpinner()
+          axios(request).then((response) => {
+            if(response.data.success){
+                this.toastFunctionRedirect('Éxito', 'El precio ha sido actualizado correctamente.', 'success')
+                this.$refs.spinnerContainerRef.hideSpinner()
+            }else if (response.data.error){
+              this.all_errors = response.data.error
+              this.all_errors.index = index
+              console.log(JSON.stringify(this.all_errors))
               this.$refs.spinnerContainerRef.hideSpinner()
-          }else if (response.data.error){
-            this.all_errors = response.data.error
-            this.all_errors.index = index
+            }
+          }).catch(function (error) {
             this.$refs.spinnerContainerRef.hideSpinner()
-          }
-        }).catch(function (error) {
-          this.$refs.spinnerContainerRef.hideSpinner()
-        });
+          });
+        }else{
+          this.toastFunction('El costo variable debe ser menor que el monto del tratamiento', 'error')
+        }
 
       },
       buscarPosicion(tratamiento){
@@ -188,7 +203,7 @@
             toast: true,
             position: 'top',
             showConfirmButton: false,
-              timer: 3000
+              timer: 4000
         })
       },
       totalCurrentPages(){

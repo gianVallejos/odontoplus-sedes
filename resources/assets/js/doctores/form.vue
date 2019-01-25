@@ -45,7 +45,7 @@
 
 							<div class="pt-4 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-user"></i>
 												<div class="d-inline"> Información General </div>
@@ -58,7 +58,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 										    <b-form-group label="Nombres" label-for="nombres">
 											    <b-form-input id="nombres" type="text" class="required"
 											    			  v-model="form.nombres" placeholder="Nombres" autocomplete="off" :disabled=isDisabled />
@@ -84,7 +84,7 @@
 									</b-row>
 
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-user-md"></i>
 												<div class="d-inline"> Información del Doctor </div>
@@ -97,7 +97,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" md="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 												<b-form-group label="Fecha de Nacimiento" label-for="fechanacimiento">
 													<b-form-input id="fechanacimiento" type="date" class="required" v-model="form.fechanacimiento" :disabled=isDisabled />
 													<span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
@@ -116,7 +116,7 @@
 									</b-row>
 
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
 											<div class="form-title">
 												<i class="far fa-address-card"></i>
 												<div class="d-inline">Información de Contacto</div>
@@ -129,7 +129,7 @@
 												<span class="help-required"> &nbsp; Campos obligatorios. </span>
 											</p>
 										</b-col>
-										<b-col cols="6" class="pt-3 pb-4">
+										<b-col cols="12" md="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 												<b-form-group label="Dirección" label-for="direccion">
 													<b-form-input id="direccion" type="text" class="required" v-model="form.direccion" placeholder="Dirección" required autocomplete="off" :disabled=isDisabled />
 													<span v-if="all_errors.direccion" :class="['label label-danger']">{{ all_errors.direccion[0] }}</span>
@@ -441,7 +441,7 @@
 					toast: true,
 					position: 'top',
 					showConfirmButton: false,
-  					timer: 3000
+  					timer: 4000
 			})
 		},
     toastFunctionRedirect(title, msg, type){

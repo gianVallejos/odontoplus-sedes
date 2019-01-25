@@ -5,6 +5,10 @@ const mixins = {
         {
           schema: "1_ODONTOPLUS_CAJ",
           rol: "0"
+        },
+        {
+          schema: "2_ATET_CAJ",
+          rol: "0"
         }
       ]
     }

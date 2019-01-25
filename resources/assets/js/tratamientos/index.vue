@@ -29,7 +29,7 @@
 							</div>
 							<div class="col-md-6">
 								<div class="float-right d-inline-block" v-if="curUser.rolid == 1">
-									<b-button-group>                    
+									<b-button-group>
 										<b-button :href="url+'/tratamientos/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Tratamiento
 										</b-button>
@@ -48,11 +48,13 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
+                    stacked="md"
+                    responsive
                     @filtered="onFiltered"
                     empty-text="No existen campos para mostrar"
                     empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
               <template slot="actions" slot-scope="row">
-                  <div class="actions-table text-center" style="color: #d1d1d1">
+                  <div class="actions-table text-left text-lg-center" style="color: #d1d1d1">
                     <a :href="url+'/tratamientos/'+ row.item.id" class="action" >Ver Tratamiento</a>
                     <span v-if="curUser.rolid == 1">|</span>
                     <a :href="url+'/tratamientos/'+ row.item.id+'/edit'" class="action" v-if="curUser.rolid == 1" >Modificar</a>
@@ -158,11 +160,11 @@
     data(){
 			return{
         fields: [
-          { key: 'actions', label: '', 'class': 'td-tratamiento-table' },
+          { key: 'actions', label: 'Acción', 'class': 'td-tratamiento-table' },
           { key: 'detalle', label: 'Nombre de Tratamiento', sortable: true, sortDirection: 'desc' }
         ],
         pacienteFields: [
-          { key: 'id', label: 'Historia', class: 'text-center' },
+          { key: 'id', label: 'Historia', class: 'text-left text-lg-center' },
           { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
           { key: 'actions', label: '', sortable: false }
         ],
@@ -231,4 +233,7 @@
 <style lang="stylus">
   .td-tratamiento-table
     width: 190px
+  @media (max-width: 992px)
+    .td-tratamiento-table
+      width: auto
 </style>

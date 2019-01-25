@@ -1,4 +1,52 @@
+-- ----------------------------
+-- Table structure for tipo_pago
+-- ----------------------------
+DROP TABLE IF EXISTS `tipo_pago`;
+CREATE TABLE `tipo_pago` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
+-- ----------------------------
+-- Records of tipo_pago
+-- ----------------------------
+INSERT INTO `tipo_pago` VALUES ('1', 'Efectivo');
+INSERT INTO `tipo_pago` VALUES ('2', 'Tarjeta Débito');
+INSERT INTO `tipo_pago` VALUES ('3', 'Tarjeta Crédito');
+-- ----------------------------
+--  Table structure for `ingresos_detalle`
+-- ----------------------------
+DROP TABLE IF EXISTS `ingresos_detalle`;
+CREATE TABLE `ingresos_detalle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ingresoId` int(11) DEFAULT NULL,
+  `precioId` int(11) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `monto` decimal(11,2) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `doctorId` int(11) DEFAULT NULL,
+  `margen_ganancia` decimal(10,0) DEFAULT '0',
+	`sedeId` int not null,
+  `costo_variable` decimal(10,2) DEFAULT '0.00',
+  `codigo` varchar(120) DEFAULT NULL,
+  `tipo_pago` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+	-- ----------------------------
+	--  Table structure for `sillons`
+	-- ----------------------------
+DROP TABLE IF EXISTS `sillons`;
+CREATE TABLE `sillons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `citas`
+-- ----------------------------
 DROP TABLE IF EXISTS `citas`;
 CREATE TABLE `citas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -7,7 +55,11 @@ CREATE TABLE `citas` (
   `hasta` time DEFAULT NULL,
   `idPaciente` int(11) DEFAULT NULL,
   `idDoctor` int(11) DEFAULT NULL,
+	`idSede` int not null,
   `fecha` date DEFAULT NULL,
+  `tratamiento` varchar(200) DEFAULT NULL,
+  `idSillon` int(11) DEFAULT '1',
+  `nota` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -51,6 +103,7 @@ CREATE TABLE `egresos` (
   `is_deleted` tinyint(4) DEFAULT '0',
   `created_at` timestamp NULL,
   `updated_at` timestamp NULL,
+	`sedeId` int not null,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -86,22 +139,6 @@ CREATE TABLE `ingresos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `ingresos_detalle`
--- ----------------------------
-DROP TABLE IF EXISTS `ingresos_detalle`;
-CREATE TABLE `ingresos_detalle` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ingresoId` int(11) DEFAULT NULL,
-  `precioId` int(11) DEFAULT NULL,
-  `cantidad` int(11) DEFAULT NULL,
-  `monto` decimal(11,2) DEFAULT NULL,
-  `fecha` date DEFAULT NULL,
-  `doctorId` int(11) DEFAULT NULL,
-  `margen_ganancia` decimal(10,0) DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
 
 -- ----------------------------
 --  Table structure for `pacientes`
@@ -127,9 +164,11 @@ CREATE TABLE `pacientes` (
   `celular_apoderado` varchar(150) DEFAULT NULL,
   `is_deleted` tinyint(4) DEFAULT '0',
   `referencia_id` int(11) DEFAULT '1',
-  `created_at` timestamp NULL,
-  `updated_at` timestamp NULL,
-  PRIMARY KEY (`id`)
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `sede_id` int(11) NOT NULL,
+  `codigo` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`,`codigo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -158,41 +197,40 @@ CREATE TABLE `precios` (
   `monto` decimal(10,2) NOT NULL,
   `created_at` timestamp NULL,
   `updated_at` timestamp NULL,
+  `costo_variable` decimal(10,2) DEFAULT '0.00',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of precios
 -- ----------------------------
-INSERT INTO `precios` VALUES ('1', '1', '2', '10.00', '2018-11-27 16:32:35', '2018-11-27 16:32:35');
-INSERT INTO `precios` VALUES ('2', '1', '3', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('3', '1', '4', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('4', '1', '5', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('5', '1', '6', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('6', '1', '7', '10.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('7', '1', '8', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('8', '1', '9', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('9', '1', '10', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('10', '1', '11', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('11', '1', '12', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('12', '1', '13', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('13', '1', '14', '12.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('14', '1', '15', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('15', '1', '16', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('16', '1', '17', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('17', '1', '18', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('18', '1', '19', '16.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('19', '1', '20', '25.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46');
-INSERT INTO `precios` VALUES ('20', '1', '21', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('21', '1', '22', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('22', '1', '23', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('23', '1', '26', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('24', '1', '27', '25.50', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('25', '1', '28', '25.20', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('26', '1', '29', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('27', '1', '30', '25.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47');
-INSERT INTO `precios` VALUES ('28', '1', '31', '10.00', '2018-11-27 16:33:12', '2018-11-27 16:33:12');
-INSERT INTO `precios` VALUES ('29', '1', '31', '27.00', '2018-11-27 16:33:14', '2018-11-27 16:33:14');
+INSERT INTO `precios` VALUES ('1', '1', '2', '0.00', '2018-11-27 16:32:35', '2018-11-27 16:32:35', '0.00');
+INSERT INTO `precios` VALUES ('2', '1', '3', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('3', '1', '4', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('4', '1', '5', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('5', '1', '6', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('6', '1', '7', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('7', '1', '8', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('8', '1', '9', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('9', '1', '10', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('10', '1', '11', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('11', '1', '12', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('12', '1', '13', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('13', '1', '14', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('14', '1', '15', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('15', '1', '16', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('16', '1', '17', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('17', '1', '18', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('18', '1', '19', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('19', '1', '20', '0.00', '2018-11-27 16:33:46', '2018-11-27 16:33:46', '0.00');
+INSERT INTO `precios` VALUES ('20', '1', '21', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('21', '1', '22', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('22', '1', '23', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('23', '1', '27', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('24', '1', '28', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('25', '1', '29', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('26', '1', '30', '0.00', '2018-11-27 16:33:47', '2018-11-27 16:33:47', '0.00');
+INSERT INTO `precios` VALUES ('27', '1', '31', '0.00', '2018-11-27 16:33:12', '2018-11-27 16:33:12', '0.00');
 
 -- ----------------------------
 --  Table structure for `presupuestos`
@@ -258,6 +296,29 @@ CREATE TABLE `tratamientos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+
+DROP TABLE IF EXISTS `sedes`;
+CREATE Table `sedes` (
+	id int(11) not null auto_increment,
+	nombre varchar(150) not null,
+	ciudad varchar(150) not null,
+	direccion varchar(100) not null,
+	telefono varchar(200) null,
+	celular varchar(200) null,
+	celular_aux varchar(200) null,
+	email varchar(200) null,
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+-- ----------------------------
+--  Table structure for `sillons`
+-- ----------------------------
+DROP TABLE IF EXISTS `sillons`;
+CREATE TABLE `sillons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
 -- ----------------------------
 -- Records of tratamientos
 -- ----------------------------
@@ -265,7 +326,7 @@ INSERT INTO `tratamientos` VALUES ('2', 'Resina Simple Vestibular', '1', '0', '2
 INSERT INTO `tratamientos` VALUES ('3', 'Resina Simple Mesial', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('4', 'Resina Simple Distal', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('5', 'Resina Simple Palatino', '1', '0', '2018-11-27', '2018-11-27');
-INSERT INTO `tratamientos` VALUES ('6', 'Ionomero', '2018-11-27', '1', '0', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('6', 'Ionomero', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('7', 'Resina Simple Oclusal', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('8', 'Corona Fenestrada', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('9', 'Corona Metal Porcelana', '1', '0', '2018-11-27', '2018-11-27');
@@ -287,4 +348,13 @@ INSERT INTO `tratamientos` VALUES ('27', 'Incrustacion de Porcelana', '1', '0', 
 INSERT INTO `tratamientos` VALUES ('28', 'Incrustacion Metal', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('29', 'Resina Compuesta', '1', '0', '2018-11-27', '2018-11-27');
 INSERT INTO `tratamientos` VALUES ('30', 'Resina Compleja', '1', '0', '2018-11-27', '2018-11-27');
-INSERT INTO `tratamientos` VALUES ('31', 'Sellantes por pieza dental', '2018-11-27', '1', '0', '2018-11-27');
+INSERT INTO `tratamientos` VALUES ('31', 'Sellantes por pieza dental', '1', '0', '2018-11-27', '2018-11-27');
+
+-- ----------------------------
+-- Records of sedes
+-- ----------------------------
+INSERT INTO `sedes` VALUES ('1', 'Odontoplus Principal', 'Cajamarca', 'Av. Miguel Grau 656', '', '982780954', '', 'contacto@Odontoplus.pe');
+-- ----------------------------
+-- Records of sillones
+-- ----------------------------
+INSERT INTO `sillons` VALUES ('1','Sillón 1'), ('2','Sillón 2'), ('3','Sillón 3'), ('4','Sillón 4'), ('5','Sillón 5');

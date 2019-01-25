@@ -10,19 +10,19 @@
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 
 						<b-row>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-6 col-lg-6">
 								<span class="title-sec">Nro Historia:</span>
-								<div class="d-inline-block texto"> {{ record.hc }}</div>
+								<div class="d-inline-block texto"> {{ record.codigo }}</div>
 							</b-col>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-6 col-lg-6">
 								<span class="title-sec">Creado en:</span>
 								<div class="d-inline-block texto"> {{ record.fecha }}</div>
 							</b-col>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-6 col-lg-6">
 								<span class="title-sec">Paciente:</span>
 								<div class="d-inline-block texto"> {{ record.nombrePaciente }}</div>
 							</b-col>
-							<b-col cols="12" class="col-sm-12 col-md-12 col-lg-6">
+							<b-col cols="12" class="col-sm-12 col-md-6 col-lg-6">
 								<span class="title-sec">Total:</span>
 								<div class="d-inline-block texto"> S/ {{ mydata.monto_total }}</div>
 							</b-col>
@@ -39,7 +39,8 @@
 					</div>
 				</PanelCard>
 			</b-col>
-			<line-item-detalle :record="recordDetail" :tratamientos="tratamientos" :presupuesto_id="record.presupuestoId" :id="ingreso_id" :url="url" :cur-user="curUser" :doctores="doctores" v-on:calcular-total="actualizarTotal" />
+			<line-item-detalle :record="recordDetail" :ingreso="record" :tratamientos="tratamientos" :presupuesto_id="record.presupuestoId" :id="ingreso_id"
+												 :url="url" :cur-user="curUser" :doctores="doctores" :sedes="sedes" v-on:calcular-total="actualizarTotal" />
 		</b-row>
 
 	</b-container>
@@ -59,6 +60,7 @@
 			'record-detail',
 			'tratamientos',
 			'doctores',
+			'sedes',
 			'presupuestosByIngreso'
 		],
 		components:{

@@ -12,7 +12,7 @@ class EmpresaController extends Controller{
 
     public static $validation_rules = [
         'nombre' => 'required|string|max:120',
-        'ruc' => 'nullable|digits:12'
+        'ruc' => 'nullable|digits:11'
     ];
 
     public function __construct(){
@@ -71,7 +71,7 @@ class EmpresaController extends Controller{
         $prices =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_all_standard()');
 
         foreach ($prices as $price) {
-            $status =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_add_all('.$companyId.','.$price->id_tratamiento.','.$price->monto.')');
+            $status =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_add_all('.$companyId.','.$price->id_tratamiento.','.$price->monto.', '. $price->costo_variable .')');
             if($status[0]->ESTADO == 0) return false;
         }
         return true;

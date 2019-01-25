@@ -28,7 +28,7 @@ class PagoController extends Controller{
         $ingresos = json_encode($ingresos);
         $igeneral = json_encode(['ultimoPago' => $last_pago, 'doctor'=> $doctor, 'totales' => $totales[0], 'fechaInicial' => $fechaInicial, 'fechaFinal' => $fechaFinal]);
         $cliente = CurBD::getCurrentClienteData();
-        return view('pagos.show', compact('ingresos', 'igeneral', 'cliente'));        
+        return view('pagos.show', compact('ingresos', 'igeneral', 'cliente'));
     }
 
     public function create(){
@@ -38,7 +38,7 @@ class PagoController extends Controller{
     }
 
     public function nuevoPagoReporte($idDoctor, $fechaInicial, $fechaFinal){
-        $ingresos =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $ingresos =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');        
         $totales =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_totales_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
         $doctor =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all_Id('.$idDoctor.')')[0];
         $last_pago =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_get_ultimo()')[0];

@@ -24,6 +24,8 @@
 											:items=pacientes
 											:filter="filterPacientesOdontoplus"
 											:fields="pacienteFieldsOP"
+											responsive
+											stacked="md"
 											empty-text="No existen campos para mostrar"
 											empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
 								<template slot="actions" slot-scope="row">
@@ -43,7 +45,7 @@
 			</b-col>
 			<b-col cols="12" class="pt-3">
 				<div class="row">
-					<div class="col-lg-3 col-md-4 col-sm-6 col-12" v-for="item in items">
+					<div class="col-lg-3 col-md-6 col-sm-6 col-12" v-for="item in items">
 						<div class="dashbox" :class="item.color" v-on:click="openDashboxUrl(item.url, item.show_modal)" v-if="item.for_admin == false || user.rolid == 1" >
 							<b-container>
 								<b-row>
@@ -63,16 +65,29 @@
 					</div>
 				</div>
 			</b-col>
-			<b-col class="pt-3" :cols="isAdmin() ? '9' : '12'">
+			<b-col class="pt-3" cols="12" :lg="isAdmin() ? '9' : '12'">
 				<PanelCard v-if="isAdmin()">
 					<span slot="heading">Ingresos vs. Egresos</span>
 					<b-row slot="body" class="px-3 pb-3">
-						<b-col xl="12" cols="12">
+						<b-col cols="12" class="pb-3">
 							<b-form-row>
-								<b-col xl="3" cols="12">
+								<b-col cols="3">
 									<b-input-group prepend="Año">
 										<b-form-select id="yead" v-model="ingresosVSegresosChart.year" :options="years" v-on:input="fillIngresosVSegresosChart()" />
 									</b-input-group>
+								</b-col>
+								<b-col cols="6">
+									<div class="float-left input-group">
+										<div class="input-group-prepend">
+											<div class="input-group-text fz-4"> Sede </div>
+										</div>
+										<b-form-select v-model="ingresosVSegresosChart.sede" v-on:input="fillIngresosVSegresosChart()">
+											<option value=null >Todas las sedes</option>
+											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
+												{{ sede.nombre }}
+											</option>
+										</b-form-select>
+									</div>
 								</b-col>
 							</b-form-row>
 						</b-col>
@@ -98,12 +113,12 @@
 				</PanelCard>
 
 			</b-col>
-			<b-col class="pt-3" cols="3" v-if="isAdmin()">
+			<b-col class="pt-3 d-none d-lg-block" cols="3" v-if="isAdmin()">
 				<div v-for="item in itemsMedium" class="mb-2">
 						<DashboxMed :iconUrl="item.iconUrl" :subname="item.subname" :name="item.name" :color="item.color" :url="item.url" :for_admin="item.for_admin" :user="user" />
 				</div>
 			</b-col>
-			<b-col class="pt-2 mt-2" cols="12">
+			<b-col class="pt-2 mt-2 d-none d-lg-block" cols="12">
 					<PanelCard>
 						<div slot="body" class="text-center">
 								<a :href="url + '/doctores/create'" class="sub-link">Nuevo Doctor</a>
@@ -144,9 +159,13 @@
 										:sort-direction="sortDirection"
 									 	@filtered="onFilteredPacientes"
 										:empty-text="emptyMessage"
+										responsive
 										empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
+							<template slot="codigo" slot-scope="row">
+									<a v-on:click.prevent="nuevoIngresoByIdPaciente(row.item.ingresoId)" href="#" class="link-color" >{{ row.value }}</a>
+							</template>
 							<template slot="nombres" slot-scope="row">
-									{{ row.value }} {{ row.item.apellidos }}
+									<a v-on:click.prevent="nuevoIngresoByIdPaciente(row.item.ingresoId)" href="#" class="link-color" >{{ row.value }} {{ row.item.apellidos }}</a>
 							</template>
 							<template slot="actions" slot-scope="row" class="md-2">
 									<div class="actions-table" style="color: #d1d1d1">
@@ -190,6 +209,7 @@
 		props: [
 			'url',
 			'pacientes',
+			'sedes',
 			'user'
 		],
 		components:{
@@ -274,7 +294,7 @@
 							subname: 'Ver ',
 							name: 'Ganancias Totales',
 							color: 'modificar',
-							url: this.url + '/reportes/ganancias',
+							url: this.url + '/ganancias',
 							for_admin: true
 						},
 
@@ -288,21 +308,22 @@
 						}
 				],
 				pacienteFields: [
-			    { key: 'id', label: 'Historia', class: 'text-center' },
+			    { key: 'codigo', label: 'Historia', class: 'text-center' },
 			    { key: 'nombres', label: 'Nombre de Paciente', sortable: true, sortDirection: 'desc' },
 			    { key: 'actions', label: '', sortable: false }
 		    ],
 				pacienteFieldsOP: [
-					{ key: 'actions', label: '', class: 'at-width', sortable: false },
+					{ key: 'actions', label: 'Acción', class: 'at-width', sortable: false },
 					{ key: 'nombres', label: 'Nombres de Paciente' },
-					{ key: 'id', label: 'Historia' },
+					{ key: 'codigo', label: 'Historia' },
 					{ key: 'dni', label: 'DNI' },
 					{ key: 'celular', label: 'Celular' },
 					{ key: 'telefono', label: 'Teléfono' }
 				],
 				ingresosVSegresosChart: {
 					data: null,
-					year: null
+					year: null,
+					sede: null
 				},
 				nuevosPacientesChart: {
 					data: null
@@ -371,8 +392,9 @@
 			},
 			fillIngresosVSegresosChart(){
 				var year = this.ingresosVSegresosChart.year
-				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/' + year }
-				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/' + year }
+				var sede = this.ingresosVSegresosChart.sede
+				var request_ingresos = { method: 'GET', url: this.url + '/reportes/obtener-ingresos-mensuales/' + year + '/' + sede }
+				var request_egresos = { method: 'GET', url: this.url + '/reportes/obtener-egresos-mensuales/' + year + '/' + sede }
 				if( year != ''){
 					this.chartIsLoading = true
 					var self = this
@@ -445,7 +467,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-							timer: 3000
+							timer: 4000
 				})
       }
 		}
@@ -483,4 +505,9 @@
 			padding-right: 0px
 	.chart-area
 		height: 350px
+
+	@media (max-width: 992px)
+		.at-width
+			width: auto
+
 </style>

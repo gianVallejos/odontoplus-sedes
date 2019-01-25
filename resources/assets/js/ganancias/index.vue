@@ -1,5 +1,5 @@
 <template>
-  <b-container v-if="curUser.rolid == 1">    
+  <b-container v-if="curUser.rolid == 1">
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Reporte de Ganancias" :items="breadcrumb" />
@@ -10,33 +10,45 @@
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
             <!-- User Interface controls -->
             <b-row class="pb-3">
-							<div class="col-md-6">
-								<div class="input-group d-inline-block">
-								<b-form-row>
-									<b-col cols="4">
-										<b-form-group label="Desde:" label-for="fechainicio" class="mb-0">
-											<b-input id="fechainicio" type="date" v-model="form.fechaInicio" />
-											<span v-if="all_errors.fechaInicio" :class="['label label-danger']">{{ all_errors.fechaInicio[0] }}</span>
-										</b-form-group>
-									</b-col>
-									<b-col cols="4">
-										<b-form-group label="Hasta:" label-for="fechafin" class="mb-0">
-											<b-input id="fechafin" type="date" v-model="form.fechaFin" />
-											<span v-if="all_errors.fechaFin" :class="['label label-danger']">{{ all_errors.fechaFin[0] }}</span>
-									  </b-form-group>
-									</b-col>
-									<b-col cols="4" class="pt-4 mt-1">
-											<b-btn variant="primary" v-on:click.prevent="refreshIngresosTable()" >
-												<i class="fas fa-search"></i>&nbsp;&nbsp;Buscar
-											</b-btn>
-									</b-col>
-								</b-form-row>
+            	<div class="col-lg-9 col-md-12">
+            		<div class="input-group d-inline-block">
+            		<b-form-row>
+            			<b-col cols="6" lg="3">
+            				<b-form-group label="Desde:" label-for="fechainicio" class="mb-0">
+            					<b-input id="fechainicio" type="date" v-model="form.fechaInicio" />
+            					<span v-if="all_errors.fechaInicio" :class="['label label-danger']">{{ all_errors.fechaInicio[0] }}</span>
+            				</b-form-group>
+            			</b-col>
+            			<b-col cols="6" lg="3">
+            				<b-form-group label="Hasta:" label-for="fechafin" class="mb-0">
+            					<b-input id="fechafin" type="date" v-model="form.fechaFin" />
+            					<span v-if="all_errors.fechaFin" :class="['label label-danger']">{{ all_errors.fechaFin[0] }}</span>
+            			  </b-form-group>
+            			</b-col>
 
+            			<b-col cols="9" lg="4" class="pt-lg-0 pt-3">
+            				<b-form-group label="Sede">
+            					<b-form-select v-model="form.sede">
+            						<option value = null >Todas las sedes</option>
+            						<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
+            							{{ sede.nombre }}
+            						</option>
+            					</b-form-select>
+            					<span v-if="all_errors.sede" :class="['label label-danger']">{{ all_errors.sede[0] }}</span>
+            				</b-form-group>
+            			</b-col>
 
-								</div>
-							</div>
-							<div class="col-md-6 pt-4 mt-1">
-								<div class="float-right d-inline-block">
+            			<b-col cols="3" lg="2" class="pt-4 mt-lg-1 mt-4">
+            					<b-btn variant="primary" v-on:click.prevent="refreshIngresosTable()" >
+            						<i class="fas fa-search"></i>&nbsp;&nbsp;Buscar
+            					</b-btn>
+            			</b-col>
+            		</b-form-row>
+
+            		</div>
+            	</div>
+							<div class="col-lg-3 col-md-12 pt-lg-4 mt-lg-1 pt-0 mt-0">
+								<div class="float-none float-lg-right d-inline-block text-center text-lg-right" style="width: 100%">
 									<b-button-group>
 										<b-button variant="primary" v-on:click.prevent="goToPDFView()" >
 											<i class="fas fa-file-alt"></i>&nbsp; Reporte
@@ -57,6 +69,7 @@
                     :sort-by.sync="sortBy"
                     :sort-desc.sync="sortDesc"
                     :sort-direction="sortDirection"
+                    responsive = true
                     @filtered="onFiltered"
                     empty-text="No existen campos para mostrar"
                     empty-filtered-text="No existen pacientes que coincidan con la búsqueda" >
@@ -73,12 +86,18 @@
 							<template slot="total" slot-scope="row">
 								S/. {{ row.item.total }}
 							</template>
+              <template slot="total_empresa" slot-scope="row">
+								S/. {{ row.item.total_empresa }}
+							</template>
+              <template slot="costo_variable" slot-scope="row">
+								S/. {{ row.item.costo_variable }}
+							</template>
 
 							<template slot="doctor" slot-scope="row">
 								S/. {{ row.item.doctor }}
 							</template>
 							<template slot="ganancia" slot-scope="row">
-								S/. {{ redondearADos(row.item.total - row.item.doctor) }}
+								S/. {{ redondearADos(row.item.total_empresa - row.item.doctor) }}
 							</template>
             </b-table>
 
@@ -116,24 +135,29 @@
 		},
     props:[
       'url',
-      'curUser'
+      'curUser',
+			'sedes'
     ],
     data(){
 			return{
         fields: [
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-					{ key: 'nombres', label: 'Doctor', sortable: true, sortDirection: 'desc' },
-					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc' },
-					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
-					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
-					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
-					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-center', sortDirection: 'desc'}
+					{ key: 'nombres', label: 'Doctor', sortable: true, class: 'd-none d-lg-table-cell' },
+					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, class: 'd-none d-lg-table-cell' },
+					{ key: 'nombre_sede', label: 'Sede', sortable: true, class: 'd-none d-lg-table-cell' },
+					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-left text-lg-center' },
+					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-left text-lg-center' },
+					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-left text-lg-center' },
+          { key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-left text-lg-center' },
+          { key: 'total_empresa', label: 'Total Emp.', sortable: true, 'class': 'text-left text-lg-center' },
+					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-left text-lg-center'}
 				],
 				gananciasRecords: [ ],
 				form: {
 					fechaInicio:'',
-					fechaFin:''
+					fechaFin:'',
+					sede: null
 				},
 		all_errors: [],
         currentPage: 1,
@@ -172,7 +196,7 @@
 			},
 			goToPDFView(){
 				if( this.validForm() ){
-					window.open(this.url + '/reportes/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin, '_blank')
+					window.open(this.url + '/ganancias/reporte/' + this.form.fechaInicio + '/' + this.form.fechaFin + '/' + this.form.sede, '_blank')
 				}
 				else{
 					this.toastFunction('El periodo de fechas es inválido.', 'error')
@@ -182,9 +206,8 @@
 				alert(this.form)
 			},
 			refreshIngresosTable(){
-
 				if( this.validForm() ){
-					var request = { method: 'GET', url: this.url + '/reportes/gananciasJSON/'+this.form.fechaInicio+'/'+this.form.fechaFin }
+					var request = { method: 'GET', url: this.url + '/ganancias/' + this.form.fechaInicio + '/' + this.form.fechaFin + '/' + this.form.sede }
 					this.$refs.spinnerContainerRef.showSpinner()
           axios(request).then((response) => {
 						this.gananciasRecords = JSON.parse(response.data.ingresos)
@@ -193,7 +216,7 @@
 					});
 				}
 				else{
-					this.toastFunction('El periodo de fechas es inválido.', 'error')
+					this.toastFunction('El periodo de fechas o sede son inválidos.', 'error')
 				}
 
 			},
@@ -211,6 +234,9 @@
 				if( this.form.fechaInicio != '' && this.form.fechaFin != '' && this.form.fechaInicio > this.form.fechaFin){
 					this.all_errors.fechaFin = ['Rango de fechas inválido']
 					this.all_errors.fechaInicio = ['Rango de fechas inválido']
+				}
+				if( isNaN(this.form.sede) && this.form.sede != null && this.form.sede != "null" ){
+					this.all_errors.sede = ['La sede seleccionada es inválida']
 				}
 				return Object.keys(this.all_errors).length === 0
 			},
@@ -234,7 +260,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-	  					timer: 3000
+	  					timer: 4000
 				})
 			}
 		}

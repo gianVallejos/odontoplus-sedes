@@ -7,17 +7,17 @@
 						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
 					</div>
 					<div class="pr-descripcion-logo">
-						<span v-if="cliente.direccion != null">
-							{{ cliente.direccion }} {{ cliente.ciudad }} - Perú <br />
+						<span v-if="paciente_sede.direccion != ''">
+							{{ paciente_sede.direccion }} {{ paciente_sede.ciudad }} - Perú<br/>
 						</span>
-						<span v-if="cliente.email != null">
-							{{ cliente.email }} <br />
+						<span v-if="paciente_sede.email != ''">
+							{{ paciente_sede.email }} <br />
 						</span>
-						<span v-if="cliente.telefono != null">
-							{{ cliente.telefono }} <br />
+						<span v-if="paciente_sede.telefono != ''">
+							{{ paciente_sede.telefono }} <br />
 						</span>
-	    			<span v-if="cliente.celular != null">
-							{{ cliente.celular }} <span v-if="cliente.celular_aux != null"> - </span> {{ cliente.celular_aux }}
+	    			<span v-if="paciente_sede.celular != ''">
+							{{ paciente_sede.celular }} <span v-if="paciente_sede.celular_aux != ''"> - </span> {{ paciente_sede.celular_aux }}
 						</span>
 					</div>
 				</div>
@@ -25,7 +25,7 @@
 			<b-col cols="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
-						<h5>Nro de Historia {{ igeneral.hc }}</h5>
+						<h5>Nro de Historia {{ igeneral.codigo }}</h5>
 					</div>
 					<table class="data-general" border=1 cellspacing="0" cellpadding="0" >
 							<tr>
@@ -35,6 +35,10 @@
 							<tr>
 								<td class="pr-title">PACIENTE: </td>
 								<td colspan="3">{{ igeneral.nombrePaciente }}</td>
+							</tr>
+							<tr>
+								<td class="pr-title">SEDE: </td>
+								<td colspan="3">{{ igeneral.pacienteSedeNombre }}</td>
 							</tr>
 							<tr>
 								<td class="pr-title" >TOTAL: </td>
@@ -120,19 +124,22 @@
 			'igeneral',
 			'idetalle',
 			'curUser',
-			'cliente'
+			'paciente_sede'
 		],
 		data(){
 			return{
 				logoUrl: '',
 				fields: [
 					{ key: 'index', label: '#' },
-				    { key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
-				    { key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
-				    { key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
-				    { key: 'cantidad', label: 'Cantidad', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
-				    { key: 'monto', label: 'Monto', 'class': 'text-center', sortable: true, sortDirection: 'desc' },
-				    { key: 'total', label: 'Total', 'class': 'text-center', sortable: true, sortDirection: 'desc' }
+					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
+					{ key: 'codigo', label: 'Código', sortable: true, sortDirection: 'desc' },
+					{ key: 'tipo_pago_nombre', label: 'Pago', sortable: true, sortDirection: 'desc' },
+					{ key: 'nombre_sede', label: 'Sede', sortable: true, sortDirection: 'desc' },
+					{ key: 'nombreDoctor', label: 'Doctor', sortable: true, sortDirection: 'desc', 'class': 'td-width' },
+					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', 'class': 'td-width-trat' },
+					{ key: 'cantidad', label: 'Cant.', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', 'class': 'text-center' },
+					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', 'class': 'text-center' }
 			    ]
 			}
 		},
@@ -153,7 +160,7 @@
 		}
 	}
 </script>
-<style>
+<style lang="stylus">
 	table.data-general{
 		width: 520px;
 		font-size: 1.15em;
@@ -254,5 +261,18 @@
 	.td-trat-width{
 		width: 260px;
 	}
+	
+	@media (max-width: 992px)
+		table
+			&.data-general
+				width: 330px;
+				font-size: 1.15em;
+				font-family: 'Rubik', sans-serif;
+				border: 2px solid #f3f3f3;
+				tr
+					td
+						font-size: .8em
+		.pr-title
+			font-size: .8em
 
 </style>

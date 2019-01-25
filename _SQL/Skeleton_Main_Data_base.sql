@@ -53,6 +53,7 @@ CREATE TABLE `users` (
   `is_deleted` tinyint(1) DEFAULT '0',
   `schema` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `clienteId` int(11) DEFAULT NULL,
+  `sede_id` int(11) DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -71,7 +72,7 @@ create table `password_resets`
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Clientes_get_all_byUserId`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Clientes_get_all_byUserId`(IN XID_USER INT)
+CREATE  PROCEDURE `OP_Clientes_get_all_byUserId`(IN XID_USER INT)
 BEGIN
 	SELECT nombre_comercial as nombre, direccion, ciudad, email, telefono, celular, celular_aux FROM clientes WHERE clientes.id = XID_USER;
 END
@@ -83,12 +84,12 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_add_all`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_add_all`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
-																		 IN XPASSWORD VARCHAR(255), IN XROLID TINYINT, IN XIS_ACTIVE TINYINT, IN XSCHEMA VARCHAR(255), IN XID_CLIENTE INT)
+CREATE  PROCEDURE `OP_Usuarios_add_all`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
+																		    IN XPASSWORD VARCHAR(255), IN XROLID TINYINT, IN XIS_ACTIVE TINYINT, IN XSCHEMA VARCHAR(255), IN XID_CLIENTE INT, IN XID_SEDE INT)
 BEGIN
-	INSERT INTO users (name, email, password, rolid, is_active, users.schema, clienteId, created_at, updated_at)
-				VALUES (XNAME, XEMAIL, XPASSWORD, XROLID, XIS_ACTIVE, XSCHEMA, XID_CLIENTE, NOW(), NOW());
-	SELECT ROW_COUNT() AS ESTADO;
+INSERT INTO users (name, email, password, rolid, is_active, users.schema, clienteId, created_at, updated_at, sede_id)
+      VALUES (XNAME, XEMAIL, XPASSWORD, XROLID, XIS_ACTIVE, XSCHEMA, XID_CLIENTE, NOW(), NOW(), XID_SEDE);
+SELECT ROW_COUNT() AS ESTADO;
 END
 ;;
 DELIMITER ;
@@ -98,7 +99,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_delete_all`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_delete_all`(IN XID INT, IN XSCHEMA VARCHAR(255), IN XIS_ACTIVE TINYINT)
+CREATE  PROCEDURE `OP_Usuarios_delete_all`(IN XID INT, IN XSCHEMA VARCHAR(255), IN XIS_ACTIVE TINYINT)
 BEGIN
 	UPDATE users SET is_active = XIS_ACTIVE
 		WHERE users.id = XID AND users.schema = XSCHEMA;
@@ -112,9 +113,9 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_get_all`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_get_all`(IN XSCHEMA VARCHAR(255))
+CREATE  PROCEDURE `OP_Usuarios_get_all`(IN XSCHEMA VARCHAR(255))
 BEGIN
-  SELECT u.id, u.name, u.email, u.is_active, u.created_at, r.nombre AS rol
+  SELECT u.id, u.name, u.email, u.is_active, u.created_at, r.nombre AS rol, u.sede_id
 		FROM users u
   LEFT JOIN roles r ON u.rolid = r.id
   WHERE u.`schema` = XSCHEMA AND u.is_deleted = '0' AND u.id != 1 ORDER BY u.id DESC;
@@ -127,9 +128,9 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_get_all_id`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_get_all_id`(IN XID INT, IN XSCHEMA VARCHAR(255))
+CREATE  PROCEDURE `OP_Usuarios_get_all_id`(IN XID INT, IN XSCHEMA VARCHAR(255))
 BEGIN
-  SELECT u.id, u.name, u.email, u.is_active, u.created_at, u.rolid, u.is_active
+  SELECT u.id, u.name, u.email, u.is_active, u.created_at, u.rolid, u.sede_id
 		FROM users u
   WHERE u.`schema` = XSCHEMA AND u.id = XID AND u.is_deleted = '0' ORDER BY u.id DESC;
 END
@@ -141,13 +142,15 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_update_all`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_update_all`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
+CREATE  PROCEDURE `OP_Usuarios_update_all`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
 																				IN XPASSWORD VARCHAR(255), IN XROLID TINYINT,
-																				IN XIS_ACTIVE TINYINT, IN XID INT, IN XSCHEMA VARCHAR(255), IN XID_CLIENTE INT)
+																				IN XIS_ACTIVE TINYINT, IN XID INT, IN XSCHEMA VARCHAR(255),
+                                        IN XID_CLIENTE INT, IN XID_SEDE INT)
 BEGIN
 	UPDATE users SET name = XNAME, email = XEMAIL,
 									 password = XPASSWORD, rolid = XROLID,
 									 is_active = XIS_ACTIVE,
+                   sede_id = XID_SEDE,
 									 updated_at = NOW()
 	WHERE users.id = XID AND users.schema = XSCHEMA AND users.clienteId = XID_CLIENTE;
 	SELECT ROW_COUNT() AS ESTADO;
@@ -160,12 +163,12 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Usuarios_update_no_pass`;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `OP_Usuarios_update_no_pass`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
+CREATE  PROCEDURE `OP_Usuarios_update_no_pass`(IN XNAME VARCHAR(255), IN XEMAIL VARCHAR(255),
 																						IN XROLID TINYINT,
-																						IN XIS_ACTIVE TINYINT, IN XID INT, IN XSCHEMA VARCHAR(255), IN XID_CLIENTE INT)
+																						IN XIS_ACTIVE TINYINT, IN XID INT, IN XSCHEMA VARCHAR(255), IN XID_CLIENTE INT, IN XID_SEDE INT)
 BEGIN
 	UPDATE users SET name = XNAME, email = XEMAIL,
-									 rolid = XROLID, is_active = XIS_ACTIVE, updated_at = NOW()
+									 rolid = XROLID, is_active = XIS_ACTIVE, updated_at = NOW(), sede_id = XID_SEDE
 	WHERE users.id = XID AND users.schema = XSCHEMA AND users.clienteId = XID_CLIENTE;
 	SELECT ROW_COUNT() AS ESTADO;
 END
@@ -177,4 +180,4 @@ DELIMITER ;
 -- ----------------------------
 INSERT INTO `clientes` VALUES ('1','Odontoplus',NULL,NULL,'Cajamarca','Av. Miguel Grau 656',NULL,'943 598585','982 780954','contacto@odontoplus.com');
 INSERT INTO `roles` VALUES ('1','Administrador','Administrador'), ('2','Colaborador','Usuario Invitado');
-INSERT INTO `users` VALUES ('1','Admin','admin@odontoplus.pe','$2y$10$U74ylBqdic.7idkr.hWgP.bZMU77dZz4s0ksFsvPkPjxH4I9npCkm','RegYwGNCwnau0fRlk0L3VFbtaT62QMj2Ym3hJfnPPpAfW7YsNuHnUHJcyV2T','2018-11-27 15:51:31','2018-11-27 15:51:31','1','1','0','1_ODONTOPLUS_CAJ','1');
+INSERT INTO `users` VALUES ('1','Admin','admin@odontoplus.pe','$2y$10$U74ylBqdic.7idkr.hWgP.bZMU77dZz4s0ksFsvPkPjxH4I9npCkm','RegYwGNCwnau0fRlk0L3VFbtaT62QMj2Ym3hJfnPPpAfW7YsNuHnUHJcyV2T','2018-11-27 15:51:31','2018-11-27 15:51:31','1','1','0','1_ODONTOPLUS_CAJ','1', '1');

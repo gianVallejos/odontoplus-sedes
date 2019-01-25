@@ -11,26 +11,26 @@
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						<div class="presupuesto-top">
 							<b-row>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Fecha:</span>
 										<div class="d-inline-block texto">
 											{{ fechahora }}
 										</div>
 									</b-col>
-									<b-col cols="6 pb-2">
-										<span>Nro Historia:</span><div class="d-inline-block texto">{{ paciente.id }}</div>
+									<b-col cols="6" lg="6 pb-2">
+										<span>Nro Historia:</span><div class="d-inline-block texto">{{ paciente.codigo }}</div>
 									</b-col>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Paciente:</span><div class="d-inline-block texto">{{ paciente.nombres }} {{ paciente.apellidos }}</div>
 									</b-col>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Doctor:</span><div class="d-inline-block texto">{{ doctor.nombres }} {{ doctor.apellidos }}</div>
 									</b-col>
-									<b-col cols="6 pb-2">
+									<b-col cols="6" lg="6 pb-2">
 										<span>Empresa:</span><div class="d-inline-block texto">{{ paciente.empresa }}</div>
 									</b-col>
-									<b-col cols="6 pb-2">
-										<span>Sede:</span><div class="d-inline-block texto">Cajamarca</div>
+									<b-col cols="6" lg="6 pb-2">
+										<span>Sede:</span><div class="d-inline-block texto">{{ paciente.sede_nombre }}</div>
 									</b-col>
 							</b-row>
 						</div>
@@ -215,10 +215,14 @@
 								empty-filtered-text="No existen pacientes que coincidan con la búsqueda"
 					>
 						<template slot="index" slot-scope="row">
-					      {{ row.index + 1 }}
+							<a href="#" @click.prevent="middlewareTratamientoResinaFromModal(row.item.id, actual_pieza)" class="link-color">
+								  {{ row.index + 1 }}
+							</a>
 					    </template>
 						<template slot="detalle" slot-scope="row">
-							{{ row.value }}
+							<a href="#" @click.prevent="middlewareTratamientoResinaFromModal(row.item.id, actual_pieza)" class="link-color">
+									{{ row.value }}
+							</a>
 						</template>
 						<template slot="monto" slot-scope="row">
 							S/ {{ row.value }}
@@ -398,11 +402,11 @@
 							this.$refs.spinnerContainerRef.hideSpinner()
 							this.isSuccess = true
 							this.toastFunctionRedirect('<span style="#fff; font-size: 1em">Éxito</span>', 'Presupuesto guardado correctamente', 'success')
-						}						
+						}
 				}).catch((error) => {
 						this.toastFunction('Ha ocurrido un error crítico, por favor comunicarse con Odontoplus.pe', 'error')
 						this.$refs.spinnerContainerRef.hideSpinner()
-          })					
+          })
 			},
 			esResina(value){
 	            if( value <= 5 ) return true;
@@ -549,7 +553,7 @@
 					this.tratamientos.push({pieza, seccion, secUno: null, secDos: null, opcion: this.opcion, monto: this.precios[ind_sec_tabla].monto})
 					this.mostrarTratamientosEnTabla()
 				}
-				
+
 	        },
 	        despintarSeccionDiente(seccion, pieza){
 	        	var sec = 'pz' + pieza
@@ -696,7 +700,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-	  					timer: 3000
+	  					timer: 4000
 				})
 			},
 			toastFunctionRedirect(title, msg, type){

@@ -37,7 +37,7 @@ return [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'port' => '3306',
-            'database' => 'op_main_bd_v3',
+            'database' => 'op_sedes_main_bd',
             'username' => 'root',
             'password' => '',
             'unix_socket' => env('DB_SOCKET', ''),
@@ -52,7 +52,7 @@ return [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'port' => '3306',
-            'database' => 'op_odontoplus_bd',
+            'database' => 'op_sedes_bd',
             'username' => 'root',
             'password' => '',
             'unix_socket' => env('DB_SOCKET', ''),
@@ -67,7 +67,7 @@ return [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'port' => '3306',
-            'database' => 'op_20600175697_bd',
+            'database' => 'op_2_atet_caj_sedes_bd',
             'username' => 'root',
             'password' => '',
             'unix_socket' => env('DB_SOCKET', ''),
@@ -77,7 +77,6 @@ return [
             'strict' => true,
             'engine' => null,
         ],
-
 
     ],
 

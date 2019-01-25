@@ -23,21 +23,28 @@ class UserController extends Controller{
     }
 
     public function create(){
-        return view('users.create');
+      $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+      $sedes = json_encode($sedes);
+
+      return view('users.create', compact('sedes'));
     }
 
     public function show($id){
         $user = DB::select('call OP_Usuarios_get_all_id('.$id.', "'. CurBD::getCurrentSchema() . '")')[0]; //Filtrar por Schema
         $user = json_encode($user);
+        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        $sedes = json_encode($sedes);
 
-        return view('users.show', compact('user', 'id'));
+        return view('users.show', compact('user', 'id', 'sedes'));
     }
 
     public function edit($id){
         $user = DB::select('call OP_Usuarios_get_all_id('.$id.', "'. CurBD::getCurrentSchema() .'")')[0]; //Filtrar por Schema
         $user = json_encode($user);
+        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        $sedes = json_encode($sedes);
 
-        return view('users.edit', compact('user'));
+        return view('users.edit', compact('user', 'sedes'));
     }
 
     public function store(Request $request){
@@ -57,7 +64,7 @@ class UserController extends Controller{
                 $is_active = ($request->is_active == null) ? 0 : 1;
                 $user = DB::select('call OP_Usuarios_add_all("'. $request->name .'", "'. $request->email
                                                               .'", "'. Hash::make($request->password) .'", '. $request->rolid
-                                                              .', '. $is_active .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .')');
+                                                              .', '. $is_active .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .', '. $request->sede_id .')');
 
                 if( $user[0]->ESTADO > 0 ){
                     return response()->json(['success' => 'created']);
@@ -88,10 +95,10 @@ class UserController extends Controller{
                 if( !empty($request->password) && !empty($request->confirm_password) ){
                     $user = DB::select('call OP_Usuarios_update_all("'. $request->name .'", "'. $request->email
                                                                       .'", "'. Hash::make($request->password) .'", '. $request->rolid
-                                                                      .', '. $is_active .', '. $id .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .')');
+                                                                      .', '. $is_active .', '. $id .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .', '. $request->sede_id .')');
                 }else{
                     $user = DB::select('call OP_Usuarios_update_no_pass("'. $request->name .'", "'. $request->email
-                                                                          .'", '. $request->rolid .', '. $is_active .', '. $id .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .')');
+                                                                          .'", '. $request->rolid .', '. $is_active .', '. $id .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .', '. $request->sede_id .')');
                 }
 
                 if( $user[0]->ESTADO > 0 ){

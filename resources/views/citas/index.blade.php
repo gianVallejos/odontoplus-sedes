@@ -22,21 +22,14 @@
     		</div>
     		<div class="card-body pt-3 pb-3 pl-3 pr-3">
           <div class="row pb-3">
-            <!-- <div class="col-md-12 pt-3 pb-3 mb-3">
-              <div class="float-right d-inline-block">
-                <a href="#" target="_self" class="btn btn-success">
-                  <i class="fas fa-plus"></i> Nuevo Paciente
-                </a>
-              </div>
-            </div> -->
 
-            <div class="col-md-4 pr-4 pl-4 pt-2 pb-4">
-              <div class="float-left input-group" role="group">
+            <div class="col-lg-5 col-md-6 pl-4 pt-2 pb-4">
+              <div class="float-left input-group">
                 <div class="input-group-prepend">
                   <div class="input-group-text fz-4"> Doctor </div>
                 </div>
                 <select class="form-control" name="id_doctor">
-                  <option value="all" selected>Todos</option>
+                  <option value="all" selected>Todos los doctores</option>
                   @foreach($doctores as $dr)
                     <option value="{{ $dr->id }}">{{ $dr->nombres.' '.$dr->apellidos }}</option>
                   @endforeach
@@ -44,12 +37,19 @@
               </div>
             </div>
 
-
-            <!--select id="dropdown">
-              <option value="All" data-feed="all-feed.php" selected>All</option>
-              <option value="This" data-feed="this-feed.php">This</option>
-              <option value="That" data-feed="that-feed.php">That</option>
-            </select-->
+            <div class="col-lg-4 col-md-6 pt-2 pb-4">
+              <div class="float-left input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text fz-4"> Sede </div>
+                </div>
+                <select class="form-control" name="id_sede">
+                  <option value="all" selected>Todas las sedes</option>
+                  @foreach($sedes as $sede)
+                    <option value="{{ $sede->id }}">{{ $sede->nombre }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
 
             <div class="col-md-12 pr-4 pl-4">
               <div id='calendar'></div>

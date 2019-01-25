@@ -2,7 +2,7 @@
 	<b-container v-if="curUser.rolid == 1">
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2 mt-0">
-			<b-col cols="4" class="text-left" >
+			<b-col cols="6" lg="4" class="text-left" >
 				<div class="pr-logo-layout">
 					<div class="pr-logo">
 						<img :src="logoUrl" alt="Logo Empresa" @error="setDefaultImagenLogo" />
@@ -23,7 +23,7 @@
 					</div>
 				</div>
 			</b-col>
-			<b-col cols="8" class="text-right">
+			<b-col cols="6" lg="8" class="text-right">
 				<div class="d-inline-block text-left">
 					<div class="text-center pb-2">
 						<h5>RECIBO DE PAGO</h5>
@@ -43,6 +43,10 @@
 							<tr>
 								<td class="pr-title">TOTAL DR: </td>
 								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>
+							</tr>
+							<tr class="hide-print">
+								<td class="pr-title">TOTAL EMP: </td>
+								<td colspan="3">S/ {{ igeneral.totales.total_ganancia }}</td>
 							</tr>
 							<tr class="hide-print">
 								<td class="pr-title">TOTAL: </td>
@@ -93,11 +97,14 @@
 					<template slot="monto" slot-scope="row" class="hide-print">
 						S/. {{ row.item.monto }}
 					</template>
+					<template slot="costo_variable" slot-scope="row" class="hide-print">
+						S/. {{ row.item.costo_variable }}
+					</template>
 					<template slot="total" slot-scope="row">
 						S/. {{ row.item.total }}
 					</template>
 					<template slot="empresa" slot-scope="row">
-						S/. {{ calculateEmpresaAmount(row.item.total, row.item.doctor)}}
+						S/. {{ calculateEmpresaAmount(row.item.total_empresa, row.item.doctor)}}
 					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
@@ -110,6 +117,14 @@
 				</div>
 				<div class="d-inline-block" style="width: 150px">
 					S/ {{ igeneral.totales.total_doctor }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" >
+					<span>Total Emp: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_ganancia }}
 				</div>
 			</b-col>
 			<b-col cols="12" class="text-right monto-class hide-print">
@@ -173,7 +188,7 @@
 					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
 					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
 					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
-					{ key: 'empresa', label: 'Total Emp.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
+					{ key: 'costo_variable', label: 'C.V.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
 					{ key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],
 				displayStatus: ''
@@ -245,7 +260,7 @@
 						toast: true,
 						position: 'top',
 						showConfirmButton: false,
-						timer: 3000
+						timer: 4000
 				})
 			},
 			toastFunctionRedirect(title, msg, type){
@@ -277,7 +292,7 @@
 		}
 	}
 </script>
-<style>
+<style lang="stylus">
 	table.data-general{
 		width: 520px;
 		font-size: 1.15em;
@@ -380,4 +395,17 @@
 	.td-trat-width{
 		width: 200px;
 	}
+
+	@media (max-width: 992px)
+		table
+			&.data-general
+				width: 330px;
+				font-size: 1.15em;
+				font-family: 'Rubik', sans-serif;
+				border: 2px solid #f3f3f3;
+				tr
+					td
+						font-size: .8em
+		.pr-title
+			font-size: .8em
 </style>
