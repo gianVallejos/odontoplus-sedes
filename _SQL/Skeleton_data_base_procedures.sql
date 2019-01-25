@@ -1685,7 +1685,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all`;
 DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_get_all`()
 BEGIN
-	SELECT c.id as idEvent, CONCAT('S', idSillon, ' ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Doctor: ',
+	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', pc.codigo ,' | Paciente: ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, pc.telefono)) ,' | Doctor: ',
 				 dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon, ' - ', sed.nombre) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
 		FROM citas c
@@ -1701,7 +1701,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_get_all_by_doctor_sede`(IN doctorId int, IN sedeId int)
 BEGIN
-	SELECT c.id as idEvent, CONCAT('S', idSillon, ' ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Doctor: ',
+	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', pc.codigo, ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, pc.telefono)), ' | Doctor: ',
          dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon,  ' - ', sed.nombre) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
 		FROM citas c
