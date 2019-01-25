@@ -476,7 +476,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `OP_Ingresos_Detalle_add_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT,
-																							 IN XMONTO DECIMAL(11, 2), IN XCOSTO_VARIABLE DECIMAL(10, 2),
+																							 IN XMONTO DECIMAL(11, 2),IN XIGV DECIMAL(10,2), IN XCOSTO_VARIABLE DECIMAL(10, 2),
 																							 IN XFECHA DATE, IN XDOCTOR INT, IN XCODIGO VARCHAR(120),
 																							 IN XTIPO_PAGO INT, IN XID_SEDE INT)
 	BEGIN
@@ -485,8 +485,8 @@ CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO INT, IN XID_PRECIO
 
 		SELECT margen_ganancia INTO XMARGEN FROM doctors WHERE doctors.id = XDOCTOR;
 
-		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto, costo_variable, fecha, doctorId, margen_ganancia, codigo, tipo_pago, sedeId)
-						VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO, XCOSTO_VARIABLE, XFECHA, XDOCTOR, XMARGEN, XCODIGO, XTIPO_PAGO, XID_SEDE);
+		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto,igv, costo_variable, fecha, doctorId, margen_ganancia, codigo, tipo_pago, sedeId)
+				VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO,XIGV, XCOSTO_VARIABLE, XFECHA, XDOCTOR, XMARGEN, XCODIGO, XTIPO_PAGO, XID_SEDE);
 
 END
 ;;
@@ -568,13 +568,13 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `OP_Ingresos_Detalle_update_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_Detalle_update_all`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT,
-																									IN XMONTO DECIMAL(11, 2), IN XFECHA DATE, IN XDOCTOR INT,
+																									IN XMONTO DECIMAL(11, 2),IN XIGV DECIMAL(10,2), IN XFECHA DATE, IN XDOCTOR INT,
 																									IN XCODIGO VARCHAR(120), IN XTIPO_PAGO INT, IN XID_SEDE INT,
 																									IN XID INT)
 BEGIN
 		DECLARE MONTO_TOTAL DECIMAL(11, 2);
 
-		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO, fecha = XFECHA, doctorId = XDOCTOR, codigo = XCODIGO, tipo_pago = XTIPO_PAGO, sedeId = XID_SEDE
+		UPDATE ingresos_detalle SET ingresoId = XID_INGRESO, precioId = XID_PRECIO, cantidad = XCANTIDAD, monto = XMONTO,igv=XIGV, fecha = XFECHA, doctorId = XDOCTOR, codigo = XCODIGO, tipo_pago = XTIPO_PAGO, sedeId = XID_SEDE
 		WHERE ingresos_detalle.id = XID;
 
 END
