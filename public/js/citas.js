@@ -90,8 +90,8 @@ $(document).ready(function() {
       eventAfterRender: function (event, element, view) {
         if( event.idDoctor == 1 ){
             element.css({'border': 'none', 'background': 'transparent'})
-            element.find('.fc-content').css({'background-color': '#0ea34d', 'color': '#c8c8c8', 'padding-left': '5px'})
-            element.find('.fc-event-dot').css({'background-color': '#0ea34d'})
+            element.find('.fc-content').css({'background-color': '#37be70', 'color': '#c8c8c8', 'padding-left': '5px'})
+            element.find('.fc-event-dot').css({'background-color': '#37be70'})
             element.find('.fc-time').css('color', '#f3f3f3')
             element.find('.fc-title').css('color', '#f3f3f3')
         }else if( event.idDoctor == 2 ){
