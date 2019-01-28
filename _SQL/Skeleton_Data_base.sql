@@ -30,6 +30,7 @@ CREATE TABLE `ingresos_detalle` (
 	`sedeId` int not null,
   `costo_variable` decimal(10,2) DEFAULT '0.00',
   `codigo` varchar(120) DEFAULT NULL,
+  `pagoId` int(11) NULL DEFAULT 0,
   `tipo_pago` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
