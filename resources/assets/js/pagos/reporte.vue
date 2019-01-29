@@ -111,6 +111,9 @@
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
+					<template slot="total_empresa" slot-scope="row">
+						S/. {{ row.value }}
+					</template>					
 				</b-table>
 			</b-col>
 			<b-col cols="12" class='text-right monto-class'>
