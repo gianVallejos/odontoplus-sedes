@@ -125,11 +125,11 @@
 			    fields: [
 				    { key: 'actions', label: 'Acción', 'class': 'action-width' },
 				    { key: 'nombres', label: 'Nombres', sortable: true, sortDirection: 'desc' },
-				    { key: 'codigo', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-left text-md-center' },
+				    { key: 'codigo', label: 'Historia', sortable: true, sortDirection: 'desc', 'class': 'text-left text-md-center td-codigo-pac' },
 				    { key: 'dni', label: 'DNI', sortable: true, class: 'd-none d-lg-table-cell', sortDirection: 'desc' },
 				    { key: 'celular', label: 'Celular', sortable: true, sortDirection: 'desc' },
 						{ key: 'telefono', label: 'Teléfono', sortable: true, class: 'd-none d-lg-table-cell', sortDirection: 'desc' },
-				    { key: 'sede_nombre', label: 'Sede', sortable: true, sortDirection: 'desc' },
+				    { key: 'sede_nombre', label: 'Sede', sortable: true, sortDirection: 'desc', class: 'td-sede-pac' },
 				    { key: 'empresa_nombre', label: 'Empresa', sortable: true, class: 'd-none d-lg-table-cell', sortDirection: 'desc' }
 			    ],
 			    currentPage: 1,
@@ -177,3 +177,9 @@
 		}
 	}
 </script>
+<style lang="stylus">
+.td-codigo-pac
+	width: 120px
+.td-sede-pac
+	width: 120px
+</style>

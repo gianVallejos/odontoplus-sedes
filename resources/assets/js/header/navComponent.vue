@@ -1,7 +1,11 @@
 <template>
-	<div class="barra">
-		<div class="container">
-			<ul class="barra-list">
+	<div class="barra navbar-expand-lg">
+		<div class="container pt-2 pb-2 pt-lg-0 pb-lg-0">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <i class="fas fa-bars"></i>
+		  </button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="barra-list">
 		      <li class="item" v-bind:class="[(whoIsActive == 'dashboard') ? 'active' : '']">
 		      	<a :href="url">
 		      		<i class="fas fa-home"></i>Inicio
@@ -113,6 +117,7 @@
 		      </li>
 
 		    </ul>
+			</div>
 		</div>
 	</div>
 </template>

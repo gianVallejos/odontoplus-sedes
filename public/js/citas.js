@@ -3,8 +3,8 @@ $(document).ready(function() {
     var events = {
       url: global_url + '/v1/citas/get-all-events/null/null',
       error: function() { alert('Ha ocurrido un error al intentar cargar las citas.'); },
-      color: '#0aab8a',
-      textColor: '#f3f3f3'
+      // color: '#0aab8a',
+      // textColor: '#f3f3f3'
     };
 
     $("select[name='id_doctor']").change(function(){
@@ -83,8 +83,60 @@ $(document).ready(function() {
         listMonth: 'Mes',
         listWeek: 'Semana',
         listDay: 'Día'
-
       },
-      allDayText: 'Todo el día'
+      locale: 'es',
+      eventLimit: true,
+      allDayText: 'Todo el día',
+      eventAfterRender: function (event, element, view) {
+        if( event.idDoctor == 1 ){
+            element.css({'border': 'none', 'background': 'transparent'})
+            element.find('.fc-content').css({'background-color': '#37be70', 'color': '#c8c8c8', 'padding-left': '5px'})
+            element.find('.fc-event-dot').css({'background-color': '#37be70'})
+            element.find('.fc-time').css('color', '#f3f3f3')
+            element.find('.fc-title').css('color', '#f3f3f3')
+        }else if( event.idDoctor == 2 ){
+            element.css({'border': 'none', 'background': 'transparent'})
+            element.find('.fc-content').css({'background-color': '#ff829d', 'color': '#c8c8c8', 'padding-left': '5px'})
+            element.find('.fc-event-dot').css({'background-color': '#ff829d'})
+            element.find('.fc-time').css('color', '#f3f3f3')
+            element.find('.fc-title').css('color', '#f3f3f3')
+        }else if( event.idDoctor == 3 ){
+            element.css({'border': 'none', 'background': 'transparent'})
+            element.find('.fc-content').css({'background-color': '#fffd4b', 'color': '#c8c8c8', 'padding-left': '5px'})
+            element.find('.fc-event-dot').css({'background-color': '#fffd4b'})
+            element.find('.fc-time').css('color', '#707070')
+            element.find('.fc-title').css('color', '#707070')
+        }else if( event.idDoctor == 4 ){
+            element.css({'border': 'none', 'background': 'transparent'})
+            element.find('.fc-content').css({'background-color': '#fb8e36', 'color': '#c8c8c8', 'padding-left': '5px'})
+            element.find('.fc-event-dot').css({'background-color': '#fb8e36'})
+            element.find('.fc-time').css('color', '#f3f3f3')
+            element.find('.fc-title').css('color', '#f3f3f3')
+        }else if( event.idDoctor == 5 ){
+            element.css({'border': 'none', 'background': 'transparent'})
+            element.find('.fc-content').css({'background-color': '#0e5ba3', 'color': '#c8c8c8', 'padding-left': '5px'})
+            element.find('.fc-event-dot').css({'background-color': '#0e5ba3'})
+            element.find('.fc-time').css('color', '#f3f3f3')
+            element.find('.fc-title').css('color', '#f3f3f3')
+        }else if( event.idDoctor == 6 ){
+            element.css({'border': 'none', 'background': 'transparent'})
+            element.find('.fc-content').css({'background-color': '#31adfc', 'color': '#c8c8c8', 'padding-left': '5px'})
+            element.find('.fc-event-dot').css({'background-color': '#31adfc'})
+            element.find('.fc-time').css('color', '#f3f3f3')
+            element.find('.fc-title').css('color', '#f3f3f3')
+        }else if( event.idDoctor == 7 ){
+            element.css({'border': 'none', 'background': 'transparent'})
+            element.find('.fc-content').css({'background-color': '#844bff', 'color': '#c8c8c8', 'padding-left': '5px'})
+            element.find('.fc-event-dot').css({'background-color': '#844bff'})
+            element.find('.fc-time').css('color', '#f3f3f3')
+            element.find('.fc-title').css('color', '#f3f3f3')
+        }else{
+            element.css({'border': 'none', 'background': 'transparent'})
+            element.find('.fc-content').css({'background-color': '#0aab8a', 'color': '#c8c8c8', 'padding-left': '5px'})
+            element.find('.fc-event-dot').css({'background-color': '#0aab8a'})
+            element.find('.fc-time').css('color', '#f3f3f3')
+            element.find('.fc-title').css('color', '#f3f3f3')
+        }
+      }
     })
 });

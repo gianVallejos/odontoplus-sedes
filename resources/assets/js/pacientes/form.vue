@@ -48,7 +48,7 @@
 
 							<div class="pt-4 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-0 pb-lg-4 d-none d-lg-bock">
+										<b-col cols="6" class="pt-3 pb-0 pb-lg-4 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-child"></i>
 												<div class="d-inline"> Información General </div>

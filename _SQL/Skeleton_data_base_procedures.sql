@@ -18,6 +18,7 @@ END
 DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Citas_is_validate_range_Id`;
+DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_is_validate_range_Id`(IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME, IN XID_SILLON INT, IN XSEDE INT, IN XID INT)
 BEGIN
 	DECLARE NOT_CHANGED INT;
@@ -37,6 +38,8 @@ BEGIN
 		SELECT 1 AS ES_VALIDO;
 	END IF;
 END
+;;
+DELIMITER ;
 
 DROP PROCEDURE IF EXISTS `OP_Citas_is_validate_range`;
 DELIMITER ;;
@@ -969,11 +972,11 @@ BEGIN
 	SELECT pc.id, pc.codigo, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
 				 pc.estado, pc.telefono, pc.fax, pc.celular, pc.celular_aux, pc.seguro_ind, pc.referencia_id,
 				 pc.updated_at, pc.created_at, pc.nombre_apoderado, pc.celular_apoderado, pc.empresa_id,
-				 emp.nombre as empresa_nombre, pc.sede_id, sed.nombre as sede_nombre, ing.id as ingresoId
+				 emp.nombre as empresa_nombre, pc.sede_id, sed.nombre as sede_nombre, ingresos.id as ingresoId
 		FROM pacientes as pc
 	INNER JOIN sedes as sed on sed.id = pc.sede_id
+	INNER JOIN ingresos on ingresos.id = pc.id
 	INNER JOIN empresas as emp on emp.id = pc.empresa_id
-	INNER JOIN ingresos as ing on ing.idPaciente = pc.id
 		ORDER BY pc.id DESC;
 END
 ;;
@@ -1022,7 +1025,7 @@ BEGIN
 				 presupuestos.id as presupuestosId
 		FROM pacientes as pc
 	INNER JOIN empresas as emp on emp.id = pc.empresa_id
-	INNER JOIN ingresos on ingresos.idPaciente = pc.id
+	INNER JOIN ingresos on ingresos.id = pc.id
 	LEFT JOIN presupuestos on presupuestos.idPaciente = pc.id
 		ORDER BY pc.id DESC;
 END
@@ -1137,13 +1140,13 @@ BEGIN
 	DECLARE id_paciente INT;
 	DECLARE sede_nombre VARCHAR(200);
 
-	SET id_paciente := (SELECT id FROM pacientes WHERE sede_id = XID_SEDE ORDER BY pacientes.id DESC LIMIT 1);
+	SET id_paciente := (SELECT COUNT(id) FROM pacientes WHERE sede_id = XID_SEDE ORDER BY pacientes.id DESC LIMIT 1);
 
 	IF(id_paciente is NULL) THEN
 		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-00001') AS codigo
 			FROM sedes WHERE id = XID_SEDE;
 	ELSE
-		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-', LPAD((id_paciente+ 1), 5, '0')) AS codigo
+		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-', LPAD((id_paciente + 1), 5, '0')) AS codigo
 			FROM sedes WHERE id = XID_SEDE;
 	END IF;
 END
@@ -1682,7 +1685,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all`;
 DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_get_all`()
 BEGIN
-	SELECT c.id as idEvent, CONCAT('S', idSillon, ' ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Doctor: ',
+	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', pc.codigo ,' | Paciente: ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, pc.telefono)) ,' | Doctor: ',
 				 dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon, ' - ', sed.nombre) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
 		FROM citas c
@@ -1698,7 +1701,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_get_all_by_doctor_sede`(IN doctorId int, IN sedeId int)
 BEGIN
-	SELECT c.id as idEvent, CONCAT('S', idSillon, ' ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Doctor: ',
+	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', pc.codigo, ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, pc.telefono)), ' | Doctor: ',
          dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon,  ' - ', sed.nombre) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
 		FROM citas c
