@@ -37,7 +37,7 @@
 						</tr>
 						<tr>
 							<td class="pr-title">TOTAL EMP: </td>
-							<td colspan="3">S/ {{ igeneral.totales.total }}</td>
+							<td colspan="3">S/ {{ igeneral.totales.total_ganancia }}</td>
 						</tr>
 					</table>
 				</div>
@@ -76,25 +76,31 @@
 						{{ row.value }}
 					</template>
 					<template slot="doctor_nombre" slot-scope="row">
-						{{ row.item.nombres }} {{ row.item.apellidos }}
+						{{ row.item.apellidos }}
+					</template>
+					<template slot="codigo" slot-scope="row">
+						{{ row.item.codigo }}
+					</template>
+					<template slot="tratamiento" slot-scope="row">
+						{{ row.item.tratamiento }}
+					</template>
+					<template slot="cantidad" slot-scope="row">
+						{{ row.item.cantidad }}
 					</template>
 					<template slot="monto" slot-scope="row" class="hide-print">
 						S/. {{ row.value }}
 					</template>
 					<template slot="total" slot-scope="row">
 						S/. {{ row.value }}
-					</template>
-					<template slot="total_empresa" slot-scope="row">
-						S/. {{ row.item.total_empresa }}
-					</template>
+					</template>					
 					<template slot="costo_variable" slot-scope="row">
 						S/. {{ row.item.costo_variable }}
 					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
-          			<template slot="ganancia" slot-scope="row">
-						S/. {{ redondearADos(row.item.total - row.item.doctor)  }}
+          			<template slot="total_empresa" slot-scope="row">
+						S/. {{ row.item.total_empresa  }}
 					</template>
 				</b-table>
 			</b-col>
@@ -103,7 +109,7 @@
 					<span>Total: </span>
 				</div>
 				<div class="d-inline-block" style="width: 150px">
-					S/ {{ igeneral.totales.total }}
+					S/ {{ igeneral.totales.total_ganancia }}
 				</div>
 			</b-col>
 		</b-row>
@@ -147,14 +153,16 @@
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc', class: 'text-center' },
-					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
+					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+					{ key: 'codigo', label: 'Código', sortable: true, sortDirection: 'desc' },
 					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
 					{ key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', class: 'text-center' },
 					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'text-center' },
 					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'text-center' },
-          { key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-center' },
-          { key: 'total_empresa', label: 'Total Emp.', sortable: true, 'class': 'text-center' },
-					{ key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
+          			{ key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-center' },
+          			{ key: 'igv', label: 'IGV', sortable: true, 'class': 'text-center' },
+          			{ key: 'doctor', label: 'DR', sortable: true, 'class': 'text-center' },
+					{ key: 'total_empresa', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],
 			}
 		},

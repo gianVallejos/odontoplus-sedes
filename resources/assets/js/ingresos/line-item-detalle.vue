@@ -324,6 +324,7 @@
 						cantidad: 1,
 						monto: 0,
 						total: 0,
+						igv : 0,
 						fecha: this.getMyDate(),
 						sede: this.ingreso.pacienteSedeId,
 						doctor: null
@@ -416,6 +417,7 @@
 			agregarLineItem(){
 				if( this.validarTratamientos() ){
 					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
+					this.form.igv = this.form.codigo !== '' ? 18 : 0;
 					var request = { method: 'POST', url: this.url + '/ingresos/line-item', data: this.form }
 					this.$refs.spinnerContainerRef.showSpinner()
 					var _self = this
@@ -472,6 +474,7 @@
 			agregarModificar(){
 				if( this.validarTratamientos() ){
 					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
+					this.form.igv = this.form.codigo !== '' ? 18 : 0;
 					var request = { method: 'PUT', url: this.url + '/ingresos/line-item/' + this.ingresoDetalleId, data: this.form }
 					this.$refs.spinnerContainerRef.showSpinner()
 					var self = this
