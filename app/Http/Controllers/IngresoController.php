@@ -101,7 +101,7 @@ class IngresoController extends Controller
             try{
                 foreach( $request->trats as $trat ){
                     $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
-                                                                            $trat['cantidad'] .', '. $trat['monto'] . ', ' . $trat['costo_variable'] . ', "' .
+                                                                            $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ', ' . $trat['costo_variable'] . ', "' .
                                                                             $request->fecha .'", '. $request->doctor . ', "'.
                                                                             $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .')');
                 }
@@ -130,7 +130,7 @@ class IngresoController extends Controller
             try{
                 foreach( $request->trats as $trat ){
                     $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_update_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
-                                                                               $trat['cantidad'] .', '. $trat['monto'] .', "'.
+                                                                               $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ',"' .
                                                                                $request->fecha .'", '. $request->doctor . ', "'.
                                                                             $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .', '. $id .')');
                 }

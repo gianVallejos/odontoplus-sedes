@@ -1,4 +1,5 @@
 <template>
+<div>
 	<b-container v-if="curUser.rolid == 1">
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2 mt-0">
@@ -47,11 +48,7 @@
 							<tr class="hide-print">
 								<td class="pr-title">TOTAL EMP: </td>
 								<td colspan="3">S/ {{ igeneral.totales.total_ganancia }}</td>
-							</tr>
-							<tr class="hide-print">
-								<td class="pr-title">TOTAL: </td>
-								<td colspan="3">S/ {{ igeneral.totales.total }}</td>
-							</tr>
+							</tr>							
 					</table>
 				</div>
 			</b-col>
@@ -72,6 +69,8 @@
 				</b-button>
 			</b-col>
 		</b-row>
+	</b-container>
+	<b-container fluid>
 		<b-row>
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
@@ -92,16 +91,22 @@
 						{{ row.index + 1 }}
 					</template>
 					<template slot="doctor_nombre" slot-scope="row">
-						{{ row.item.nombres }} {{ row.item.apellidos }}
+						{{ row.item.apellidos }}
+					</template>
+					<template slot="codigo" slot-scope="row">
+						{{ row.item.codigo }}
 					</template>
 					<template slot="monto" slot-scope="row" class="hide-print">
 						S/. {{ row.item.monto }}
+					</template>				
+					<template slot="total" slot-scope="row">
+						S/. {{ row.item.total }}
 					</template>
 					<template slot="costo_variable" slot-scope="row" class="hide-print">
 						S/. {{ row.item.costo_variable }}
 					</template>
-					<template slot="total" slot-scope="row">
-						S/. {{ row.item.total }}
+					<template slot="igv" slot-scope="row" class="hide-print">
+						S/. {{ row.item.igv }}
 					</template>
 					<template slot="empresa" slot-scope="row">
 						S/. {{ calculateEmpresaAmount(row.item.total_empresa, row.item.doctor)}}
@@ -109,6 +114,9 @@
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
+					<template slot="total_empresa" slot-scope="row">
+						S/. {{ row.value }}
+					</template>					
 				</b-table>
 			</b-col>
 			<b-col cols="12" class='text-right monto-class'>
@@ -125,14 +133,6 @@
 				</div>
 				<div class="d-inline-block" style="width: 150px">
 					S/ {{ igeneral.totales.total_ganancia }}
-				</div>
-			</b-col>
-			<b-col cols="12" class="text-right monto-class hide-print">
-				<div class="d-inline-block" >
-					<span>Monto Total: </span>
-				</div>
-				<div class="d-inline-block" style="width: 150px">
-					S/ {{ igeneral.totales.total }}
 				</div>
 			</b-col>
 		</b-row>
@@ -155,6 +155,7 @@
 		</b-row>
 
 	</b-container>
+</div>
 </template>
 <script>
 	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'
@@ -183,13 +184,16 @@
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc', class: 'text-center' },
-					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
+					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+					{ key: 'codigo', label: 'Código', sortable: true, sortDirection: 'desc' },
 					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
-					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
+					{ key: 'cantidad', label: 'Cant', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
 					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
 					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
 					{ key: 'costo_variable', label: 'C.V.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
-					{ key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'}
+					{ key: 'igv', label: 'IGV', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
+					{ key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'},
+					{ key: 'total_empresa', label: 'Total Emp.', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],
 				displayStatus: ''
 			}
