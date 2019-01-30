@@ -46,64 +46,67 @@
 									</b-button>
 								</div>
 							</div>
-
-							<div class="pt-4 pb-2">
+              <p class="form-description fz-3 pt-3 pr-4 ">
+                <span class="help-required"> &nbsp; Campos obligatorios. </span>
+              </p>
+							<div class="pt-2 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
+										<b-col cols="12" class="pt-2 pb-2 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-user"></i>
 												<div class="d-inline"> Información General </div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información de esta sección contiene datos únicos de usuario que servirán como credenciales de acceso al sistema.
-												<br />Para cambiar de contraseña solamente asigne un nuevo password al modificar.
-											</p>
-											<br/>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
+
 										</b-col>
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12" >
+                      <b-form-row>
+                        <b-col cols="12" lg="6">
 										    <b-form-group label="Nombres" label-for="nombres">
 											    <b-form-input id="nombres" type="text" class="required" v-model="form.name" :disabled=isDisabled placeholder="Nombres" required autocomplete="off"/>
 													<span v-if="all_errors.name" :class="['label label-danger']">{{ all_errors.name[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
 												<b-form-group label="Email" label-for="email">
 													<b-form-input id="email" type="email" class="required" v-model="form.email" :disabled=isDisabled placeholder="Email" required autocomplete="off"/>
 													<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
                         <b-form-group label="Sede:" label-for="sede_id">
-  												<b-form-select v-model="form.sede_id" :disabled=isDisabled >
-  													<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
-  														{{ sede.nombre }}
-  													</option>
-  												</b-form-select>
-  												<span v-if="all_errors.sede_id" :class="['label label-danger']">{{ all_errors.sede_id[0] }}</span>
-  											</b-form-group>
+                          <b-form-select v-model="form.sede_id" :disabled=isDisabled >
+                            <option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
+                              {{ sede.nombre }}
+                            </option>
+                          </b-form-select>
+                          <span v-if="all_errors.sede_id" :class="['label label-danger']">{{ all_errors.sede_id[0] }}</span>
+                        </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="3">
 										    <b-form-group :label="displayStatus == 'edit' ? 'Nueva contraseña' : 'Contraseña'" label-for="password" >
 													<b-form-input id="password" type="password" class="required" v-model="form.password" :disabled=isDisabled placeholder="********" required autocomplete="off" maxlength="20"/>
 													<span v-if="all_errors.password" :class="['label label-danger']">{{ all_errors.password[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="3">
 										    <b-form-group :label="displayStatus == 'edit' ? 'Confirmar nueva contraseña' : 'Confirmar contraseña'" label-for="confirm_password" >
 											    <b-form-input id="confirm_password" type="password" class="required" v-model="form.confirm_password" :disabled=isDisabled placeholder="********" required autocomplete="off" maxlength="20"/>
 													<span v-if="all_errors.confirm_password" :class="['label label-danger']">{{ all_errors.confirm_password[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+
+                      </b-form-row>
 										</b-col>
 									</b-row>
 
 									<b-row v-if="curUser.rolid == 1">
-										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
+										<b-col cols="12" class="pt-2 pb-2 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-shield-alt"></i>
 												<div class="d-inline">Privilegios de Usuario</div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												Los privilegios de usuario son una colección de accesos a diferentes partes del sistema según el rol asignado.
-												<br />Administrador (Acceso total al sistema)
-												<br />Colaborador (Restrincciones en reportes y eliminación de datos)
-											</p>
 										</b-col>
-										<b-col cols="12" md="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12" md="6" >
 												<b-form-group label="Rol">
 													<b-form-radio-group id="rol_id" v-model="form.rolid" :disabled=isDisabled name="radioSubComponent">
 														<b-form-radio value=2>Colaborador</b-form-radio>
