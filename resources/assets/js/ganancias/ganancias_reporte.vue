@@ -1,4 +1,5 @@
 <template>
+<div>
 	<b-container v-if="curUser.rolid == 1" style="margin-top: -30px">
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
@@ -53,6 +54,8 @@
 				</b-button>
 			</b-col>
 		</b-row>
+	</b-container>
+	<b-container fluid>
 		<b-row>
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
@@ -96,6 +99,9 @@
 					<template slot="costo_variable" slot-scope="row">
 						S/. {{ row.item.costo_variable }}
 					</template>
+					<template slot="igv" slot-scope="row">
+						S/. {{ row.item.costo_variable }}
+					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
@@ -126,6 +132,7 @@
 		</b-row>
 
 	</b-container>
+</div>
 </template>
 <script>
 	import axios from 'axios'
