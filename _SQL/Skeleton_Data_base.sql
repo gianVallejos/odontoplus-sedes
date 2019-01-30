@@ -29,6 +29,7 @@ CREATE TABLE `ingresos_detalle` (
   `margen_ganancia` decimal(10,0) DEFAULT '0',
 	`sedeId` int not null,
   `costo_variable` decimal(10,2) DEFAULT '0.00',
+  `igv` decimal(10,2) DEFAULT '0.00',
   `codigo` varchar(120) DEFAULT NULL,
   `tipo_pago` int DEFAULT NULL,
   PRIMARY KEY (`id`)
