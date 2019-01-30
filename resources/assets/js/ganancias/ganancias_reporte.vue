@@ -100,7 +100,7 @@
 						S/. {{ row.item.costo_variable }}
 					</template>
 					<template slot="igv" slot-scope="row">
-						S/. {{ row.item.costo_variable }}
+						S/. {{ row.value }}
 					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
