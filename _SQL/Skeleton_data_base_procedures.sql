@@ -852,27 +852,29 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_totales_doctor_id_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_totales_doctor_id_fechas`(IN doctor_id int, IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Ingresos_get_totales_doctor_id_fechas``OP_Ingresos_get_totales_doctor_id_fechas`(IN doctor_id int,IN sede_id INT(11), IN start_date date, IN end_date date)
 BEGIN
-		IF doctor_id = 0 THEN
+	IF doctor_id = 0 THEN
 
-    SELECT FORMAT(IFNULL(SUM(idt.cantidad * (idt.monto-idt.costo_variable)), 0),2) as total,
-           FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
-           FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
-    FROM ingresos_detalle idt
-    INNER JOIN doctors dr ON dr.id = idt.doctorId
-    WHERE idt.fecha BETWEEN start_date AND end_date;
+		SELECT FORMAT(IFNULL(SUM(idt.cantidad * idt.monto), 0),2) as total,
+			FORMAT(IFNULL(SUM((idt.cantidad * idt.monto)*(idt.igv/100)), 0),2) as total_igv,
+			FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
+			FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
+		FROM ingresos_detalle idt
+		INNER JOIN doctors dr ON dr.id = idt.doctorId
+		WHERE idt.fecha BETWEEN start_date AND end_date AND ( sede_id IS NULL OR idt.sedeId = sede_id );
 
 	ELSE
 
-    SELECT FORMAT(IFNULL(SUM(idt.cantidad * (idt.monto-idt.costo_variable)), 0),2) as total,
-           FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
-           FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
-    FROM ingresos_detalle idt
-    INNER JOIN doctors dr ON dr.id = idt.doctorId
-    WHERE dr.id = doctor_id AND idt.fecha BETWEEN start_date AND end_date;
+		SELECT FORMAT(IFNULL(SUM(idt.cantidad * (idt.monto-idt.costo_variable)), 0),2) as total,
+			FORMAT(IFNULL(SUM((idt.cantidad * idt.monto)*(idt.igv/100)), 0),2) as total_igv,
+			FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
+			FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
+		FROM ingresos_detalle idt
+		INNER JOIN doctors dr ON dr.id = idt.doctorId
+		WHERE dr.id = doctor_id AND idt.fecha BETWEEN start_date AND end_date AND ( sede_id IS NULL OR idt.sedeId = sede_id );
 
-  END IF;
+  	END IF;
 END
 ;;
 DELIMITER ;
