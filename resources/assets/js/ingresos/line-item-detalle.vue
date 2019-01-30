@@ -33,10 +33,10 @@
 					            empty-text="No existen campos para mostrar"
 											empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 							<template slot="actions" slot-scope="row">
-						        <div class="actions-table" v-if="curUser.rolid == 1">
-						        	<a v-on:click="modificarIngresoDetalle( row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento,
+						        <div class="actions-table">
+						        	<a  v-if="curUser.rolid == 1 || curUser.rolid == 2 " v-on:click="modificarIngresoDetalle( row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento,
 																															row.item.cantidad, row.item.monto, row.item.codigo, row.item.tipo_pago, row.item.sede )" class="action">Modificar</a>
-						        	<a v-on:click="eliminarIngresoDetalle(row.item.id)" class="action">Eliminar</a>
+						        	<a  v-if="curUser.rolid == 1 " v-on:click="eliminarIngresoDetalle(row.item.id)" class="action">Eliminar</a>
 						        </div>
 						    </template>
 								<template slot="fecha" slot-scope="row">
@@ -324,6 +324,7 @@
 						cantidad: 1,
 						monto: 0,
 						total: 0,
+						igv : 0,
 						fecha: this.getMyDate(),
 						sede: this.ingreso.pacienteSedeId,
 						doctor: null
@@ -416,6 +417,7 @@
 			agregarLineItem(){
 				if( this.validarTratamientos() ){
 					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
+					this.form.igv = this.form.codigo !== '' ? 18 : 0;
 					var request = { method: 'POST', url: this.url + '/ingresos/line-item', data: this.form }
 					this.$refs.spinnerContainerRef.showSpinner()
 					var _self = this
@@ -472,6 +474,7 @@
 			agregarModificar(){
 				if( this.validarTratamientos() ){
 					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
+					this.form.igv = this.form.codigo !== '' ? 18 : 0;
 					var request = { method: 'PUT', url: this.url + '/ingresos/line-item/' + this.ingresoDetalleId, data: this.form }
 					this.$refs.spinnerContainerRef.showSpinner()
 					var self = this
