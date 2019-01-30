@@ -37,7 +37,7 @@
 									<b-button variant="danger" :disabled=btnStatus v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
-							   				  v-if="curUser.rolid == 1">
+							   				  >
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
                   <b-button variant="warning" v-on:click.prevent="onRegresar" >
