@@ -15,7 +15,7 @@
         </li>
       </ol>
     </div>
-    <div class="col-12 pt-1">
+    <div class="col-12 pt-1" id="divCitas">
       <div class="card">
     		<div class="card-heading">
     			<span>Calendario de Citas</span>
@@ -24,7 +24,7 @@
           <div class="row pb-3">
 
             <div class="col-lg-5 col-md-6 pl-4 pt-2 pb-4">
-              <div class="float-left input-group">
+              <div class="float-left input-group d-print-none">
                 <div class="input-group-prepend">
                   <div class="input-group-text fz-4"> Doctor </div>
                 </div>
@@ -33,12 +33,13 @@
                   @foreach($doctores as $dr)
                     <option value="{{ $dr->id }}">{{ $dr->nombres.' '.$dr->apellidos }}</option>
                   @endforeach
-                </select>
+                </select>                
               </div>
+              <label class="d-none d-print-inline-block" name="labelDoctor" ></label>
             </div>
 
             <div class="col-lg-4 col-md-6 pt-2 pb-4">
-              <div class="float-left input-group">
+              <div class="float-left input-group  d-print-none">
                 <div class="input-group-prepend">
                   <div class="input-group-text fz-4"> Sede </div>
                 </div>
@@ -48,6 +49,13 @@
                     <option value="{{ $sede->id }}">{{ $sede->nombre }}</option>
                   @endforeach
                 </select>
+              </div>
+              <label class="d-none d-print-inline-block" name="labelSede"></label>
+            </div>
+
+            <div class="col-lg-3 col-md-6 pt-2 pb-4 hide-print">
+              <div class="float-left input-group">               
+                <button class="btn btn-primary d-print-none" name="btnImprimir">Imprimir</button>
               </div>
             </div>
 

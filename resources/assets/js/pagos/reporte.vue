@@ -193,7 +193,7 @@
 					{ key: 'costo_variable', label: 'C.V.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
 					{ key: 'igv', label: 'IGV', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
 					{ key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'},
-					{ key: 'total_empresa', label: 'Total Emp.', sortable: true, sortDirection: 'desc', class: 'text-center'}
+					{ key: 'total_empresa', label: 'Total Emp.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'}
 				],
 				displayStatus: ''
 			}

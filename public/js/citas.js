@@ -13,6 +13,17 @@ $(document).ready(function() {
       reloadCalendar(doctorId, sedeId)
     });
 
+    $("button[name='btnImprimir']").click(function(){
+      var sede = $("select[name='id_sede'] option:selected").text()
+      var doctor = $("select[name='id_doctor'] option:selected").text()
+      $("label[name='labelSede']").append('Sede: ' + sede);
+      $("label[name='labelDoctor']").append('Doctor: ' + doctor);
+      var contenido= document.getElementById('divCitas').innerHTML;
+      document.body.innerHTML = contenido;
+      window.print();
+      location.reload();
+    });
+
     $("select[name='id_sede']").change(function(){
       var sedeId = $(this).val() == 'all' ? null : $(this).val();
       var doctorId = $("select[name='id_doctor']").val() == 'all' ? null : $("select[name='id_doctor']").val();
@@ -74,7 +85,8 @@ $(document).ready(function() {
           text: 'Nueva Cita',
           click: function() {
             window.location.href = global_url + '/citas/create'
-          }
+          },
+          class : 'd-print-none'
         }
       },
       buttonText: {
