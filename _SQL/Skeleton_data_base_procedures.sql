@@ -852,7 +852,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_totales_doctor_id_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_totales_doctor_id_fechas``OP_Ingresos_get_totales_doctor_id_fechas`(IN doctor_id int,IN sede_id INT(11), IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Ingresos_get_totales_doctor_id_fechas`(IN doctor_id int,IN sede_id INT(11), IN start_date date, IN end_date date)
 BEGIN
 	IF doctor_id = 0 THEN
 
