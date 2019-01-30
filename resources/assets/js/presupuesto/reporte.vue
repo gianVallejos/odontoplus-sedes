@@ -52,6 +52,10 @@
 								<td class="pr-title">DOCTOR: </td>
 								<td>{{ pgeneral.nombreDoctor }}</td>
 							</tr>
+							<tr>
+								<td class="pr-title">VENCE: </td>
+								<td>{{ pgeneral.valido_hasta }}</td>
+							</tr>
 					</table>
 				</div>
 			</b-col>

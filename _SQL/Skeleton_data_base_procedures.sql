@@ -1366,6 +1366,7 @@ BEGIN
 	SELECT LPAD(pre.id, 5, '00000') as id, pre.fechahora as fecha, LPAD(pre.idPaciente, 5, '00000') as idPaciente, pc.codigo, pre.idDoctor, pre.descuento,
 				 CONCAT(pc.nombres, ' ', pc.apellidos) AS nombrePaciente,
 				 CONCAT(dc.nombres, ' ', dc.apellidos) AS nombreDoctor,
+				 DATE_ADD(DATE(pre.created_at), INTERVAL 2 MONTH) as valido_hasta,
 				 sedes.nombre as nombreSede,
 				 emp.nombre as empresa,
 				 ingresos.id as ingresosId
