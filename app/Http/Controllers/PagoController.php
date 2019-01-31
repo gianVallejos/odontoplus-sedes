@@ -20,9 +20,9 @@ class PagoController extends Controller{
         return view('pagos.index', compact('pagos'));
     }
 
-    public function show($idDoctor, $fechaInicial, $fechaFinal){
-        $ingresos =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
-        $totales =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_totales_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
+    public function show($pagoId,$idDoctor, $fechaInicial, $fechaFinal){
+        $ingresos =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'",'.$pagoId.')');
+        $totales =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_totales_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'",'.$pagoId.')');
         $doctor =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all_Id('. $idDoctor .')')[0];
         $last_pago =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_get_ultimo()')[0];
         $ingresos = json_encode($ingresos);
@@ -38,8 +38,8 @@ class PagoController extends Controller{
     }
 
     public function nuevoPagoReporte($idDoctor, $fechaInicial, $fechaFinal){
-        $ingresos =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');        
-        $totales =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_totales_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'")');
+        $ingresos =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'",0)');
+        $totales =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_totales_by_doctor_fechas("'. $idDoctor .'","'. $fechaInicial .'","'. $fechaFinal .'",0)');
         $doctor =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all_Id('.$idDoctor.')')[0];
         $last_pago =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_get_ultimo()')[0];
         $ingresos = json_encode($ingresos);
@@ -54,21 +54,33 @@ class PagoController extends Controller{
             'idDoctor' => 'required',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date'
-      ]);
+        ]);
     	if ($validator->passes()) {
           $pago =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_add_all('. $request->idDoctor .', "'. $request->fecha_inicio . '", "' . $request->fecha_fin .'")');
           if( $pago[0]->ESTADO > 0 ){
+              $pago_last = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_get_pago_last()');
+              $ingresos_detalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_by_doctor_fechas("'. $request->idDoctor .'","'. $request->fecha_inicio .'","'. $request->fecha_fin .'",0)');        
+              $this->ingresosDetalleUpdatePagoId($ingresos_detalle,$pago_last[0]->id);
               return response()->json(['success' => 'created']);
-          }else{
-              return response()->json(['error'=> 'Ha ocurrido un error']);
-          }
+            }else{
+                return response()->json(['error'=> 'Ha ocurrido un error']);
+            }
       }
       return response()->json(['error'=>$validator->errors()]);
     }
 
+    public function ingresosDetalleUpdatePagoId($ingresos_detalle,$pagoId){
+        foreach( $ingresos_detalle as $ingreso_detalle ){
+            $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_detalle_update_pagoId('.$pagoId.','.$ingreso_detalle->id.')');
+        }
+        
+    }
+
     public function destroy($id){
         $pago =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pagos_delete_all('. $id .')');
-        if( $pago[0]->ESTADO > 0 ){
+        if( $pago[0]->ESTADO > 0 ){      
+            $ingresos_detalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_all_by_pago_id('.$id.')');
+            $this->ingresosDetalleUpdatePagoId($ingresos_detalle,0);
             return response()->json(['success' => 'deleted']);
         }else{
             return response()->json(['error'=> 'Ha ocurrido un error']);

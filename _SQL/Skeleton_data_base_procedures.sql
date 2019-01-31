@@ -628,7 +628,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_all_by_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_all_by_doctor_fechas`(IN doctor_id int, IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Ingresos_get_all_by_doctor_fechas`(IN doctor_id int, IN start_date date, IN end_date date,IN pago_id INT(11))
 BEGIN
 	SELECT idt.id, LPAD(ing.idPaciente, 5, '00000') as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento,
 		idt.cantidad, idt.monto,idt.codigo,
@@ -836,7 +836,7 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_totales_by_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_totales_by_doctor_fechas`(IN doctor_id int, IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Ingresos_get_totales_by_doctor_fechas`(IN doctor_id int, IN start_date date, IN end_date date,IN pago_id INT(11))
 BEGIN
 	SELECT FORMAT(IFNULL(SUM(idt.cantidad * idt.monto), 0),2) as total,
            FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
@@ -1862,3 +1862,61 @@ BEGIN
 END
 ;;
 DELIMITER ;
+
+
+-- ----------------------------
+--  Procedure definition for `OP_Ingresos_detalle_update_pagoId`
+-- ----------------------------
+
+DROP PROCEDURE IF EXISTS `OP_Ingresos_detalle_update_pagoId`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Ingresos_detalle_update_pagoId`(IN XPAGOID INT(11),IN XINGRESO_DETALLEID INT (11))
+BEGIN
+
+	UPDATE ingresos_detalle SET pagoId = XPAGOID
+    WHERE id = XINGRESO_DETALLEID; 
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Pagos_get_pago_last`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Pagos_get_pago_last`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Pagos_get_pago_last` ()
+BEGIN
+	SELECT id
+    FROM pagos ORDER BY id desc limit 1;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Ingresos_get_all_by_pago_id`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Ingresos_get_all_by_pago_id`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Ingresos_get_all_by_pago_id`(IN pago_id INT(11))
+BEGIN
+	SELECT id FROM ingresos_detalle WHERE pagoId = pago_id; 
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Ingresos_detalle_update_pagoId`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Ingresos_detalle_update_pagoId`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Ingresos_detalle_update_pagoId`(IN XPAGOID INT(11),IN XINGRESO_DETALLEID INT (11))
+BEGIN
+	UPDATE ingresos_detalle SET pagoId = XPAGOID
+    WHERE id = XINGRESO_DETALLEID;  
+END
+;;
+DELIMITER ;
+
+
+
