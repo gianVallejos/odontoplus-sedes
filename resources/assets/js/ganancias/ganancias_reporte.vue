@@ -1,4 +1,5 @@
 <template>
+<div>
 	<b-container v-if="curUser.rolid == 1" style="margin-top: -30px">
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
@@ -36,7 +37,19 @@
 							<td>{{igeneral.fechaFinal}}</td>
 						</tr>
 						<tr>
-							<td class="pr-title">TOTAL EMP: </td>
+							<td class="pr-title">GANANCIAS: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total_ganancia }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">DOCTOR: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">IGV: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total_igv }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">TOTAL: </td>
 							<td colspan="3">S/ {{ igeneral.totales.total }}</td>
 						</tr>
 					</table>
@@ -53,6 +66,8 @@
 				</b-button>
 			</b-col>
 		</b-row>
+	</b-container>
+	<b-container fluid>
 		<b-row>
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
@@ -76,27 +91,60 @@
 						{{ row.value }}
 					</template>
 					<template slot="doctor_nombre" slot-scope="row">
-						{{ row.item.nombres }} {{ row.item.apellidos }}
+						{{ row.item.apellidos }}
+					</template>
+					<template slot="codigo" slot-scope="row">
+						{{ row.item.codigo }}
+					</template>
+					<template slot="tratamiento" slot-scope="row">
+						{{ row.item.tratamiento }}
+					</template>
+					<template slot="cantidad" slot-scope="row">
+						{{ row.item.cantidad }}
 					</template>
 					<template slot="monto" slot-scope="row" class="hide-print">
 						S/. {{ row.value }}
 					</template>
 					<template slot="total" slot-scope="row">
 						S/. {{ row.value }}
-					</template>
-					<template slot="total_empresa" slot-scope="row">
-						S/. {{ row.item.total_empresa }}
-					</template>
+					</template>					
 					<template slot="costo_variable" slot-scope="row">
 						S/. {{ row.item.costo_variable }}
+					</template>
+					<template slot="igv" slot-scope="row">
+						S/. {{ row.value }}
 					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
-          			<template slot="ganancia" slot-scope="row">
-						S/. {{ redondearADos(row.item.total - row.item.doctor)  }}
+          			<template slot="total_empresa" slot-scope="row">
+						S/. {{ row.item.total_empresa  }}
 					</template>
 				</b-table>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" style="width: 75px">
+					<span>Ganacias: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_ganancia }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" style="width: 75px">
+					<span>Doctor: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_doctor }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" style="width: 75px">
+					<span>IGV: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_igv }}
+				</div>
 			</b-col>
 			<b-col cols="12" class="text-right monto-class hide-print">
 				<div class="d-inline-block" style="width: 75px">
@@ -120,6 +168,7 @@
 		</b-row>
 
 	</b-container>
+</div>
 </template>
 <script>
 	import axios from 'axios'
@@ -147,14 +196,16 @@
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 					{ key: 'historia', label: 'HC', sortable: true, sortDirection: 'desc', class: 'text-center' },
-					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc', class: 'td-doc-width' },
+					{ key: 'doctor_nombre', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+					{ key: 'codigo', label: 'Código', sortable: true, sortDirection: 'desc' },
 					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
 					{ key: 'cantidad', label: 'Cantidad', sortable: true, sortDirection: 'desc', class: 'text-center' },
 					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'text-center' },
 					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'text-center' },
-          { key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-center' },
-          { key: 'total_empresa', label: 'Total Emp.', sortable: true, 'class': 'text-center' },
-					{ key: 'ganancia', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
+          			{ key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-center' },
+          			{ key: 'igv', label: 'IGV', sortable: true, 'class': 'text-center' },
+          			{ key: 'doctor', label: 'DR', sortable: true, 'class': 'text-center' },
+					{ key: 'total_empresa', label: 'Ganancia', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],
 			}
 		},

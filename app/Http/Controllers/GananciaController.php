@@ -24,7 +24,7 @@ class GananciaController extends Controller{
 
     public function reporte($start, $end, $sedeId){
         $ingresos = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_ganancias_sede_fechas('. $sedeId .',"'. $start .'","'. $end .'")');
-        $totales = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_totales_doctor_id_fechas("0","'. $start .'","'. $end .'")');
+        $totales = DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_totales_doctor_id_fechas("0",'.$sedeId.',"'. $start .'","'. $end .'")');
         $ingresos = json_encode($ingresos);
         $igeneral = json_encode(['totales' => $totales[0], 'fechaInicial' => $start, 'fechaFinal' => $end]);
         $cliente = CurBD::getCurrentClienteData();

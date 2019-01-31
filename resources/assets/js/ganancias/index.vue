@@ -78,7 +78,10 @@
 								{{ row.index + 1 }}
 							</template>
 							<template slot="nombres" slot-scope="row">
-								{{ row.value }} {{ row.item.apellidos }}
+								{{ row.item.apellidos }}
+							</template>
+							<template slot="codigo" slot-scope="row">
+								{{ row.value }} 						
 							</template>
 							<template slot="monto" slot-scope="row" class="hide-print">
 								S/. {{ row.item.monto }}
@@ -86,18 +89,17 @@
 							<template slot="total" slot-scope="row">
 								S/. {{ row.item.total }}
 							</template>
-              <template slot="total_empresa" slot-scope="row">
-								S/. {{ row.item.total_empresa }}
-							</template>
               <template slot="costo_variable" slot-scope="row">
 								S/. {{ row.item.costo_variable }}
 							</template>
-
+ 							<template slot="igv" slot-scope="row">
+								S/. {{ row.item.igv }}
+							</template>						
 							<template slot="doctor" slot-scope="row">
-								S/. {{ row.item.doctor }}
+								S/. {{ row.item.doctor}}
 							</template>
-							<template slot="ganancia" slot-scope="row">
-								S/. {{ redondearADos(row.item.total_empresa - row.item.doctor) }}
+							<template slot="total_empresa" slot-scope="row">
+								S/. {{ row.item.total_empresa }}
 							</template>
             </b-table>
 
@@ -144,14 +146,16 @@
 					{ key: 'index', label: '#' },
 					{ key: 'fecha', label: 'Fecha', sortable: true, sortDirection: 'desc' },
 					{ key: 'nombres', label: 'Doctor', sortable: true, class: 'd-none d-lg-table-cell' },
+					{ key: 'codigo', label: 'Código', sortable: true, class: 'd-none d-lg-table-cell' },
 					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, class: 'd-none d-lg-table-cell' },
 					{ key: 'nombre_sede', label: 'Sede', sortable: true, class: 'd-none d-lg-table-cell' },
-					{ key: 'cantidad', label: 'Cantidad', sortable: true, 'class': 'text-left text-lg-center' },
+					{ key: 'cantidad', label: 'Cant', sortable: true, 'class': 'text-left text-lg-center' },
 					{ key: 'monto', label: 'Monto', sortable: true, 'class': 'text-left text-lg-center' },
 					{ key: 'total', label: 'Total', sortable: true, 'class': 'text-left text-lg-center' },
           { key: 'costo_variable', label: 'C.V.', sortable: true, 'class': 'text-left text-lg-center' },
-          { key: 'total_empresa', label: 'Total Emp.', sortable: true, 'class': 'text-left text-lg-center' },
-					{ key: 'ganancia', label: 'Ganancia', sortable: true, 'class': 'text-left text-lg-center'}
+          { key: 'igv', label: 'IGV', sortable: true, 'class': 'text-left text-lg-center' },
+          { key: 'doctor', label: 'DR', sortable: true, 'class': 'text-left text-lg-center' },
+					{ key: 'total_empresa', label: 'Ganancia', sortable: true, 'class': 'text-left text-lg-center'}
 				],
 				gananciasRecords: [ ],
 				form: {
@@ -195,6 +199,7 @@
 				this.form.fechaFin = today
 			},
 			goToPDFView(){
+				console.log(this.form);
 				if( this.validForm() ){
 					window.open(this.url + '/ganancias/reporte/' + this.form.fechaInicio + '/' + this.form.fechaFin + '/' + this.form.sede, '_blank')
 				}
