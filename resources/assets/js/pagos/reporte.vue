@@ -1,4 +1,5 @@
 <template>
+<div>
 	<b-container v-if="curUser.rolid == 1">
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row class="pb-2 mt-0">
@@ -68,6 +69,8 @@
 				</b-button>
 			</b-col>
 		</b-row>
+	</b-container>
+	<b-container fluid>
 		<b-row>
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
@@ -152,6 +155,7 @@
 		</b-row>
 
 	</b-container>
+</div>
 </template>
 <script>
 	import SpinnerContainer from '../widgets/spinner/spinner-container.vue'

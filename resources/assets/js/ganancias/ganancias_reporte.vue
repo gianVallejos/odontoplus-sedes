@@ -1,4 +1,5 @@
 <template>
+<div>
 	<b-container v-if="curUser.rolid == 1" style="margin-top: -30px">
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
@@ -36,8 +37,20 @@
 							<td>{{igeneral.fechaFinal}}</td>
 						</tr>
 						<tr>
-							<td class="pr-title">TOTAL EMP: </td>
+							<td class="pr-title">GANANCIAS: </td>
 							<td colspan="3">S/ {{ igeneral.totales.total_ganancia }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">DOCTOR: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">IGV: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total_igv }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">TOTAL: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total }}</td>
 						</tr>
 					</table>
 				</div>
@@ -53,6 +66,8 @@
 				</b-button>
 			</b-col>
 		</b-row>
+	</b-container>
+	<b-container fluid>
 		<b-row>
 			<b-col cols="12" class="pl-0 pr-0 pt-4 pb-4">
 				<div class="pr-section-title">
@@ -96,6 +111,9 @@
 					<template slot="costo_variable" slot-scope="row">
 						S/. {{ row.item.costo_variable }}
 					</template>
+					<template slot="igv" slot-scope="row">
+						S/. {{ row.value }}
+					</template>
 					<template slot="doctor" slot-scope="row">
 						S/. {{ row.item.doctor }}
 					</template>
@@ -106,10 +124,34 @@
 			</b-col>
 			<b-col cols="12" class="text-right monto-class hide-print">
 				<div class="d-inline-block" style="width: 75px">
-					<span>Total: </span>
+					<span>Ganacias: </span>
 				</div>
 				<div class="d-inline-block" style="width: 150px">
 					S/ {{ igeneral.totales.total_ganancia }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" style="width: 75px">
+					<span>Doctor: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_doctor }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" style="width: 75px">
+					<span>IGV: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_igv }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" style="width: 75px">
+					<span>Total: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total }}
 				</div>
 			</b-col>
 		</b-row>
@@ -126,6 +168,7 @@
 		</b-row>
 
 	</b-container>
+</div>
 </template>
 <script>
 	import axios from 'axios'
