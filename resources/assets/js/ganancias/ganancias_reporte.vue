@@ -37,8 +37,20 @@
 							<td>{{igeneral.fechaFinal}}</td>
 						</tr>
 						<tr>
-							<td class="pr-title">TOTAL EMP: </td>
+							<td class="pr-title">GANANCIAS: </td>
 							<td colspan="3">S/ {{ igeneral.totales.total_ganancia }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">DOCTOR: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">IGV: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total_igv }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">TOTAL: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total }}</td>
 						</tr>
 					</table>
 				</div>
