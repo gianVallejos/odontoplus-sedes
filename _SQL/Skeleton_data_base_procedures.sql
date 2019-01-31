@@ -644,7 +644,7 @@ BEGIN
     INNER JOIN doctors dr ON dr.id = idt.doctorId
     INNER JOIN precios pr ON pr.id = idt.precioId
     INNER JOIN tratamientos tr ON tr.id = pr.idTratamiento
-    WHERE (dr.id = doctor_id OR 0 = doctor_id) AND idt.fecha BETWEEN start_date AND end_date;
+    WHERE (dr.id = doctor_id OR 0 = doctor_id) AND idt.pagoId = pago_id AND idt.fecha BETWEEN start_date AND end_date;
 END
 ;;
 DELIMITER ;
@@ -844,7 +844,7 @@ BEGIN
            FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
     FROM ingresos_detalle idt
     INNER JOIN doctors dr ON dr.id = idt.doctorId
-	WHERE (dr.id = doctor_id OR 0 = doctor_id) AND idt.fecha BETWEEN start_date AND end_date;
+	WHERE (dr.id = doctor_id OR 0 = doctor_id) AND idt.pagoId = pago_id AND idt.fecha BETWEEN start_date AND end_date;
 END
 ;;
 DELIMITER ;
