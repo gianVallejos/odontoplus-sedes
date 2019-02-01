@@ -26,6 +26,7 @@ CREATE TABLE `ingresos_detalle` (
   `monto` decimal(11,2) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `doctorId` int(11) DEFAULT NULL,
+  `flag_recibo` int(2) DEFAULT 0,
   `margen_ganancia` decimal(10,0) DEFAULT '0',
 	`sedeId` int not null,
   `costo_variable` decimal(10,2) DEFAULT '0.00',

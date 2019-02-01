@@ -476,7 +476,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `OP_Ingresos_Detalle_add_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO INT, IN XID_PRECIO INT, IN XCANTIDAD INT,
-																							 IN XMONTO DECIMAL(11, 2),IN XIGV DECIMAL(10,2), IN XCOSTO_VARIABLE DECIMAL(10, 2),
+																							 IN XMONTO DECIMAL(11, 2),IN XIGV DECIMAL(10,2),IN XFLAG_RECIBO INT(11), IN XCOSTO_VARIABLE DECIMAL(10, 2),
 																							 IN XFECHA DATE, IN XDOCTOR INT, IN XCODIGO VARCHAR(120),
 																							 IN XTIPO_PAGO INT, IN XID_SEDE INT)
 	BEGIN
@@ -485,8 +485,8 @@ CREATE PROCEDURE `OP_Ingresos_Detalle_add_all`(IN XID_INGRESO INT, IN XID_PRECIO
 
 		SELECT margen_ganancia INTO XMARGEN FROM doctors WHERE doctors.id = XDOCTOR;
 
-		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto,igv, costo_variable, fecha, doctorId, margen_ganancia, codigo, tipo_pago, sedeId)
-				VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO,XIGV, XCOSTO_VARIABLE, XFECHA, XDOCTOR, XMARGEN, XCODIGO, XTIPO_PAGO, XID_SEDE);
+		INSERT INTO ingresos_detalle(ingresoId, precioId, cantidad, monto,igv,flag_recibo, costo_variable, fecha, doctorId, margen_ganancia, codigo, tipo_pago, sedeId)
+				VALUES (XID_INGRESO, XID_PRECIO, XCANTIDAD, XMONTO,XIGV,XFLAG_RECIBO, XCOSTO_VARIABLE, XFECHA, XDOCTOR, XMARGEN, XCODIGO, XTIPO_PAGO, XID_SEDE);
 
 END
 ;;
@@ -512,7 +512,7 @@ DROP PROCEDURE IF EXISTS `OP_Ingresos_Detalle_get_all_Id`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_Detalle_get_all_Id`(IN XID_INGRESO INT)
 BEGIN
-	SELECT idt.id, trat.id as idTratamiento, trat.detalle as tratamiento,
+	SELECT idt.id, trat.id as idTratamiento, trat.detalle as tratamiento,idt.flag_recibo as flag_recibo, 
 				 doc.id as idDoctor, CONCAT(doc.nombres, ' ', doc.apellidos) as nombreDoctor,
 				 idt.cantidad * idt.monto as total, idt.codigo, idt.tipo_pago, tp.nombre as tipo_pago_nombre, idt.sedeId as sede, sed.nombre as nombre_sede,
 				 ROUND(IFNULL(SUM(idt.monto * idt.cantidad) * doc.margen_ganancia/100, 0), 2) as mg,

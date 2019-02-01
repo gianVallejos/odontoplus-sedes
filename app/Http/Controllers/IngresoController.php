@@ -99,12 +99,16 @@ class IngresoController extends Controller
 
     public function lineItemSave(Request $request){
             try{
-                foreach( $request->trats as $trat ){
+                
+                foreach( $request->trats as $trat ){                  
+                     
                     $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
-                                                                            $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ', ' . $trat['costo_variable'] . ', "' .
+                                                                            $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ', '.$request->es_recibo.','. $trat['costo_variable'] . ', "' .
                                                                             $request->fecha .'", '. $request->doctor . ', "'.
                                                                             $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .')');
+                
                 }
+                                                                       
                 $last_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')')[0];
 
                 $total_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')')[0];
@@ -130,7 +134,7 @@ class IngresoController extends Controller
             try{
                 foreach( $request->trats as $trat ){
                     $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_update_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
-                                                                               $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ',"' .
+                                                                               $trat['cantidad'] .', '. $trat['monto'] .', '.$request->es_recibo.','.$request->igv . ',"' .
                                                                                $request->fecha .'", '. $request->doctor . ', "'.
                                                                             $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .', '. $id .')');
                 }

@@ -34,7 +34,7 @@
 											empty-filtered-text="No existen pacientes que coincidan con la búsqueda">
 							<template slot="actions" slot-scope="row">
 						        <div class="actions-table">
-						        	<a  v-if="curUser.rolid == 1 || curUser.rolid == 2 " v-on:click="modificarIngresoDetalle( row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento,
+						        	<a  v-if="curUser.rolid == 1 || curUser.rolid == 2 " v-on:click="modificarIngresoDetalle(row, row.item.id, row.item.fecha, row.item.idDoctor, row.item.tratamiento,row.item.flag_recibo,
 																															row.item.cantidad, row.item.monto, row.item.codigo, row.item.tipo_pago, row.item.sede )" class="action">Modificar</a>
 						        	<a  v-if="curUser.rolid == 1 " v-on:click="eliminarIngresoDetalle(row.item.id)" class="action">Eliminar</a>
 						        </div>
@@ -85,13 +85,17 @@
 										<span v-if="allerros.fecha" :class="['label label-danger']">{{ allerros.fecha[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col cols="6" lg="2">
-									<b-form-group label="Código" label-for="codigo">
+								<b-col cols="6" lg="3">
+									<b-form-group label-for="codigo" :indeterminate.sync="indeterminate">
+										<b-form-checkbox class="mb-1" v-model="form.flag_recibo" @change="toggle()">
+											{{nombreComprobante}}
+										</b-form-checkbox>	
 										<b-form-input id="codigo" type="text" v-model="form.codigo" placeholder="Código de Boleta/Factura"
 																	 :disabled=isDisabled autocomplete="off" />
 										<span v-if="allerros.codigo" :class="['label label-danger']">{{ allerros.codigo[0] }}</span>
 									</b-form-group>
 								</b-col>
+								
 								<b-col cols="6" lg="2">
 									<b-form-group label="Tipo de Pago" label-for="tipo_pago">
 										<b-form-select id="tipo_pago" v-model="form.tipo_pago" :options="tipo_pago.options" :disabled=isDisabled />
@@ -108,7 +112,7 @@
 										<span v-if="allerros.sede" :class="['label label-danger']">{{ allerros.sede[0] }}</span>
 									</b-form-group>
 								</b-col>
-								<b-col cols="12" lg="4">
+								<b-col cols="12" lg="3">
 									<b-form-group label="Doctor">
 										<b-form-select v-model="form.doctor" :disabled=isModificarIngreso class="required" >
 											<option :value="null">Ningun Doctor Seleccionado</option>
@@ -318,24 +322,37 @@
 					trat_id_general: null,
 			    form: {
 			    	ingresoId: this.id,
-						codigo: '',
-						tipo_pago: 1,
-						trats: [{id: 0, precioId: '', tratamiento: '', cantidad: 1, monto: 0, costo_variable: 0, total: 0}],
-						cantidad: 1,
-						monto: 0,
-						total: 0,
-						igv : 0,
-						fecha: this.getMyDate(),
-						sede: this.ingreso.pacienteSedeId,
-						doctor: null
-			    },
-			    ingresoDetalleId: ''
+					codigo: '',
+					tipo_pago: 1,
+					trats: [{id: 0, precioId: '', tratamiento: '', cantidad: 1, monto: 0, costo_variable: 0, total: 0}],
+					cantidad: 1,
+					monto: 0,
+					total: 0,
+					igv : 0,
+					fecha: this.getMyDate(),
+					sede: this.ingreso.pacienteSedeId,
+					doctor: null,	
+					flag_recibo : true,		
+					es_recibo:1,		
+				},
+				indeterminate: false,			
+				ingresoDetalleId: '',
+				nombreComprobante : 'Código Recibo'
 			}
 		},
 		methods: {
 			onFiltered (filteredItems) {
 		   this.totalRows = filteredItems.length
 		   this.currentPage = 1
+		  },
+		  toggle () {
+			  console.log(this.indeterminate  );
+			  this.indeterminate = !this.indeterminate;			  
+			  this.form.es_recibo = this.indeterminate ? 0 :1 ;
+			  console.log(this.indeterminate );
+			  console.log(this.form.es_recibo);
+			  console.log(this.form.flag_recibo );
+			  this.nombreComprobante = this.indeterminate ? 'Código Factura/Boleta':'Código Recibo' ;
 		  },
 		  onFilteredPac (filteredItems) {
 		   this.totalRowsPac = filteredItems.length
@@ -344,6 +361,12 @@
 		  agregarTratamiento(){
 			 this.form.sede = this.ingreso.pacienteSedeId
 		   this.isAddTratamiento = true
+		   this.form.flag_recibo = true;
+		   this.indeterminate = false;
+		   this.form.es_recibo = 1;
+		   this.nombreComprobante = this.indeterminate? 'Código Factura/Boleta' :'Código Recibo'
+		   //this.form.es_recibo = */
+		   //this.toggle()
 		   this.isModificarIngreso = false
 		  },
 		  cerrarAddTratamiento(){
@@ -371,7 +394,6 @@
 					this.form.trats[this.trat_id_general].tratamiento = tratamiento
 					this.form.trats[this.trat_id_general].monto = monto
 					this.form.trats[this.trat_id_general].costo_variable = costo_variable
-					console.log(JSON.stringify(this.form))
 					this.calculateTotal(this.trat_id_general)
 					this.hideModal()
 				}else{
@@ -397,6 +419,7 @@
 				this.form.codigo = ''
 				this.form.tipo_pago = 1
 				this.form.sede = 1
+				this.form.es_recibo = 0
 				this.allerros = ''
 			},
 			agregarIngresoATabla(element){
@@ -416,8 +439,8 @@
 			},
 			agregarLineItem(){
 				if( this.validarTratamientos() ){
-					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
-					this.form.igv = this.form.codigo !== '' ? 18 : 0;
+					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'				
+					this.form.igv = this.form.codigo !== '' && this.form.es_recibo !== 1? 18 : 0;
 					var request = { method: 'POST', url: this.url + '/ingresos/line-item', data: this.form }
 					this.$refs.spinnerContainerRef.showSpinner()
 					var _self = this
@@ -473,8 +496,9 @@
 			},
 			agregarModificar(){
 				if( this.validarTratamientos() ){
+					console.log(this.form);
 					var mssgOnFail = 'Existen campos inválidos. Por favor verificalos.'
-					this.form.igv = this.form.codigo !== '' ? 18 : 0;
+					this.form.igv = this.form.codigo !== '' && this.form.es_recibo !== 1? 18 : 0;
 					var request = { method: 'PUT', url: this.url + '/ingresos/line-item/' + this.ingresoDetalleId, data: this.form }
 					this.$refs.spinnerContainerRef.showSpinner()
 					var self = this
@@ -548,7 +572,7 @@
 					}
 				})
 			},
-			modificarIngresoDetalle(ingresoDetalleId, fecha, doctorId, tratamiento, cantidad, monto, codigo, tipo_pago, sedeId){
+			modificarIngresoDetalle(row,ingresoDetalleId, fecha, doctorId, tratamiento,flag_recibo, cantidad, monto, codigo, tipo_pago, sedeId){
 					this.form.trats[0].id = 0
 					this.form.trats[0].precioId = this.getIdTratamientoByNombre(tratamiento)
 			    this.form.trats[0].tratamiento = tratamiento
@@ -563,6 +587,12 @@
 					this.isAddTratamiento = true
 					this.isModificarIngreso = true
 					this.ingresoDetalleId = ingresoDetalleId
+					console.log(row);
+					this.es_recibo = flag_recibo					
+					this.indeterminate = flag_recibo === 0? true : false
+					this.form.flag_recibo = flag_recibo === 0? false : true
+					this.nombreComprobante = this.indeterminate? 'Código Factura/Boleta' : 'Código Recibo'
+
 			},
 			getIdTratamientoByNombre(nombre){
 					for(var i = 0; i < this.tratamientos.length; i++ ){
