@@ -7,7 +7,7 @@
 				<b-row  v-if="!isAddTratamiento" >
 					<b-col cols="12" class="text-center pt-0 pb-1">
 						<b-btn variant="success" v-on:click.prevent="agregarTratamiento()" >
-							<i class="fas fa-plus"></i>&nbsp; Agregar Tratamiento
+							<i class="fas fa-plus"></i>&nbsp; Registrar Pago
 						</b-btn>
 						<b-btn variant="primary" :href="this.url + '/ingresos/reporte/' + this.id" target="_blank">
 							<i class="fas fa-file-alt"></i>&nbsp; Reporte

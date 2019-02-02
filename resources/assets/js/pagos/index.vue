@@ -67,6 +67,9 @@
               <template slot="nombres" slot-scope="row">
                     {{ row.value }} {{ row.item.apellidos }}
               </template>
+              <template slot="doctor" slot-scope="row">
+                   S/ {{ row.value }}
+              </template>
             </b-table>
 
           <b-row align-h="between">
@@ -105,6 +108,7 @@
         fields: [
           { key: 'actions', label: 'Acción', 'class': 'action-width' },
           { key: 'nombres', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+          { key: 'doctor', label: 'Total Doctor', sortable: true, sortDirection: 'desc' },
           { key: 'fecha_inicio', label: 'Fecha de Inicio', sortable: true, sortDirection: 'desc' },
           { key: 'fecha_fin', label: 'Fecha Fin', sortable: true, sortDirection: 'desc' },
           { key: 'created_at', label: 'Fecha de Creación', sortable: true, sortDirection: 'desc'  }
