@@ -199,6 +199,7 @@
 				this.form.fechaFin = today
 			},
 			goToPDFView(){
+				console.log(this.form);
 				if( this.validForm() ){
 					window.open(this.url + '/ganancias/reporte/' + this.form.fechaInicio + '/' + this.form.fechaFin + '/' + this.form.sede, '_blank')
 				}

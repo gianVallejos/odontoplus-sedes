@@ -628,22 +628,24 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_all_by_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_all_by_doctor_fechas`(IN doctor_id int, IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Ingresos_get_all_by_doctor_fechas`(IN doctor_id int, IN start_date date, IN end_date date,IN pago_id INT(11))
 BEGIN
-	SELECT idt.id, LPAD(ing.idPaciente, 5, '00000') as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento,
+	SELECT idt.id, pc.codigo as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento,
 		idt.cantidad, idt.monto,idt.codigo,
-        IF(idt.costo_variable = 0, idt.costo_variable ,(idt.costo_variable * idt.cantidad)) as costo_variable, 
+        IF(idt.costo_variable = 0, idt.costo_variable ,(idt.costo_variable * idt.cantidad)) as costo_variable,
         (idt.cantidad * idt.monto) as total,
+        ROUND(((idt.cantidad * idt.monto) - (((idt.cantidad * idt.monto) *(idt.igv/100)) + ((idt.cantidad * idt.costo_variable)))),2) as subTotal,
 		ROUND((idt.cantidad * idt.monto) *(idt.igv/100),2) as igv,
 		FORMAT(((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto - idt.costo_variable)-(idt.monto*(idt.igv/100))))), 2) as total_empresa,
 		FORMAT((idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))),2) as doctor,
 		DATE_FORMAT(idt.fecha, "%d-%m-%Y") as fecha
     FROM ingresos_detalle idt
     INNER JOIN ingresos ing ON ing.id = idt.ingresoId
+		INNER JOIN pacientes pc ON pc.id = ing.idPaciente
     INNER JOIN doctors dr ON dr.id = idt.doctorId
     INNER JOIN precios pr ON pr.id = idt.precioId
     INNER JOIN tratamientos tr ON tr.id = pr.idTratamiento
-    WHERE (dr.id = doctor_id OR 0 = doctor_id) AND idt.fecha BETWEEN start_date AND end_date;
+    WHERE (dr.id = doctor_id OR 0 = doctor_id) AND idt.pagoId = pago_id AND idt.fecha BETWEEN start_date AND end_date;
 END
 ;;
 DELIMITER ;
@@ -651,25 +653,26 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_ganancias_sede_fechas`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_get_ganancias_sede_fechas`(IN sede_id int, IN start_date date, IN end_date date)
-  BEGIN
-    SELECT idt.id, LPAD(ing.idPaciente, 5, '00000') as historia, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento, 
-			IF(idt.costo_variable = 0, idt.costo_variable ,(idt.costo_variable * idt.cantidad)) as costo_variable, 
-		   ROUND(((idt.cantidad * idt.monto)*(idt.igv/100)),2) as igv,
-		   idt.cantidad, idt.monto, idt.codigo,
-           (idt.cantidad * idt.monto) as total, 
-		   FORMAT(((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto - idt.costo_variable)-(idt.monto*(idt.igv/100))))), 2)as total_empresa,
-           CONCAT(UPPER(SUBSTRING(sd.nombre, 1, 3))) as nombre_sede,
-		   FORMAT((idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto - idt.costo_variable)-(idt.monto*(idt.igv/100))))), 2) as doctor,
-           DATE_FORMAT(idt.fecha, "%d-%m-%Y") as fecha
-    	 FROM ingresos_detalle idt
-    INNER JOIN ingresos ing ON ing.id = idt.ingresoId
-    INNER JOIN doctors dr ON dr.id = idt.doctorId
-    INNER JOIN precios pr ON pr.id = idt.precioId
-    INNER JOIN tratamientos tr ON tr.id = pr.idTratamiento
-    INNER JOIN sedes sd ON sd.id = idt.sedeId
-	WHERE ( sede_id IS NULL OR idt.sedeId = sede_id )
-	AND idt.fecha BETWEEN start_date AND end_date;
-END
+	BEGIN
+			SELECT idt.id, pc.codigo as historia, pc.id, dr.id as doctorId, dr.nombres,dr.apellidos, tr.detalle as tratamiento,
+				IF(idt.costo_variable = 0, idt.costo_variable ,(idt.costo_variable * idt.cantidad)) as costo_variable,
+				 ROUND(((idt.cantidad * idt.monto)*(idt.igv/100)),2) as igv,
+				 idt.cantidad, idt.monto, idt.codigo,
+						 (idt.cantidad * idt.monto) as total,
+				 FORMAT(((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto - idt.costo_variable)-(idt.monto*(idt.igv/100))))), 2)as total_empresa,
+						 CONCAT(UPPER(SUBSTRING(sd.nombre, 1, 3))) as nombre_sede,
+				 FORMAT((idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto - idt.costo_variable)-(idt.monto*(idt.igv/100))))), 2) as doctor,
+						 DATE_FORMAT(idt.fecha, "%d-%m-%Y") as fecha
+				 FROM ingresos_detalle idt
+			INNER JOIN ingresos ing ON ing.id = idt.ingresoId
+			INNER JOIN pacientes pc ON pc.id = ing.idPaciente
+			INNER JOIN doctors dr ON dr.id = idt.doctorId
+			INNER JOIN precios pr ON pr.id = idt.precioId
+			INNER JOIN tratamientos tr ON tr.id = pr.idTratamiento
+			INNER JOIN sedes sd ON sd.id = idt.sedeId
+		WHERE ( sede_id IS NULL OR idt.sedeId = sede_id )
+		AND idt.fecha BETWEEN start_date AND end_date;
+	END
 ;;
 DELIMITER ;
 -- ----------------------------
@@ -835,14 +838,17 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_totales_by_doctor_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_totales_by_doctor_fechas`(IN doctor_id int, IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Ingresos_get_totales_by_doctor_fechas`(IN doctor_id int, IN start_date date, IN end_date date,IN pago_id INT(11))
 BEGIN
 	SELECT FORMAT(IFNULL(SUM(idt.cantidad * idt.monto), 0),2) as total,
+		   FORMAT(IFNULL(SUM((idt.cantidad * idt.monto) *(idt.igv/100)), 0),2) as igv,
+		   FORMAT(IFNULL(SUM(idt.costo_variable), 0),2) as total_costo_variable,
+		   FORMAT(IFNULL(SUM(((idt.cantidad * idt.monto) - (((idt.cantidad * idt.monto) *(idt.igv/100)) + ((idt.cantidad * idt.costo_variable))))), 0),2) as subTotal,
            FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
            FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
     FROM ingresos_detalle idt
     INNER JOIN doctors dr ON dr.id = idt.doctorId
-	WHERE (dr.id = doctor_id OR 0 = doctor_id) AND idt.fecha BETWEEN start_date AND end_date;
+	WHERE (dr.id = doctor_id OR 0 = doctor_id) AND idt.pagoId = pago_id AND idt.fecha BETWEEN start_date AND end_date;
 END
 ;;
 DELIMITER ;
@@ -852,27 +858,29 @@ DELIMITER ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `OP_Ingresos_get_totales_doctor_id_fechas`;
 DELIMITER ;;
-CREATE PROCEDURE `OP_Ingresos_get_totales_doctor_id_fechas`(IN doctor_id int, IN start_date date, IN end_date date)
+CREATE PROCEDURE `OP_Ingresos_get_totales_doctor_id_fechas`(IN doctor_id int,IN sede_id INT(11), IN start_date date, IN end_date date)
 BEGIN
-		IF doctor_id = 0 THEN
+	IF doctor_id = 0 THEN
 
-    SELECT FORMAT(IFNULL(SUM(idt.cantidad * (idt.monto-idt.costo_variable)), 0),2) as total,
-           FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
-           FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
-    FROM ingresos_detalle idt
-    INNER JOIN doctors dr ON dr.id = idt.doctorId
-    WHERE idt.fecha BETWEEN start_date AND end_date;
+		SELECT FORMAT(IFNULL(SUM(idt.cantidad * idt.monto), 0),2) as total,
+			FORMAT(IFNULL(SUM((idt.cantidad * idt.monto)*(idt.igv/100)), 0),2) as total_igv,
+			FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
+			FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
+		FROM ingresos_detalle idt
+		INNER JOIN doctors dr ON dr.id = idt.doctorId
+		WHERE idt.fecha BETWEEN start_date AND end_date AND ( sede_id IS NULL OR idt.sedeId = sede_id );
 
 	ELSE
 
-    SELECT FORMAT(IFNULL(SUM(idt.cantidad * (idt.monto-idt.costo_variable)), 0),2) as total,
-           FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
-           FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
-    FROM ingresos_detalle idt
-    INNER JOIN doctors dr ON dr.id = idt.doctorId
-    WHERE dr.id = doctor_id AND idt.fecha BETWEEN start_date AND end_date;
+		SELECT FORMAT(IFNULL(SUM(idt.cantidad * (idt.monto-idt.costo_variable)), 0),2) as total,
+			FORMAT(IFNULL(SUM((idt.cantidad * idt.monto)*(idt.igv/100)), 0),2) as total_igv,
+			FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
+			FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
+		FROM ingresos_detalle idt
+		INNER JOIN doctors dr ON dr.id = idt.doctorId
+		WHERE dr.id = doctor_id AND idt.fecha BETWEEN start_date AND end_date AND ( sede_id IS NULL OR idt.sedeId = sede_id );
 
-  END IF;
+  	END IF;
 END
 ;;
 DELIMITER ;
@@ -1166,10 +1174,13 @@ DROP PROCEDURE IF EXISTS `OP_Pagos_get_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Pagos_get_all`()
 BEGIN
-  SELECT p.id, p.idDoctor, dr.nombres, dr.apellidos, p.fecha_inicio, p.fecha_fin, p.created_at, p.updated_at
+  SELECT p.id, p.idDoctor, dr.nombres, dr.apellidos, p.fecha_inicio, p.fecha_fin, p.created_at, p.updated_at,
+		FORMAT(SUM((idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100)))))),2) as doctor
   FROM pagos p
   INNER JOIN doctors dr ON dr.id = p.idDoctor
-  WHERE p.is_deleted = '0' ORDER BY p.id DESC;
+  INNER JOIN ingresos_detalle idt ON idt.pagoId = p.id
+  WHERE p.is_deleted = '0' GROUP BY idt.pagoId
+  ORDER BY p.id DESC;
 END
 ;;
 DELIMITER ;
@@ -1856,6 +1867,61 @@ BEGIN
 
 	SELECT id, nombre FROM sillons;
 
+END
+;;
+DELIMITER ;
+
+
+-- ----------------------------
+--  Procedure definition for `OP_Ingresos_detalle_update_pagoId`
+-- ----------------------------
+
+DROP PROCEDURE IF EXISTS `OP_Ingresos_detalle_update_pagoId`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Ingresos_detalle_update_pagoId`(IN XPAGOID INT(11),IN XINGRESO_DETALLEID INT (11))
+BEGIN
+
+	UPDATE ingresos_detalle SET pagoId = XPAGOID
+    WHERE id = XINGRESO_DETALLEID;
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Pagos_get_pago_last`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Pagos_get_pago_last`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Pagos_get_pago_last` ()
+BEGIN
+	SELECT id
+    FROM pagos ORDER BY id desc limit 1;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Ingresos_get_all_by_pago_id`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Ingresos_get_all_by_pago_id`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Ingresos_get_all_by_pago_id`(IN pago_id INT(11))
+BEGIN
+	SELECT id FROM ingresos_detalle WHERE pagoId = pago_id;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Ingresos_detalle_update_pagoId`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Ingresos_detalle_update_pagoId`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Ingresos_detalle_update_pagoId`(IN XPAGOID INT(11),IN XINGRESO_DETALLEID INT (11))
+BEGIN
+	UPDATE ingresos_detalle SET pagoId = XPAGOID
+    WHERE id = XINGRESO_DETALLEID;
 END
 ;;
 DELIMITER ;

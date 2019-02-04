@@ -214,7 +214,7 @@
   												</b-form-select>
 										     	<span v-if="all_errors.seguro_ind" :class="['label label-danger']">{{ all_errors.seguro_ind[0] }}</span>
 										    </b-form-group>
-                        <b-form-group label="Referencia:" label-for="referencia_id">
+                        <b-form-group label="Canal de Referencia:" label-for="referencia_id">
 										     	<b-form-select v-model="form.referencia_id" :disabled=isDisabled>
     													<option v-for="(referencia, index) in referencias" :key="index" :value="referencia.id">
     														{{ referencia.nombre }}
