@@ -1760,6 +1760,23 @@ BEGIN
 END
 ;;
 DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Citas_get_all_of_next_day`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all_of_next_day`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_get_all_of_next_day`()
+BEGIN
+  SELECT pc.nombres AS paciente_nombre, pc.email AS paciente_email, c.fecha, c.desde as hr_inicio
+    FROM citas c
+  	INNER JOIN pacientes as pc on pc.id = c.idPaciente
+  WHERE DATE_ADD(CURDATE(), INTERVAL 1 DAY) = c.fecha AND pc.email IS NOT NULL;
+END;
+;;
+DELIMITER ;
+
+
 -- ----------------------------
 --  Sedes
 -- ----------------------------

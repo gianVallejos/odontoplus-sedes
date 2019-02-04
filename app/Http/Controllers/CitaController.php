@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\CustomLibs\CurBD;
+use App\CustomLibs\CitasReminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -14,6 +15,7 @@ class CitaController extends Controller{
     }
 
     public function index(){
+      CitasReminder::sendEmails();
       $doctores = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
       $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
 

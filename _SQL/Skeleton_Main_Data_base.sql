@@ -22,6 +22,7 @@ CREATE TABLE `clientes` (
   `celular` varchar(200) DEFAULT NULL,
   `celular_aux` varchar(200) DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL,
+  `schema` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -176,8 +177,22 @@ END
 DELIMITER ;
 
 -- ----------------------------
+--  Procedure definition for `OP_Clientes_get_all_bySchema`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Clientes_get_all_bySchema`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Clientes_get_all_bySchema`(IN XSCHEMA varchar(200))
+BEGIN
+  SELECT c.nombre_comercial, c.ciudad, c.direccion, c.telefono, c.celular, c.celular_aux, c.email, c.schema
+    FROM clientes c
+  WHERE c.schema = XSCHEMA LIMIT 1;
+END;
+;;
+DELIMITER ;
+
+-- ----------------------------
 --  Records
 -- ----------------------------
-INSERT INTO `clientes` VALUES ('1','Odontoplus',NULL,NULL,'Cajamarca','Av. Miguel Grau 656',NULL,'943 598585','982 780954','contacto@odontoplus.com');
+INSERT INTO `clientes` VALUES ('1','Odontoplus',NULL,NULL,'Cajamarca','Av. Miguel Grau 656',NULL,'943 598585','982 780954','contacto@odontoplus.com', '1_ODONTOPLUS_CAJ');
 INSERT INTO `roles` VALUES ('1','Administrador','Administrador'), ('2','Colaborador','Usuario Invitado');
 INSERT INTO `users` VALUES ('1','Admin','admin@odontoplus.pe','$2y$10$U74ylBqdic.7idkr.hWgP.bZMU77dZz4s0ksFsvPkPjxH4I9npCkm','RegYwGNCwnau0fRlk0L3VFbtaT62QMj2Ym3hJfnPPpAfW7YsNuHnUHJcyV2T','2018-11-27 15:51:31','2018-11-27 15:51:31','1','1','0','1_ODONTOPLUS_CAJ','1', '1');
