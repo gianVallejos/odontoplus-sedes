@@ -37,7 +37,7 @@
               </div>
             </div>
 
-            <div class="col-lg-4 col-md-6 pt-2 pb-4">
+            <div class="col-lg-4 col-md-6 pl-4 pt-2 pb-4">
               <div class="float-left input-group">
                 <div class="input-group-prepend">
                   <div class="input-group-text fz-4"> Sede </div>
@@ -51,7 +51,7 @@
               </div>
             </div>
 
-            <div class="col-md-12 pr-4 pl-4">
+            <div class="col-md-12 pr-4 pl-4 ">
               <div id='calendar'></div>
             </div>
           </div>
