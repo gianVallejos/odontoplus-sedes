@@ -58,21 +58,32 @@
 		</b-row>
 		<b-row class="d-print-none">
 			<b-col cols="12" class="pt-4 pb-0 text-center">
-				<b-button variant="success" v-on:click.prevent="imprimirPagina()">
+				
+				<b-button variant="success"  v-on:click.prevent="imprimirPagina()">
 					<i class="fas fa-print"></i> &nbsp;Imprimir
 				</b-button>
-				<b-button variant="danger" v-on:click.prevent="onEliminar(
+				<b-button variant="danger"  class="es-reporte" v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
-							   				  v-if="curUser.rolid == 1" >
+							   				  v-if="curUser.rolid == 1 && es_reporte" >
 					<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 				</b-button>
-				<b-button variant="warning" v-on:click.prevent="cerrarVenta()">
+				<b-button variant="warning" class="es-reporte" v-on:click.prevent="cerrarVenta()">
 					<i class="fas fa-times"></i> &nbsp;Cerrar
 				</b-button>
-				<b-button variant="secondary" :href="url + '/ingresos/line-item/' + pgeneral.ingresosId">
+				<b-button variant="secondary" v-if="es_reporte" class="es-reporte" :href="url + '/ingresos/line-item/' + pgeneral.ingresosId">
 					<i class="fas fa-money-check-alt"></i> &nbsp;Ver Ingresos
 				</b-button>
+			</b-col>
+			<b-col cols="12" class="pt-4 pb-0 text-center">
+				<b-input-group v-if="es_reporte">					
+					<b-form-input v-model="email" ></b-form-input>
+					<b-input-group-append>
+						<b-btn variant="secondary" v-on:click.prevent="senMail()">
+							<i class="fas fa-envelope"></i> &nbsp;Enviar
+						</b-btn>
+					</b-input-group-append>
+				</b-input-group>
 			</b-col>
 		</b-row>
 		<b-row class="d-print-none" v-if="isMultipleOption">
@@ -203,13 +214,13 @@
 					<b-button variant="danger" v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
-							   				  v-if="curUser.rolid == 1" >
+							   				  v-if="curUser.rolid == 1 && es_reporte" >
 						<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 					</b-button>
 					<b-button variant="warning" v-on:click.prevent="cerrarVenta()">
 						<i class="fas fa-times"></i> &nbsp;Cerrar
 					</b-button>
-					<b-button variant="secondary" :href="url + '/ingresos/line-item/' + pgeneral.ingresosId">
+					<b-button variant="secondary" v-if="es_reporte" :href="url + '/ingresos/line-item/' + pgeneral.ingresosId">
 						<i class="fas fa-money-check-alt"></i> &nbsp;Ver Ingresos
 					</b-button>
 				</b-col>
@@ -226,13 +237,16 @@
 	export default{
 		mounted(){
 			this.setLogotipo()
-
 			this.record_id = this.pgeneral.id
 			this.tratamientos = this.pdetalle
 			this.descuento = this.pgeneral.descuento
 			this.isMultipleOptions()
 			this.haveDescuento()
 			this.restartMainDientes()
+			if (this.es_reporte){
+
+			}
+			
 		},
 		components: {
 			Diente,
@@ -244,7 +258,8 @@
 			'pgeneral',
 			'pdetalle',
 			'precios',
-			'paciente_sede'
+			'paciente_sede',
+			'es_reporte'
 		],
 		data(){
 			return{
@@ -287,7 +302,8 @@
 				opc1: true,
 				isMultipleOption: false,
 				isDescuento: false,
-				record_id: ''
+				record_id: '',
+				email :''
 			}
 		},
 		methods: {
@@ -589,6 +605,26 @@
 			},
 			cerrarVenta(){
 					window.close()
+			},
+			senMail () {
+				self = this
+				if(this.validEmail(this.email)){
+					self.$refs.spinnerContainerRef.showSpinner()
+					var request = { method: 'GET', url: this.url + '/presupuestos/sendMail/'+this.email+'/'+ this.record_id}
+					axios(request).then((response) => {
+						self.$refs.spinnerContainerRef.hideSpinner()
+						self.toastFunction('El correo a sido enviado con éxito.', 'success')
+					}).catch(function (error) {
+						self.$refs.spinnerContainerRef.hideSpinner()
+						self.toastFunction('El correo no fue enviado.', 'error')
+					});
+				}else {
+					self.toastFunction('Ingrese una cuenta de correo válida.', 'error')
+				}
+			},
+			validEmail: function (email) {
+				var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				return re.test(email);
 			}
 
 		}

@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\CustomLibs\CurBD;
 use Illuminate\Support\Facades\DB;
 use Validator;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
 
 class PresupuestoController extends Controller{
     private $path = 'presupuestos';
+    private $email_aux = '';
+    private $paciente_aux = '';
     public function __construct(){
         $this->middleware('auth');
     }
@@ -17,7 +21,6 @@ class PresupuestoController extends Controller{
     public function index(){
         $presupuesto =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_get_all()');
         $mydata = json_encode($presupuesto);
-
         return view($this->path . '.index', compact('mydata'));
     }
 
@@ -83,11 +86,12 @@ class PresupuestoController extends Controller{
         $paciente_sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_by_paciente_id("'. $pres_general->idPaciente .'")')[0];
 
         $pres_general = json_encode($pres_general);
-        $pres_detalle = json_encode($pres_detalle);
+        $pres_detalle = json_encode($pres_detalle); 
         $precios = json_encode($precios);
         $paciente_sede = json_encode($paciente_sede);
-
-        $view = view($this->path . '.reporte', compact('pres_general', 'pres_detalle', 'precios', 'paciente_sede'));
+        $es_reporte = true;
+        $es_reporte = json_encode($es_reporte);
+        $view = view($this->path . '.reporte', compact('pres_general', 'pres_detalle', 'precios', 'paciente_sede','es_reporte'));
 
         return $view;
     }
@@ -117,5 +121,30 @@ class PresupuestoController extends Controller{
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);
         }
+    }
+
+    public function sendMail($email,$idPresupuesto){
+        $this->email_aux = $email;
+        $cliente = json_decode(CurBD::getCurrentClienteData());
+        $pres_general =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_get_by_Id("'. $idPresupuesto .'")')[0];
+        $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_get_pacientes('. $pres_general->idPaciente .')')[0];
+        $dataBaseCryp = Crypt::encrypt(CurBD::getCurrentSchema());
+        $idPresupuestoCryp = Crypt::encrypt($idPresupuesto);
+        $host = request()->getHttpHost();
+        $this->paciente_aux = $paciente->nombres;
+        //print_r($host); die();
+        $url = $host.'/odontoplus-sedes/presupuesto/showPrespuesto/'.$dataBaseCryp.'/'.$idPresupuestoCryp;
+        $this->cliente_nombre = $cliente->nombre;
+        $data = [
+            'cliente' => $cliente,
+            'paciente' => $paciente,
+            'url' => $url
+        ];
+        Mail::send('email.presupuesto', ["data"=>$data], function($message)
+        {
+            $message->from('soporte@odontoplus.pe', 'Presupuesto por tratamiento');
+            $message->to($this->email_aux,  $this->paciente_aux)->subject('Presupuesto!');
+        });
+        
     }
 }

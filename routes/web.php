@@ -53,6 +53,8 @@ Route::get('reportes/obtener-tratamientos-doctor/{start}/{end}/{sedeId}', 'Repor
 Route::resource('presupuestos', 'PresupuestoController');
 Route::get('presupuestos/nuevo/{idPaciente}/{idDoctor}', 'PresupuestoController@nuevo');
 Route::get('presupuestos/reporte/{id}', 'PresupuestoController@reporte');
+Route::get('presupuestos/sendMail/{email}/{idPresupuesto}', 'PresupuestoController@sendMail');
+
 
 Route::resource('ingresos', 'IngresoController');
 Route::get('ingresos/line-item/{id}', 'IngresoController@lineItem')->name('ingresos.lineitem');
@@ -65,3 +67,6 @@ Route::get('v1/citas/get-all-events/{idDoctor}/{idSede}', 'CitaController@getEve
 Route::get('v1/citas/update-fecha-cita/{fecha}/{id}', 'CitaController@changeFechaCita');
 
 Route::resource('egresos', 'EgresoController');
+
+//RUTAS PUBLICAS
+Route::get('presupuesto/showPrespuesto/{dataBaseCryp}/{idPresupuestoCryp}', 'PublicController@showPrespuesto');
