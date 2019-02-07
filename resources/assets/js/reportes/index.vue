@@ -21,7 +21,7 @@
 										<div class="input-group-prepend">
 											<div class="input-group-text fz-4"> Sede </div>
 										</div>
-										<b-form-select v-model="ingresosVsEgresosChart.sede" v-on:input="fillingresosVsEgresosChart()">
+										<b-form-select :disabled='is_admin_sede' v-model="ingresosVsEgresosChart.sede" v-on:input="fillingresosVsEgresosChart()">
 											<option value=null >Todas las sedes</option>
 											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
 												{{ sede.nombre }}
@@ -62,7 +62,7 @@
 									</b-col>
 									<b-col cols="12" lg="4" class="pt-2 pt-lg-0">
 										<b-input-group prepend="Sede">
-											<b-form-select v-model="reportesGenerales.sede" >
+											<b-form-select :disabled='is_admin_sede' v-model="reportesGenerales.sede" >
 												<option value=null >Todas las sedes</option>
 												<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
 													{{ sede.nombre }}
@@ -151,7 +151,8 @@
 		},
 		props: [
 			'url',
-			'sedes'
+			'sedes',
+			'is_admin_sede'
 		],
 		components:{
 			TitleComponent,
@@ -167,14 +168,14 @@
 				breadcrumb: [
           			{ text: 'Inicio', href: this.url + '/' },
         			  { text: 'Estadísticas', active: true }
-			  	],
+				],
 				width: 480,
 				height: 480,
 				chartIsLoading: true,
 				reportesGenerales:{
 					start_date: '',
 					end_date: '',
-					sede: null
+					sede: (this.is_admin_sede ? this.sedes[0].id : null)
 				},
 				years: [
 					{ value: "2017", text: "2017" },
@@ -185,7 +186,7 @@
 				ingresosVsEgresosChart: {
 					data: null,
 					year: null,
-					sede: null
+					sede: (this.is_admin_sede ? this.sedes[0].id : null)
 				},
 				ingresosPacienteChart: {
 					data: null,

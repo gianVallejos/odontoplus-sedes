@@ -1,5 +1,5 @@
 <template>
-  <b-container v-if="curUser.rolid == 1">
+  <b-container v-if="curUser.rolid == 1 || curUser.rolid == 3">
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Reporte de Ganancias" :items="breadcrumb" />
@@ -28,7 +28,7 @@
 
             			<b-col cols="9" lg="4" class="pt-lg-0 pt-3">
             				<b-form-group label="Sede">
-            					<b-form-select v-model="form.sede">
+            					<b-form-select :disabled="is_admin_sede" v-model="form.sede">
             						<option value = null >Todas las sedes</option>
             						<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
             							{{ sede.nombre }}
@@ -138,7 +138,8 @@
     props:[
       'url',
       'curUser',
-			'sedes'
+			'sedes',
+			'is_admin_sede'
     ],
     data(){
 			return{
@@ -161,7 +162,7 @@
 				form: {
 					fechaInicio:'',
 					fechaFin:'',
-					sede: null
+					sede: (this.is_admin_sede ? this.sedes[0].id : null)
 				},
 		all_errors: [],
         currentPage: 1,

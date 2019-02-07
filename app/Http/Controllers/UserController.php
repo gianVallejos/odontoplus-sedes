@@ -18,33 +18,50 @@ class UserController extends Controller{
     public function index(){
         $users = DB::select('call OP_Usuarios_get_all("'. CurBD::getCurrentSchema() .'")'); //Filtrar por Schema
         $users = json_encode($users);
-
         return view('users.index',compact('users'));
     }
 
     public function create(){
-      $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
-      $sedes = json_encode($sedes);
+        $sedes = null;
+        if (\Auth::user()->rolid == 3) {  
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('.CurBD::getCurrentSede().')');
+        }else {
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        }
 
-      return view('users.create', compact('sedes'));
+        $is_admin_sede = \Auth::user()->rolid == 3 ? json_encode(true) : json_encode(false);
+        $sedes = json_encode($sedes);
+
+      return view('users.create', compact('sedes','is_admin_sede'));
     }
 
     public function show($id){
         $user = DB::select('call OP_Usuarios_get_all_id('.$id.', "'. CurBD::getCurrentSchema() . '")')[0]; //Filtrar por Schema
+        $sedes = null;
+        if (\Auth::user()->rolid == 3) {  
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('.$user->sede_id.')');
+        }else {
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        }
         $user = json_encode($user);
-        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
         $sedes = json_encode($sedes);
-
-        return view('users.show', compact('user', 'id', 'sedes'));
+        $is_admin_sede = \Auth::user()->rolid == 3 ? json_encode(true) : json_encode(false);
+        return view('users.show', compact('user', 'id', 'sedes','is_admin_sede'));
     }
 
     public function edit($id){
         $user = DB::select('call OP_Usuarios_get_all_id('.$id.', "'. CurBD::getCurrentSchema() .'")')[0]; //Filtrar por Schema
+        $sedes = null;
+        if (\Auth::user()->rolid == 3) {  
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('.$user->sede_id.')');
+        }else {
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        }        
         $user = json_encode($user);
-        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
         $sedes = json_encode($sedes);
+        $is_admin_sede = \Auth::user()->rolid == 3 ? json_encode(true) : json_encode(false);
 
-        return view('users.edit', compact('user', 'sedes'));
+        return view('users.edit', compact('user', 'sedes','is_admin_sede'));
     }
 
     public function store(Request $request){
@@ -86,7 +103,7 @@ class UserController extends Controller{
             'email' => 'required|max:255|email|unique:users,email,'. $id.',id',
             'password' => 'nullable|min:6|max:50|same:confirm_password',
             'confirm_password' => 'same:password|nullable|min:6|max:50|',
-            'rolid' => 'required|regex:/(^[1-2]{1}$)/u'
+            'rolid' => 'required|regex:/(^[1-2-3]{1}$)/u'
         ]);
 
     	if ($validator->passes()) {

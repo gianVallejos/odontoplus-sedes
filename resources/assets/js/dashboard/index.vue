@@ -46,7 +46,7 @@
 			<b-col cols="12" class="pt-3">
 				<div class="row">
 					<div class="col-lg-3 col-md-6 col-sm-6 col-12" v-for="item in items">
-						<div class="dashbox" :class="item.color" v-on:click="openDashboxUrl(item.url, item.show_modal)" v-if="item.for_admin == false || user.rolid == 1" >
+						<div class="dashbox" :class="item.color" v-on:click="openDashboxUrl(item.url, item.show_modal)" v-if="item.for_admin == false || user.rolid == 1 || user.rolid == 3" >
 							<b-container>
 								<b-row>
 									<b-col cols="3" class="icono pr-0 pl-0">
@@ -81,7 +81,7 @@
 										<div class="input-group-prepend">
 											<div class="input-group-text fz-4"> Sede </div>
 										</div>
-										<b-form-select v-model="ingresosVSegresosChart.sede" v-on:input="fillIngresosVSegresosChart()">
+										<b-form-select :disabled="is_admin_sede" v-model="ingresosVSegresosChart.sede" v-on:input="fillIngresosVSegresosChart()">
 											<option value=null >Todas las sedes</option>
 											<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
 												{{ sede.nombre }}
@@ -115,7 +115,7 @@
 			</b-col>
 			<b-col class="pt-3 d-none d-lg-block" cols="3" v-if="isAdmin()">
 				<div v-for="item in itemsMedium" class="mb-2">
-						<DashboxMed :iconUrl="item.iconUrl" :subname="item.subname" :name="item.name" :color="item.color" :url="item.url" :for_admin="item.for_admin" :user="user" />
+					<DashboxMed :iconUrl="item.iconUrl" :subname="item.subname" :name="item.name" :color="item.color" :url="item.url" :for_admin="item.for_admin" :user="user" />
 				</div>
 			</b-col>
 			<b-col class="pt-2 mt-2 d-none d-lg-block" cols="12">
@@ -210,7 +210,8 @@
 			'url',
 			'pacientes',
 			'sedes',
-			'user'
+			'user',
+			'is_admin_sede'
 		],
 		components:{
 			TitleComponent,
@@ -323,7 +324,7 @@
 				ingresosVSegresosChart: {
 					data: null,
 					year: null,
-					sede: null
+					sede: (this.is_admin_sede? this.sedes[0].id : null)
 				},
 				nuevosPacientesChart: {
 					data: null
@@ -376,7 +377,7 @@
 					window.location = this.url + '/ingresos/line-item/' + id
 			},
 			isAdmin(){
-				if( this.user.rolid == 1 ) return true
+				if( this.user.rolid == 1 || this.user.rolid == 3 ) return true
 				return false
 			},
 			showTableAction(){

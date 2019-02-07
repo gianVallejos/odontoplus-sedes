@@ -27,7 +27,7 @@
 		          		<i class="fas fa-user-md"></i>Doctores
 		          	</a>
 		          </li>
-							<li class="li-dropdown" v-if="user.rolid == 1">
+							<li class="li-dropdown" v-if="user.rolid == 1 || user.rolid == 3">
 								<a :href="url + '/users'" v-bind:class="[(whoIsActiveDetail == 'users') ? 'active' : '']">
 			          	<i class="fas fa-users"></i>Usuarios
 			          </a>
@@ -56,25 +56,25 @@
 		          		<i class="fas fa-money-bill"></i>Egresos
 		          	</a>
 		          </li>
-							<li class="li-dropdown" style="width: 152px;" v-if="user.rolid == 1">
+							<li class="li-dropdown" style="width: 152px;" v-if="user.rolid == 1 || user.rolid == 3">
 							 <a :href="url + '/pagos'" v-bind:class="[(whoIsActiveDetail == 'pagos') ? 'active' : '']">
 								 <i class="fas fa-credit-card"></i>Pagos a Doctores
 							 </a>
 						 </li>
 		        </ul>
 		      </li>
-					<li class="item dropdown"  v-if="user.rolid == 1" v-bind:class="[(whoIsActive == 'informes') ? 'active' : '']">
+					<li class="item dropdown"  v-if="user.rolid == 1 || user.rolid == 3" v-bind:class="[(whoIsActive == 'informes') ? 'active' : '']">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 		        	<i class="fas fa-file-alt"></i>Informes
 		        	<i class="fa fa-angle-down lnr"></i>
 		    	</a>
 		        <ul class="dropdown-menu">
-							<li class="li-dropdown" v-if="user.rolid == 1">
+							<li class="li-dropdown" v-if="user.rolid == 1 || user.rolid == 3">
 	 								<a :href="url + '/reportes'" v-bind:class="[(whoIsActiveDetail == 'reportes') ? 'active' : '']">
 	 									<i class="fas fa-chart-line"></i>Estadísticas
 	 							 	</a>
 	 						</li>
-							<li class="li-dropdown" style="width: 132px;" v-if="user.rolid == 1">
+							<li class="li-dropdown" style="width: 132px;" v-if="user.rolid == 1 || user.rolid == 3">
 									<a :href="url + '/ganancias'" v-bind:class="[(whoIsActiveDetail == 'ganancias') ? 'active' : '']">
 										<i class="fas fa-hand-holding-usd"></i>Ganancias Totales
 									</a>
@@ -87,7 +87,7 @@
 		      		<i class="fas fa-calendar-alt"></i> Citas
 		      	</a>
 		      </li>
-					<li class="item dropdown"  v-if="user.rolid == 1" v-bind:class="[(whoIsActive == 'adicional') ? 'active' : '']">
+					<li class="item dropdown"  v-if="user.rolid == 1 || user.rolid == 3" v-bind:class="[(whoIsActive == 'adicional') ? 'active' : '']">
 		        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 		        	<i class="fas fa-plus"></i>
 		        	<i class="fa fa-angle-down lnr"></i>
@@ -146,7 +146,7 @@
 						this.whoIsActive = 'personas'
 						this.whoIsActiveDetail = 'doctores'
 				}else if( this.curUrl.includes('users') ){
-					 	if( this.user.rolid == 1 ){
+					 	if( this.user.rolid == 1 || user.rolid == 3){
 								this.whoIsActive = 'personas'
 						}
 						this.whoIsActiveDetail = 'users'

@@ -64,7 +64,8 @@
 				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 				rol: [
 					{id: 1, nombre: 'Administrador' },
-					{id: 2, nombre: 'Colaborador' }
+					{id: 2, nombre: 'Colaborador' },
+					{id: 3, nombre: 'Admin Sede' }
 				],
 				whoIsActiveDetail: ''
 			}

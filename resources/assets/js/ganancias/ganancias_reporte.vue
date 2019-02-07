@@ -1,6 +1,6 @@
 <template>
 <div>
-	<b-container v-if="curUser.rolid == 1" style="margin-top: -30px">
+	<b-container v-if="curUser.rolid == 1 || curUser.rolid == 3" style="margin-top: -30px">
 		<SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<b-col cols="4" class="text-left pl-0" >

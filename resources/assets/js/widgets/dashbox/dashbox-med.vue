@@ -1,5 +1,5 @@
 <template>
-	<div class="dashbox-med" :class="color" v-on:click="say" v-if="for_admin == false || user.rolid == 1" >
+	<div class="dashbox-med" :class="color" v-on:click="say" v-if="for_admin == false || user.rolid == 1 || user.rolid == 3" >
 		<b-container>
 			<b-row>
 				<b-col cols="3" class="icono pr-0 pl-0">

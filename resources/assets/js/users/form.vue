@@ -91,7 +91,7 @@
 										</b-col>
 									</b-row>
 
-									<b-row v-if="curUser.rolid == 1">
+									<b-row v-if="curUser.rolid == 1 || curUser.rolid == 3">
 										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-shield-alt"></i>
@@ -108,6 +108,7 @@
 													<b-form-radio-group id="rol_id" v-model="form.rolid" :disabled=isDisabled name="radioSubComponent">
 														<b-form-radio value=2>Colaborador</b-form-radio>
 														<b-form-radio value=1>Administrador</b-form-radio>
+														<b-form-radio value=3>Admin Sede</b-form-radio>
 													</b-form-radio-group>
 												</b-form-group>
 												<b-form-group label="Estado" label-for="is_active">
@@ -128,10 +129,10 @@
 									<b-button variant="danger" v-on:click.prevent="onDesactivar(
 											  'Al desactivar este registro no podrá iniciar sesión ni usar el usuario en el sistema.' +
 							   				  '<br /><br />¿Seguro que desea desactivar este usuario?')"
-							   				  v-if="curUser.rolid == 1 && form.is_active ">
+							   				  v-if="curUser.rolid == 1 || curUser.rolid == 3 && form.is_active ">
 										<i class="fas fa-user-slash"></i>&nbsp;Desactivar
 									</b-button>
-									<b-button variant="success" v-on:click.prevent="onDesactivar('¿Esta seguro que desea activar este usuario?.')" v-if="curUser.rolid == 1 && !form.is_active ">
+									<b-button variant="success" v-on:click.prevent="onDesactivar('¿Esta seguro que desea activar este usuario?.')" v-if="curUser.rolid == 1 || curUser.rolid == 3 && !form.is_active ">
 										<i class="fas fa-user-slash"></i>&nbsp;Activar
 									</b-button>
 									<b-button variant="warning" v-on:click.prevent="onRegresar">
@@ -186,14 +187,15 @@
     		'user',
         'sedes',
     		'curUser',
-    		'view_mode'
+				'view_mode',
+				'is_admin_sede'
     ],
     data(){
       return{
         form: {
     			name: '',
     			email: '',
-          sede_id: 1,
+          sede_id: (this.is_admin_sede? this.sedes[0].id :1),
     			password: '',
     			confirm_password: '',
     			rolid: 2,

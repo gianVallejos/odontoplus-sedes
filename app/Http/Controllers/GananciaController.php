@@ -11,9 +11,16 @@ class GananciaController extends Controller{
     }
 
     public function index(){
-      $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
-      $sedes = json_encode($sedes);
-      return view('ganancias.index', compact('sedes'));
+        $sedes = null;
+        if (\Auth::user()->rolid == 3) {  
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('.CurBD::getCurrentSede().')');
+        }else {
+            $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
+        }
+        $sedes = json_encode($sedes);
+        $is_admin_sede = \Auth::user()->rolid == 3 ? json_encode(true) : json_encode(false);
+
+      return view('ganancias.index', compact('sedes','is_admin_sede'));
     }
 
     public function gananciasFechasJSON($start, $end, $sedeId){
