@@ -444,6 +444,8 @@
 							self.afterSuccessGuardar()
 						}else if (response.data.success == 'no_valido' ){
 							self.toastFunction('Ya existe una cita que interfiere con la fecha, horarios y sillón de esta nueva cita.', 'warning')
+						}else if (response.data.success == 'no_valido_sede'){
+							self.toastFunction('El doctor que se ha seleccionado ya tiene una cita en la misma fecha y horarios.', 'warning')
 						}else if (response.data.success == 'deleted' ){
 							self.form.is_active = !self.form.is_active
 							self.toastFunctionRedirect('Éxito', 'La cita ha sido eliminada correctamente.', 'success')

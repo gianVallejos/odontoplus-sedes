@@ -75,32 +75,38 @@ class CitaController extends Controller{
             'idPaciente' => 'nullable|integer',
             'idDoctor' => 'required|integer',
             'nota' => 'nullable|string|max:200'
-        ]);
+      ]);
 
     	if ($validator->passes()) {
+        $es_valido_sede = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_is_validate_range_not_sede_and_sillon("'. $request->fecha .'", "'. $request->desde .'", "'.
+                                                                                                                    $request->hasta .'",'.$request->idDoctor.')');
+        if($es_valido_sede[0]->ES_VALIDO == 0){
+          return response()->json(['success' => 'no_valido_sede']);
+        }else{
           $es_valido = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_is_validate_range("'. $request->fecha .'", "'. $request->desde .'", "'.
                                                                                                                 $request->hasta .'", '. $request->sillon .', '. $request->sede .')');
           if( $es_valido[0]->ES_VALIDO == 0 ){ //Si la cita no es válida
             return response()->json(['success' => 'no_valido']);
           }else{
-              if( $request->idPaciente == null ){
-                $request->idPaciente = 0;
+            if( $request->idPaciente == null ){
+              $request->idPaciente = 0;
+            }
+            $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_add_all("'. $request->paciente. '","' . $request->tratamiento . '", "'. $request->fecha .'", "'.
+                                                                                                    $request->desde .'", "'. $request->hasta .'", "'.
+                                                                                                    $request->idPaciente .'",'. $request->idDoctor.','. $request->sede.','. $request->sillon.', "'. $request->nota .'")');
+            if( $cita[0]->ESTADO > 0 ){
+              if ($request->enviarEmail) {
+                  $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('. $request->sede .')')[0];
+                  self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde, $sedes->direccion);
               }
-              $cita = DB::connection(CurBD::getCurrentSchema())->select('call OP_Citas_add_all("'. $request->paciente. '","' . $request->tratamiento . '", "'. $request->fecha .'", "'.
-                                                                                                   $request->desde .'", "'. $request->hasta .'", "'.
-                                                                                                   $request->idPaciente .'",'. $request->idDoctor.','. $request->sede.','. $request->sillon.', "'. $request->nota .'")');
-              if( $cita[0]->ESTADO > 0 ){
-                 if ($request->enviarEmail) {
-                   $sedes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('. $request->sede .')')[0];
-                   self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde, $sedes->direccion);
-                 }
-                 return response()->json(['success' => 'created']);
-              }else{
-                 return response()->json(['error'=> 'Ha ocurrido un error']);
-              }
+              return response()->json(['success' => 'created']);
+            }else{
+                return response()->json(['error'=> 'Ha ocurrido un error']);
+            }
           }
         }
-        return response()->json(['error'=>$validator->errors()]);
+      }
+      return response()->json(['error'=>$validator->errors()]);
     }
 
     public function update(Request $request, $id){
