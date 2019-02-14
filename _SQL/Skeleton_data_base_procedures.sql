@@ -1675,7 +1675,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all`;
 DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_get_all`()
 BEGIN
-	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', pc.codigo ,' | Paciente: ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, pc.telefono)) ,' | Doctor: ',
+	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', IFNULL(pc.codigo, " ") ,' | Paciente: ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo) , ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, IFNULL(pc.telefono, ""))),' | Doctor: ',
 				 dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon, ' - ', sed.nombre) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
 		FROM citas c
@@ -1936,13 +1936,13 @@ BEGIN
 	DECLARE COUNT_NRO INT;
 	-- ES_VALIDO: 1(Válido), 0(No Válido) --
 	SELECT COUNT(*) INTO COUNT_NRO FROM citas
-		WHERE ((desde <= XDESDE AND XDESDE < hasta) OR (desde < XHASTA AND XHASTA <= hasta) 
+		WHERE ((desde <= XDESDE AND XDESDE < hasta) OR (desde < XHASTA AND XHASTA <= hasta)
         OR (XDESDE <= desde AND XHASTA >= hasta)) AND fecha = XFECHA AND XID_DOCTOR = idDoctor;
 	IF(COUNT_NRO = 0 ) THEN
 		SELECT 1 AS ES_VALIDO;
 	ELSE
 		SELECT 0 AS ES_VALIDO;
-	END IF;	
+	END IF;
 END
 ;;
 DELIMITER ;
