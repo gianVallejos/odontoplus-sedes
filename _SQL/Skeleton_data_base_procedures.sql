@@ -1925,3 +1925,24 @@ BEGIN
 END
 ;;
 DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Citas_is_validate_range_not_sede_and_sillon`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Citas_is_validate_range_not_sede_and_sillon`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_is_validate_range_not_sede_and_sillon`(IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME,IN XID_DOCTOR INT(11))
+BEGIN
+	DECLARE COUNT_NRO INT;
+	-- ES_VALIDO: 1(Válido), 0(No Válido) --
+	SELECT COUNT(*) INTO COUNT_NRO FROM citas
+		WHERE ((desde <= XDESDE AND XDESDE < hasta) OR (desde < XHASTA AND XHASTA <= hasta) 
+        OR (XDESDE <= desde AND XHASTA >= hasta)) AND fecha = XFECHA AND XID_DOCTOR = idDoctor;
+	IF(COUNT_NRO = 0 ) THEN
+		SELECT 1 AS ES_VALIDO;
+	ELSE
+		SELECT 0 AS ES_VALIDO;
+	END IF;	
+END
+;;
+DELIMITER ;
