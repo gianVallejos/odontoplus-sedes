@@ -190,7 +190,7 @@
 										</b-col>
 										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
 											<b-form-group label="Sede:" label-for="sede_id">
-												<b-form-select v-model="form.sede_id" :disabled=isDisabled class="required">
+												<b-form-select v-model="form.sede_id" disabled class="required">
 													<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
 														{{ sede.nombre }}
 													</option>
@@ -342,7 +342,7 @@
   				fax: '',
   				celular: '',
   				celular_aux: '',
-					sede_id: 1,
+					sede_id: this.curUser.sede_id,
   				empresa_id: '1',
   				seguro_ind: 0,
           referencia_id: '1',

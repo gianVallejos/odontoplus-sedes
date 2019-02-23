@@ -41,14 +41,25 @@
 								<td class="pr-title">HASTA:</td>
 								<td>{{igeneral.fechaFinal}}</td>
 							</tr>
-							<tr>
-								<td class="pr-title">TOTAL DR: </td>
-								<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>
+							<tr class="hide-print">
+								<td class="pr-title">SUB TOTAL: </td>
+								<td>S/ {{ igeneral.totales.total }}</td>
+								<td class="pr-title">TOTAL: </td>
+								<td>S/ {{ igeneral.totales.subTotal }}</td>
+							</tr>
+							<tr >
+								<td class="pr-title hide-print">CV: </td>
+								<td class="hide-print" >S/ {{ igeneral.totales.total_costo_variable }}</td>
+								<td class="pr-title">DOCTOR: </td>
+								<td >S/ {{ igeneral.totales.total_doctor }}</td>
 							</tr>
 							<tr class="hide-print">
-								<td class="pr-title">TOTAL EMP: </td>
-								<td colspan="3">S/ {{ igeneral.totales.total_ganancia }}</td>
-							</tr>							
+								<td class="pr-title">IGV: </td>
+								<td >S/ {{ igeneral.totales.igv }}</td>
+								<td class="pr-title">EMPRESA: </td>
+								<td >S/ {{ igeneral.totales.total_ganancia }}</td>
+							</tr>									
+			
 					</table>
 				</div>
 			</b-col>
@@ -100,13 +111,16 @@
 						S/. {{ row.item.monto }}
 					</template>				
 					<template slot="total" slot-scope="row">
-						S/. {{ row.item.total }}
+						S/. {{ row.item.total }}						
 					</template>
 					<template slot="costo_variable" slot-scope="row" class="hide-print">
 						S/. {{ row.item.costo_variable }}
 					</template>
 					<template slot="igv" slot-scope="row" class="hide-print">
 						S/. {{ row.item.igv }}
+					</template>
+					<template slot="subTotal" slot-scope="row">
+						S/. {{ row.item.subTotal }}
 					</template>
 					<template slot="empresa" slot-scope="row">
 						S/. {{ calculateEmpresaAmount(row.item.total_empresa, row.item.doctor)}}
@@ -119,9 +133,41 @@
 					</template>					
 				</b-table>
 			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" >
+					<span>Sub Total: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" >
+					<span>CV: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_costo_variable }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" >
+					<span>IGV: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.igv }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" >
+					<span>Total: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.subTotal }}
+				</div>
+			</b-col>
 			<b-col cols="12" class='text-right monto-class'>
 				<div class="d-inline-block" >
-					<span>Total Dr: </span>
+					<span>Doctor: </span>
 				</div>
 				<div class="d-inline-block" style="width: 150px">
 					S/ {{ igeneral.totales.total_doctor }}
@@ -129,12 +175,16 @@
 			</b-col>
 			<b-col cols="12" class="text-right monto-class hide-print">
 				<div class="d-inline-block" >
-					<span>Total Emp: </span>
+					<span>Empresa: </span>
 				</div>
 				<div class="d-inline-block" style="width: 150px">
 					S/ {{ igeneral.totales.total_ganancia }}
 				</div>
 			</b-col>
+			
+			
+			
+			
 		</b-row>
 
 		<b-row class="d-print-none">
@@ -189,9 +239,10 @@
 					{ key: 'tratamiento', label: 'Tratamiento', sortable: true, sortDirection: 'desc', class: 'td-trat-width' },
 					{ key: 'cantidad', label: 'Cant', sortable: true, 'class': 'text-center', sortDirection: 'desc' },
 					{ key: 'monto', label: 'Monto', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
-					{ key: 'total', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
+					{ key: 'total', label: 'Sub Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
 					{ key: 'costo_variable', label: 'C.V.', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
 					{ key: 'igv', label: 'IGV', sortable: true, sortDirection: 'desc', class: 'hide-print text-center'},
+					{ key: 'subTotal', label: 'Total', sortable: true, sortDirection: 'desc', class: 'hide-print text-center' },
 					{ key: 'doctor', label: 'Total Dr.', sortable: true, sortDirection: 'desc', class: 'text-center'},
 					{ key: 'total_empresa', label: 'Total Emp.', sortable: true, sortDirection: 'desc', class: 'text-center'}
 				],

@@ -1,11 +1,26 @@
 $(document).ready(function() {
     // page is now ready, initialize the calendar
+    var day_list = 'month';
+    var sm_max_size = 768;
+    var first_view = 0;
     var events = {
       url: global_url + '/v1/citas/get-all-events/null/null',
       error: function() { alert('Ha ocurrido un error al intentar cargar las citas.'); },
+
       // color: '#0aab8a',
       // textColor: '#f3f3f3'
     };
+    function viewModeCallendar(){
+      if( first_view == 0 ){
+        if ($(window).width() <= sm_max_size ) {
+          day_list = 'listDay';
+        } else {
+          day_list = 'month';
+        }
+        $('#calendar').fullCalendar('changeView', day_list);
+        first_view = 1;
+      }
+    }
 
     $("select[name='id_doctor']").change(function(){
       var doctorId = $(this).val() == 'all' ? null : $(this).val();
@@ -33,7 +48,13 @@ $(document).ready(function() {
       monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
       dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
       dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+      eventRender: function(event, element){
+        viewModeCallendar();
+        console.log(day_list)
+      },
+      handleWindowResize: true,
       // editable: true,
+
       eventDrop: function(event, delta, revertFunc) {
         var date = new Date(event.start)
         var fecha = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
@@ -45,7 +66,7 @@ $(document).ready(function() {
               if( data.success == 'updated' ){
                 console.log('Cita movida correctamente')
               }else{
-                alert('Ha ocurrido un errro. Consultar con soporte de Odontoplus')
+                alert('Ha ocurrido un error. Consultar con soporte de Odontoplus')
               }
             },
             error: function(error){
@@ -64,6 +85,7 @@ $(document).ready(function() {
         $('#calendar').fullCalendar('changeView', 'listDay')
         $('#calendar').fullCalendar('gotoDate', date)
       },
+      activate : function ( event , ui ) { $ ( '#calendar' ). fullCalendar ( 'render' ); },
       header: {
         left: 'prev,next month, today',
         center: 'title',
@@ -75,7 +97,7 @@ $(document).ready(function() {
           click: function() {
             window.location.href = global_url + '/citas/create'
           }
-        }
+        },
       },
       buttonText: {
         today: 'Hoy',

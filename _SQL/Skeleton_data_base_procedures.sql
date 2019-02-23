@@ -634,6 +634,7 @@ BEGIN
 		idt.cantidad, idt.monto,idt.codigo,
         IF(idt.costo_variable = 0, idt.costo_variable ,(idt.costo_variable * idt.cantidad)) as costo_variable,
         (idt.cantidad * idt.monto) as total,
+        ROUND(((idt.cantidad * idt.monto) - (((idt.cantidad * idt.monto) *(idt.igv/100)) + ((idt.cantidad * idt.costo_variable)))),2) as subTotal,
 		ROUND((idt.cantidad * idt.monto) *(idt.igv/100),2) as igv,
 		FORMAT(((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto - idt.costo_variable)-(idt.monto*(idt.igv/100))))), 2) as total_empresa,
 		FORMAT((idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))),2) as doctor,
@@ -840,6 +841,9 @@ DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_get_totales_by_doctor_fechas`(IN doctor_id int, IN start_date date, IN end_date date,IN pago_id INT(11))
 BEGIN
 	SELECT FORMAT(IFNULL(SUM(idt.cantidad * idt.monto), 0),2) as total,
+		   FORMAT(IFNULL(SUM((idt.cantidad * idt.monto) *(idt.igv/100)), 0),2) as igv,
+		   FORMAT(IFNULL(SUM(idt.costo_variable), 0),2) as total_costo_variable,
+		   FORMAT(IFNULL(SUM(((idt.cantidad * idt.monto) - (((idt.cantidad * idt.monto) *(idt.igv/100)) + ((idt.cantidad * idt.costo_variable))))), 0),2) as subTotal,
            FORMAT(IFNULL(SUM(idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_doctor,
            FORMAT(IFNULL(SUM((100-idt.margen_ganancia)/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100))))), 0),2) as total_ganancia
     FROM ingresos_detalle idt
@@ -1170,10 +1174,13 @@ DROP PROCEDURE IF EXISTS `OP_Pagos_get_all`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Pagos_get_all`()
 BEGIN
-  SELECT p.id, p.idDoctor, dr.nombres, dr.apellidos, p.fecha_inicio, p.fecha_fin, p.created_at, p.updated_at
+  SELECT p.id, p.idDoctor, dr.nombres, dr.apellidos, p.fecha_inicio, p.fecha_fin, p.created_at, p.updated_at,
+		FORMAT(SUM((idt.margen_ganancia/100 * (idt.cantidad * ((idt.monto-idt.costo_variable)-(idt.monto*(idt.igv/100)))))),2) as doctor
   FROM pagos p
   INNER JOIN doctors dr ON dr.id = p.idDoctor
-  WHERE p.is_deleted = '0' ORDER BY p.id DESC;
+  INNER JOIN ingresos_detalle idt ON idt.pagoId = p.id
+  WHERE p.is_deleted = '0' GROUP BY idt.pagoId
+  ORDER BY p.id DESC;
 END
 ;;
 DELIMITER ;
@@ -1668,7 +1675,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all`;
 DELIMITER ;;
 CREATE  PROCEDURE `OP_Citas_get_all`()
 BEGIN
-	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', pc.codigo ,' | Paciente: ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, pc.telefono)) ,' | Doctor: ',
+	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', IFNULL(pc.codigo, " ") ,' | Paciente: ', IFNULL(pc.apellidos, c.nota), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo) , ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, IFNULL(pc.telefono, ""))),' | Doctor: ',
 				 dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon, ' - ', sed.nombre) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
 		FROM citas c
@@ -1684,7 +1691,7 @@ DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
 DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_get_all_by_doctor_sede`(IN doctorId int, IN sedeId int)
 BEGIN
-	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', pc.codigo, ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, pc.telefono)), ' | Doctor: ',
+	SELECT c.id as idEvent, CONCAT('S', idSillon, ' - ', IFNULL(pc.codigo, " "), ' | Paciente: ', IF(c.titulo = '', c.nota, c.titulo), ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, IFNULL(pc.telefono, ""))), ' | Doctor: ',
          dc.apellidos, ' | Tratamiento: ', IFNULL(tratamiento, ""), ' | Sillón ', idSillon,  ' - ', sed.nombre) as title, tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
 				 CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
 		FROM citas c
@@ -1915,6 +1922,27 @@ CREATE PROCEDURE `OP_Ingresos_detalle_update_pagoId`(IN XPAGOID INT(11),IN XINGR
 BEGIN
 	UPDATE ingresos_detalle SET pagoId = XPAGOID
     WHERE id = XINGRESO_DETALLEID;
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+--  Procedure definition for `OP_Citas_is_validate_range_not_sede_and_sillon`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OP_Citas_is_validate_range_not_sede_and_sillon`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_is_validate_range_not_sede_and_sillon`(IN XFECHA DATE, IN XDESDE TIME, IN XHASTA TIME,IN XID_DOCTOR INT(11))
+BEGIN
+	DECLARE COUNT_NRO INT;
+	-- ES_VALIDO: 1(Válido), 0(No Válido) --
+	SELECT COUNT(*) INTO COUNT_NRO FROM citas
+		WHERE ((desde <= XDESDE AND XDESDE < hasta) OR (desde < XHASTA AND XHASTA <= hasta)
+        OR (XDESDE <= desde AND XHASTA >= hasta)) AND fecha = XFECHA AND XID_DOCTOR = idDoctor;
+	IF(COUNT_NRO = 0 ) THEN
+		SELECT 1 AS ES_VALIDO;
+	ELSE
+		SELECT 0 AS ES_VALIDO;
+	END IF;
 END
 ;;
 DELIMITER ;

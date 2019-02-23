@@ -622,3 +622,54 @@ span
 		width: auto!important
 	.container
 		max-width: 100%!important
+
+@media (orientation: portrait)
+	#calendar
+		.fc-toolbar
+			.fc-right{
+				margin-top: 10px!important
+				width: auto!important
+			}
+			.fc-crearCitaBtn-button{
+				margin-top: 10px!important
+				margin-left: auto!important
+			}
+			.fc-month-button{
+				margin-left: 6px!important
+			}
+			.fc-today-button{
+				margin-top: 0px!important
+				margin-left: 6px!important
+			}
+
+
+@media (orientation: landscape)
+	#calendar
+		.fc-toolbar
+			.fc-right{
+				margin-top: 10px!important
+				margin-right: 140px!important
+			}
+			.fc-left{
+				margin-left: 150px!important
+			}
+			.fc-center{
+				margin-top: 10px!important
+			}
+
+
+@media (min-width: 768px)
+	#calendar
+		.fc-toolbar
+			.fc-right{
+				margin-top: 0px!important
+				margin-right: 0px!important
+			}
+			.fc-left{
+				margin-left: 0px!important
+				margin-top: 0px!important
+				margin-right: 0px!important
+			}
+			.fc-center{
+				margin-top: 0px!important
+			}
