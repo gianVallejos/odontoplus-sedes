@@ -207,10 +207,10 @@
 			this.initCharts()
 		},
 		created() {
-      if ( this.isScreenSmSize() ) {
-        window.location.href = this.url + '/citas'
-      }
-    },
+			if ( this.isScreenSmSize() ) {
+				window.location.href = this.url + '/citas'
+			}
+		},
 		props: [
 			'url',
 			'pacientes',
