@@ -179,7 +179,7 @@
                       <b-form-row>
                         <b-col cols="12" lg="3">
 											<b-form-group label="Sede:" label-for="sede_id">
-												<b-form-select v-model="form.sede_id" :disabled=isDisabled class="required">
+												<b-form-select v-model="form.sede_id" disabled class="required">
 													<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
 														{{ sede.nombre }}
 													</option>
@@ -207,9 +207,7 @@
   												</b-form-select>
 										     	<span v-if="all_errors.seguro_ind" :class="['label label-danger']">{{ all_errors.seguro_ind[0] }}</span>
 										    </b-form-group>
-                      </b-col>
-                      <b-col cols="12" lg="3">
-                        <b-form-group label="Referencia:" label-for="referencia_id">
+                        <b-form-group label="Canal de Referencia:" label-for="referencia_id">
 										     	<b-form-select v-model="form.referencia_id" :disabled=isDisabled>
     													<option v-for="(referencia, index) in referencias" :key="index" :value="referencia.id">
     														{{ referencia.nombre }}
@@ -344,7 +342,7 @@
   				fax: '',
   				celular: '',
   				celular_aux: '',
-					sede_id: 1,
+					sede_id: this.curUser.sede_id,
   				empresa_id: '1',
   				seguro_ind: 0,
           referencia_id: '1',

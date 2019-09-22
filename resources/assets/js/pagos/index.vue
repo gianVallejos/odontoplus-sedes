@@ -59,13 +59,16 @@
               <template slot="name" slot-scope="row">{{row.value}}</template>
               <template slot="actions" slot-scope="row">
                   <div class="actions-table" style="color: #d1d1d1">
-                  <a :href="url+'/pagos/detalle/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" target="_blank" >Ver Pago</a>
+                  <a :href="url+'/pagos/detalle/'+row.item.id+'/'+ row.item.idDoctor+'/'+row.item.fecha_inicio+'/'+row.item.fecha_fin" class="action" target="_blank" >Ver Pago</a>
                   |
                   <a v-on:click.prevent="onEliminar( row.item.id )" class="action" >Eliminar</a>
                 </div>
               </template>
               <template slot="nombres" slot-scope="row">
                     {{ row.value }} {{ row.item.apellidos }}
+              </template>
+              <template slot="doctor" slot-scope="row">
+                   S/ {{ row.value }}
               </template>
             </b-table>
 
@@ -105,6 +108,7 @@
         fields: [
           { key: 'actions', label: 'Acción', 'class': 'action-width' },
           { key: 'nombres', label: 'Doctor', sortable: true, sortDirection: 'desc' },
+          { key: 'doctor', label: 'Total Doctor', sortable: true, sortDirection: 'desc' },
           { key: 'fecha_inicio', label: 'Fecha de Inicio', sortable: true, sortDirection: 'desc' },
           { key: 'fecha_fin', label: 'Fecha Fin', sortable: true, sortDirection: 'desc' },
           { key: 'created_at', label: 'Fecha de Creación', sortable: true, sortDirection: 'desc'  }

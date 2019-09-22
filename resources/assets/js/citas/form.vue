@@ -37,7 +37,7 @@
 									<b-button variant="danger" :disabled=btnStatus v-on:click.prevent="onEliminar(
 											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
 							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
-							   				  v-if="curUser.rolid == 1">
+							   				  >
 										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
 									</b-button>
                   <b-button variant="warning" v-on:click.prevent="onRegresar" >
@@ -435,6 +435,7 @@
 			if(request){
         self.$refs.spinnerContainerRef.showSpinner()
 				axios(request).then((response) => {
+          console.log('!!' + response.data.success)
 					if(response.data.success){
 						if( response.data.success == 'created' ){
 							self.setDisableForm()
@@ -444,6 +445,8 @@
 							self.afterSuccessGuardar()
 						}else if (response.data.success == 'no_valido' ){
 							self.toastFunction('Ya existe una cita que interfiere con la fecha, horarios y sillón de esta nueva cita.', 'warning')
+						}else if (response.data.success == 'no_valido_sede'){
+							self.toastFunction('El doctor que se ha seleccionado ya tiene una cita en la misma fecha y horarios.', 'warning')
 						}else if (response.data.success == 'deleted' ){
 							self.form.is_active = !self.form.is_active
 							self.toastFunctionRedirect('Éxito', 'La cita ha sido eliminada correctamente.', 'success')

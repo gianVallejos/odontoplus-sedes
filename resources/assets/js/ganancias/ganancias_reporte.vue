@@ -37,8 +37,20 @@
 							<td>{{igeneral.fechaFinal}}</td>
 						</tr>
 						<tr>
-							<td class="pr-title">TOTAL EMP: </td>
+							<td class="pr-title">GANANCIAS: </td>
 							<td colspan="3">S/ {{ igeneral.totales.total_ganancia }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">DOCTOR: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total_doctor }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">IGV: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total_igv }}</td>
+						</tr>
+						<tr>
+							<td class="pr-title">TOTAL: </td>
+							<td colspan="3">S/ {{ igeneral.totales.total }}</td>
 						</tr>
 					</table>
 				</div>
@@ -112,10 +124,34 @@
 			</b-col>
 			<b-col cols="12" class="text-right monto-class hide-print">
 				<div class="d-inline-block" style="width: 75px">
-					<span>Total: </span>
+					<span>Ganacias: </span>
 				</div>
 				<div class="d-inline-block" style="width: 150px">
 					S/ {{ igeneral.totales.total_ganancia }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" style="width: 75px">
+					<span>Doctor: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_doctor }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" style="width: 75px">
+					<span>IGV: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total_igv }}
+				</div>
+			</b-col>
+			<b-col cols="12" class="text-right monto-class hide-print">
+				<div class="d-inline-block" style="width: 75px">
+					<span>Total: </span>
+				</div>
+				<div class="d-inline-block" style="width: 150px">
+					S/ {{ igeneral.totales.total }}
 				</div>
 			</b-col>
 		</b-row>

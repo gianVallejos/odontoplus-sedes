@@ -29,7 +29,6 @@
 	@yield('styles')
 </head>
 <body>
-
 	<div id="header">
 	@if( Auth::check() )
 		<header-component
@@ -67,11 +66,11 @@
 	<script src="{{ asset('js/moment.min.js?v=1.0.1') }}"></script>
 	@if( str_contains(\Request::route()->getName(), 'citas') )
 		<script src="{{ asset('js/fullcalendar.min.js?v=1.0.1') }}"></script>
-		<script src="{{ asset('js/citas.js?v=1.0.16') }}"></script>
+		<script src="{{ asset('js/citas.js?v=1.0.22') }}"></script>
 	@endif
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
-	<script src="{{ asset('js/app.js?v=1.3.64') }}"></script>
+	<script src="{{ asset('js/app.js?v=1.3.68') }}"></script>
 
 
 </body>

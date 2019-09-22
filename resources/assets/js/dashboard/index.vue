@@ -206,6 +206,11 @@
 		mounted(){
 			this.initCharts()
 		},
+		created() {
+			if ( this.isScreenSmSize() ) {
+				window.location.href = this.url + '/citas'
+			}
+		},
 		props: [
 			'url',
 			'pacientes',
@@ -357,6 +362,12 @@
 				else{
 					this.fillNuevosPacientesChart()
 				}
+			},
+			isScreenSmSize(){
+				if (screen.width <= 480){
+					return true
+				}
+				return false
 			},
 			hideModal(){
 				this.$refs.pacientesModalRef.hide()
