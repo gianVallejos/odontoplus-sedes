@@ -43,39 +43,41 @@
 								</div>
 							</div>
 
-							<div class="pt-4 pb-2">
+              <p class="form-description fz-3 pt-3 pr-0">
+                <span class="help-required"> &nbsp; Campos obligatorios. </span>
+              </p>
+							<div class="pt-3 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
+										<b-col cols="12" class="pt-0 pb-1 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-tooth"></i>
 												<div class="d-inline"> Información de Tratamiento</div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información de un tratamiento se utilizará para identificarlo en presupuestos.
-												<br />Al crear un tratamiento, el precio estandar será asignado a todas las empresas registradas en el sistema.
-												<br />Los precios pueden ser modificados por empresa en la sección de <a :href="url + '/precios'">precios</a>.
-											</p>
-											<br/>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
 										</b-col>
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12" class="pt-0 pt-lg-2 pb-0 pb-lg-4">
+                      <b-form-row>
+                       <b-col cols="8" lg="6">
 										    <b-form-group label="Nombre de Tratamiento" label-for="detalle">
 											    <b-form-input id="detalle" type="text" class="required" v-model="form.detalle"
 											    			  :disabled=isDisabled placeholder="Nombre de Tratamiento" autocomplete="off"/>
 													<span v-if="all_errors.detalle" :class="['label label-danger']">{{ all_errors.detalle[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="2" lg="3">
 										    <b-form-group label="Precio Estándar" label-for="precio_estandar" v-if="displayStatus == 'new'">
 											    <b-form-input id="precio_estandar" type="number" step="0.1" class="required" v-model="form.precio_estandar"
 											    			  :disabled=isDisabled placeholder="Precio Estandar" autocomplete="off"/>
 													<span v-if="all_errors.precio_estandar" :class="['label label-danger']">{{ all_errors.precio_estandar[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="2" lg="3">
                         <b-form-group label="Costo Variable" label-for="costo_variable" v-if="displayStatus == 'new'">
 											    <b-form-input id="costo_variable" type="number" step="0.1" class="required" v-model="form.costo_variable"
 											    			  :disabled=isDisabled placeholder="Costo Variable" autocomplete="off"/>
 													<span v-if="all_errors.costo_variable" :class="['label label-danger']">{{ all_errors.costo_variable[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      </b-form-row>
 										</b-col>
 									</b-row>
 							</div>

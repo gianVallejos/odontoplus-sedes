@@ -43,34 +43,36 @@
 								</div>
 							</div>
 
-							<div class="pt-2 pt-lg-4 pb-2">
+              <p class="form-description fz-3 pt-3 pr-3">
+                <span class="help-required"> &nbsp; Campos obligatorios. </span>
+              </p>
+							<div class="pt-2 pt-lg-2 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
+										<b-col cols="12" class="pt-1 pb-0 d-none d-lg-block">
 											<div class="form-title">
 												<i class="far fa-building"></i>
 												<div class="d-inline"> Información de Empresa </div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La gestión de empresas es esencial para el manejo de diferentes precios de tratamientos en caso de convenios o alianzas estratégicas.
-											</p>
-											<br/>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
 										</b-col>
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12" class="pt-2 pt-lg-2 pb-0 pb-lg-4">
+                      <b-form-row>
+                       <b-col cols="12" lg="6">
 										    <b-form-group label="Nombre" label-for="nombre">
 											    <b-form-input id="nombre" type="text" class="required"
 											    	v-model="form.nombre" :disabled=isDisabled
 											    	placeholder="Nombre" autocomplete="off"/>
 													<span v-if="all_errors.nombre" :class="['label label-danger']">{{ all_errors.nombre[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
 										    <b-form-group label="RUC" label-for="ruc">
 											    <b-form-input id="ruc" type="text"
 											    	v-model="form.ruc" :disabled=isDisabled
 											    	maxlength="12" placeholder="RUC" autocomplete="off"/>
 													<span v-if="all_errors.ruc" :class="['label label-danger']">{{ all_errors.ruc[0] }}</span>
 										    </b-form-group>
+                        </b-col>
+                      </b-form-row>
 										</b-col>
 									</b-row>
 

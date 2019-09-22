@@ -45,128 +45,122 @@
 									</b-button>
 								</div>
 							</div>
-
-							<div class="pt-4 pb-2">
+              <br />
+              <p class="form-description fz-3 pt-2 pr-2 ">
+                <span class="help-required"> &nbsp; Campos obligatorios. </span>
+              </p>
+							<div class="pt-1 pb-1">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-0 pb-lg-4 d-none d-lg-block">
-											<div class="form-title">
-												<i class="fas fa-child"></i>
-												<div class="d-inline"> Información General </div>
+										<b-col cols="12" class="pt-3 pb-0 pb-lg-1 d-none d-lg-block">
+                      <div class="form-title">
+												<i class="fas fa-briefcase-medical"></i>
+												<div class="d-inline"> Información del Paciente </div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información general de paciente nos sirve para poder identificarlo a lo largo del sistema.
-											</p>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
 										</b-col>
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12">
+                      <b-form-row>
+                        <b-col cols="12" lg="6" >
                         <b-form-group label="Historia" label-for="codigo">
                           <b-form-input id="codigo" type="text" v-model="form.codigo" placeholder="Nro Historia" class="required" disabled autocomplete="off"   />
                           <span v-if="all_errors.codigo" :class="['label label-danger']">{{ all_errors.codigo[0] }}</span>
                         </b-form-group>
-										    <b-form-group label="Nombres" label-for="nombres">
-											    <b-form-input id="nombres" type="text" v-model="form.nombres" placeholder="Nombres" class="required" :disabled=isDisabled autocomplete="off"   />
-											    <span v-if="all_errors.nombres" :class="['label label-danger']">{{ all_errors.nombres[0] }}</span>
-										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6" >
+                      <b-form-group label="Nombres" label-for="nombres">
+                        <b-form-input id="nombres" type="text" v-model="form.nombres" placeholder="Nombres" class="required" :disabled=isDisabled autocomplete="off"   />
+                        <span v-if="all_errors.nombres" :class="['label label-danger']">{{ all_errors.nombres[0] }}</span>
+                      </b-form-group>
+                    </b-col>
+                      </b-form-row>
+                      </b-col>
+                      <b-col cols="12">
+                        <b-form-row>
+                          <b-col cols="12" lg="6" >
 										    <b-form-group label="Apellidos" label-for="apellidos">
 												<b-form-input id="apellidos" type="text" v-model="form.apellidos" placeholder="Apellidos" class="required" :disabled=isDisabled autocomplete="off"  />
 												<span v-if="all_errors.apellidos" :class="['label label-danger']">{{ all_errors.apellidos[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6" >
 										    <b-form-group label="DNI" label-for="dni">
 											    <b-form-input id="dni" type="text" v-model="form.dni" placeholder="DNI" maxlength="8" class="required" :disabled=isDisabled autocomplete="off"  />
 											    <span v-if="all_errors.dni" :class="['label label-danger']">{{ all_errors.dni[0] }}</span>
 										    </b-form-group>
-										</b-col>
-
-										<b-col cols="6" class="pt-3 pb-3 d-none d-lg-block">
-											<div class="form-title">
-												<i class="fas fa-briefcase-medical"></i>
-												<div class="d-inline"> Información del Paciente </div>
-											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información del paciente nos brinda datos útiles para poder monitorear a nuestro paciente según su fecha de nacimiento, sexo y estado civil.
-											</p>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
-										</b-col>
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
-                        <b-form-row>
-                          <b-col cols="9">
-    										    <b-form-group label="Fecha de Nacimiento" label-for="fechanacimiento">
-    											    <b-form-input id="fechanacimiento" type="date" v-model="form.fechanacimiento" class="required"
-    											    			  :disabled=isDisabled />
-    											    <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
-    										    </b-form-group>
+                      </b-col>
+                      </b-form-row>
+                      </b-col>
+                      <b-col cols="12" >
+                          <b-form-row>
+                            <b-col cols="9" lg="4">
+                              <b-form-group label="Fecha de Nacimiento" label-for="fechanacimiento">
+                                <b-form-input id="fechanacimiento" type="date" v-model="form.fechanacimiento" class="required"
+                                        :disabled=isDisabled />
+                                <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
+                              </b-form-group>
+                            </b-col>
+                            <b-col cols="3" lg="2">
+                              <b-form-group label="Edad" label-for="edad">
+                                <b-form-input id="edad" type="text" v-model="calcularEdad" disabled />
+                              </b-form-group>
+                            </b-col>
+                            <b-col cols="6" lg="3">
+                              <b-form-group label="Género" label-for="genero">
+                                <b-form-select id="genero" v-model="form.genero" :options="genero.options" :disabled=isDisabled />
+                                <span v-if="all_errors.genero" :class="['label label-danger']">{{ all_errors.genero[0] }}</span>
+                              </b-form-group>
+                            </b-col>
+                            <b-col cols="6" lg="3">
+                              <b-form-group label="Estado Civil" label-for="estado">
+                                <b-form-select id="estado" v-model="form.estado" :options="estadoCivil.options" :disabled=isDisabled />
+                                <span v-if="all_errors.estado" :class="['label label-danger']">{{ all_errors.estado[0] }}</span>
+                              </b-form-group>
                           </b-col>
-                          <b-col cols="3">
-                            <b-form-group label="Edad" label-for="edad">
-      												<b-form-input id="edad" type="text" v-model="calcularEdad" disabled />
-      										  </b-form-group>
-                          </b-col>
-                        </b-form-row>
-										    <b-form-row>
-										    	<b-col cols="6">
-												    <b-form-group label="Género" label-for="genero">
-												    	<b-form-select id="genero" v-model="form.genero" :options="genero.options" :disabled=isDisabled />
-												    	<span v-if="all_errors.genero" :class="['label label-danger']">{{ all_errors.genero[0] }}</span>
-												    </b-form-group>
-										    	</b-col>
-											    <b-col cols="6">
-												    <b-form-group label="Estado Civil" label-for="estado">
-												     	<b-form-select id="estado" v-model="form.estado" :options="estadoCivil.options" :disabled=isDisabled />
-												     	<span v-if="all_errors.estado" :class="['label label-danger']">{{ all_errors.estado[0] }}</span>
-												    </b-form-group>
-												</b-col>
-											</b-form-row>
-										</b-col>
+                          </b-form-row>
+                      </b-col>
 
-										<b-col cols="6" class="d-none d-lg-block">
+
+										<b-col cols="12" class="pt-3 pb-0 pb-lg-2 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-address-book"></i>
 												<div class="d-inline"> Información de Contacto </div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información de contacto del paciente es una colección de datos importantes para poder relacionarse con el paciente según su evolución con el negocio.
-												<br /><br />Es recomendable almacenar el celular y mail del paciente en caso de alguna emergencia o para mantener un contacto frecuente con él.
-											</p>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
 										</b-col>
 
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
-											<b-form-group label="Email" label-for="email">
-												<b-form-input id="email" type="email" v-model="form.email" placeholder="Email" :disabled=isDisabled autocomplete="off" />
-												<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
-										  </b-form-group>
+										<b-col cols="12" >
+                      <b-form-row>
+                        <b-col cols="12" lg="6">
+											    <b-form-group label="Email" label-for="email">
+												   <b-form-input id="email" type="email" v-model="form.email" placeholder="Email" :disabled=isDisabled autocomplete="off" />
+												   <span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
+										      </b-form-group>
+                        </b-col>
+                        <b-col cols="12" lg="6">
 											<b-form-group label="Dirección" label-for="direccion">
 											    <b-form-input id="direccion" type="text" v-model="form.direccion" placeholder="Dirección" class="required" :disabled=isDisabled autocomplete="off"  />
 											    <span v-if="all_errors.direccion" :class="['label label-danger']">{{ all_errors.direccion[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      </b-form-row>
 										    <b-form-row>
-											    <b-col cols="6">
+											    <b-col cols="6" lg="6">
 												    <b-form-group label="Teléfono" label-for="telefono">
 													    <b-form-input id="telefono" type="text" v-model="form.telefono" placeholder="Teléfono" :disabled=isDisabled autocomplete="off" />
 													    <span v-if="all_errors.telefono" :class="['label label-danger']">{{ all_errors.telefono[0] }}</span>
 												    </b-form-group>
 												</b-col>
-											    <b-col cols="6">
+											    <b-col cols="6" lg="6">
 												    <b-form-group label="Teléfono Alternativo" label-for="fax">
 													    <b-form-input id="fax" type="text" v-model="form.fax" placeholder="Teléfono Alternativo" :disabled=isDisabled autocomplete="off" />
 													    <span v-if="all_errors.fax" :class="['label label-danger']">{{ all_errors.fax[0] }}</span>
 												    </b-form-group>
 												</b-col>
-											</b-form-row>
-											<b-form-row>
-												<b-col cols="6">
+                        <b-col cols="6" lg="6">
 												    <b-form-group label="Celular" label-for="celular">
 													    <b-form-input id="celular" type="text" v-model="form.celular" placeholder="Celular" :disabled=isDisabled autocomplete="off" />
 													    <span v-if="all_errors.celular" :class="['label label-danger']">{{ all_errors.celular[0] }}</span>
 												    </b-form-group>
 												</b-col>
-											    <b-col cols="6">
+											    <b-col cols="6" lg="6">
 												    <b-form-group label="Celular Alternativo" label-for="celular_aux">
 													    <b-form-input id="celular_aux" type="text" v-model="form.celular_aux" placeholder="Celular Alternativo" :disabled=isDisabled autocomplete="off" />
 													    <span v-if="all_errors.celular_aux" :class="['label label-danger']">{{ all_errors.celular_aux[0] }}</span>
@@ -175,20 +169,15 @@
 											</b-form-row>
 										</b-col>
 
-										<b-col cols="6" class="d-none d-lg-block">
+										<b-col cols="12" class="pt-3 pb-0 pb-lg-2 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-building"></i>
 												<div class="d-inline"> Información Externa </div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información externa del paciente esta relacionada a los beneficios institucionales de la empresa.
-												<br /><br/>Se debe tener en cuenta que los presupuestos utilizarán los precios según la empresa a la que pertenece el paciente.
-											</p>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
 										</b-col>
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12" >
+                      <b-form-row>
+                        <b-col cols="12" lg="3">
 											<b-form-group label="Sede:" label-for="sede_id">
 												<b-form-select v-model="form.sede_id" disabled class="required">
 													<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
@@ -197,6 +186,8 @@
 												</b-form-select>
 												<span v-if="all_errors.sede_id" :class="['label label-danger']">{{ all_errors.sede_id[0] }}</span>
 											</b-form-group>
+                    </b-col>
+                    <b-col cols="12" lg="3">
 											  <b-form-group label="Empresa:" label-for="empresa_id">
 										     	<b-form-select v-model="form.empresa_id" :disabled=isDisabled>
   													<option v-for="(empresa, index) in empresas" :key="index" :value="empresa.id">
@@ -205,6 +196,8 @@
 												  </b-form-select>
 										     	<span v-if="all_errors.empresa_id" :class="['label label-danger']">{{ all_errors.empresa_id[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="3">
 										    <b-form-group label="Vínculo:" label-for="seguro_ind">
 										    	<b-form-select v-model="form.seguro_ind" :disabled=isDisabled>
   													<option :value="0">Ningún vínculo seleccionado</option>
@@ -222,33 +215,40 @@
 												  </b-form-select>
 										     	<span v-if="all_errors.referencia_id" :class="['label label-danger']">{{ all_errors.referencia_id[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      </b-form-row>
 										</b-col>
 
-										<b-col cols="6" class="d-none d-lg-block">
+										<b-col cols="12" class="pt-3 pb-0 pb-lg-2 d-none d-lg-block">
 											<div class="form-title">
 												<i class="fas fa-address-card"></i>
 												<div class="d-inline"> Información de Apoderado </div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información de apoderado es obligatoria únicamente cuando el paciente es menor de edad según la fecha de nacimiento previamente seleccionada.
-											</p>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
 										</b-col>
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12" >
+                      <b-form-row>
+                        <b-col cols="12" lg="6">
 											<b-form-group label="Nombre de Apoderado:" label-for="nombre_apoderado">
 									    		<b-form-input id="nombre_apoderado" type="text" v-model="form.nombre_apoderado" placeholder="Nombre de Apoderado" :disabled=isDisabled autocomplete="off" />
 									    		<span v-if="all_errors.nombre_apoderado" :class="['label label-danger']">{{ all_errors.nombre_apoderado[0] }}</span>
 									      	</b-form-group>
+                        </b-col>
+                        <b-col cols="12" lg="6">
 									      	<b-form-group label="Celular de Apoderado:" label-for="celular_apoderado">
 									    		<b-form-input id="celular_apoderado" type="text" v-model="form.celular_apoderado" placeholder="Celular de Apoderado" :disabled=isDisabled autocomplete="off" />
 									    		<span v-if="all_errors.celular_apoderado" :class="['label label-danger']">{{ all_errors.celular_apoderado[0] }}</span>
 									      	</b-form-group>
+                        </b-col>
+
+                      </b-form-row>
 										</b-col>
 									</b-row>
 							</div>
 
+              <p class=" fz-3 pt-2 pr-8 d-none d-lg-block">
+                <span class="help-required"> &nbsp; Campos obligatorios. </span>
+              </p>
+              <br />
 							<div class="text-center">
 								<div v-if="displayStatus == 'show'">
 									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">

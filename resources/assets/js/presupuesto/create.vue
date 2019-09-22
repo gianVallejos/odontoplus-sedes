@@ -9,18 +9,16 @@
 					<span slot="heading">Crear Presupuestos </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
 						<b-row>
-							<b-col cols="6" class="pt-1 pb-4 d-none d-lg-block">
+							<b-col cols="12" class="pt-1 pb-2 d-none d-lg-block">
 								<div class="form-title">
 									<i class="fas fa-file-invoice-dollar"></i>
 									<div class="d-inline"> Crear Presupuesto </div>
 								</div>
-								<p class="form-description fz-3 pt-3 pr-4">
-									Para crear un presupuesto debe seleccionar el paciente a tratar y el doctor responsable.
-									<br /><br />Al seleccionar "nuevo presupuesto", le aparecerá un odontograma interactivo, en donde podrá agregar los tratamientos de la historia clínica a cotizar.
-								</p>
 							</b-col>
-							<b-col cols="12" lg="6" class="pt-0 pt-lg-1 pb-0 pb-lg-4">
+							<b-col cols="12"  class="pt-0 pt-lg-1 pb-0 pb-lg-4">
 								<b-form>
+									<b-form-row>
+										<b-col cols="12" lg="6">
 									<b-form-group label="Seleccionar Paciente" label-for="pacientes">
 										<b-input-group>
 									      	<b-form-input id="pacientes" type="text" v-model="form.pacienteSelected" placeholder="Ningun Paciente Seleccionado" disabled />
@@ -31,6 +29,8 @@
 										    </b-input-group-append>
 								    	</b-input-group>
 									</b-form-group>
+								</b-col>
+								<b-col cols="12" lg="6">
 									<b-form-group label="Seleccionar Doctor" label-for="apellidos">
 										<b-form-select v-model="form.doctorSelected">
 											<option :value="null">Ningun Doctor Seleccionado</option>
@@ -39,6 +39,8 @@
 											</option>
 										</b-form-select>
 									</b-form-group>
+								</b-col>
+									</b-form-row>
 								</b-form>
 							</b-col>
 							<b-col cols="12">
