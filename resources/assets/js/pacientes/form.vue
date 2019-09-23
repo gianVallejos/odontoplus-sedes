@@ -178,43 +178,45 @@
 										<b-col cols="12" >
                       <b-form-row>
                         <b-col cols="12" lg="3">
-											<b-form-group label="Sede:" label-for="sede_id">
-												<b-form-select v-model="form.sede_id" disabled class="required">
-													<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
-														{{ sede.nombre }}
-													</option>
-												</b-form-select>
-												<span v-if="all_errors.sede_id" :class="['label label-danger']">{{ all_errors.sede_id[0] }}</span>
-											</b-form-group>
+							<b-form-group label="Sede:" label-for="sede_id">
+								<b-form-select v-model="form.sede_id" disabled class="required">
+									<option v-for="(sede, index) in sedes" :key="index" :value="sede.id">
+										{{ sede.nombre }}
+									</option>
+								</b-form-select>
+								<span v-if="all_errors.sede_id" :class="['label label-danger']">{{ all_errors.sede_id[0] }}</span>
+							</b-form-group>
                     </b-col>
                     <b-col cols="12" lg="3">
-											  <b-form-group label="Empresa:" label-for="empresa_id">
-										     	<b-form-select v-model="form.empresa_id" :disabled=isDisabled>
-  													<option v-for="(empresa, index) in empresas" :key="index" :value="empresa.id">
-  														{{ empresa.nombre }}
-  													</option>
-												  </b-form-select>
-										     	<span v-if="all_errors.empresa_id" :class="['label label-danger']">{{ all_errors.empresa_id[0] }}</span>
-										    </b-form-group>
+						<b-form-group label="Empresa:" label-for="empresa_id">
+							<b-form-select v-model="form.empresa_id" :disabled=isDisabled>
+								<option v-for="(empresa, index) in empresas" :key="index" :value="empresa.id">
+									{{ empresa.nombre }}
+								</option>
+							</b-form-select>
+						<span v-if="all_errors.empresa_id" :class="['label label-danger']">{{ all_errors.empresa_id[0] }}</span>
+						</b-form-group>
                       </b-col>
                       <b-col cols="12" lg="3">
-										    <b-form-group label="Vínculo:" label-for="seguro_ind">
-										    	<b-form-select v-model="form.seguro_ind" :disabled=isDisabled>
-  													<option :value="0">Ningún vínculo seleccionado</option>
-  													<option v-for="(vnc, index) in vinculo.options" :key="index" :value="vnc.id">
-  														{{ vnc.text }}
-  													</option>
-  												</b-form-select>
-										     	<span v-if="all_errors.seguro_ind" :class="['label label-danger']">{{ all_errors.seguro_ind[0] }}</span>
-										    </b-form-group>
-                        <b-form-group label="Canal de Referencia:" label-for="referencia_id">
-										     	<b-form-select v-model="form.referencia_id" :disabled=isDisabled>
-    													<option v-for="(referencia, index) in referencias" :key="index" :value="referencia.id">
-    														{{ referencia.nombre }}
-    													</option>
-												  </b-form-select>
-										     	<span v-if="all_errors.referencia_id" :class="['label label-danger']">{{ all_errors.referencia_id[0] }}</span>
-										    </b-form-group>
+							<b-form-group label="Vínculo:" label-for="seguro_ind">
+								<b-form-select v-model="form.seguro_ind" :disabled=isDisabled>
+									<option :value="0">Ningún vínculo seleccionado</option>
+									<option v-for="(vnc, index) in vinculo.options" :key="index" :value="vnc.id">
+										{{ vnc.text }}
+									</option>
+								</b-form-select>
+								<span v-if="all_errors.seguro_ind" :class="['label label-danger']">{{ all_errors.seguro_ind[0] }}</span>
+							</b-form-group>
+						</b-col>
+						<b-col cols="12" lg="3">
+							<b-form-group label="Canal de Referencia:" label-for="referencia_id">
+								<b-form-select v-model="form.referencia_id" :disabled=isDisabled>
+										<option v-for="(referencia, index) in referencias" :key="index" :value="referencia.id">
+											{{ referencia.nombre }}
+										</option>
+									</b-form-select>
+								<span v-if="all_errors.referencia_id" :class="['label label-danger']">{{ all_errors.referencia_id[0] }}</span>
+							</b-form-group>
                       </b-col>
                       </b-form-row>
 										</b-col>

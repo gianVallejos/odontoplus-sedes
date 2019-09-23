@@ -10,21 +10,23 @@ $(document).ready(function() {
       // color: '#0aab8a',
       // textColor: '#f3f3f3'
     };
-    function viewModeCallendar(){
+    $('#spinner').hide();
+    function viewModeCallendar(){   
+      $('#spinner').show();   
       if( first_view == 0 ){
         if ($(window).width() <= sm_max_size ) {
           day_list = 'listDay';
         } else {
           day_list = 'month';
-        }
+        }        
         $('#calendar').fullCalendar('changeView', day_list);
         first_view = 1;
       }
     }
 
-    $("select[name='id_doctor']").change(function(){
+    $("select[name='id_doctor']").change(function(){      
       var doctorId = $(this).val() == 'all' ? null : $(this).val();
-      var sedeId = $("select[name='id_sede']").val() == 'all' ? null : $("select[name='id_sede']").val();
+      var sedeId = $("select[name='id_sede']").val() == 'all' ? null : $("select[name='id_sede']").val();      
       reloadCalendar(doctorId, sedeId)
     });
 
@@ -35,11 +37,10 @@ $(document).ready(function() {
     });
 
     function reloadCalendar(doctorId, sedeId) {
-      events.url = global_url + '/v1/citas/get-all-events/'+ doctorId +'/' + sedeId
-      console.log(events.url);
+      events.url = global_url + '/v1/citas/get-all-events/'+ doctorId +'/' + sedeId      
       $('#calendar').fullCalendar('removeEventSources');
       $('#calendar').fullCalendar('addEventSource', events);
-      $('#calendar').fullCalendar('refetchEvents');
+      $('#calendar').fullCalendar('refetchEvents');            
     }
 
     $('#calendar').fullCalendar({
@@ -50,14 +51,13 @@ $(document).ready(function() {
       dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
       eventRender: function(event, element){
         viewModeCallendar();
-        console.log(day_list)
       },
       handleWindowResize: true,
       // editable: true,
 
       eventDrop: function(event, delta, revertFunc) {
         var date = new Date(event.start)
-        var fecha = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+        var fecha = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()        
         // if (confirm("Are you sure about this change?")) {
           $.ajax({
             type: "GET",
@@ -158,7 +158,10 @@ $(document).ready(function() {
             element.find('.fc-event-dot').css({'background-color': '#0aab8a'})
             element.find('.fc-time').css('color', '#f3f3f3')
             element.find('.fc-title').css('color', '#f3f3f3')
-        }
+        }                
+      },
+      eventAfterAllRender: function (event, element, view) {
+        $('#spinner').hide();
       }
     })
 });

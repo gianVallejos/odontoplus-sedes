@@ -5,6 +5,13 @@
 @section('content')
 <div class="container pb-4">
   <div class="row">
+    <div id="spinner" class="spinnerActive">
+      <?php
+        $ruta = route('home') . '/images/spinner.gif';
+      ?>
+      <img src="{{ $ruta }}" widt="75" height="75" alt="Cargando..."/>
+    </div>
+
     <div class="col-12">
       <ol class="breadcrumb">
         <li role="presentation" class="breadcrumb-item">
@@ -64,3 +71,18 @@
   </div>
 </div>
 @endsection
+
+<Style>
+.spinnerActive{
+    position: fixed;
+    background: rgba(0, 0, 0, .2);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+</style>
