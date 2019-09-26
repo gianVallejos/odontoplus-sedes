@@ -11,8 +11,7 @@ $(document).ready(function() {
       // textColor: '#f3f3f3'
     };
     $('#spinner').hide();
-    function viewModeCallendar(){   
-      $('#spinner').show();   
+    function viewModeCallendar(){            
       if( first_view == 0 ){
         if ($(window).width() <= sm_max_size ) {
           day_list = 'listDay';
@@ -49,8 +48,11 @@ $(document).ready(function() {
       monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
       dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
       dayNamesShort: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
-      eventRender: function(event, element){
+      eventRender: function(event, element){        
         viewModeCallendar();
+      },
+      loading: function (bool) {
+        $('#spinner').show();
       },
       handleWindowResize: true,
       // editable: true,
@@ -159,6 +161,7 @@ $(document).ready(function() {
             element.find('.fc-time').css('color', '#f3f3f3')
             element.find('.fc-title').css('color', '#f3f3f3')
         }                
+        $('#spinner').hide();
       },
       eventAfterAllRender: function (event, element, view) {
         $('#spinner').hide();
