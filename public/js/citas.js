@@ -10,7 +10,8 @@ $(document).ready(function() {
       // color: '#0aab8a',
       // textColor: '#f3f3f3'
     };
-    $('#spinner').hide();
+    //$('#spinner').hide();
+    //console.log('!: Closed');
     function viewModeCallendar(){            
       if( first_view == 0 ){
         if ($(window).width() <= sm_max_size ) {
@@ -51,8 +52,12 @@ $(document).ready(function() {
       eventRender: function(event, element){        
         viewModeCallendar();
       },
-      loading: function (bool) {
-        $('#spinner').show();
+      loading: function (isLoading, view) {
+        if( isLoading ){
+          $('#spinner').show();
+        }else{
+          $('#spinner').hide();
+        }
       },
       handleWindowResize: true,
       // editable: true,
@@ -161,10 +166,8 @@ $(document).ready(function() {
             element.find('.fc-time').css('color', '#f3f3f3')
             element.find('.fc-title').css('color', '#f3f3f3')
         }                
-        $('#spinner').hide();
-      },
-      eventAfterAllRender: function (event, element, view) {
-        $('#spinner').hide();
+//       $('#spinner').hide();
+//        console.log('!: Closed');
       }
     })
 });
