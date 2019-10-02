@@ -9,42 +9,41 @@
         <PanelCard>
           <span slot="heading">{{ title }}</span>
           <div slot="body" class="pt-3 pb-3 pl-3 pr-3">
-
-						<b-form>
-							<!--input type="hidden" name="_token" :value="csrf"-->
-							<div class="text-center">
-								<div v-if="displayStatus != 'show'">
-									<b-button v-if="displayStatus == 'edit'" type="submit" variant="success" v-on:click.prevent="onGuardarModificar">
-										<i class="fas fa-save"></i>&nbsp; Guardar
-									</b-button>
-									<b-button v-if="displayStatus == 'new'" type="submit" variant="success" v-on:click.prevent="onGuardarNuevo">
-										<i class="fas fa-save"></i>&nbsp; Guardar
-									</b-button>
-									<b-button v-if="displayStatus == 'edit'" variant="warning" v-on:click.prevent="onCancelarModificar">
-										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
-									</b-button>
-									<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
-										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
-									</b-button>
-								</div>
-								<div v-if="displayStatus == 'show'">
-									<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
-										<i class="fas fa-edit"></i>&nbsp; Modificar
-									</b-button>
-									<b-button variant="danger" v-on:click.prevent="onEliminar(
-											  'A continuación eliminará el registro actual y no podrá ser recuperado.' +
-							   				  '<br /><br />¿Seguro que desea eliminar este registro?')"
-							   				  v-if="curUser.rolid == 1">
-										<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
-									</b-button>
-									<b-button variant="warning" v-on:click.prevent="onRegresar">
-										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
-									</b-button>
-                  <b-button type="submit" variant="secondary" :href="url + '/presupuestos/create'">
-										<i class="fas fa-plus"></i>&nbsp; Nuevo presupuesto
-									</b-button>
-								</div>
-							</div>
+				<b-form>
+					<!--input type="hidden" name="_token" :value="csrf"-->
+					<div class="text-center">
+						<div v-if="displayStatus != 'show'">
+							<b-button v-if="displayStatus == 'edit'" type="submit" variant="success" v-on:click.prevent="onGuardarModificar">
+								<i class="fas fa-save"></i>&nbsp; Guardar
+							</b-button>
+							<b-button v-if="displayStatus == 'new'" type="submit" variant="success" v-on:click.prevent="onGuardarNuevo">
+								<i class="fas fa-save"></i>&nbsp; Guardar
+							</b-button>
+							<b-button v-if="displayStatus == 'edit'" variant="warning" v-on:click.prevent="onCancelarModificar">
+								<i class="fas fa-times-circle"></i>&nbsp;Cancelar
+							</b-button>
+							<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
+								<i class="fas fa-times-circle"></i>&nbsp;Cancelar
+							</b-button>
+						</div>
+						<div v-if="displayStatus == 'show'">
+							<b-button variant="primary" v-on:click.prevent="onDisplayModificar">
+								<i class="fas fa-edit"></i>&nbsp; Modificar
+							</b-button>
+							<b-button variant="danger" v-on:click.prevent="onEliminar(
+										'A continuación eliminará el registro actual y no podrá ser recuperado.' +
+										'<br /><br />¿Seguro que desea eliminar este registro?')"
+										v-if="curUser.rolid == 1">
+								<i class="fas fa-trash-alt"></i>&nbsp;Eliminar
+							</b-button>
+							<b-button variant="warning" v-on:click.prevent="onRegresar">
+								<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
+							</b-button>
+							<b-button type="submit" variant="secondary" :href="url + '/presupuestos/create'">
+								<i class="fas fa-plus"></i>&nbsp; Nuevo presupuesto
+							</b-button>
+						</div>
+					</div>
               <br />
               <p class="form-description fz-3 pt-2 pr-2 ">
                 <span class="help-required"> &nbsp; Campos obligatorios. </span>
