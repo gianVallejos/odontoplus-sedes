@@ -62,7 +62,7 @@ return [
             'strict' => true,
             'engine' => null,
         ],
-
+        
         '2_ATET_CAJ' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
