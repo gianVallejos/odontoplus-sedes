@@ -1,5 +1,5 @@
 <template>
-  <b-container id="container-template">
+  <b-container id="container-template" v-if="this.$root.autorizadoVerSedes(curUser.schema)">
     <SpinnerContainer :url="url" ref="spinnerContainerRef" />
 		<b-row>
 			<div class="col-md-12">
@@ -42,58 +42,69 @@
 									</b-button>
 								</div>
 							</div>
-
-							<div class="pt-4 pb-2">
+              <p class="form-description fz-3 pt-3 pr-1">
+                <span class="help-required"> &nbsp; Campos obligatorios. </span>
+              </p>
+							<div class="pt-3 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
+										<b-col cols="12" class="pt-0 pb-0 d-none d-lg-block">
 											<div class="form-title">
 												<i class="far fa-building"></i>
 												<div class="d-inline"> Información de Sede </div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La gestión de sedes permite agrupar diversas tareas a lo largo del sistema según las sedes registradas.
-											</p>
-											<br/>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
 										</b-col>
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12" class="pt-0 pt-lg-2 pb-0 pb-lg-4">
+                      <b-form-row>
+                        <b-col cols="12" lg="6">
 										    <b-form-group label="Nombre" label-for="nombre">
 											    <b-form-input id="nombre" type="text" class="required" v-model="form.nombre"
 														:disabled=isDisabled placeholder="Nombre" autocomplete="off"/>
 													<span v-if="all_errors.nombre" :class="['label label-danger']">{{ all_errors.nombre[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
 										    <b-form-group label="Dirección" label-for="direccion">
 											    <b-form-input id="direccion" type="text"	v-model="form.direccion" class="required"
 														:disabled=isDisabled placeholder="Dirección" autocomplete="off"/>
 													<span v-if="all_errors.direccion" :class="['label label-danger']">{{ all_errors.direccion[0] }}</span>
 										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
 												<b-form-group label="Ciudad" label-for="ciudad">
 													<b-form-input id="ciudad" type="text"	v-model="form.ciudad" class="required"
 														:disabled=isDisabled placeholder="Ciudad" autocomplete="off"/>
 													<span v-if="all_errors.ciudad" :class="['label label-danger']">{{ all_errors.ciudad[0] }}</span>
 												</b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
 												<b-form-group label="Teléfono" label-for="telefono">
 													<b-form-input id="telefono" type="text"	v-model="form.telefono"
 														:disabled=isDisabled placeholder="Teléfono" autocomplete="off"/>
 													<span v-if="all_errors.telefono" :class="['label label-danger']">{{ all_errors.telefono[0] }}</span>
 												</b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="3">
 												<b-form-group label="Celular" label-for="celular">
 													<b-form-input id="celular" type="text"	v-model="form.celular"
 														:disabled=isDisabled placeholder="Celular" autocomplete="off"/>
 													<span v-if="all_errors.celular" :class="['label label-danger']">{{ all_errors.celular[0] }}</span>
 												</b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="3">
 												<b-form-group label="Celular Auxiliar" label-for="celular_aux">
 													<b-form-input id="celular_aux" type="text"	v-model="form.celular_aux"
 														:disabled=isDisabled placeholder="Celular Auxiliar" autocomplete="off"/>
 													<span v-if="all_errors.celular_aux" :class="['label label-danger']">{{ all_errors.celular_aux[0] }}</span>
 												</b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
 												<b-form-group label="Email" label-for="email">
 													<b-form-input id="email" type="text"	v-model="form.email"
 														:disabled=isDisabled placeholder="Email" autocomplete="off"/>
 													<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
 												</b-form-group>
+                      </b-col>
+                      </b-form-row>
 										</b-col>
 									</b-row>
 							</div>

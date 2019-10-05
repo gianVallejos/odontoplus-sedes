@@ -1,5 +1,5 @@
 <template>
-  <b-container class="pb-4">
+  <b-container class="pb-4" v-if="this.$root.autorizadoVerSedes(curUser.schema)">
 		<b-row>
 			<div class="col-md-12">
 				<TitleComponent titulo="Sedes" :items="breadcrumb" />

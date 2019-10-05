@@ -42,124 +42,118 @@
 									</b-button>
 								</div>
 							</div>
-
-							<div class="pt-4 pb-2">
+              <p class="form-description fz-3 pt-3 pr-4 ">
+                <span class="help-required"> &nbsp; Campos obligatorios. </span>
+              </p>
+							<div class="pt-1 pb-2">
 									<b-row>
-										<b-col cols="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4 d-none d-lg-block">
-											<div class="form-title">
-												<i class="fas fa-user"></i>
-												<div class="d-inline"> Información General </div>
+										<b-col cols="12" class="pt-0 pt-lg-3 pb-0 pb-lg-2 d-none d-lg-block">
+                      <div class="form-title">
+												<i class="fas fa-user-md"></i>
+												<div class="d-inline"> Información del Doctor </div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información general de doctor nos sirve para poder identificarlo a lo largo del sistema.
-											</p>
-											<br/>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
 										</b-col>
-										<b-col cols="12" lg="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12">
+                      <b-form-row>
+                        <b-col cols="12" lg="6">
 										    <b-form-group label="Nombres" label-for="nombres">
 											    <b-form-input id="nombres" type="text" class="required"
 											    			  v-model="form.nombres" placeholder="Nombres" autocomplete="off" :disabled=isDisabled />
 												<span v-if="all_errors.nombres" :class="['label label-danger']">{{ all_errors.nombres[0] }}</span>
 										    </b-form-group>
-											<b-form-group label="Apellidos" label-for="apellidos">
-												<b-form-input   id="apellidos" type="text" class="required"
-																v-model="form.apellidos" placeholder="Apellidos" autocomplete="off" :disabled=isDisabled />
-												<span v-if="all_errors.apellidos" :class="['label label-danger']">{{ all_errors.apellidos[0] }}</span>
-										    </b-form-group>
-											<b-form-group label="DNI" label-for="dni">
-												<b-form-input id="dni" type="text" class="required"
-												  			  v-model="form.dni" maxlength="8" placeholder="DNI" autocomplete="off" :disabled=isDisabled />
-												<span v-if="all_errors.dni" :class="['label label-danger']">{{ all_errors.dni[0] }}</span>
-										    </b-form-group>
-											<b-form-group label="Margen de Ganancia (%)" label-for="margen_ganancia">
-												<b-form-input id="margen_ganancia" type="text"
-															  v-model="form.margen_ganancia" placeholder="Margen de Ganancia (%)"
-															  autocomplete="off" :disabled=isDisabled />
-												<span v-if="all_errors.margen_ganancia" :class="['label label-danger']">{{ all_errors.margen_ganancia[0] }}</span>
-										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
+                        <b-form-group label="Apellidos" label-for="apellidos">
+                          <b-form-input   id="apellidos" type="text" class="required"
+                                  v-model="form.apellidos" placeholder="Apellidos" autocomplete="off" :disabled=isDisabled />
+                          <span v-if="all_errors.apellidos" :class="['label label-danger']">{{ all_errors.apellidos[0] }}</span>
+                          </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
+                        <b-form-group label="DNI" label-for="dni">
+                          <b-form-input id="dni" type="text" class="required"
+                                    v-model="form.dni" maxlength="8" placeholder="DNI" autocomplete="off" :disabled=isDisabled />
+                          <span v-if="all_errors.dni" :class="['label label-danger']">{{ all_errors.dni[0] }}</span>
+                          </b-form-group>
+                      </b-col>
+                      <b-col cols="12" lg="6">
+                        <b-form-group label="Margen de Ganancia (%)" label-for="margen_ganancia">
+  												<b-form-input id="margen_ganancia" type="text"
+  															  v-model="form.margen_ganancia" placeholder="Margen de Ganancia (%)"
+  															  autocomplete="off" :disabled=isDisabled />
+  												<span v-if="all_errors.margen_ganancia" :class="['label label-danger']">{{ all_errors.margen_ganancia[0] }}</span>
+  										    </b-form-group>
+                      </b-col>
+                      <b-col cols="12" md="12" lg="6" >
+                          <b-form-group label="Fecha de Nacimiento" label-for="fechanacimiento">
+                            <b-form-input id="fechanacimiento" type="date" class="required" v-model="form.fechanacimiento" :disabled=isDisabled />
+                            <span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
+                          </b-form-group>
+                      </b-col>
+                      <b-col cols="12" md="12" lg="3">
+                        <b-form-group label="Género" label-for="genero">
+                            <b-form-select id="genero" v-model="form.genero" :options="genero.options" :disabled=isDisabled />
+                            <span v-if="all_errors.genero" :class="['label label-danger']">{{ all_errors.genero[0] }}</span>
+                        </b-form-group>
+                      </b-col>
+                      <b-col cols="12" md="12" lg="3">
+                        <b-form-group label="Estado Civil" label-for="estado">
+                          <b-form-select id="estado" v-model="form.estado" :options="estadoCivil" :disabled=isDisabled />
+                          <span v-if="all_errors.estado" :class="['label label-danger']">{{ all_errors.estado[0] }}</span>
+                        </b-form-group>
+                      </b-col>
+                      </b-form-row>
 										</b-col>
 									</b-row>
 
 									<b-row>
-										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
-											<div class="form-title">
-												<i class="fas fa-user-md"></i>
-												<div class="d-inline"> Información del Doctor </div>
-											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información del doctor nos brinda datos útiles para tener un mejor monitoreo de doctores y colaboradores.
-											</p>
-											<br/>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
-										</b-col>
-										<b-col cols="12" md="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
-												<b-form-group label="Fecha de Nacimiento" label-for="fechanacimiento">
-													<b-form-input id="fechanacimiento" type="date" class="required" v-model="form.fechanacimiento" :disabled=isDisabled />
-													<span v-if="all_errors.fechanacimiento" :class="['label label-danger']">{{ all_errors.fechanacimiento[0] }}</span>
-												</b-form-group>
-
-												<b-form-group label="Género" label-for="genero">
-												    	<b-form-select id="genero" v-model="form.genero" :options="genero.options" :disabled=isDisabled />
-												    	<span v-if="all_errors.genero" :class="['label label-danger']">{{ all_errors.genero[0] }}</span>
-												    </b-form-group>
-
-												<b-form-group label="Estado Civil" label-for="estado">
-													<b-form-select id="estado" v-model="form.estado" :options="estadoCivil" :disabled=isDisabled />
-													<span v-if="all_errors.estado" :class="['label label-danger']">{{ all_errors.estado[0] }}</span>
-												</b-form-group>
-										</b-col>
-									</b-row>
-
-									<b-row>
-										<b-col cols="6" class="pt-3 pb-4 d-none d-lg-block">
+										<b-col cols="12" class="pt-2 pb-2 d-none d-lg-block">
 											<div class="form-title">
 												<i class="far fa-address-card"></i>
 												<div class="d-inline">Información de Contacto</div>
 											</div>
-											<p class="form-description fz-3 pt-3 pr-4">
-												La información de contacto del doctor es una colección de datos importantes para guardar contacto con el doctor en caso de alguna emergencia.
-											</p>
-											<br/>
-											<p class="form-description fz-3 pt-3 pr-4">
-												<span class="help-required"> &nbsp; Campos obligatorios. </span>
-											</p>
 										</b-col>
-										<b-col cols="12" md="6" class="pt-0 pt-lg-3 pb-0 pb-lg-4">
+										<b-col cols="12" >
+                      <b-form-row>
+                      <b-col cols="12" md="12" lg="6">
 												<b-form-group label="Dirección" label-for="direccion">
 													<b-form-input id="direccion" type="text" class="required" v-model="form.direccion" placeholder="Dirección" required autocomplete="off" :disabled=isDisabled />
 													<span v-if="all_errors.direccion" :class="['label label-danger']">{{ all_errors.direccion[0] }}</span>
 												</b-form-group>
+                      </b-col>
+                      <b-col cols="12" md="12" lg="6">
 												<b-form-group label="Email" label-for="email">
 													<b-form-input id="email" type="email" v-model="form.email" placeholder="Email" autocomplete="off" :disabled=isDisabled />
 													<span v-if="all_errors.email" :class="['label label-danger']">{{ all_errors.email[0] }}</span>
 										    </b-form-group>
+                        </b-col>
+                        <b-col cols="12" md="12" lg="6">
 												<b-form-group label="Teléfono" label-for="telefono">
 											    <b-form-input id="telefono" type="text" v-model="form.telefono" placeholder="Teléfono" :disabled=isDisabled />
 											    <span v-if="all_errors.telefono" :class="['label label-danger']">{{ all_errors.telefono[0] }}</span>
 										    </b-form-group>
-										    <b-form-row>
-										    	<b-col cols="6">
-												    <b-form-group label="Celular" label-for="celular">
-													    <b-form-input id="celular" type="text" v-model="form.celular" placeholder="Celular" :disabled=isDisabled />
-													    <span v-if="all_errors.celular" :class="['label label-danger']">{{ all_errors.celular[0] }}</span>
-												    </b-form-group>
-											    </b-col>
-											    <b-col cols="6">
-												    <b-form-group label="Celular Alternativo" label-for="celular_aux">
-													    <b-form-input id="celular_aux" type="text" v-model="form.celular_aux" placeholder="Celular Alternativo" :disabled=isDisabled  />
-													    <span v-if="all_errors.celular_aux" :class="['label label-danger']">{{ all_errors.celular_aux[0] }}</span>
-												    </b-form-group>
-											    </b-col>
-										    </b-form-row>
+                      </b-col>
+                      <b-col cols="12" md="6" lg="3">
+                        <b-form-group label="Celular" label-for="celular">
+                          <b-form-input id="celular" type="text" v-model="form.celular" placeholder="Celular" :disabled=isDisabled />
+                          <span v-if="all_errors.celular" :class="['label label-danger']">{{ all_errors.celular[0] }}</span>
+                        </b-form-group>
+                      </b-col>
+                      <b-col cols="12" md="6" lg="3">
+                        <b-form-group label="Celular Alternativo" label-for="celular_aux">
+                          <b-form-input id="celular_aux" type="text" v-model="form.celular_aux" placeholder="Celular Alternativo" :disabled=isDisabled  />
+                          <span v-if="all_errors.celular_aux" :class="['label label-danger']">{{ all_errors.celular_aux[0] }}</span>
+                        </b-form-group>
+                      </b-col>
+                      </b-form-row>
 										</b-col>
 									</b-row>
-
 							</div>
+
+              <p class="form-description fz-3 pt-2 pr-1 d-none d-lg-block">
+                <span class="help-required"> &nbsp; Campos obligatorios. </span>
+              </p>
+              <br />
 
 							<div class="text-center">
 								<div v-if="displayStatus == 'show'">

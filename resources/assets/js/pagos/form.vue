@@ -8,45 +8,44 @@
 				<PanelCard>
 					<span slot="heading">Nuevo Pago </span>
 					<div slot="body" class="pt-3 pb-3 pl-3 pr-3">
+						<p class="form-description fz-3 pt-0 pr-4">
+							<span class="help-required"> &nbsp; Campos obligatorios. </span>
+						</p>
 						<b-row>
-							<b-col cols="6" class="pt-1 pb-4 d-none d-lg-block">
+							<b-col cols="12" class="pt-3 pb-1 d-none d-lg-block">
 								<div class="form-title">
 									<i class="fas fa-file-invoice-dollar"></i>
 									<div class="d-inline"> Nuevo Pago </div>
 								</div>
-								<p class="form-description fz-3 pt-3 pr-4">
-									Para crear un nuevo pago debe seleccionar un rango de fechas y el doctor al que se le realizará el pago.
-									<br /><br />Al seleccionar "Ver Nuevo Pago" aparecerá la lista de ingresos del doctor seleccionado en el periodo ingresado y podrá ser guardado.
-								</p>
-								<p class="form-description fz-3 pt-3 pr-4">
-									<span class="help-required"> &nbsp; Campos obligatorios. </span>
-								</p>
 							</b-col>
-							<b-col cols="12" lg="6" class="pt-1 pb-4">
+							<b-col cols="12" class="pt-2 pb-4">
 								<b-form>
                    <b-form-row>
-                    <b-col cols="6">
+                    <b-col cols="3" lg="3">
                       <b-form-group label="Fecha de Inicio" label-for="fechainicio">
                         <b-form-input id="fechainicio" type="date" class="required" v-model="form.fechaInicio" />
                         <span v-if="all_errors.fechaInicio" :class="['label label-danger']">{{ all_errors.fechaInicio[0] }}</span>
                       </b-form-group>
                     </b-col>
-                    <b-col cols="6">
+                    <b-col cols="3" lg="3">
                       <b-form-group label="Fecha Final" label-for="fechafin">
                         <b-form-input id="fechainicio" type="date" class="required" v-model="form.fechaFin" />
                         <span v-if="all_errors.fechaFin" :class="['label label-danger']">{{ all_errors.fechaFin[0] }}</span>
                       </b-form-group>
                     </b-col>
+										<b-col cols="6" lg="6">
+											<b-form-group label="Seleccionar Doctor" label-for="apellidos">
+												<b-form-select v-model="form.doctorSelected">
+													<option :value="null">Ningun Doctor Seleccionado</option>
+													<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
+														{{ doctor.nombres }} {{ doctor.apellidos}}
+													</option>
+												</b-form-select>
+												<span v-if="all_errors.doctorSelected" :class="['label label-danger']">{{ all_errors.doctorSelected[0] }}</span>
+											</b-form-group>
+										</b-col>
                   </b-form-row>
-									<b-form-group label="Seleccionar Doctor" label-for="apellidos">
-										<b-form-select v-model="form.doctorSelected">
-											<option :value="null">Ningun Doctor Seleccionado</option>
-											<option v-for="(doctor, index) in doctores" :key="index" :value="doctor.id">
-												{{ doctor.nombres }} {{ doctor.apellidos}}
-											</option>
-										</b-form-select>
-										<span v-if="all_errors.doctorSelected" :class="['label label-danger']">{{ all_errors.doctorSelected[0] }}</span>
-									</b-form-group>
+
 								</b-form>
 							</b-col>
 							<b-col cols="12">
