@@ -27,7 +27,7 @@ CREATE TABLE `ingresos_detalle` (
   `fecha` date DEFAULT NULL,
   `doctorId` int(11) DEFAULT NULL,
   `margen_ganancia` decimal(10,0) DEFAULT '0',
-	`sedeId` int not null,
+  `sedeId` int(11) NOT NULL DEFAULT '1',
   `costo_variable` decimal(10,2) DEFAULT '0.00',
   `igv` decimal(10,2) DEFAULT '0.00',
   `codigo` varchar(120) DEFAULT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE `citas` (
   `hasta` time DEFAULT NULL,
   `idPaciente` int(11) DEFAULT NULL,
   `idDoctor` int(11) DEFAULT NULL,
-	`idSede` int not null,
+  `idSede` int(11) NOT NULL DEFAULT '1',
   `fecha` date DEFAULT NULL,
   `tratamiento` varchar(200) DEFAULT NULL,
   `idSillon` int(11) DEFAULT '1',
@@ -105,7 +105,7 @@ CREATE TABLE `egresos` (
   `is_deleted` tinyint(4) DEFAULT '0',
   `created_at` timestamp NULL,
   `updated_at` timestamp NULL,
-	`sedeId` int not null,
+  `sedeId` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -168,7 +168,7 @@ CREATE TABLE `pacientes` (
   `referencia_id` int(11) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `sede_id` int(11) NOT NULL,
+  `sede_id` int(11) NOT NULL DEFAULT '1',
   `codigo` varchar(200) NOT NULL,
   PRIMARY KEY (`id`,`codigo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
