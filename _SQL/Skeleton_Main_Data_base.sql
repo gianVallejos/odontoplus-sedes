@@ -22,6 +22,7 @@ CREATE TABLE `clientes` (
   `celular` varchar(200) DEFAULT NULL,
   `celular_aux` varchar(200) DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL,
+  `schema` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
