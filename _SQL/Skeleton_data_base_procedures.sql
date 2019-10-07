@@ -1133,7 +1133,7 @@ BEGIN
 		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-00001') AS codigo
 			FROM sedes WHERE id = XID_SEDE;
 	ELSE
-		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-', LPAD((id_paciente + 1), 5, '0')) AS codigo
+		SELECT CONCAT(UPPER(SUBSTRING(sedes.nombre, 1, 3)), '-', LPAD((id_paciente + 1), 7, '0')) AS codigo
 			FROM sedes WHERE id = XID_SEDE;
 	END IF;
 END
