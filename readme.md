@@ -27,3 +27,10 @@ El esquema en MASTER debe ser igual al último esquema deployado en el servidor.
 ##### Actualización de Citas
 - Mostrar celular e historia clínica en la vista de citas.
 - Cambio de colores según doctor.
+
+### v.3.1.13
+
+- Modificación de estética de formularios.
+- Spinner en citas.
+- Redireccionamiento por dimensión de pantallas en citas.
+- Configuraciones generales.
