@@ -3,9 +3,9 @@
 ## To Run it 
 - Locate in the folder you'll get the repository
 - git clone https://gitlab.com/gvallejos/odontoplus.git
-- cd odontoplus
-- composer install
-- npm install
+  cd odontoplus
+  composer install
+  npm install
 
 ## Development
 
