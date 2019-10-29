@@ -1,7 +1,7 @@
 <?php
 		$cur_schema = \App\CustomLibs\CurBD::getCurrentSchema();
-    $url = 'https://atet.odontoplus.pe/images/logotipos/' . $cur_schema . '_BG_WHITE.png';
-    $error_url = 'https://atet.odontoplus.pe/images/logotipos/1_ODONTOPLUS_CAJ_BG_WHITE.png';
+    $url = 'https://app.odontoplus.pe/images/logotipos/' . $cur_schema . '_BG_WHITE.png';
+    $error_url = 'https://app.odontoplus.pe/images/logotipos/1_ODONTOPLUS_CAJ_BG_WHITE.png';
  ?>
 <div>
     <div style="padding: 25px 0; text-align: center; background-color: #f3f3f3;">
