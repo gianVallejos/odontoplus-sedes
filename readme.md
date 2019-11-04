@@ -17,7 +17,7 @@
 
 ## Changes per version
 
-### v.3.1.14
-- Input updates for all objects
-- Appoitment spinner 
-- General updates
+### v.3.2.0 - 29/10/2019
+- Migration from regular server to ilimit one.
+
+### v.3.2.1
