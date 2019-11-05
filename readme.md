@@ -20,4 +20,13 @@
 ### v.3.2.0 - 29/10/2019
 - Migration from regular server to ilimit one.
 
-### v.3.2.1
+### v.3.2.1 - 04/11/2019
+Responsive citas/login updates
+Components Affected: 
+- citas/form.vue
+- footer/footerComponent.vue
+- header/headerComponent.vue
+- auth.styl
+- header.styl
+- odontoplus.styl
+- login.blade.php

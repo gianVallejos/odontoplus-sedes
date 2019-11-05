@@ -26,7 +26,7 @@
 									<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
-                  <b-button variant="secondary" v-on:click.prevent="onRegresar">
+                  					<b-button class="verCalendarioCitas" variant="secondary" v-on:click.prevent="onRegresar">
 										<i class="fas fa-calendar-alt"></i>&nbsp;Ver Calendario
 									</b-button>
 								</div>
@@ -43,7 +43,7 @@
                   <b-button variant="warning" v-on:click.prevent="onRegresar" >
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
-									<b-button variant="secondary" v-on:click.prevent="onRegresar">
+									<b-button class="verCalendarioCitas" variant="secondary" v-on:click.prevent="onRegresar">
 										<i class="fas fa-calendar-alt"></i>&nbsp;Ver Calendario
 									</b-button>
 								</div>
@@ -53,7 +53,7 @@
 									<b-row>
 										<b-col cols="12" class="pt-3 pb-4">
                       <b-form-row>
-                        <b-col cols="6" lg="4">
+                        <b-col cols="12" md="6" lg="4">
                           <b-form-group label="Seleccionar Paciente" label-for="pacientes">
                             <b-input-group>
                                   <b-form-input id="pacientes" type="text" v-model="form.paciente" placeholder="Ningun Paciente Seleccionado" disabled />
@@ -66,7 +66,7 @@
                             <span v-if="all_errors.paciente" :class="['label label-danger']">{{ all_errors.paciente[0] }}</span>
                           </b-form-group>
                         </b-col>
-                        <b-col cols="6" lg="4">
+                        <b-col cols="12" md="6" lg="4">
                           <b-form-group label="Seleccionar Doctor">
         										<b-form-select v-model="form.idDoctor" class="required" :disabled=isDisabled>
         											<option :value="null">Ningun Doctor Seleccionado</option>
@@ -89,21 +89,21 @@
 												</b-col>
                       </b-form-row>
                       <b-form-row>
-                        <b-col cols="6">
-                          <b-form-group label="Tratamiento" label-for="tratamiento">
-  											    <b-form-input id="tratamiento" type="text" v-model="form.tratamiento" placeholder="Tratamiento" class="required" :disabled=isDisabled autocomplete="off"  />
-  											    <span v-if="all_errors.tratamiento" :class="['label label-danger']">{{ all_errors.tratamiento[0] }}</span>
-  										    </b-form-group>
+                        <b-col cols="12" md="6">
+							<b-form-group label="Tratamiento" label-for="tratamiento">
+								<b-form-input id="tratamiento" type="text" v-model="form.tratamiento" placeholder="Tratamiento" class="required" :disabled=isDisabled autocomplete="off"  />
+								<span v-if="all_errors.tratamiento" :class="['label label-danger']">{{ all_errors.tratamiento[0] }}</span>
+							</b-form-group>
                         </b-col>
-                        <b-col cols="6">
-                          <b-form-group label="Seleccionar Sillón" label-for="apellidos">
-        										<b-form-select v-model="form.sillon" class="required" :disabled=isDisabled>
-        											<option v-for="(sillon, index) in sillons" :key="index" :value="sillon.id">
-        												{{ sillon.nombre }}
-        											</option>
-        										</b-form-select>
-                            <span v-if="all_errors.sillon" :class="['label label-danger']">{{ all_errors.sillon[0] }}</span>
-        									</b-form-group>
+                        <b-col cols="12" md="6">
+							<b-form-group label="Seleccionar Sillón" label-for="apellidos">
+								<b-form-select v-model="form.sillon" class="required" :disabled=isDisabled>
+									<option v-for="(sillon, index) in sillons" :key="index" :value="sillon.id">
+										{{ sillon.nombre }}
+									</option>
+								</b-form-select>
+								<span v-if="all_errors.sillon" :class="['label label-danger']">{{ all_errors.sillon[0] }}</span>
+							</b-form-group>
                         </b-col>
                         <b-col cols="12" lg="6">
                           <b-form-group label="Nota" label-for="nota">
@@ -111,27 +111,27 @@
                             <span v-if="all_errors.nota" :class="['label label-danger']">{{ all_errors.nota[0] }}</span>
                           </b-form-group>
                         </b-col>
-                        <b-col cols="4" lg="2">
+                        <b-col cols="12" md="4" lg="2">
                           <b-form-group label="Fecha:">
                             <b-form-input type="date" v-model="form.fecha" class="required" :disabled=isDisabled />
                             <span v-if="all_errors.fecha" :class="['label label-danger']">{{ all_errors.fecha[0] }}</span>
                           </b-form-group>
-												</b-col>
-												<b-col cols="4" lg="2">
+						</b-col>
+						<b-col cols="12" md="4" lg="2">
                           <b-form-group label="Desde:" label-for="desde">
                             <b-form-input type="time" v-model="form.desde" class="required"
                                     :disabled=isDisabled />
                             <span v-if="all_errors.desde" :class="['label label-danger']">{{ all_errors.desde[0] }}</span>
                           </b-form-group>
-												</b-col>
-											    <b-col cols="4" lg="2">
+						</b-col>
+						<b-col cols="12" md="4" lg="2">
                             <b-form-group label="Hasta:" label-for="hasta">
-    											    <b-form-input type="time" v-model="form.hasta" class="required"
-    											    			  :disabled=isDisabled />
-    											    <span v-if="all_errors.hasta" :class="['label label-danger']">{{ all_errors.hasta[0] }}</span>
-    										    </b-form-group>
-												</b-col>
-											</b-form-row>
+								<b-form-input type="time" v-model="form.hasta" class="required"
+												:disabled=isDisabled />
+								<span v-if="all_errors.hasta" :class="['label label-danger']">{{ all_errors.hasta[0] }}</span>
+							</b-form-group>
+						</b-col>
+						</b-form-row>
                       <b-form-row>
                         <b-col cols="12">
     											<b-form-group label-for="enviar_email">
@@ -160,7 +160,7 @@
                   <b-button variant="warning" v-on:click.prevent="onRegresar" >
 										<i class="fas fa-chevron-circle-left"></i>&nbsp;Regresar
 									</b-button>
-									<b-button variant="secondary" v-on:click.prevent="onRegresar" >
+									<b-button class="verCalendarioCitas" variant="secondary" v-on:click.prevent="onRegresar" >
 										<i class="fas fa-calendar-alt"></i>&nbsp;Ver Calendario
 									</b-button>
 								</div>
@@ -177,7 +177,7 @@
 									<b-button v-if="displayStatus == 'new'" variant="warning" v-on:click.prevent="onCancelarNuevo">
 										<i class="fas fa-times-circle"></i>&nbsp;Cancelar
 									</b-button>
-                  <b-button variant="secondary" v-on:click.prevent="onRegresar" >
+                  					<b-button class="verCalendarioCitas" variant="secondary" v-on:click.prevent="onRegresar" >
 										<i class="fas fa-calendar-alt"></i>&nbsp;Ver Calendario
 									</b-button>
 								</div>

@@ -38,7 +38,7 @@
 					    	</li> -->
 					    	<li>
 					    		<a :href="logoutRoute" v-on:click="logout" >
-					    			<i class="fas fa-power-off"></i>Cerrar Sesión
+					    			<i class="fas fa-power-off"></i>&nbsp;Cerrar Sesión
 					    		</a>
 					    		<form id="logout-form" :action="logoutRoute" method="POST" style="display: none;">
 		                            <input type="hidden" name="_token" :value="csrf">
@@ -47,6 +47,14 @@
 					  	</ul>
 					</li>
 				</ul>
+			</div>
+			<div class="cerrar-sesion-responsive">
+				<a :href="logoutRoute" v-on:click="logout" >
+					<i class="fas fa-power-off"></i>&nbsp;Cerrar Sesión
+				</a>
+				<form id="logout-form" :action="logoutRoute" method="POST" style="display: none;">
+					<input type="hidden" name="_token" :value="csrf">
+				</form>
 			</div>
 		</div>
 	</div>

@@ -3,6 +3,8 @@
     background: #305f94
     color: #ffffff
     padding: 27px 0px 22px 0px
+    @media screen and (max-width: 768px)
+        text-align: center
 
 /*
 .logoHeaderComponent
@@ -10,6 +12,8 @@
 */
 .head-right
     float right
+    @media screen and (max-width: 768px)
+        display: none
     li
         a
             i
@@ -25,6 +29,16 @@
             &.dropdown-toggle
                 display block
                 padding 0em 3em 0 1em
+
+.cerrar-sesion-responsive
+    display: none
+    padding-top: 10px
+    a
+        color: #fff
+        font-size: 11px
+    @media screen and (max-width: 768px)
+        display: block
+    
 
 .perfil-img,
 	.user-name
