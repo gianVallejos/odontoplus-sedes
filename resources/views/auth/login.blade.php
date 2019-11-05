@@ -73,7 +73,7 @@
 
     </div>
     <div class='sign text-center'>
-        <p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.2.0</p>
+        <p>Software desarrollado por <a href="https://www.odontoplus.pe" target="_blank">Odontoplus</a> &copy; 2018 v. 3.2.1</p>
     </div>
 
 </div>

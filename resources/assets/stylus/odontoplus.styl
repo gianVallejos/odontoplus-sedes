@@ -628,10 +628,12 @@ span
 		.fc-toolbar
 			.fc-right{
 				margin-top: 10px!important
-				width: auto!important
+				width: 100%!important
+				float: left!important
+				margin-bottom: 20px!important
 			}
 			.fc-crearCitaBtn-button{
-				margin-top: 10px!important
+				margin-top: 0px!important
 				margin-left: auto!important
 			}
 			.fc-month-button{
@@ -646,30 +648,34 @@ span
 @media (orientation: landscape)
 	#calendar
 		.fc-toolbar
-			.fc-right{
+			.fc-right
 				margin-top: 10px!important
-				margin-right: 140px!important
-			}
-			.fc-left{
-				margin-left: 150px!important
-			}
-			.fc-center{
+				margin-right: 140px!important	
+				float: left!important		
+				width: 100%!important
+				margin-bottom: 20px!important
+			.fc-left
+				margin-left: 150px!important			
+			.fc-center
 				margin-top: 10px!important
-			}
-
 
 @media (min-width: 768px)
 	#calendar
 		.fc-toolbar
-			.fc-right{
+			.fc-right
 				margin-top: 0px!important
-				margin-right: 0px!important
-			}
-			.fc-left{
+				margin-right: 0px!important	
+				float: left!important		
+				width: 100%!important		
+				margin-bottom: 20px!important
+			.fc-left
 				margin-left: 0px!important
 				margin-top: 0px!important
 				margin-right: 0px!important
-			}
-			.fc-center{
+			.fc-center
 				margin-top: 0px!important
-			}
+
+.verCalendarioCitas
+	display: inline-block
+	@media screen and (max-width: 768px)
+		display: none		
