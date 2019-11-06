@@ -27,8 +27,8 @@
 								    </b-input-group>
 								</div>
 							</div>
-							<div class="col-md-6">
-								<div class="float-right d-inline-block">
+							<div class="col-md-6 text-center">
+								<div class="float-md-right d-inline-block">
 									<b-button-group>
 										<b-button :href="url+'/pacientes/create'" variant="success">
 											<i class="fas fa-plus"></i>&nbsp; Nuevo Paciente
@@ -178,8 +178,14 @@
 	}
 </script>
 <style lang="stylus">
-.td-codigo-pac
-	width: 120px
-.td-sede-pac
-	width: 120px
+	.td-codigo-pac
+		width: 120px
+	.td-sede-pac
+		width: 120px
+
+	@media (max-width: 768px)	
+		.td-codigo-pac
+			width: auto 
+		.td-sede-pac
+			width: auto
 </style>
