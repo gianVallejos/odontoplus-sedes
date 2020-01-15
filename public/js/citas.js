@@ -159,7 +159,26 @@ $(document).ready(function() {
             element.find('.fc-event-dot').css({'background-color': '#844bff'})
             element.find('.fc-time').css('color', '#f3f3f3')
             element.find('.fc-title').css('color', '#f3f3f3')
-        }else{
+        }else if( event.idDoctor == 8 ){
+          element.css({'border': 'none', 'background': 'transparent'})
+          element.find('.fc-content').css({'background-color': '#8a5c5c', 'color': '#c8c8c8', 'padding-left': '5px'})
+          element.find('.fc-event-dot').css({'background-color': '#8a5c5c'})
+          element.find('.fc-time').css('color', '#f3f3f3')
+          element.find('.fc-title').css('color', '#f3f3f3')
+        }else if( event.idDoctor == 9 ){
+          element.css({'border': 'none', 'background': 'transparent'})
+          element.find('.fc-content').css({'background-color': '#7f8547', 'color': '#c8c8c8', 'padding-left': '5px'})
+          element.find('.fc-event-dot').css({'background-color': '#7f8547'})
+          element.find('.fc-time').css('color', '#f3f3f3')
+          element.find('.fc-title').css('color', '#f3f3f3')
+        }else if( event.idDoctor == 10 ){
+          element.css({'border': 'none', 'background': 'transparent'})
+          element.find('.fc-content').css({'background-color': '#595c50', 'color': '#c8c8c8', 'padding-left': '5px'})
+          element.find('.fc-event-dot').css({'background-color': '#595c50'})
+          element.find('.fc-time').css('color', '#f3f3f3')
+          element.find('.fc-title').css('color', '#f3f3f3')
+        }        
+        else{
             element.css({'border': 'none', 'background': 'transparent'})
             element.find('.fc-content').css({'background-color': '#0aab8a', 'color': '#c8c8c8', 'padding-left': '5px'})
             element.find('.fc-event-dot').css({'background-color': '#0aab8a'})
