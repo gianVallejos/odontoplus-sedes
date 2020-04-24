@@ -16,6 +16,11 @@ const mixins = {
           schema: "3_ORTHODENTS_CAJ",
           rol: "0",
           allow_sedes: "0",
+        },
+        {
+          schema: "4_CORE_CAJ",
+          rol: "0",
+          allow_sedes: "0",
         }
       ]
     }
