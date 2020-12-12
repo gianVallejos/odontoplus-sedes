@@ -422,6 +422,7 @@
 					this.$refs.spinnerContainerRef.showSpinner()
 					var _self = this
 					axios(request).then((response) => {
+            console.log(response.data);
 						if(response.data.success){
 							_self.toastFunctionRedirect('Éxito', 'Los tratamientos han sido agregado correctamente.', 'success')
 							_self.$refs.spinnerContainerRef.hideSpinner()
@@ -432,6 +433,7 @@
 							_self.$refs.spinnerContainerRef.hideSpinner()
 						}
 					}).catch(function (error) {
+            console.log(error);
 						_self.$refs.spinnerContainerRef.hideSpinner()
 					})
 				}

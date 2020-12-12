@@ -99,22 +99,30 @@ class IngresoController extends Controller
 
     public function lineItemSave(Request $request){
             try{
-              $db = DB::connection(CurBD::getCurrentSchema());
-              print_r($db);
-              echo 'This is a test';
-              die();
+              $db = DB::connection(CurBD::getCurrentSchema());                            
                 foreach( $request->trats as $trat ){
-                    $ingreso =  $db->select(DB::raw('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
-                                                                            $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ', ' . $trat['costo_variable'] . ', "' .
-                                                                            $request->fecha .'", '. $request->doctor . ', "'.
-                                                                            $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .')'));
+                    $ingreso =  $db->select('call OP_Ingresos_Detalle_add_all(?,?,?,?,?,?,?,?,?,?,?)', 
+                                                          array(
+                                                           $request->ingresoId, $trat['precioId'], $trat['cantidad'], 
+                                                           $trat['monto'], $request->igv, $trat['costo_variable'],
+                                                           $request->fecha, $request->doctor, $request->codigo, 
+                                                           $request->tipo_pago, $request->sede
+                                                          )
+                                            );                  
                 }
-                $last_ingreso =  $db->select(DB::raw('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')'))[0];
+
+                $last_ingreso =  $db->select('call OP_Ingresos_Detalle_get_ultimo_Id(?)', array($request->ingresoId));                
+                $result = collect($last_ingreso);
+                $last_ingreso = $result[0];
                 
-                $total_ingreso =  $db->select(DB::raw('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')'))[0];
+                $total_ingreso =  $db->select('call OP_Ingresos_get_monto_total_Id(?)', array($request->ingresoId));
+                $result = collect($total_ingreso);
+                $total_ingreso = $result[0];
                 $Ingresototal = $total_ingreso->total;
 
-                $ing_total =  $db->select(DB::raw('call OP_Ingresos_Detalle_get_all_total_Id('. $last_ingreso->lastIngresoDetalle .')'))[0];
+                $ing_total =  $db->select('call OP_Ingresos_Detalle_get_all_total_Id(?)', array($last_ingreso->lastIngresoDetalle));
+                $result = collect($ing_total);
+                $ing_total = $result[0];
                 $mg = $ing_total->mg;
                 $mg_core = $ing_total->mg_core;
 
