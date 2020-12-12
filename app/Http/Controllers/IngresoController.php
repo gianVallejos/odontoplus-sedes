@@ -99,11 +99,7 @@ class IngresoController extends Controller
 
     public function lineItemSave(Request $request){
             try{
-                foreach( $request->trats as $trat ){
                     $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
-                                                                            $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ', ' . $trat['costo_variable'] . ', "' .
-                                                                            $request->fecha .'", '. $request->doctor . ', "'.
-                                                                            $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .')');
                 }
                 $last_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')')[0];
 
