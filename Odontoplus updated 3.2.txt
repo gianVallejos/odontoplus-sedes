@@ -1,0 +1,6 @@
+OP_Pacientes_delete_by_update_Id (new)
+OP_Pacientes_get_all_id (updated)
+OP_Pacientes_get_all (updated)
+
+OP_Pacientes_generar_codigo (updated)
+OP_Ingresos_delete_by_update_Id (Updated)
