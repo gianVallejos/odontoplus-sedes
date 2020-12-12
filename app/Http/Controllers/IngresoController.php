@@ -99,24 +99,28 @@ class IngresoController extends Controller
 
     public function lineItemSave(Request $request){
             try{
+              $db = DB::connection(CurBD::getCurrentSchema());
                 foreach( $request->trats as $trat ){
-                    $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
+                    $ingreso =  $db->select(DB::raw('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
                                                                             $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ', ' . $trat['costo_variable'] . ', "' .
                                                                             $request->fecha .'", '. $request->doctor . ', "'.
-                                                                            $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .')');
+                                                                            $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .')'));
                 }
-                $last_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')')[0];
-
-                $total_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')')[0];
+                $last_ingreso =  $db->select(DB::raw('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')'))[0];
+                
+                $total_ingreso =  $db->select(DB::raw('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')'))[0];
                 $Ingresototal = $total_ingreso->total;
 
-                $ing_total =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_all_total_Id('. $last_ingreso->lastIngresoDetalle .')')[0];
+                $ing_total =  $db->select(DB::raw('call OP_Ingresos_Detalle_get_all_total_Id('. $last_ingreso->lastIngresoDetalle .')'))[0];
                 $mg = $ing_total->mg;
                 $mg_core = $ing_total->mg_core;
 
                 return response()->json(['success' => 'ok', 'last_ingreso' => $last_ingreso->lastIngresoDetalle, 'total' => $Ingresototal, 'mg' => $mg, 'mg_core' => $mg_core]);
 
             }catch(Exception $e){
+                echo 'Something went wrong';
+                print_r($e);
+                die();
                 return response()->json(['error'=>$e->getMessage()]);
             }
 
