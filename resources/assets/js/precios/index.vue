@@ -227,3 +227,9 @@
 		}
   }
 </script>
+
+<style>
+  .table {
+    display: table!important;
+  }
+</style>
