@@ -101,7 +101,7 @@ class IngresoController extends Controller
             try{
               $db = DB::connection(CurBD::getCurrentSchema());                            
                 foreach( $request->trats as $trat ){
-                    $ingreso =  $db->select('call OP_Ingresos_Detalle_add_all(?,?,?,?,?,?,?,?,?,?,?)', 
+                    $ingreso =  $db->statement('call OP_Ingresos_Detalle_add_all(?,?,?,?,?,?,?,?,?,?,?)', 
                                                           array(
                                                            $request->ingresoId, $trat['precioId'], $trat['cantidad'], 
                                                            $trat['monto'], $request->igv, $trat['costo_variable'],
