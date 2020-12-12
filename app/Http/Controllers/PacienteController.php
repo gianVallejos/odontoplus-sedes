@@ -171,8 +171,8 @@ class PacienteController extends Controller
         try{
             $canDelete =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_es_borrable_Id('. $id .')');
             if( $canDelete[0]->CAN_DELETE == '1' ){
-                $res =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_delete_all_Id('. $id .')');
-                $res2 =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_delete_all_Id('. $id .')');
+                $res =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_delete_by_update_Id('. $id .')');
+                $res2 =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_delete_by_update_Id('. $id .')');
                 return response()->json(['success' => 'deleted']);
             }else{
                 return response()->json(['error' => 'cantDeleted']);

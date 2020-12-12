@@ -154,7 +154,7 @@ class IngresoController extends Controller
     public function lineItemDelete($id){
         try{
             $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_delete_all('. $id .')');
-
+            print_r($ingreso); die();
             return response()->json(['success' => 'ok']);
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);
