@@ -115,6 +115,9 @@ class IngresoController extends Controller
                 $mg = $ing_total->mg;
                 $mg_core = $ing_total->mg_core;
 
+                echo 'This is a test in development';
+                die();
+
                 return response()->json(['success' => 'ok', 'last_ingreso' => $last_ingreso->lastIngresoDetalle, 'total' => $Ingresototal, 'mg' => $mg, 'mg_core' => $mg_core]);
 
             }catch(Exception $e){
