@@ -100,7 +100,8 @@ class IngresoController extends Controller
     public function lineItemSave(Request $request){
             try{
                 $db = DB::connection(CurBD::getCurrentSchema());
-                foreach( $request->trats as $trat ){                  
+                foreach( $request->trats as $trat ){
+                  echo 'Test';                  
                     $ingreso = $db->select(
                                                     'call OP_Ingresos_Detalle_add_all(?,?,?,?,?,?,?,?,?,?,?)', 
                                                     array(
