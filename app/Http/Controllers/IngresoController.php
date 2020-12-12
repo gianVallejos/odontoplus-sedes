@@ -101,21 +101,21 @@ class IngresoController extends Controller
             try{
                 $db = DB::connection(CurBD::getCurrentSchema());
                 foreach( $request->trats as $trat ){                  
-                    $ingreso =  $db->statement('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
+                    $ingreso =  $db->select('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
                                                                             $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ', ' . $trat['costo_variable'] . ', "' .
                                                                             $request->fecha .'", '. $request->doctor . ', "'.
                                                                             $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .')');
                 }
-                $last_ingreso =  $db->statement('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')');
+                $last_ingreso =  $db->select('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')');
                 print_r($last_ingreso);
 
-                $total_ingreso =  $db->statement('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')');
+                $total_ingreso =  $db->select('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')');
                 print_r($total_ingreso);
                 die();
                 $total_ingreso = $total_ingreso[0];
                 $Ingresototal = $total_ingreso->total;
 
-                $ing_total =  $db->statement('call OP_Ingresos_Detalle_get_all_total_Id('. $last_ingreso->lastIngresoDetalle .')')[0];
+                $ing_total =  $db->select('call OP_Ingresos_Detalle_get_all_total_Id('. $last_ingreso->lastIngresoDetalle .')')[0];
                 $mg = $ing_total->mg;
                 $mg_core = $ing_total->mg_core;
 
