@@ -139,21 +139,27 @@ class IngresoController extends Controller
     }
 
     public function lineItemUpdate(Request $request, $id){
-        //$validator = Validator::make($request->all(), self::$validation_line_item_rules );
-        //print_r($request->all()); die();
-        //if ($validator->passes()) {
+        $db = DB::connection(CurBD::getCurrentSchema());
             try{
                 foreach( $request->trats as $trat ){
-                    $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_update_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
-                                                                               $trat['cantidad'] .', '. $trat['monto'] .', '.$request->igv . ',"' .
-                                                                               $request->fecha .'", '. $request->doctor . ', "'.
-                                                                            $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .', '. $id .')');
+                    $ingreso =  $db->statement('call OP_Ingresos_Detalle_update_all(?,?,?,?,?,?,?,?,?,?,?)',
+                                                array (
+                                                  $request->ingresoId, $trat['precioId'], 
+                                                  $trat['cantidad'], $trat['monto'], $request->igv, 
+                                                  $request->fecha, $request->doctor, 
+                                                  $request->codigo, $request->tipo_pago, $request->sede, $id
+                                                )
+                                              );
                 }
 
-                $total_ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')')[0];
+                $total_ingreso =  $db->select('call OP_Ingresos_get_monto_total_Id(?)', array($request->ingresoId));
+                $result = collect($total_ingreso);
+                $total_ingreso = $result[0];
                 $Ingresototal = $total_ingreso->total;
 
-                $ing_total =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_get_all_total_Id('. $id .')')[0];
+                $ing_total =  $db->select('call OP_Ingresos_Detalle_get_all_total_Id(?)', array($id));
+                $result = collect($ing_total);
+                $ing_total = $result[0];
                 $mg = $ing_total->mg;
                 $mg_core = $ing_total->mg_core;
 
@@ -168,7 +174,7 @@ class IngresoController extends Controller
 
     public function lineItemDelete($id){
         try{
-            $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_Detalle_delete_all('. $id .')');
+            $ingreso =  DB::connection(CurBD::getCurrentSchema())->statement('call OP_Ingresos_Detalle_delete_all('. $id .')');
 
             return response()->json(['success' => 'ok']);
         }catch(Exception $e){
