@@ -98,10 +98,10 @@ class IngresoController extends Controller
     }
 
     public function lineItemSave(Request $request){
+            echo 'This is a test in development';
+            die();
             try{
-              $db = DB::connection(CurBD::getCurrentSchema());
-              echo 'This is a test in development';
-              print_r($db);
+              $db = DB::connection(CurBD::getCurrentSchema());              
               die();
                 foreach( $request->trats as $trat ){
                     $ingreso =  $db->select(DB::raw('call OP_Ingresos_Detalle_add_all('. $request->ingresoId .', '. $trat['precioId'] .', '.
