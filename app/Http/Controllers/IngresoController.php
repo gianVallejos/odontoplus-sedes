@@ -108,11 +108,10 @@ class IngresoController extends Controller
                 }
                 $last_ingreso =  $db->statement('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')');
                 print_r($last_ingreso);
-                die();
-                $last_ingreso = $last_ingreso[0];
 
                 $total_ingreso =  $db->statement('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')');
                 print_r($total_ingreso);
+                die();
                 $total_ingreso = $total_ingreso[0];
                 $Ingresototal = $total_ingreso->total;
 
