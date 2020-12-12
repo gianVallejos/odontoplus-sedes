@@ -106,9 +106,13 @@ class IngresoController extends Controller
                                                                             $request->fecha .'", '. $request->doctor . ', "'.
                                                                             $request->codigo .'", '. $request->tipo_pago .', '. $request->sede .')');
                 }
-                $last_ingreso =  $db->statement('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')')[0];
+                $last_ingreso =  $db->statement('call OP_Ingresos_Detalle_get_ultimo_Id('. $request->ingresoId .')');
+                print_r($last_ingreso);
+                $last_ingreso = $last_ingreso[0];
 
-                $total_ingreso =  $db->statement('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')')[0];
+                $total_ingreso =  $db->statement('call OP_Ingresos_get_monto_total_Id('. $request->ingresoId .')');
+                print_r($total_ingreso);
+                $total_ingreso = $total_ingreso[0];
                 $Ingresototal = $total_ingreso->total;
 
                 $ing_total =  $db->statement('call OP_Ingresos_Detalle_get_all_total_Id('. $last_ingreso->lastIngresoDetalle .')')[0];
