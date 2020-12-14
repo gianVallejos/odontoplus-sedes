@@ -64,10 +64,8 @@
 	<script src="{{ asset('js/vue-chartjs.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/jquery.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/moment.min.js?v=1.0.1') }}"></script>
-	@if( str_contains(\Request::route()->getName(), 'citas') )
-		<script src="{{ asset('js/fullcalendar.min.js?v=1.0.1') }}"></script>
-		<script src="{{ asset('js/citas.js?v=3.1.14.2') }}"></script>
-	@endif
+  <script src="{{ asset('js/fullcalendar.min.js?v=1.0.1') }}"></script>
+  <script src="{{ asset('js/citas.js?v=3.1.14.2') }}"></script>
 	<script src="{{ asset('js/popper.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js?v=1.0.1') }}"></script>
 	<script src="{{ asset('js/app.js?v=3.1.14.2') }}"></script>
