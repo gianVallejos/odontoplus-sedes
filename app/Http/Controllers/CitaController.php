@@ -95,7 +95,7 @@ class CitaController extends Controller{
         $sillon = $request->sillon;
         $sede = $request->sede;
         $d = $fecha . ' ' . $desde . ' ' . $hasta . ' ' . $idDoctor . ' ' . $sillon . ' ' . $sede . '<br>';
-        //print_r($d);
+        print_r($d);
         $es_valido_sede = $db->select('call OP_Citas_is_validate_range_not_sede_and_sillon(?,?,?,?)', 
                                        array($fecha, $desde, $hasta, $idDoctor)
                                      );
@@ -121,7 +121,7 @@ class CitaController extends Controller{
             $idDoctor = $request->idDoctor;
             $nota = $request->nota;
             $f = $paciente . ' ' . $tratamiento . ' ' . $idPaciente . ' ' . $idDoctor . ' ' . $nota . '<br>';
-            //print_r($f);
+            print_r($f);
             $cita = $db->select('call OP_Citas_add_all(?,?,?,?,?,?,?,?,?,?)', 
                                  array(
                                         $request->paciente, $request->tratamiento, $request->fecha, 
