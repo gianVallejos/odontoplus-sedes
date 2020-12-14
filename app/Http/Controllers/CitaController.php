@@ -94,8 +94,7 @@ class CitaController extends Controller{
         $idDoctor = $request->idDoctor;
         $sillon = $request->sillon;
         $sede = $request->sede;
-        $d = $fecha . ' ' . $desde . ' ' . $hasta . ' ' . $idDoctor . ' ' . $sillon . ' ' . $sede . '<br>';
-        print_r($d);
+        
         $es_valido_sede = $db->select('call OP_Citas_is_validate_range_not_sede_and_sillon(?,?,?,?)', 
                                        array($fecha, $desde, $hasta, $idDoctor)
                                      );
@@ -120,22 +119,21 @@ class CitaController extends Controller{
             $idPaciente = $request->idPaciente;
             $idDoctor = $request->idDoctor;
             $nota = $request->nota;
-            $f = $paciente . ' ' . $tratamiento . ' ' . $idPaciente . ' ' . $idDoctor . ' ' . $nota . '<br>';
-            print_r($f);
             $cita = $db->select('call OP_Citas_add_all(?,?,?,?,?,?,?,?,?,?)', 
                                  array(
-                                        $request->paciente, $request->tratamiento, $request->fecha, 
-                                        $request->desde, $request->hasta, $request->idPaciente, 
-                                        $request->idDoctor, $request->sede, $request->sillon, $request->nota
+                                        $paciente, $tratamiento, $fecha, 
+                                        $desde, $hasta, $idPaciente, 
+                                        $idDoctor, $sede, $sillon, $nota
                                       )
                                 );
             $cita = collect($cita)[0];
             if( $cita->ESTADO > 0 ){
+              /*
               if ($request->enviarEmail) {
                   $sedes = $db->select('call OP_Sedes_get_all_id(?)', array($request->sede));
                   $sedes = collect($sedes)[0];
                   self::sendNotificationEmail($request->idPaciente, date('d-m-Y', strtotime($request->fecha) ), $request->desde, $sedes->direccion);
-              }
+              }*/
               return response()->json(['success' => 'created']);
             }else{
                 return response()->json(['error'=> 'Ha ocurrido un error']);
@@ -184,8 +182,6 @@ class CitaController extends Controller{
             $sede = $request->sede;
             $sillon = $request->sillon;
             $nota = $request->nota;
-            $r = $idPaciente . ' ' . $tratamiento . ' ' . $fecha . ' ' . $desde . ' ' . $hasta . ' ' . $idDoctor . ' ' . $sede . ' ' . $sillon . ' ' .$nota;
-            print_r($r);
             $cita = $db->select('call OP_Citas_update_all(?,?,?,?,?,?,?,?,?,?)', 
                                   array(
                                         $id, $idPaciente, $tratamiento, $fecha, 
