@@ -15,19 +15,21 @@ class PresupuestoController extends Controller{
     }
 
     public function index(){
-        $presupuesto =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_get_all()');
-        $mydata = json_encode($presupuesto);
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $presupuesto =  $db->select('call OP_Presupuestos_get_all()');
+      $mydata = json_encode(collect($presupuesto));
 
-        return view($this->path . '.index', compact('mydata'));
+      return view($this->path . '.index', compact('mydata'));
     }
 
     public function create(){
-        $pacientes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all()');
-        $pacientes = json_encode($pacientes);
-        $doctores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
-        $doctores = json_encode($doctores);
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $pacientes =  $db->select('call OP_Pacientes_get_all()');
+      $pacientes = json_encode(collect($pacientes));
+      $doctores =  $db->select('call OP_Doctors_get_all()');
+      $doctores = json_encode(collect($doctores));
 
-        return view($this->path . '.create', compact('pacientes', 'doctores'));
+      return view($this->path . '.create', compact('pacientes', 'doctores'));
     }
 
     public function store(Request $request){
@@ -38,13 +40,19 @@ class PresupuestoController extends Controller{
         $tratamientos = $request->tratamientos;
 
         DB::beginTransaction();
-
-        $res_general =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_add_all('. $nroPresupuesto .', '. $idPaciente .', ' . $idDoctor .', ' . $descuento . ')');
+        $db = DB::connection(CurBD::getCurrentSchema());
+        $res_general =  $db->select('call OP_Presupuestos_add_all(?,?,?,?)', 
+                                     array($nroPresupuesto, $idPaciente, $idDoctor, $descuento)
+                                   );
+        $res_general = collect($res_general);
         foreach( $tratamientos as $rt ){
             $sec1 = ( isset($rt['secUno']) ) ? $rt['secUno'] : '0';
             $sec2 = ( isset($rt['secDos']) ) ? $rt['secDos'] : '0';
             $pza = ( isset($rt['pieza']) ? $rt['pieza'] : '0' );
-            $res_detalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuesto_Detalles_add_all('. $nroPresupuesto .', ' . $pza . ', ' . $rt['seccion'] . ', ' . $sec1 . ', ' . $sec2 .', '. $rt['opcion'] .', '. $rt['monto'] .')');
+            $res_detalle =  $db->select('call OP_Presupuesto_Detalles_add_all(?,?,?,?,?,?,?)', 
+                                              array($nroPresupuesto, $pza, $rt['seccion'], $sec1, $sec2, $rt['opcion'], $rt['monto'])
+                                        );
+            $res_detalle = collect($res_detalle);
         }
 
         $resg = $res_general[0]->ESTADO;
@@ -59,37 +67,48 @@ class PresupuestoController extends Controller{
     }
 
     public function nuevo($idPaciente, $idDoctor){
-        $lastPresupuesto =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_get_last_Id()')[0]->presupuesto;
-        $doctor =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_get_doctores('. $idDoctor .')')[0];
-        $doctor = json_encode($doctor);
-        $paciente =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_get_pacientes('. $idPaciente .')')[0];
-        $paciente = json_encode($paciente);
-        $act_empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_empresa_Id('. $idPaciente .')')[0]->empresa_id;
-        $precios =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_all_by_empresa_Id('. $act_empresa .')');
-        $precios = json_encode($precios);
-        $precios_tabla =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_all_for_table_by_empresa_Id('. $act_empresa .')');
-        $precios_tabla = json_encode($precios_tabla);
+      $db = DB::connection(CurBD::getCurrentSchema());
+      
+      $lastPresupuesto =  $db->select('call OP_Presupuestos_get_last_Id()');
+      $lastPresupuesto = collect($lastPresupuesto)[0]->presupuesto;
+      $doctor =  $db->select('call OP_Presupuestos_get_doctores(?)', array($idDoctor));
+      $doctor = json_encode(collect($doctor)[0]);
+      $paciente =  $db->select('call OP_Presupuestos_get_pacientes(?)', array($idPaciente));
+      $paciente = json_encode(collect($paciente)[0]);
+      $act_empresa =  $db->select('call OP_Pacientes_get_empresa_Id(?)', array($idPaciente));
+      $act_empresa = collect($act_empresa)[0]->empresa_id;
+      $precios =  $db->select('call OP_Precios_get_all_by_empresa_Id(?)', array($act_empresa));
+      $precios = json_encode(collect($precios));
+      $precios_tabla =  $db->select('call OP_Precios_get_all_for_table_by_empresa_Id(?)', array($act_empresa));
+      $precios_tabla = json_encode(collect($precios_tabla));
 
-        $fechahora = date('d-m-Y H:i:s');
+      $fechahora = date('d-m-Y H:i:s');
 
-        return view($this->path . '.nuevo', compact('lastPresupuesto', 'doctor', 'paciente', 'precios', 'precios_tabla', 'act_empresa', 'fechahora'));
+      return view($this->path . '.nuevo', compact('lastPresupuesto', 'doctor', 'paciente', 'precios', 'precios_tabla', 'act_empresa', 'fechahora'));
     }
 
     public function reporte($id){
-        $pres_general =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_get_by_Id("'. $id .'")')[0];
-        $pres_detalle =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuesto_Detalles_by_Id("'. $id .'")');
-        $act_empresa =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_empresa_Id('. $pres_general->idPaciente .')')[0]->empresa_id;
-        $precios =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_all_by_empresa_Id('. $act_empresa .')');
-        $paciente_sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_by_paciente_id("'. $pres_general->idPaciente .'")')[0];
+      $db = DB::connection(CurBD::getCurrentSchema());
 
-        $pres_general = json_encode($pres_general);
-        $pres_detalle = json_encode($pres_detalle);
-        $precios = json_encode($precios);
-        $paciente_sede = json_encode($paciente_sede);
+      $pres_general =  $db->select('call OP_Presupuestos_get_by_Id(?)', array($id));
+      $pres_general = collect($pres_general)[0];
+      $idPaciente = $pres_general->idPaciente;
+      $pres_general = json_encode($pres_general);      
 
-        $view = view($this->path . '.reporte', compact('pres_general', 'pres_detalle', 'precios', 'paciente_sede'));
+      $pres_detalle =  $db->select('call OP_Presupuesto_Detalles_by_Id(?)', array($id));
+      $pres_detalle = json_encode(collect($pres_detalle));
 
-        return $view;
+      $act_empresa =  $db->select('call OP_Pacientes_get_empresa_Id(?)', array($idPaciente));
+      $act_empresa = collect($act_empresa)[0]->empresa_id;      
+      $precios =  $db->select('call OP_Precios_get_all_by_empresa_Id(?)', array($act_empresa));
+      $precios = json_encode(collect($precios));
+
+      $paciente_sede =  $db->select('call OP_Sedes_get_all_by_paciente_id(?)', array($idPaciente));    
+      $paciente_sede = json_encode(collect($paciente_sede)[0]);
+
+      $view = view($this->path . '.reporte', compact('pres_general', 'pres_detalle', 'precios', 'paciente_sede'));
+
+      return $view;
     }
 
     public function show(Presupuesto $presupuesto)
@@ -109,13 +128,12 @@ class PresupuestoController extends Controller{
 
     public function destroy(Request $request, $id)
     {
-        try{
-            $res =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Presupuestos_delete_all_Id('. $id .')');
-
-            return response()->json(['success' => 'deleted']);
-
-        }catch(Exception $e){
-            return response()->json(['error'=>$e->getMessage()]);
-        }
+      try{
+        $db = DB::connection(CurBD::getCurrentSchema());
+        $res =  $db->statement('call OP_Presupuestos_delete_all_Id(?)', array($id));
+        return response()->json(['success' => 'deleted']);
+      }catch(Exception $e){
+        return response()->json(['error'=>$e->getMessage()]);
+      }
     }
 }
