@@ -6,7 +6,10 @@
 /.idea
 /.vscode
 /.vagrant
-/_SQL
+/_SQL/Skeleton_data_base_procedures.sql
+/_SQL/Skeleton_Data_base.sql
+/_SQL/Skeleton_Main_Data_base.sql
+/_SQL/atet
 /resources/assets
 Homestead.json
 Homestead.yaml
