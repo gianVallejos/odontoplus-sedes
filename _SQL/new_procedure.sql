@@ -6,19 +6,15 @@ BEGIN
   UPDATE `pacientes` SET `is_deleted` = '1' WHERE (`id` = XID_PACIENTE);
   SELECT ROW_COUNT() AS ESTADO;
 END
-;;
 
 DROP PROCEDURE IF EXISTS `OP_Ingresos_delete_by_update_Id`;
-DELIMITER ;;
 CREATE PROCEDURE `OP_Ingresos_delete_by_update_Id`(IN XID_INGRESOS int)
 BEGIN
   UPDATE `ingresos` SET `is_deleted` = '1' WHERE (`id` = XID_INGRESOS);
   SELECT ROW_COUNT() AS ESTADO;
 END
-;;
 
 DROP PROCEDURE IF EXISTS `OP_Pacientes_get_all`;
-DELIMITER ;;
 CREATE PROCEDURE `OP_Pacientes_get_all`()
 BEGIN
 	SELECT pc.id, pc.codigo, pc.nombres, pc.apellidos, pc.dni, pc.email, pc.direccion, pc.fechanacimiento, pc.genero,
@@ -32,10 +28,8 @@ BEGIN
 	  WHERE pc.is_deleted = 0
 		ORDER BY pc.id DESC;
 END
-;;
 
 DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
-DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_get_all_by_doctor_sede`(IN doctorId int, IN sedeId int)
 BEGIN
 	SELECT c.id as idEvent, 
@@ -54,10 +48,8 @@ BEGIN
 	WHERE ( doctorId IS NULL OR c.idDoctor = doctorId )
 		AND ( sedeId IS NULL OR c.idSede = sedeId);
 END
-;;
 
 DROP PROCEDURE IF EXISTS `OP_Citas_update_all`;
-DELIMITER ;;
 CREATE PROCEDURE `OP_Citas_update_all`(IN XID int, IN XTITULO VARCHAR(200), IN XIDPACIENTE int,  IN XTRATAMIENTO VARCHAR(200), IN XFECHA date, IN XDESDE time,
                                       	IN XHASTA time, IN XIDDOCTOR int, IN XIDSEDE int,  IN XSILLON INT, IN XNOTA VARCHAR(200))
 BEGIN
