@@ -33,3 +33,25 @@ BEGIN
 		ORDER BY pc.id DESC;
 END
 ;;
+
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_get_all_by_doctor_sede`(IN doctorId int, IN sedeId int)
+BEGIN
+	SELECT c.id as idEvent, 
+           CONCAT('S', idSillon, ' - ', IFNULL(pc.codigo, " "), 
+           ' | Paciente: ', IFNULL(c.titulo, c.nota), 
+           ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, IFNULL(pc.telefono, ""))), 
+           ' | Doctor: ', dc.apellidos, 
+           ' | Tratamiento: ', IFNULL(tratamiento, ""), 
+           ' | Sillón ', idSillon,  ' - ', sed.nombre) as title, 
+           tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
+		   CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
+		FROM citas c
+		LEFT JOIN  sedes sed ON sed.id = c.idSede
+		LEFT JOIN pacientes as pc on pc.id = c.idPaciente
+		LEFT JOIN doctors as dc on dc.id = c.idDoctor
+	WHERE ( doctorId IS NULL OR c.idDoctor = doctorId )
+		AND ( sedeId IS NULL OR c.idSede = sedeId);
+END
+;;
