@@ -173,6 +173,7 @@ class CitaController extends Controller{
             if( $request->idPaciente == null ){
               $request->idPaciente = 0;
             }
+            $paciente = $request->paciente;
             $idPaciente = $request->idPaciente;
             $tratamiento = $request->tratamiento;
             $fecha = $request->fecha;
@@ -182,9 +183,9 @@ class CitaController extends Controller{
             $sede = $request->sede;
             $sillon = $request->sillon;
             $nota = $request->nota;
-            $cita = $db->select('call OP_Citas_update_all(?,?,?,?,?,?,?,?,?,?)', 
+            $cita = $db->select('call OP_Citas_update_all(?,?,?,?,?,?,?,?,?,?,?)', 
                                   array(
-                                        $id, $idPaciente, $tratamiento, $fecha, 
+                                        $id, $paciente, $idPaciente, $tratamiento, $fecha, 
                                         $desde, $hasta, $idDoctor, $sede,
                                         $sillon, $nota
                                       )

@@ -55,3 +55,17 @@ BEGIN
 		AND ( sedeId IS NULL OR c.idSede = sedeId);
 END
 ;;
+
+DROP PROCEDURE IF EXISTS `OP_Citas_update_all`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_update_all`(IN XID int, IN XTITULO VARCHAR(200), IN XIDPACIENTE int,  IN XTRATAMIENTO VARCHAR(200), IN XFECHA date, IN XDESDE time,
+                                      	IN XHASTA time, IN XIDDOCTOR int, IN XIDSEDE int,  IN XSILLON INT, IN XNOTA VARCHAR(200))
+BEGIN
+	UPDATE citas SET titulo = XTITULO, fecha = XFECHA, desde = XDESDE, hasta = XHASTA, 
+					 idPaciente = XIDPACIENTE, tratamiento = XTRATAMIENTO,
+					 idDoctor = XIDDOCTOR, idSede = XIDSEDE, idSillon = XSILLON, nota = XNOTA
+		WHERE citas.id = XID;
+
+	SELECT ROW_COUNT() AS ESTADO;
+END
+;;
