@@ -33,3 +33,62 @@ BEGIN
 		ORDER BY pc.id DESC;
 END
 ;;
+
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_get_all`()
+BEGIN
+	SELECT  c.id as idEvent, 
+			CONCAT('S', idSillon, ' - ', IFNULL(pc.codigo, " "),
+            ' | Paciente: ', IFNULL(c.titulo, IFNULL(c.nota, " ")), 
+            ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, IFNULL(pc.telefono, ""))),
+            ' | Doctor: ', dc.apellidos, 
+            ' | Tratamiento: ', IFNULL(tratamiento, ""), 
+            ' | Sillón ', idSillon, ' - ', sed.nombre) as title, 
+            tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
+			CONCAT(c.fecha, ' ', c.desde) as start, 
+            CONCAT(c.fecha, ' ', c.hasta) as end, 
+            sed.nombre as nombre_sede, 
+            c.nota
+		FROM citas c
+	LEFT JOIN  sedes sed ON sed.id = c.idSede
+	LEFT JOIN pacientes as pc on pc.id = c.idPaciente
+	LEFT JOIN doctors as dc on dc.id = c.idDoctor;
+END
+;;
+
+DROP PROCEDURE IF EXISTS `OP_Citas_get_all_by_doctor_sede`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_get_all_by_doctor_sede`(IN doctorId int, IN sedeId int)
+BEGIN
+	SELECT c.id as idEvent, 
+           CONCAT('S', idSillon, ' - ', IFNULL(pc.codigo, " "), 
+           ' | Paciente: ', IFNULL(c.titulo, IFNULL(c.nota, "")), 
+           ' | Cel: ', IFNULL(pc.celular, IFNULL(pc.celular_apoderado, IFNULL(pc.telefono, ""))), 
+           ' | Doctor: ', dc.apellidos, 
+           ' | Tratamiento: ', IFNULL(tratamiento, ""), 
+           ' | Sillón ', idSillon,  ' - ', sed.nombre) as title, 
+           tratamiento, idSillon, c.idPaciente, c.idDoctor, fecha,
+		   CONCAT(c.fecha, ' ', c.desde) as start, CONCAT(c.fecha, ' ', c.hasta) as end, sed.nombre as nombre_sede, c.nota
+		FROM citas c
+		LEFT JOIN  sedes sed ON sed.id = c.idSede
+		LEFT JOIN pacientes as pc on pc.id = c.idPaciente
+		LEFT JOIN doctors as dc on dc.id = c.idDoctor
+	WHERE ( doctorId IS NULL OR c.idDoctor = doctorId )
+		AND ( sedeId IS NULL OR c.idSede = sedeId);
+END
+;;
+
+DROP PROCEDURE IF EXISTS `OP_Citas_update_all`;
+DELIMITER ;;
+CREATE PROCEDURE `OP_Citas_update_all`(IN XID int, IN XTITULO VARCHAR(200), IN XIDPACIENTE int,  IN XTRATAMIENTO VARCHAR(200), IN XFECHA date, IN XDESDE time,
+                                      	IN XHASTA time, IN XIDDOCTOR int, IN XIDSEDE int,  IN XSILLON INT, IN XNOTA VARCHAR(200))
+BEGIN
+	UPDATE citas SET titulo = XTITULO, fecha = XFECHA, desde = XDESDE, hasta = XHASTA, 
+					 idPaciente = XIDPACIENTE, tratamiento = XTRATAMIENTO,
+					 idDoctor = XIDDOCTOR, idSede = XIDSEDE, idSillon = XSILLON, nota = XNOTA
+		WHERE citas.id = XID;
+
+	SELECT ROW_COUNT() AS ESTADO;
+END
+;;
