@@ -85,11 +85,12 @@ class PagoController extends Controller{
     }
 
     public function ingresosDetalleUpdatePagoId($ingresos_detalle,$pagoId){
-        foreach( $ingresos_detalle as $ingreso_detalle ){
-            $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_detalle_update_pagoId(?,?)', array($pagoId, $ingreso_detalle->id));
-            $ingreso = collect($ingreso);
-        }
-        
+      echo '!' . $ingresos_detalle . ' - ' . $pagoId; 
+      foreach( $ingresos_detalle as $ingreso_detalle ){
+        echo '!!' . $ingreso_detalle->id;
+        $ingreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Ingresos_detalle_update_pagoId(?,?)', array($pagoId, $ingreso_detalle->id));
+        $ingreso = collect($ingreso);
+      }        
     }
 
     public function destroy($id){
