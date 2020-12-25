@@ -17,32 +17,35 @@ class UserController extends Controller{
 
     public function index(){
         $users = DB::select('call OP_Usuarios_get_all("'. CurBD::getCurrentSchema() .'")'); //Filtrar por Schema
-        $users = json_encode($users);
+        $users = json_encode(collect($users));
 
         return view('users.index',compact('users'));
     }
 
     public function create(){
-      $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
-      $sedes = json_encode($sedes);
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $sedes =  $db->select('call OP_Sedes_get_all()');
+      $sedes = json_encode(collect($sedes));
 
       return view('users.create', compact('sedes'));
     }
 
     public function show($id){
         $user = DB::select('call OP_Usuarios_get_all_id('.$id.', "'. CurBD::getCurrentSchema() . '")')[0]; //Filtrar por Schema
-        $user = json_encode($user);
-        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
-        $sedes = json_encode($sedes);
+        $user = json_encode(collect($user));
+        $db = DB::connection(CurBD::getCurrentSchema());
+        $sedes =  $db->select('call OP_Sedes_get_all()');
+        $sedes = json_encode(collect($sedes));
 
         return view('users.show', compact('user', 'id', 'sedes'));
     }
 
     public function edit($id){
         $user = DB::select('call OP_Usuarios_get_all_id('.$id.', "'. CurBD::getCurrentSchema() .'")')[0]; //Filtrar por Schema
-        $user = json_encode($user);
-        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
-        $sedes = json_encode($sedes);
+        $user = json_encode(collect($user));
+        $db = DB::connection(CurBD::getCurrentSchema());
+        $sedes =  $db->select('call OP_Sedes_get_all()');
+        $sedes = json_encode(collect($sedes));
 
         return view('users.edit', compact('user', 'sedes'));
     }
@@ -66,7 +69,8 @@ class UserController extends Controller{
                                                               .'", "'. Hash::make($request->password) .'", '. $request->rolid
                                                               .', '. $is_active .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .', '. $request->sede_id .')');
 
-                if( $user[0]->ESTADO > 0 ){
+                $user = collect($user)[0];
+                if( $user->ESTADO > 0 ){
                     return response()->json(['success' => 'created']);
                 }else{
                     return response()->json(['error' => 'Ha ocurrido un error']);
@@ -100,8 +104,8 @@ class UserController extends Controller{
                     $user = DB::select('call OP_Usuarios_update_no_pass("'. $request->name .'", "'. $request->email
                                                                           .'", '. $request->rolid .', '. $is_active .', '. $id .', "'. CurBD::getCurrentSchema() .'", '. CurBD::getCurrentClienteId() .', '. $request->sede_id .')');
                 }
-
-                if( $user[0]->ESTADO > 0 ){
+                $user = collect($user)[0];
+                if( $user->ESTADO > 0 ){
                     return response()->json(['success' => 'updated']);
                 }else{
                     return response()->json(['error' => 'Ha ocurrido un error']);
@@ -118,7 +122,8 @@ class UserController extends Controller{
         try{
             $aux = ($request->is_active == 1 ) ? 0 : 1;
             $user = DB::select('call OP_Usuarios_delete_all('. $id .', "'. CurBD::getCurrentSchema() .'", '. $aux .')');
-            if( $user[0]->ESTADO > 0 ){
+            $user = collect($user)[0];
+            if( $user->ESTADO > 0 ){
                 return response()->json(['success' => 'deleted']);
             }else{
                 return response()->json(['error' => 'Ha ocurrido un error']);

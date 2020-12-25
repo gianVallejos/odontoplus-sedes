@@ -30,9 +30,10 @@ class DoctorController extends Controller{
     }
 
     public function index(){
-        $doctors = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all_DESC()');
-        $doctors = json_encode($doctors);
-        return view('doctors.index',compact('doctors'));
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $doctors = $db->select('call OP_Doctors_get_all_DESC()');
+      $doctors = json_encode(collect($doctors));
+      return view('doctors.index',compact('doctors'));
     }
 
     public function create(){
@@ -40,15 +41,17 @@ class DoctorController extends Controller{
     }
 
     public function show($id){
-        $doctor = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all_Id('.$id.')')[0];
-        $doctor = json_encode($doctor);
-        return view('doctors.show', compact('doctor'));
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $doctor = $db->select('call OP_Doctors_get_all_Id('.$id.')')[0];
+      $doctor = json_encode(collect($doctor));
+      return view('doctors.show', compact('doctor'));
     }
 
     public function edit($id){
-        $doctor = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all_Id('.$id.')')[0];
-        $doctor = json_encode($doctor);
-        return view('doctors.edit', compact('doctor'));
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $doctor = $db->select('call OP_Doctors_get_all_Id('.$id.')')[0];
+      $doctor = json_encode(collect($doctor));
+      return view('doctors.edit', compact('doctor'));
     }
 
     public function store(Request $request){
@@ -57,11 +60,13 @@ class DoctorController extends Controller{
           if( $request->margen_ganancia == null ){
               $request->margen_ganancia = 0;
           }
-          $doctor = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_add_all("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni
+          $db = DB::connection(CurBD::getCurrentSchema());
+          $doctor = $db->select('call OP_Doctors_add_all("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni
                                                          .'", "'. $request->email .'", "'. $request->direccion . '", "'. $request->fechanacimiento
                                                          .'", "'. $request->genero . '", "'. $request->estado .'", "'. $request->telefono
                                                          .'", "'. $request->celular . '", "'. $request->celular_aux . '", ' . $request->margen_ganancia .')');
-          if( $doctor[0]->ESTADO > 0 ){
+          $doctor = collect($doctor)[0];
+          if( $doctor->ESTADO > 0 ){
               return response()->json(['success' => 'created']);
           }else{
               return response()->json(['error'=> 'Ha ocurrido un error']);
@@ -76,11 +81,13 @@ class DoctorController extends Controller{
           if( $request->margen_ganancia == null ){
               $request->margen_ganancia = 0;
           }
-          $doctor = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_update_all_Id("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni
+          $db = DB::connection(CurBD::getCurrentSchema());
+          $doctor = $db->select('call OP_Doctors_update_all_Id("'. $request->nombres .'", "'. $request->apellidos .'", "'. $request->dni
                                                                 .'", "'. $request->email .'", "'. $request->direccion . '", "'. $request->fechanacimiento
                                                                 .'", "'. $request->genero . '", "'. $request->estado .'", "'. $request->telefono
                                                                 .'", "'. $request->celular . '", "'. $request->celular_aux . '", ' . $request->margen_ganancia .', '. $id .')');
-          if( $doctor[0]->ESTADO > 0 ){
+          $doctor = collect($doctor)[0];
+          if( $doctor->ESTADO > 0 ){
               return response()->json(['success' => 'updated']);
           }else{
               return response()->json(['error'=> 'Ha ocurrido un error']);
@@ -91,14 +98,15 @@ class DoctorController extends Controller{
 
     public function destroy(Request $request, $id){
         try{
-            $canDelete = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_es_borrable_Id('. $id .')');
-            if( $canDelete[0]->CAN_DELETE == '1' ){
-                $res = DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_delete_all_Id('. $id .')');
-
-                return response()->json(['success' => 'deleted']);
-            }else{
-                return response()->json(['error' => 'cantDeleted']);
-            }
+          $db = DB::connection(CurBD::getCurrentSchema());
+          $canDelete = $db->select('call OP_Doctors_es_borrable_Id('. $id .')');
+          $canDelete = collect($canDelete)[0];
+          if( $canDelete->CAN_DELETE == '1' ){
+              $res = $db->statement('call OP_Doctors_delete_all_Id('. $id .')');
+              return response()->json(['success' => 'deleted']);
+          }else{
+              return response()->json(['error' => 'cantDeleted']);
+          }
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);
         }
