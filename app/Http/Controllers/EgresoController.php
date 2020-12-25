@@ -26,17 +26,19 @@ class EgresoController extends Controller{
     }
 
     public function index(){
-        $egresos =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_get_all()');
-        $egresos = json_encode($egresos);
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $egresos =  $db->select('call OP_Egresos_get_all()');
+      $egresos = json_encode(collect($egresos));
 
-        return view($this->path . '.index', compact('egresos'));
+      return view($this->path . '.index', compact('egresos'));
     }
 
     public function create(){
-        $doctores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
-        $doctores = json_encode($doctores);
-        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
-        $sedes = json_encode($sedes);
+      $db = DB::connection(CurBD::getCurrentSchema());
+        $doctores =  $db->select('call OP_Doctors_get_all()');
+        $doctores = json_encode(collect($doctores));
+        $sedes =  $db->select('call OP_Sedes_get_all()');
+        $sedes = json_encode(collect($sedes));
 
         return view($this->path . '.create', compact('doctores', 'sedes'));
     }
@@ -45,14 +47,16 @@ class EgresoController extends Controller{
         $validator = Validator::make($request->all(), self::$validation_rules );
 
         if ($validator->passes()) {
+          $db = DB::connection(CurBD::getCurrentSchema());
             if( $request->doctor == null ){
-                $egreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_add_all("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
+                $egreso =  $db->select('call OP_Egresos_add_all("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
                                                                 . $request->tipo . '", "'. $request->nota .'", '. $request->monto .', '. $request->sede. ')');
             }else{
-                $egreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_add_all_doctor("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
+                $egreso =  $db->select('call OP_Egresos_add_all_doctor("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
                                                                        . $request->tipo . '", "'. $request->nota .'", '. $request->monto .', '. $request->sede .', '. $request->doctor .')');
             }
-            if( $egreso[0]->ESTADO > 0 ){
+            $egreso = collect($egreso)[0];
+            if( $egreso->ESTADO > 0 ){
                 return response()->json(['success' => 'created']);
             }else{
                 return response()->json(['error'=> 'Ha ocurrido un error']);
@@ -62,23 +66,25 @@ class EgresoController extends Controller{
     }
 
     public function show($id){
-        $egreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_get_all_Id('.$id.')')[0];
-        $egreso = json_encode($egreso);
-        $doctores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
-        $doctores = json_encode($doctores);
-        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
-        $sedes = json_encode($sedes);
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $egreso =  $db->select('call OP_Egresos_get_all_Id('.$id.')')[0];
+      $egreso = json_encode(collect($egreso));
+      $doctores =  $db->select('call OP_Doctors_get_all()');
+      $doctores = json_encode(collect($doctores));
+      $sedes =  $db->select('call OP_Sedes_get_all()');
+      $sedes = json_encode(collect($sedes));
 
-        return view('egresos.show', compact('egreso', 'doctores', 'sedes'));
+      return view('egresos.show', compact('egreso', 'doctores', 'sedes'));
     }
 
     public function edit($id){
-        $doctores =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Doctors_get_all()');
-        $doctores = json_encode($doctores);
-        $egreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_get_all_Id('. $id .')')[0];
-        $egreso = json_encode($egreso);
-        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all()');
-        $sedes = json_encode($sedes);
+      $db = DB::connection(CurBD::getCurrentSchema());
+        $doctores =  $db->select('call OP_Doctors_get_all()');
+        $doctores = json_encode(collect($doctores));
+        $egreso =  $db->select('call OP_Egresos_get_all_Id('. $id .')')[0];
+        $egreso = json_encode(collect($egreso));
+        $sedes =  $db->select('call OP_Sedes_get_all()');
+        $sedes = json_encode(collect($sedes));
 
         return view($this->path . '.edit', compact('doctores', 'egreso', 'sedes'));
     }
@@ -87,14 +93,16 @@ class EgresoController extends Controller{
         $validator = Validator::make($request->all(), self::$validation_rules );
 
         if ($validator->passes()) {
+          $db = DB::connection(CurBD::getCurrentSchema());
           if( $request->doctor == null ){
-              $egreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_update_all_Id("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
+              $egreso =  $db->select('call OP_Egresos_update_all_Id("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
                                                                     . $request->tipo . '", "'. $request->nota .'", '. $request->monto .', '. $request->sede .', '. $id .')');
           }else{
-              $egreso =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_update_all_doctor_Id("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
+              $egreso =  $db->select('call OP_Egresos_update_all_doctor_Id("'. $request->fecha .'", '. $request->cantidad . ', "' . $request->concepto .'", "'
                                                                            . $request->tipo . '", "'. $request->nota .'", '. $request->monto .', '. $request->doctor .', '. $request->sede .', '. $id .')');
           }
-          if( $egreso[0]->ESTADO > 0 ){
+          $egreso = collect($egreso)[0];
+          if( $egreso->ESTADO > 0 ){
               return response()->json(['success' => 'updated']);
           }else{
               return response()->json(['error'=> 'Ha ocurrido un error']);
@@ -105,8 +113,9 @@ class EgresoController extends Controller{
 
     public function destroy(Request $request, $id){
         try{
-            $res =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Egresos_delete_all_Id('. $id .')');
-            return response()->json(['success' => 'deleted']);
+          $db = DB::connection(CurBD::getCurrentSchema());
+          $res =  $db->statement('call OP_Egresos_delete_all_Id('. $id .')');
+          return response()->json(['success' => 'deleted']);
         }catch(Exception $e){
             return response()->json(['error'=>$e->getMessage()]);
         }
