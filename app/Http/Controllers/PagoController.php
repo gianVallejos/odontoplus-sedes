@@ -72,13 +72,13 @@ class PagoController extends Controller{
     	if ($validator->passes()) {
         $db = DB::connection(CurBD::getCurrentSchema());
         $pago =  $db->select('call OP_Pagos_add_all(?,?,?)',
-                                                                    array($request->idDoctor, $request->fecha_inicio, $request->fecha_fin));
+                                   array($request->idDoctor, $request->fecha_inicio, $request->fecha_fin));
         $pago = collect($pago);
         if( $pago[0]->ESTADO > 0 ){
           $pago_last = $db->select('call OP_Pagos_get_pago_last()');
           $pago_last = collect($pago_last);
           $ingresos_detalle =  $db->select('call OP_Ingresos_get_all_by_doctor_fechas(?,?,?,?)',
-                                                                                  array($request->idDoctor, $request->fecha_inicio, $request->fecha_fin, 0));        
+                                                 array($request->idDoctor, $request->fecha_inicio, $request->fecha_fin, 0));        
           $ingresos_detalle = collect($ingresos_detalle);
           $this->ingresosDetalleUpdatePagoId($ingresos_detalle,$pago_last[0]->id);
           return response()->json(['success' => 'created']);
@@ -91,11 +91,8 @@ class PagoController extends Controller{
 
     public function ingresosDetalleUpdatePagoId($ingresos_detalle,$pagoId){
       $db = DB::connection(CurBD::getCurrentSchema());
-      echo '!' . $ingresos_detalle . ' - ' . $pagoId . '<p/>'; 
       foreach( $ingresos_detalle as $ingreso_detalle ){
-        echo '!!' . $ingreso_detalle->id . '<p/>';
-        $ingreso =  $db->select('call OP_Ingresos_detalle_update_pagoId(?,?)', array($pagoId, $ingreso_detalle->id));
-        $ingreso = collect($ingreso);
+        $ingreso =  $db->statement('call OP_Ingresos_detalle_update_pagoId(?,?)', array($pagoId, $ingreso_detalle->id));
       }        
     }
 
