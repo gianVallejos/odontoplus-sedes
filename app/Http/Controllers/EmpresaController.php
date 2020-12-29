@@ -105,7 +105,7 @@ class EmpresaController extends Controller{
         $canDelete =  $db->select('call OP_Empresas_es_borrable_Id('. $id .')');
         $canDelete = collect($canDelete)[0];
         if( $canDelete->CAN_DELETE == '1' ){
-          $empresa =  $db->select('call OP_Empresas_delete_all('. $id .')');
+          $empresa =  $db->statement('call OP_Empresas_delete_all('. $id .')');
           return response()->json(['success' => 'deleted']);
         }else{
             return response()->json(['error' => 'cantDeleted']);
