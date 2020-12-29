@@ -40,7 +40,7 @@ class EmpresaController extends Controller{
 
     public function edit($id){
       $db = DB::connection(CurBD::getCurrentSchema());
-      $empresa =  $db->select('call OP_Empresas_get_all_Id('.$id.')')[0];
+      $empresa =  $db->select('call OP_Empresas_get_all_Id('.$id.')');
       $empresa = collect($empresa)[0];
       $empresa = json_encode($empresa);
       return view('empresas.edit', compact('empresa'));
