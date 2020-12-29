@@ -32,15 +32,17 @@ class EmpresaController extends Controller{
 
     public function show($id){
       $db = DB::connection(CurBD::getCurrentSchema());
-      $empresa =  $db->select('call OP_Empresas_get_all_Id('.$id.')')[0];
-      $empresa = json_encode(collect($empresa));
+      $empresa =  $db->select('call OP_Empresas_get_all_Id('.$id.')');
+      $empresa = collect($empresa)[0];
+      $empresa = json_encode($empresa);
       return view('empresas.show', compact('empresa'));
     }
 
     public function edit($id){
       $db = DB::connection(CurBD::getCurrentSchema());
       $empresa =  $db->select('call OP_Empresas_get_all_Id('.$id.')')[0];
-      $empresa = json_encode(collect($empresa));
+      $empresa = collect($empresa)[0];
+      $empresa = json_encode($empresa);
       return view('empresas.edit', compact('empresa'));
     }
 
