@@ -30,3 +30,22 @@ Components Affected:
 - header.styl
 - odontoplus.styl
 - login.blade.php
+
+### v.3.2.2 - 25/12/2020 
+Update Procedures for: 
+Pacientes
+Doctores
+Usuarios
+Presupuesto
+Ingresos
+Egresos
+Pagos
+Estadísticas
+Ganancias Totales
+Citas
+
+### v.3.2.3 - 
+Tratamientos
+Precios
+Empresas
+Sedes

@@ -25,9 +25,10 @@ class SedeController extends Controller{
     }
 
     public function index(){
-        $sedes =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all');
-        $sedes = json_encode($sedes);
-        return view('sedes.index', compact('sedes'));
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $sedes =  $db->select('call OP_Sedes_get_all');
+      $sedes = json_encode(collect($sedes));
+      return view('sedes.index', compact('sedes'));
     }
 
     public function create(){
@@ -35,30 +36,36 @@ class SedeController extends Controller{
     }
 
     public function show($id){
-        $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('.$id.')')[0];
-        $sede = json_encode($sede);
-        return view('sedes.show', compact('sede'));
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $sede =  $db->select('call OP_Sedes_get_all_id('.$id.')');
+      $sede = collect($sede)[0];
+      $sede = json_encode($sede);
+      return view('sedes.show', compact('sede'));
     }
 
     public function edit($id){
-        $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_get_all_id('.$id.')')[0];
-        $sede = json_encode($sede);
-        return view('sedes.edit', compact('sede'));
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $sede =  $db->select('call OP_Sedes_get_all_id('.$id.')');
+      $sede = collect($sede)[0];
+      $sede = json_encode($sede);
+      return view('sedes.edit', compact('sede'));
     }
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), self::$validation_rules );
 
         if ($validator->passes()) {
-            $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_add_all("'. $request->nombre .'", "'. $request->ciudad .'","'.
-                                                                    $request->direccion .'","'. $request->telefono .'","'. $request->celular .'","'.
-                                                                    $request->calular_aux .'","'. $request->email .'")');
-            if( $sede[0]->ESTADO > 0 ){
-                return response()->json(['success' => 'created']);
-            }
-            else{
-                return response()->json(['error' => 'Ha ocurrido un error al insertar la sede o sus precios']);
-            }
+          $db = DB::connection(CurBD::getCurrentSchema());
+          $sede =  $db->select('call OP_Sedes_add_all("'. $request->nombre .'", "'. $request->ciudad .'","'.
+                                                                  $request->direccion .'","'. $request->telefono .'","'. $request->celular .'","'.
+                                                                  $request->calular_aux .'","'. $request->email .'")');
+          $sede = collect($sede)[0];
+          if( $sede->ESTADO > 0 ){
+              return response()->json(['success' => 'created']);
+          }
+          else{
+              return response()->json(['error' => 'Ha ocurrido un error al insertar la sede o sus precios']);
+          }
         }
 
         return response()->json(['error' => $validator->errors()]);
@@ -69,14 +76,16 @@ class SedeController extends Controller{
         $validator = Validator::make($request->all(), self::$validation_rules );
 
         if ($validator->passes()) {
-            $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_update_all_Id('. $id .',"'. $request->nombre .'", "'. $request->ciudad .'","'.
-                                                                        $request->direccion .'","'. $request->telefono .'","'. $request->celular .'","'.
-                                                                        $request->calular_aux .'","'. $request->email .'")');
-            if( $sede[0]->ESTADO > 0 ){
-                return response()->json(['success' => 'updated']);
-            }else{
-                return response()->json(['error' => 'Ha ocurrido un error']);
-            }
+          $db = DB::connection(CurBD::getCurrentSchema());
+          $sede =  $db->select('call OP_Sedes_update_all_Id('. $id .',"'. $request->nombre .'", "'. $request->ciudad .'","'.
+                                                                      $request->direccion .'","'. $request->telefono .'","'. $request->celular .'","'.
+                                                                      $request->calular_aux .'","'. $request->email .'")');
+          $sede = collect($sede)[0];
+          if( $sede->ESTADO > 0 ){
+              return response()->json(['success' => 'updated']);
+          }else{
+              return response()->json(['error' => 'Ha ocurrido un error']);
+          }
         }
 
         return response()->json(['error'=>$validator->errors()]);
@@ -84,13 +93,15 @@ class SedeController extends Controller{
 
     public function destroy(Request $request, $id){
       try{
-          $canDelete =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_es_borrable_Id('. $id .')');
-          if( $canDelete[0]->CAN_DELETE == '1' ){
-            $sede =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Sedes_delete_all('. $id .')');
-            return response()->json(['success' => 'deleted']);
-          }else{
-              return response()->json(['error' => 'cantDeleted']);
-          }
+        $db = DB::connection(CurBD::getCurrentSchema());
+        $canDelete =  $db->select('call OP_Sedes_es_borrable_Id('. $id .')');
+        $canDelete = collect($canDelete)[0];
+        if( $canDelete->CAN_DELETE == '1' ){
+          $sede =  $db->statement('call OP_Sedes_delete_all('. $id .')');
+          return response()->json(['success' => 'deleted']);
+        }else{
+            return response()->json(['error' => 'cantDeleted']);
+        }
       }catch(Exception $e){
           return response()->json(['error'=>$e->getMessage()]);
       }
