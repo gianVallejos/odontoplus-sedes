@@ -14,11 +14,12 @@ class TratamientoController extends Controller{
     }
 
     public function index(){
-        $tratamientos = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamientos_get_all()');
-        $tratamientos = json_encode($tratamientos);
-        $pacientes = DB::connection(CurBD::getCurrentSchema())->select('call OP_Pacientes_get_all()');
-        $pacientes = json_encode($pacientes);
-        return view('tratamientos.index',compact('tratamientos', 'pacientes'));
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $tratamientos = $db->select('call OP_Tratamientos_get_all()');
+      $tratamientos = json_encode(collect($tratamientos));
+      $pacientes = $db->select('call OP_Pacientes_get_all()');
+      $pacientes = json_encode(collect($pacientes));
+      return view('tratamientos.index',compact('tratamientos', 'pacientes'));
     }
 
     public function create(){
@@ -26,15 +27,19 @@ class TratamientoController extends Controller{
     }
 
     public function show($id){
-        $tratamiento = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamiento_get_all_id('.$id.')')[0];
-        $tratamiento = json_encode($tratamiento);
-        return view('tratamientos.show', compact('tratamiento'));
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $tratamiento = $db->select('call OP_Tratamiento_get_all_id('.$id.')');
+      $tratamiento = collect($tratamiento)[0];
+      $tratamiento = json_encode($tratamiento);
+      return view('tratamientos.show', compact('tratamiento'));
     }
 
     public function edit($id){
-        $tratamiento = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamiento_get_all_id('.$id.')')[0];
-        $tratamiento = json_encode($tratamiento);
-        return view('tratamientos.edit', compact('tratamiento'));
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $tratamiento = $db->select('call OP_Tratamiento_get_all_id('.$id.')');
+      $tratamiento = collect($tratamiento)[0];
+      $tratamiento = json_encode($tratamiento);
+      return view('tratamientos.edit', compact('tratamiento'));
     }
 
     public function store(Request $request){
@@ -47,10 +52,12 @@ class TratamientoController extends Controller{
     	if ($validator->passes()) {
             try{
                 DB::beginTransaction();
-                $tratamiento = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamientos_add_all("'.$request->detalle.'")');
+                $db = DB::connection(CurBD::getCurrentSchema());
+                $tratamiento = $db->select('call OP_Tratamientos_add_all("'.$request->detalle.'")');
+                $tratamiento = collect($tratamiento)[0];
 
-                if ( $tratamiento[0]->ESTADO > 0 && $tratamiento[0]->LAST_ID != 0) {
-                  $pricesInserted = self::insertCompaniesStandardPrices($tratamiento[0]->LAST_ID, $request->precio_estandar, $request->costo_variable);
+                if ( $tratamiento->ESTADO > 0 && $tratamiento->LAST_ID != 0) {
+                  $pricesInserted = self::insertCompaniesStandardPrices($tratamiento->LAST_ID, $request->precio_estandar, $request->costo_variable);
                 }
 
                 if($pricesInserted){
@@ -68,24 +75,27 @@ class TratamientoController extends Controller{
     }
 
     public function insertCompaniesStandardPrices($treatmentId, $price, $costo_variable){
-        $companies = DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
-
-        foreach ($companies as $company) {
-            $precio = DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_add_all('.$company->id.','.$treatmentId.','.$price.', '. $costo_variable .')');
-            if($precio[0]->ESTADO == 0) return false;
-        }
-        return true;
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $companies = $db->select('call OP_Empresas_get_all()');
+      $companies = collect($companies);
+      foreach ($companies as $company) {
+        $precio = $db->select('call OP_Precios_add_all('.$company->id.','.$treatmentId.','.$price.', '. $costo_variable .')');
+        $precio = collect($precio)[0];
+        if($precio->ESTADO == 0) return false;
+      }
+      return true;
     }
 
     public function update(Request $request, $id){
-
     	$validator = Validator::make($request->all(), [
             'detalle' => 'required|max:120'
         ]);
 
     	if ($validator->passes()) {
-        $tratamiento = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamientos_update_all_id('.$id.',"'.$request->detalle.'")');
-        if ( $tratamiento[0]->ESTADO > 0) {
+        $db = DB::connection(CurBD::getCurrentSchema());
+        $tratamiento = $db->select('call OP_Tratamientos_update_all_id('.$id.',"'.$request->detalle.'")');
+        $tratamiento = collect($tratamiento)[0];
+        if ( $tratamiento->ESTADO > 0) {
           return response()->json(['success' => 'updated']);
         }else{
           return response()->json(['error'=>$e->getMessage()]);
@@ -95,19 +105,18 @@ class TratamientoController extends Controller{
     }
 
     public function destroy(Request $request, $id){
-        try{
-            $canDelete = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamiento_es_borrable_id('. $id .')');
-
-            if( $canDelete[0]->CAN_DELETE == '1' ){
-                $res = DB::connection(CurBD::getCurrentSchema())->select('call OP_Tratamiento_delete_Id('. $id .')');
-
-                return response()->json(['success' => 'deleted']);
-            }else{
-                return response()->json(['error' => 'cantDeleted']);
-            }
-
-        }catch(Exception $e){
-            return response()->json(['error'=>$e->getMessage()]);
+      try{
+        $db = DB::connection(CurBD::getCurrentSchema());
+        $canDelete = $db->select('call OP_Tratamiento_es_borrable_id('. $id .')');
+        $canDelete = collect($canDelete)[0];
+        if( $canDelete->CAN_DELETE == '1' ){
+          $res = $db->statement('call OP_Tratamiento_delete_Id('. $id .')');
+          return response()->json(['success' => 'deleted']);
+        }else{
+          return response()->json(['error' => 'cantDeleted']);
         }
+      }catch(Exception $e){
+        return response()->json(['error'=>$e->getMessage()]);
+      }
     }
 }
