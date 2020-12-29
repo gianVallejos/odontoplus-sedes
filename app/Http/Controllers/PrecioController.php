@@ -14,17 +14,20 @@ class PrecioController extends Controller{
     }
 
     public function index(){
-        $companies =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Empresas_get_all()');
-        $prices =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_all_standard()');
-        $companies = json_encode($companies);
-        $prices = json_encode($prices);
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $companies =  $db->select('call OP_Empresas_get_all()');
+      $companies = json_encode(collect($companies));
+      $prices =  $db->select('call OP_Precios_get_all_standard()');
+      $prices = json_encode(collect($prices));
 
-        return view('precios.index',compact('companies', 'prices'));
+      return view('precios.index',compact('companies', 'prices'));
     }
 
     public function getPrice(Request $request){
-        $price =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_get_by_empresa_tratamiento_Id('. $request->empresa_id .','. $request->tratamiento_id .')');
-        return response()->json(['price' => $price ]);
+      $db = DB::connection(CurBD::getCurrentSchema());
+      $price =  $db->select('call OP_Precios_get_by_empresa_tratamiento_Id('. $request->empresa_id .','. $request->tratamiento_id .')');
+      $price = collect($price);
+      return response()->json(['price' => $price ]);
     }
 
 
@@ -35,12 +38,14 @@ class PrecioController extends Controller{
         ]);
 
     	if ($validator->passes()) {
-          $precio =  DB::connection(CurBD::getCurrentSchema())->select('call OP_Precios_update_monto_Id('. $request->monto .', '. $request->costo_variable .', '. $id .')');
-          if( $precio[0]->ESTADO > 0 ){
-              return response()->json(['success' => 'success']);
-          }else{
-              return response()->json(['error'=> 'Ha ocurrido un error']);
-          }
+        $db = DB::connection(CurBD::getCurrentSchema());
+        $precio =  $db->select('call OP_Precios_update_monto_Id('. $request->monto .', '. $request->costo_variable .', '. $id .')');
+        $precio = collect($precio)[0];
+        if( $precio->ESTADO > 0 ){
+            return response()->json(['success' => 'success']);
+        }else{
+            return response()->json(['error'=> 'Ha ocurrido un error']);
+        }
       }
       return response()->json(['error'=>$validator->errors()]);
     }
