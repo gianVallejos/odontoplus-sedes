@@ -49,3 +49,7 @@ Tratamientos
 Precios
 Empresas
 Sedes
+
+### Dates update on Reports - 05/01/2022
+Dashboard/index.vue
+Reportes/index.vue
